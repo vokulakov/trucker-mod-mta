@@ -1,0 +1,18 @@
+<meta>
+
+	<script type="shared" src="shared/sources.lua" cache="false"/>
+	<script type="shared" src="shared/config.lua" cache="false"/>
+	<script type="shared" src="shared/main.lua" cache="false"/>
+
+	<script type="server" src="server/main.lua" cache="false"/>
+
+	<script type="client" src="client/sources.lua" cache="false"/>
+	<script type="client" src="client/handlers.lua" cache="false"/>
+	<script type="client" src="client/render.lua" cache="false"/>
+
+	<export function="createWorldPed" type="shared"/>
+
+	<download_priority_group>100</download_priority_group>
+	
+	<oop>true</oop>
+</meta>

@@ -1,0 +1,73 @@
+<meta>
+	<oop>true</oop>
+	<min_mta_version client="1.5.6-9.16404" server="1.5.5-9.11915.0" />
+	<download_priority_group>999</download_priority_group>
+
+	<!-- UI -->
+	<file src="assets/ui/ui_change.wav" />
+	<file src="assets/ui/ui_select.wav" />
+	<file src="assets/ui/ui_back.wav" />
+	<file src="assets/ui/ui_hover.mp3" />
+	<file src="assets/ui/ui_notice_error.mp3" />
+	<file src="assets/ui/ui_notice_warning.mp3" />
+	<file src="assets/ui/ui_notice_success.mp3" />
+	<file src="assets/ui/ui_notice_info.mp3" />
+	<file src="assets/ui/ui_window_open.mp3" />
+	<file src="assets/ui/ui_window_close.mp3" />
+
+	<!-- Systems -->
+	<file src="assets/systems/sell.wav" />
+	<file src="assets/systems/reward_small.mp3" />
+	<file src="assets/systems/sound_eat1.mp3" />
+	<file src="assets/systems/sound_eat2.mp3" />
+	<file src="assets/systems/heart.mp3" />
+	<file src="assets/systems/tinnitus.ogg" />
+	<file src="assets/systems/box_down.mp3" />
+	<file src="assets/systems/box_up.mp3" />
+	<file src="assets/systems/wasted.mp3" />
+	
+	<file src="assets/systems/new_level.mp3" />
+	<file src="assets/systems/start_work.mp3" />
+	<file src="assets/systems/finish_work.mp3" />
+	<file src="assets/systems/payday.mp3" />
+
+	<file src="assets/systems/youlost.wav" />
+	<file src="assets/systems/youwin.wav" />
+
+	<!-- Music -->
+	<file src="assets/music/game_theme_1.mp3" />
+	<file src="assets/music/game_theme_2.mp3" />
+	<file src="assets/music/game_theme_3.mp3" />
+
+	<!-- Ambient -->
+	<file src="assets/ambient/bg_music_car_showroom.mp3" />
+	<file src="assets/ambient/bg_music_restaurant.mp3" />
+	<file src="assets/ambient/bg_music_skinshop.mp3" />
+
+	<!-- Vehicle -->
+	<file src="assets/vehicle/doorlock.mp3" />
+	<file src="assets/vehicle/lightswitch.mp3" />
+	<file src="assets/vehicle/turnsignal.mp3" />
+	<file src="assets/vehicle/starter_car.mp3" />
+	<file src="assets/vehicle/starter_moto.wav" />
+	<file src="assets/vehicle/radio_tune.mp3" />
+
+	<file src="assets/vehicle/belt-alarm.wav" />
+	<file src="assets/vehicle/belt-in.mp3" />
+	<file src="assets/vehicle/belt-out.mp3" />
+
+	<file src="assets/vehicle/horn/sound_1.wav" />
+	<file src="assets/vehicle/horn/sound_2.wav" />
+	<file src="assets/vehicle/horn/sound_3.wav" />
+	<file src="assets/vehicle/horn/sound_4.wav" />
+	<file src="assets/vehicle/horn/sound_5.wav" />
+	<file src="assets/vehicle/horn/sound_6.wav" />
+	<file src="assets/vehicle/horn/sound_7.wav" />
+	<file src="assets/vehicle/horn/sound_8.wav" />
+
+	<script type="client" cache="false" src="Config.lua" />
+	<script type="client" cache="false" src="main.lua" />
+
+	<export type="client" function="playSound" />
+	<export type="client" function="playSound3D" />
+</meta>

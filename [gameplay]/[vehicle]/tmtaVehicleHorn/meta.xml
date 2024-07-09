@@ -1,0 +1,19 @@
+<meta>
+    <min_mta_version server="1.5.5-0.00000" client="1.5.5-0.00000" />
+    <download_priority_group>-100</download_priority_group>
+    <oop>true</oop>
+
+    <script type="shared" cache="false" src="shared/Config.lua" />
+
+    <!-- CLIENT -->
+    <script type="client" cache="false" src="client/gui_horn.lua" />
+    <script type="client" cache="false" src="client/horn_c.lua" />
+
+    <!-- SERVER -->
+    <script type="server" src="server/horn_s.lua" />
+
+    <!-- EXPORTS -->
+    <export type="client" function="setVehicleHorn" />
+    <export type="client" function="setVisibleHornWindow" />
+    
+</meta>

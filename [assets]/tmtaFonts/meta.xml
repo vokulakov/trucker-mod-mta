@@ -1,0 +1,28 @@
+<meta>
+	<oop>true</oop>
+	<download_priority_group>999</download_priority_group>
+	
+	<!-- Fonts -->
+	<file src="assets/Roboto/Roboto-Bold.ttf" />
+	<file src="assets/Roboto/Roboto-Regular.ttf" />
+	<file src="assets/Roboto/Roboto-BoldItalic.ttf" />
+	<file src="assets/Roboto/Roboto-MediumItalic.ttf" />
+
+	<file src="assets/GothamPro/bold.ttf" />
+	<file src="assets/GothamPro/medium.ttf" />
+	
+	<file src="assets/LicensePlateFonts/KZNumber.otf" />
+	<file src="assets/LicensePlateFonts/EuroPlate.ttf" />
+	<file src="assets/LicensePlateFonts/GOSTTypeBU.ttf" />
+	<file src="assets/LicensePlateFonts/RoadNumbers2.0.ttf" />
+
+	<file src="assets/Elowen.ttf" />
+
+	<!-- Script -->
+	<script type="client" src="Config.lua" cache="false" />
+	<script type="client" src="Font.lua" cache="false" />
+
+	<!-- Exports -->
+	<export type="client" function="createFontDX" />
+	<export type="client" function="createFontGUI" />
+</meta>

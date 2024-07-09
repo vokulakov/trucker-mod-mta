@@ -1,0 +1,85 @@
+<meta>
+	<oop>true</oop>
+	<min_mta_version client="1.5.6-9.16404" server="1.5.5-9.11915.0" />
+	<download_priority_group>999</download_priority_group>
+
+	<file src="assets/logo/64.png" />
+	<file src="assets/logo/86.png" />
+
+	<file src="assets/ui/icons/i_error.png" />
+	<file src="assets/ui/icons/i_info.png" />
+	<file src="assets/ui/icons/i_money.png" />
+	<file src="assets/ui/icons/i_clock.png" />
+	<file src="assets/ui/icons/i_warning.png" />
+	<file src="assets/ui/icons/i_success.png" />
+	<file src="assets/ui/icons/i_question.png" />
+
+	<file src="assets/ui/particles/dot.png" />
+	<file src="assets/ui/particles/round_1.png" />
+	<file src="assets/ui/particles/round_2.png" />
+	<file src="assets/ui/particles/round_3.png" />
+	<file src="assets/ui/particles/round_4.png" />
+
+	<!-- Keys -->
+	<file src="assets/ui/keys/mouse_down.png" />
+	<file src="assets/ui/keys/mouse_left.png" />
+	<file src="assets/ui/keys/mouse_right.png" />
+	<file src="assets/ui/keys/mouse_up.png" />
+	<file src="assets/ui/keys/mouse_wheel.png" />
+	<file src="assets/ui/keys/mouse.png" />
+	<file src="assets/ui/keys/b_e.png" />
+	<file src="assets/ui/keys/b_enter.png" />
+	<file src="assets/ui/keys/b_f11.png" />
+	<file src="assets/ui/keys/b_space.png" />
+
+	<!-- Background -->
+	<file src="assets/ui/background/bg_shadow_line.png" />
+	<file src="assets/ui/background/bg_shadow_smoke.png" />
+	<file src="assets/ui/background/bg_shadow.png" />
+
+	<!-- Hud -->
+	<file src="assets/hud/radar/localPlayer.png" />
+	<file src="assets/hud/radar/marker.png" />
+	<file src="assets/hud/radar/markerHigher.png" />
+	<file src="assets/hud/radar/markerLower.png" />
+	<file src="assets/hud/radar/gasStation.png" />
+	<file src="assets/hud/radar/property.png" />
+	<file src="assets/hud/radar/clothes.png" />
+	<file src="assets/hud/radar/carshop.png" />
+	<file src="assets/hud/radar/sto.png" />
+	<file src="assets/hud/radar/licensePlate.png" />
+	<file src="assets/hud/radar/paint.png" />
+	<file src="assets/hud/radar/restaurant.png" />
+	<file src="assets/hud/radar/scooterRent.png" />
+	<file src="assets/hud/radar/tuning.png" />
+	<file src="assets/hud/radar/trucker.png" />
+	<file src="assets/hud/radar/checkpoint.png" />
+	<file src="assets/hud/radar/hospital.png" />
+	<file src="assets/hud/radar/business.png" />
+	<file src="assets/hud/radar/loader.png" />
+	<file src="assets/hud/radar/revenueService.png" />
+
+	<!-- Vehicle -->
+	<file src="assets/vehicle/frame/frame0.png" />
+
+	<file src="assets/vehicle/plate/plate0.png" />
+	<file src="assets/vehicle/plate/plate1.png" />
+	<file src="assets/vehicle/plate/plate2.png" />
+	<file src="assets/vehicle/plate/plate3.png" />
+	<file src="assets/vehicle/plate/plate4.png" />
+	<file src="assets/vehicle/plate/plate5.png" />
+	<file src="assets/vehicle/plate/plate6.png" />
+	<file src="assets/vehicle/plate/plate7.png" />
+	<file src="assets/vehicle/plate/plate8.png" />
+	<file src="assets/vehicle/plate/plate9.png" />
+
+	<script type="client" cache="false" src="client/Config.lua" />
+	<script type="client" cache="false" src="client/Texture.lua" />
+	<script type="client" cache="false" src="client/BlipTextures.lua" />
+
+	<!-- Exports -->
+	<export type="client" function="createStaticImage" />
+	<export type="client" function="createTexture" />
+
+	<export type="client" function="getBlipTextures" />
+</meta>

@@ -1,0 +1,14 @@
+<meta>
+    <oop>true</oop>
+
+    <file src="assets/failure.wav"/> 
+
+    <script type="shared" src="assets/Config.lua" cache="false" />
+
+    <script type="client" src="client/main.lua" cache="false" />
+    <script type="client" src="client/VehicleCrash.lua" cache="false" />
+
+    <script type="server" src="server/main.lua" />
+    <script type="server" src="server/VehicleCrash.lua" />
+
+</meta>

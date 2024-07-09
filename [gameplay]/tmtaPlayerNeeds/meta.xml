@@ -1,0 +1,15 @@
+<meta>
+	<oop>true</oop>
+	<script type='shared' cache='false' src='shared/Hunger.lua' />
+	<script type='shared' cache='false' src='shared/main.lua' />
+	
+	<script type='server' src='server/Hunger.lua' />
+
+	<script type='client' cache='fale' src='client/main.lua' />
+
+	<!-- Exports -->
+	<export type='shared' function='getPlayerHungerLevel' />
+	<export type='shared' function='givePlayerHungerLevel' />
+	<export type='shared' function='takePlayerHungerLevel' />
+	<export type='shared' function='setPlayerHungerLevel' />
+</meta>

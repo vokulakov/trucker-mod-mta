@@ -1,0 +1,85 @@
+<meta>
+	<oop>true</oop>
+	<download_priority_group>99</download_priority_group>
+	<include resource="tmtaModule" />
+
+	<script type="shared" src="shared/time.lua" cache="false" />
+	<script type="shared" src="shared/geom.lua" cache="false" />
+	<script type="shared" src="shared/table.lua" cache="false" />
+	<script type="shared" src="shared/other.lua" cache="false" />
+	<script type="shared" src="shared/vehicles.lua" cache="false" />
+	<script type="shared" src="shared/formatter.lua" cache="false" />
+	<script type="server" src="server/players.lua" cache="false" />
+	<script type="shared" src="shared/common.lua" cache="false" />
+
+	<script type="shared" src="shared/math.lua" cache="false" />
+	<script type="shared" src="shared/color.lua" cache="false" />
+	<script type="shared" src="shared/string.lua" cache="false" />
+
+
+	<export type="shared" function="isValidVehicleModel" />
+	<export type="shared" function="getVehicleOccupantsCount" />
+	<export type="shared" function="alignVehicleToGround" />
+
+	<export type="shared" function="clearChat"/>
+	<export type="shared" function="isResourceRunning"/>
+	<export type="shared" function="defaultValue"/>
+	<export type="shared" function="RGBToHex"/>
+
+	<export type="shared" function="getPlayersByPartOfName"/>
+	<export type="shared" function="getElementDataDefault"/>
+
+	<!-- Table -->
+	<export type="shared" function="tableMerge"/>
+	<export type="shared" function="extendTable" />
+	<export type="shared" function="tableCopy" />
+	<export type="shared" function="tableReverse" />
+	<export type="shared" function="tableReverseOrder" />
+
+	<!-- Математические функции -->
+	<export type="shared" function="roundUpHundred"/>
+	<export type="shared" function="roundDownHundred"/>
+	<export type="shared" function="round"/>
+	<export type="shared" function="lerp"/>
+	<export type="shared" function="isBetween"/>
+	<export type="shared" function="formatMoney"/>
+	<export type="shared" function="formatMoneyToShortValue"/>
+	<export type="shared" function="format_num"/>
+	<export type="shared" function="comma_value"/>
+	<export type="shared" function="convertMetersToKm"/>
+
+	<!-- Работа со временем -->
+	<export type="shared" function="isLeapYear"/>
+	<export type="shared" function="getTimestamp"/>
+	<export type="shared" function="convertTimestampToSeconds"/>
+	<export type="shared" function="convertMsToTimeStr"/>
+	<export type="shared" function="convertMinToHour" />
+	<export type="shared" function="secondAsTimeFormat" />
+
+	<!-- Геометрия -->
+	<export type="shared" function="wrapAngle"/>
+	<export type="shared" function="wrapAngleRadians"/>
+	<export type="shared" function="differenceBetweenAngles"/>
+	<export type="shared" function="differenceBetweenAnglesRadians"/>
+
+	<export type="server" function="isPlayerAdmin"/>
+
+	<!-- Formatter -->
+	<export type="shared" function="tobool" />
+
+	<!-- String -->
+	<export type="shared" function="strSplit" />
+	<export type="shared" function="strTransliterate" />
+	<export type="shared" function="strCapitalize" />
+	<export type="shared" function="strGenerate" />
+	<export type="shared" function="strRemoveHex" />
+
+	<!-- Color -->
+	<export type="shared" function="fromColor" />
+	<export type="shared" function="hexToRGB" />
+	<export type="shared" function="RGBToHex" />
+	<export type="shared" function="colorToHEX" />
+
+	<!-- Common -->
+	<export type="shared" function="getNearestElementByType" />
+</meta>

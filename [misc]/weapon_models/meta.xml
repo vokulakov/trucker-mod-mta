@@ -1,0 +1,31 @@
+<meta>
+    
+
+<info author='Yakuza' version='0.1' name='Weapons, Sounds and Stats' description='Replace weapons with new models and new sounds. Stats for Kill, Deads and Ratio' type='script' />
+
+	
+	
+<script src="C_Replace.lua" type="client"/>
+	
+		
+<file src="models/weap/mp5.txd" />
+	
+<file src="models/weap/mp5.dff" />
+	
+
+
+<file src="models/weap/ak47.txd" />
+	
+<file src="models/weap/ak47.dff" />
+	
+<file src="models/weap/colt.txd" />
+	
+<file src="models/weap/colt.dff" />
+	
+<file src="models/weap/nig.txd" />
+	
+<file src="models/weap/nig.dff" />
+	
+
+
+</meta>

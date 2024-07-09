@@ -1,0 +1,11 @@
+<meta>
+    <oop>true</oop>
+	<download_priority_group>10</download_priority_group>
+    <script type="shared" src="Money.lua" cache="false" />
+    <script type="client" src="client/Sound.lua" cache="false" />
+
+    <export function="getPlayerMoney" type="shared" />
+    <export function="setPlayerMoney" type="shared" />
+    <export function="givePlayerMoney" type="shared" />
+    <export function="takePlayerMoney" type="shared" />
+</meta>

@@ -1,0 +1,18 @@
+<meta>
+	<download_priority_group>999</download_priority_group>
+
+	<map src="assets/tmta_trucker_world.map" dimension="0"></map>
+	<map src="assets/tmta_lv_police_otdel.map" dimension="0"></map>
+	<map src="assets/tmta_job_loader_lv.map" dimension="0"></map>
+	<map src="assets/red_contry_bridge.map" dimension="0"></map>
+	
+	<settings>
+        <setting name="#useLODs" value="[ true ]"></setting>
+    </settings>
+
+	<script src="mapObjectLodDistance.lua" type="client" validate="false" cache="false"></script>
+	<script src="mapObjectRemove.lua" type="server"></script>
+
+    <script src="mapEditorScriptingExtension_s.lua" type="server"></script>
+    <script src="mapEditorScriptingExtension_c.lua" type="client" validate="false"></script>
+</meta>

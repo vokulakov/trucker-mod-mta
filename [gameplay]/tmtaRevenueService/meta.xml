@@ -1,0 +1,30 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>-99</download_priority_group>
+    <script type="shared" src="shared/Config.lua" cache="false" />
+	<script type="shared" src="shared/include.lua" cache="false" />
+    <script type="shared" src="shared/export.lua" cache="false" />
+	
+    <script type="client" src="client/RevenueService.lua" cache="false" />
+    <script type="client" src="client/GUI.lua" cache="false" />
+    <script type="client" src="client/main.lua" cache="false" />
+
+    <script type="server" src="server/RevenueService.lua" />
+    <script type="server" src="server/export.lua" />
+    <script type="server" src="server/main.lua" />
+
+    <!-- Exports -->
+	<export type="shared" function="isPlayerBusinessEntity" />
+    <export type="shared" function="isPlayerHasPropertyTaxDebt" />
+    <export type="shared" function="isPlayerHasIncomeTaxDebt" />
+    <export type="shared" function="isPlayerHasTaxDebt" />
+    <export type="shared" function="getPlayerIncomeTaxDebt" />
+    <export type="shared" function="getPlayerPropertyTaxDebt" />
+
+    <export type="server" function="isUserBusinessEntity" />
+    <export type="server" function="isUserHasPropertyTaxDebt" />
+    <export type="server" function="isUserHasIncomeTaxDebt" />
+    
+    <export type="server" function="addUserPropertyTax" />
+    <export type="server" function="addUserIncomeTax" />
+</meta>

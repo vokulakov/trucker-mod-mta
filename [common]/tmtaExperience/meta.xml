@@ -1,0 +1,17 @@
+<meta>    
+    <oop>true</oop>
+	<download_priority_group>10</download_priority_group>
+
+    <script type="shared" src="shared/Utils.lua" cache="false" />
+    <script type="shared" src="shared/Config.lua" cache="false" />
+    <script type="shared" src="shared/Experience.lua" cache="false" />
+
+    <script type="shared" src="shared/exports.lua" cache="false" />
+
+    <export function="getPlayerExp" type="shared" />
+    <export function="getPlayerLvl" type="shared" />
+    <export function="getRankFromLvl" type="shared" />
+    <export function="getExpToLevelUp" type="shared" />
+    
+    <export function="givePlayerExp" type="server" />
+</meta>

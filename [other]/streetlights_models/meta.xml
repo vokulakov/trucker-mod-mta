@@ -1,0 +1,33 @@
+<meta>
+	<oop>true</oop>
+	<file src="assets/cj_traffic.txd" />
+	<file src="assets/cj_traffic_light3.dff" />
+	<file src="assets/cj_traffic_light4.dff" />
+	<file src="assets/cj_traffic_light5.dff" />
+	<file src="assets/docklight.txd" />
+	<file src="assets/dynsigns.txd" />
+	<file src="assets/dyntraffic.txd" />
+	<!--<file src="assets/gay_lamppost.dff" />-->
+	<file src="assets/gay_traffic_light.dff" />
+	<file src="assets/gay_xref.txd" />
+	<!--<file src="assets/lamppost1.dff" />-->
+	<!--<file src="assets/lamppost2.dff" />-->
+	<!--<file src="assets/lamppost3.dff" />-->
+	<file src="assets/metal.txd" />
+	<file src="assets/mitraffic.txd" />
+	<!--<file src="assets/mlamppost.dff" />-->
+	<file src="assets/MTraffic1.dff" />
+	<file src="assets/MTraffic2.dff" />
+	<file src="assets/MTraffic4.dff" />
+	<file src="assets/Streetlamp1.dff" />
+	<file src="assets/Streetlamp2.dff" />
+	<!--<file src="assets/streetlights.txd" />-->
+	<file src="assets/sub_floodlite.dff" />
+	<file src="assets/trafficlight1.dff" />
+	<!--<file src="assets/vegaslampost.dff" />-->
+	<!--<file src="assets/vegaslampost2.dff" />-->
+	<file src="assets/vegtrafic2.txd" />
+	<file src="assets/vgnlpost.txd" />
+	<file src="assets/vgsstriptlights1.dff" />
+	<script type="client" src="main.lua" cache="false" />
+</meta>

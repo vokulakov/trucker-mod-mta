@@ -1,0 +1,18 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>99</download_priority_group>
+
+    <script type="shared" src="shared/Config.lua" cache="false" />
+    <script type="shared" src="shared/exports.lua" cache="false" />
+
+    <script type="server" src="server/TrailerSyncer.lua" />
+    <script type="server" src="server/Trailer.lua" />
+
+    <!-- Exports -->
+    <export type="shared" function="getTrailerConfigByModel" />
+    <export type="shared" function="getTrailerTypeNameByModel" />
+    <export type="shared" function="getTrailerLoadCapacityByModel" />
+    <export type="shared" function="getTrailerLoadCapacity" />
+    <export type="shared" function="isTrailer" />
+    <export type="server" function="spawnTrailer" />
+</meta>

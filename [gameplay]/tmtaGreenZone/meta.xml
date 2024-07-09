@@ -1,0 +1,7 @@
+<meta>
+    <oop>true</oop>
+    <script type="shared" src="shared/Config.lua" cache="false" />
+    <script type="client" src="client/client.lua" cache="false" />
+    <script type="server" src="server/server.lua" />
+    <!-- <export type="server" function="create"/> -->
+</meta>

@@ -1,0 +1,9 @@
+<meta>
+    <oop>true</oop>
+    <script src="client.lua" type="client" cache="false"/>
+    
+    <file src="files/mta-helper.fx"/>
+    <file src="files/shader.fx"/>
+    <file src="files/shader2.fx"/>
+    <file src="files/shader3.fx"/>
+</meta>

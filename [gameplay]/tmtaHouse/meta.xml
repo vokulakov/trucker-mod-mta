@@ -1,0 +1,34 @@
+<meta>
+	<oop>true</oop>
+	<download_priority_group>-99</download_priority_group>
+    <include resource="tmtaSQLite" />
+	<include resource="tmtaModule" />
+
+	<file src="assets/images/choose.jpg" />
+	
+	<file src="assets/images/interiors/interior01.jpg" />
+	<file src="assets/images/interiors/interior02.jpg" />
+	<file src="assets/images/interiors/interior03.jpg" />
+
+	<!-- Client -->
+	<script type="client" src="client/Utils.lua" cache="false" />
+	<script type="client" src="client/CreateHouseGUI.lua" cache="false" />
+	<script type="client" src="client/HouseGUI.lua" cache="false" />
+	<script type="client" src="client/House.lua" cache="false" />
+	<script type="client" src="client/HouseMarker.lua" cache="false" />
+	<script type="client" src="client/HouseBlip.lua" cache="false" />
+	<script type="client" src="client/main.lua" cache="false" />
+
+	<!-- Shared -->
+	<script type="shared" src="shared/Config.lua" cache="false" />
+	<script type="shared" src="shared/Interiors.lua" cache="false" />
+	<script type="shared" src="shared/include.lua" cache="false" />
+
+	<!-- Server -->
+	<script type="server" src="server/House.lua" />
+	<script type="server" src="server/exports.lua" />
+	<script type="server" src="server/main.lua" />
+
+	<!-- Exports -->
+	<export type="server" function="getPlayerHouses" />
+</meta>

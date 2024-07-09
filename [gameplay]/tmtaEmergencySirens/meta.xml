@@ -1,0 +1,85 @@
+<meta>
+	<!-- SETUPS -->
+	<script src="assets/setups.lua" type="shared" cache="false" />
+
+	<!-- SCRIPT -->
+	<script src="client/main.lua" type="client" cache="false" />
+	<script src="client/sounds.lua" type="client" cache="false" />
+	<!-- <script src="client/radio.lua" type="client" cache="false" /> -->
+	<script src="server/stroboscopes.lua" type="server" />
+
+	<!-- SOUNDS -->
+	<file src="assets/sounds/sirens1.wav" />
+	<file src="assets/sounds/sirens2.wav" />
+	<file src="assets/sounds/sirens3.wav" />
+	
+	<!-- RADIO -->
+	<!--
+	<file src="assets/police_radio/Track_001.ogg" />
+	<file src="assets/police_radio/Track_002.ogg" />
+	<file src="assets/police_radio/Track_003.ogg" />
+	<file src="assets/police_radio/Track_004.ogg" />
+	<file src="assets/police_radio/Track_005.ogg" />
+	<file src="assets/police_radio/Track_006.ogg" />
+	<file src="assets/police_radio/Track_007.ogg" />
+	<file src="assets/police_radio/Track_008.ogg" />
+	<file src="assets/police_radio/Track_009.ogg" />
+	<file src="assets/police_radio/Track_010.ogg" />
+	<file src="assets/police_radio/Track_011.ogg" />
+	<file src="assets/police_radio/Track_012.ogg" />
+	<file src="assets/police_radio/Track_013.ogg" />
+	<file src="assets/police_radio/Track_014.ogg" />
+	<file src="assets/police_radio/Track_015.ogg" />
+	<file src="assets/police_radio/Track_016.ogg" />
+	<file src="assets/police_radio/Track_017.ogg" />
+	<file src="assets/police_radio/Track_018.ogg" />
+	<file src="assets/police_radio/Track_019.ogg" />
+	<file src="assets/police_radio/Track_020.ogg" />
+	<file src="assets/police_radio/Track_021.ogg" />
+	<file src="assets/police_radio/Track_022.ogg" />
+	<file src="assets/police_radio/Track_023.ogg" />
+	<file src="assets/police_radio/Track_024.ogg" />
+	<file src="assets/police_radio/Track_025.ogg" />
+	<file src="assets/police_radio/Track_026.ogg" />
+	<file src="assets/police_radio/Track_027.ogg" />
+	<file src="assets/police_radio/Track_028.ogg" />
+	<file src="assets/police_radio/Track_029.ogg" />
+	<file src="assets/police_radio/Track_030.ogg" />
+	<file src="assets/police_radio/Track_031.ogg" />
+	<file src="assets/police_radio/Track_032.ogg" />
+	<file src="assets/police_radio/Track_033.ogg" />
+	<file src="assets/police_radio/Track_034.ogg" />
+	<file src="assets/police_radio/Track_035.ogg" />
+	<file src="assets/police_radio/Track_036.ogg" />
+	<file src="assets/police_radio/Track_037.ogg" />
+	<file src="assets/police_radio/Track_038.ogg" />
+	<file src="assets/police_radio/Track_039.ogg" />
+	<file src="assets/police_radio/Track_040.ogg" />
+	<file src="assets/police_radio/Track_041.ogg" />
+	<file src="assets/police_radio/Track_042.ogg" />
+	<file src="assets/police_radio/Track_043.ogg" />
+	<file src="assets/police_radio/Track_044.ogg" />
+	<file src="assets/police_radio/Track_045.ogg" />
+	<file src="assets/police_radio/Track_046.ogg" />
+	<file src="assets/police_radio/Track_047.ogg" />
+	<file src="assets/police_radio/Track_048.ogg" />
+	<file src="assets/police_radio/Track_049.ogg" />
+	<file src="assets/police_radio/Track_050.ogg" />
+	<file src="assets/police_radio/Track_051.ogg" />
+	<file src="assets/police_radio/Track_052.ogg" />
+	<file src="assets/police_radio/Track_053.ogg" />
+	<file src="assets/police_radio/Track_054.ogg" />
+	<file src="assets/police_radio/Track_055.ogg" />
+	<file src="assets/police_radio/Track_056.ogg" />
+	<file src="assets/police_radio/Track_057.ogg" />
+	<file src="assets/police_radio/Track_058.ogg" />
+	<file src="assets/police_radio/Track_059.ogg" />
+	<file src="assets/police_radio/Track_060.ogg" />
+	<file src="assets/police_radio/Track_061.ogg" />
+	<file src="assets/police_radio/Track_062.ogg" />
+	<file src="assets/police_radio/Track_063.ogg" />
+	<file src="assets/police_radio/Track_064.ogg" />
+	<file src="assets/police_radio/Track_065.ogg" />
+	<file src="assets/police_radio/Track_066.ogg" />
+	-->
+</meta>

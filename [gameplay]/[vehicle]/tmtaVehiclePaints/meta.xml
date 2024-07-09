@@ -1,0 +1,47 @@
+<meta>
+    <min_mta_version client="1.5.6-9.16404" server="1.5" />
+    <oop>true</oop>
+
+    <!-- ASSETS -->
+    <file src="assets/sound.mp3" />
+
+    <file src="assets/fx/chrome/mta-helper.fx" />
+    <file src="assets/fx/chrome/car_paint.fx" />
+    <file src="assets/fx/chrome/color.png" />
+    <file src="assets/fx/chrome/reflx.dds" />
+
+    <file src="assets/fx/gloss/mta-helper.fx" />
+    <file src="assets/fx/gloss/car_paint.fx" />
+
+    <file src="assets/fx/matte/mta-helper.fx" />
+    <file src="assets/fx/matte/matte.fx" />
+
+    <file src="assets/fx/tempBody.png" />
+    <file src="assets/fx/cube_env256.dds" />
+    <file src="assets/fx/smallnoise3d.dds" />
+
+    <file src="assets/fx/chameleon/mta-helper.fx" />
+    <file src="assets/fx/chameleon/chameleo.fx" />
+
+    <file src="assets/colorpicker/cursor.png" />
+    <file src="assets/colorpicker/h.png" />
+    <file src="assets/colorpicker/sv.png" />
+    <file src="assets/colorpicker/blank.png" />
+
+    <!-- SHARED -->
+    <script type="shared" src="shared/Config.lua" cache="false" />
+
+    <!-- CLIENT -->
+    <script type="client" src="client/color_fx.lua" cache="false" />
+    <script type="client" src="client/colorpicker.lua" cache="false" />
+    <script type="client" src="client/Camera.lua" cache="false" />
+    <script type="client" src="client/Garage.lua" cache="false" />
+    <script type="client" src="client/paint_c.lua" cache="false" />
+
+    <script type="client" src="client/main.lua" cache="false" />
+    
+    <!-- SERVER -->
+    <script type="server" src="server/Garage.lua" />
+    <script type="server" src="server/paint_s.lua" />
+
+</meta>

@@ -1,0 +1,44 @@
+<meta>
+	<script src="shared/shared.lua" type="shared" cache="false"/>
+	<script src="shared/include.lua" type="shared" cache="false"/>
+	<script src="server/server.lua" type="server"/>
+	<script src="client/client.lua" type="client" cache="false"/>
+	
+	<file src="assets/opensources/common.source"/>
+	<file src="assets/opensources/gui.graphics.source"/>
+	<file src="assets/opensources/animations.source"/>
+	<file src="assets/opensources/timed_animations.source"/>
+	<file src="assets/opensources/drawing.source"/>
+	<file src="assets/opensources/binds.source"/>
+	<file src="assets/opensources/gui.module.utils.source"/>
+	<file src="assets/opensources/gui.module.source"/>
+	<file src="assets/opensources/gui.fonts.source"/>
+	<file src="assets/opensources/gui.dialog.source"/>
+
+	<file src="assets/images/white.png"/>
+	<file src="assets/images/close.png"/>
+	<file src="assets/images/scroll.png"/>
+
+	<file src="assets/images/dialog/dialog_bottom.png"/>
+	<file src="assets/images/dialog/dialog_top.png"/>
+	<file src="assets/images/dialog/dialog_name.png"/>
+	<file src="assets/images/dialog/dialog_row.png"/>
+
+	<export function="getWhiteTexture" type="client"/>
+	<export function="getCloseTexture" type="client"/>
+	<export function="getScrollTexture" type="client"/>
+	<export function="_getServerTimestamp" type="client"/>
+	<export function="getServerWebsite" type="client"/>
+	<export function="include" type="shared"/>
+	<export function="isResourceRunning" type="shared"/>
+	<export function="isAdmin" type="shared"/>
+	<export function="isFounder" type="shared"/>
+	<export function="isModerator" type="shared"/>
+	<export function="isYoutube" type="shared"/>
+	<export function="getServerIndex" type="shared"/>
+	<export function="getDonateConvertMul" type="shared"/>
+	<export function="getEconomicsMultiplier" type="shared"/>
+
+	<download_priority_group>999999</download_priority_group>
+	<min_mta_version client="1.5.5" server="1.5.5"/>
+</meta>

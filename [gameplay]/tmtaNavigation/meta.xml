@@ -1,0 +1,16 @@
+<meta>
+    <oop>true</oop>
+    <file src="assets/point.png" />
+
+    <script type="shared" src="shared/export.lua" cache="false" />
+
+    <script type="client" src="client/NavigationGUI.lua" cache="false" />
+    <script type="client" src="client/Navigation.lua" cache="false" />
+
+    <!-- exports -->
+    <export type="client" function="getWindow" />
+    <export type="client" function="setWindowVisible" />
+    <export type="client" function="getWindowVisible" />
+    
+    <export type="shared" function="setPoint" />
+</meta>

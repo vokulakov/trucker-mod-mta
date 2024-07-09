@@ -1,0 +1,9 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>999</download_priority_group>
+    <include resource="tmtaSQLite" />
+    <include resource="tmtaCore" />
+
+    <script type="server" src="main.lua" />
+    <!-- <export function="" type="server" http="true" /> -->
+</meta>

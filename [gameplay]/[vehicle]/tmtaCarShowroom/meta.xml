@@ -1,0 +1,29 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>-99</download_priority_group>
+	<include resource="tmtaModule" />
+    <include resource="tmtaVehicle" />
+    <include resource="tmtaSQLite" />
+
+    <!-- Assets -->
+    <file src="assets/object/interiorShowroom.txd" />
+	<file src="assets/object/interiorShowroom.dff" />
+	<file src="assets/object/interiorShowroom.col" />
+
+    <file src="assets/image/colorPoint.png" />
+
+    <!-- Shared -->
+    <script type="shared" src="shared/Config.lua" cache="false" />
+    <script type="shared" src="shared/include.lua" cache="false" />
+    <script type="shared" src="shared/Utils.lua" cache="false" />
+
+    <!-- Client -->
+    <script type="client" src="client/Camera.lua" cache="false" />
+    <script type="client" src="client/Showroom.lua" cache="false" />
+    <script type="client" src="client/ShowroomMarker.lua" cache="false" />
+    <script type="client" src="client/ShowroomGUI.lua" cache="false" />
+
+    <!-- Server -->
+    <script type="server" src="server/Showroom.lua" />
+
+</meta>

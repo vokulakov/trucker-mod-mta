@@ -1,0 +1,20 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>99</download_priority_group>
+    <include resource="tmtaVehicle" />
+
+    <script type="shared" src="shared/Config.lua" cache="false" />
+    <script type="shared" src="shared/exports.lua" cache="false" />
+
+    <script type="server" src="server/Truck.lua" />
+
+    <!-- Exports -->
+    <export type="shared" function="getTruckConfigByModel" />
+    <export type="shared" function="getTruckTypeNameByModel" />
+    <export type="shared" function="getTruckLoadCapacityByModel" />
+    <export type="shared" function="isTruck" />
+    <export type="shared" function="isTruckNeedsTrailer" />
+    <export type="shared" function="getTruckLoadCapacity" />
+    
+    <export type="server" function="spawnTruck" />
+</meta>

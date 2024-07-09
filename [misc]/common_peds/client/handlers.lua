@@ -1,0 +1,2 @@
+
+addEventHandler('onClientPedDamage', resourceRoot, cancelEvent)

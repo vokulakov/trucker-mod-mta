@@ -1,0 +1,10 @@
+*.db
+*.log
+*.json
+*.lnk
+
+*assets]/tmtaWheelModels
+*assets]/tmtaSkinModels
+*assets]/tmtaVehicleModels
+*assets]/tmtaModels
+*beta]/

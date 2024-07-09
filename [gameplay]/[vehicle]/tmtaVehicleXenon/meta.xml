@@ -1,0 +1,19 @@
+<meta>
+	<oop>true</oop>
+
+	<file src="assets/colorpicker/cursor.png" />
+  	<file src="assets/colorpicker/h.png" />
+  	<file src="assets/colorpicker/sv.png" />
+  	<file src="assets/colorpicker/blank.png" />
+
+	<script type="shared" src="assets/Config.lua" cache="false" />
+
+	<script src="client/colorpicker.lua" type="client" cache="false" />
+	<script type="client" src="client/main.lua" cache="false" />
+
+	<script type="server" src="server/server.lua" />
+
+	<!-- Exports -->
+	<export type="client" function="showXenonUI" />
+
+</meta>

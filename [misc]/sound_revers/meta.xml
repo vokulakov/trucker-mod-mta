@@ -1,0 +1,7 @@
+<meta>
+    <info author="LHARC" type="script" name="Reversing Beep" version="1.1" />
+    <oop>true</oop>
+    <script src="client.lua" type="client"></script>
+    <script src="server.lua" type="server"></script>
+	<file src="sfx/SFX_REVERSE_BEEP_2.mp3" />
+</meta>

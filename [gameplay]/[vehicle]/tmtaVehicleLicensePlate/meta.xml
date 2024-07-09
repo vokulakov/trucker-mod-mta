@@ -1,0 +1,36 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>99</download_priority_group>
+    <min_mta_version client="1.5.6-9.16404" server="1.5.5-9.11915.0" />
+    <include resource="tmtaSQLite" />
+	<include resource="tmtaModule" />
+
+    <!-- Shared -->
+    <script type="shared" src="shared/Config.lua" cache="false" />
+    <script type="shared" src="shared/Utils.lua" cache="false" />
+    <script type="shared" src="shared/include.lua" cache="false" />
+    <script type="shared" src="shared/export.lua" cache="false" />
+
+    <!-- Client -->
+    <script type="client" src="client/LicensePlate.lua" cache="false" />
+    <script type="client" src="client/LicensePlateMarker.lua" cache="false" />
+    <script type="client" src="client/LicensePlateStorageGUI.lua" cache="false" />
+    <script type="client" src="client/LicensePlateGUI.lua" cache="false" />
+    <script type="client" src="client/main.lua" cache="false" />
+    <script type="client" src="client/export.lua" cache="false" />
+
+    <!-- Server -->
+    <script type="server" src="server/LicensePlate.lua" />
+    <script type="server" src="server/LicensePlateStorage.lua" />
+    <script type="server" src="server/main.lua" />
+    <script type="server" src="server/export.lua" />
+
+    <!-- Exports -->
+    <export type="shared" function="formatLicensePlateToString" />
+    <export type="shared" function="getVehicleLicensePlate" />
+    <export type="shared" function="getVehicleLicensePlateRegion" />
+
+    <export type="server" function="setVehicleRandomLicensePlate" />
+    <export type="server" function="deleteLicensePlateByVehicleId" />
+    <export type="server" function="setVehicleFakeRandomLicensePlate" />
+</meta>

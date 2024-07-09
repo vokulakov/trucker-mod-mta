@@ -1,0 +1,27 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>-99</download_priority_group>
+	<include resource="tmtaModule" />
+    <include resource="tmtaVehicle" />
+    <include resource="tmtaSQLite" />
+
+    <script type="shared" src="shared/include.lua" cache="false" />
+    <script type="shared" src="shared/Config.lua" cache="false" />
+    <script type="shared" src="shared/Utils.lua" cache="false" />
+    <script type="shared" src="shared/export.lua" cache="false" />
+
+    <script type="client" src="client/GarageGUI.lua" cache="false" />
+    <script type="client" src="client/Garage.lua" cache="false" />
+
+    <script type="server" src="server/Garage.lua" />
+    <script type="server" src="server/export.lua" />
+
+    <export type="shared" function="getPlayerGarageSlotCount" />
+    <export type="shared" function="getPlayerFreeGarageSlotCount" />
+
+    <export type="server" function="isPlayerHasFreeGarageSlot" />
+    <export type="server" function="addPlayerGarageSlot" />
+    <export type="server" function="removePlayerGarageSlot" />
+    <export type="server" function="addUserGarageSlot" />
+    <export type="server" function="removeUserGarageSlot" />
+</meta>

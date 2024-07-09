@@ -1,0 +1,29 @@
+
+function dxDrawTextShadow(text, l,t,r,b,c,s,f,ax,ay,tsW,color,ct,func)
+	local dFunc = func or dxDrawText
+	if tsW > 0 then
+		dFunc(ct or text,
+			l + tsW, t + tsW, r + tsW, b + tsW,
+			color or black, s, s, f, ax, ay)
+		dFunc(ct or text,
+			l - tsW, t + tsW, r - tsW, b + tsW,
+			color or black, s, s, f, ax, ay)
+		dFunc(ct or text,
+			l + tsW, t - tsW, r + tsW, b - tsW,
+			color or black, s, s, f, ax, ay)
+		dFunc(ct or text,
+			l - tsW, t - tsW, r - tsW, b - tsW,
+			color or black, s, s, f, ax, ay)
+	end
+
+	if ct then
+		dFunc(text,
+			l, t, r, b,
+			c, s, s, f, ax, ay, false, false, false, true)
+	else
+		dFunc(text,
+			l, t, r, b,
+			c, s, s, f, ax, ay)
+	end
+
+end

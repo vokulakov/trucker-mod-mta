@@ -1,0 +1,62 @@
+<meta>
+	<oop>true</oop>
+	<file src="assets/gay_lamppost.dff" />
+	<file src="assets/gay_telgrphpole.dff" />
+	<!-- <file src="assets/gta_potplantsaa.txd" /> -->
+	<file src="assets/gta_tree_bevhills.txd" />
+	<file src="assets/gta_tree_palm.txd" />
+	<file src="assets/lampost_coast.dff" />
+	<file src="assets/lamppost1.dff" />
+	<file src="assets/lamppost2.dff" />
+	<file src="assets/lamppost3.dff" />
+	<file src="assets/mlamppost.dff" />
+	<file src="assets/sjmpalm.dff" />
+	<file src="assets/sjmpalmbig.dff" />
+	<file src="assets/sjmpalmbigpv.dff" />
+	<file src="assets/sjmpalmtall.dff" />
+	<file src="assets/telgrphpole02.dff" />
+	<file src="assets/telgrphpoleall.dff" />
+	<!-- <file src="assets/veg_palm01.dff" />
+	<file src="assets/veg_palm02.dff" />
+	<file src="assets/veg_palm03.dff" />
+	<file src="assets/veg_palm04.dff" />
+	<file src="assets/veg_palmbig14.dff" />
+	<file src="assets/veg_palwee01.dff" />
+	<file src="assets/veg_palwee02.dff" />
+	<file src="assets/veg_palwee03.dff" /> -->
+	<file src="assets/vegaslampost2.dff" />
+	<file src="assets/vgntelepole1.dff" />
+	<!-- <file src="assets/vgs_palm01.dff" />
+	<file src="assets/vgs_palm02.dff" />
+	<file src="assets/vgs_palm03.dff" />
+	<file src="assets/vgs_palm04.dff" />
+	<file src="assets/vgs_palmvtall.dff" /> -->
+	<file src="assets/vgsn_nitree.txd" />
+	<!-- <file src="assets/vgsn_nitree_b01.dff" />
+	<file src="assets/vgsn_nitree_b02.dff" />
+	<file src="assets/vgsn_nitree_g01.dff" />
+	<file src="assets/vgsn_nitree_g02.dff" /> -->
+	<file src="assets/vgsn_nitree_r01.dff" />
+	<!-- <file src="assets/vgsn_nitree_r02.dff" />
+	<file src="assets/vgsn_nitree_y01.dff" />
+	<file src="assets/vgsn_nitree_y02.dff" /> -->
+
+	<file src="assets/common.txd" />
+	<file src="assets/aw_streettree1.dff" />
+	<file src="assets/CJ_TRAFFIC_LIGHT4.dff" />
+	<file src="assets/sm_bevhiltree.dff" />
+
+	<file src="assets/logo5_512.dff" />
+	<file src="assets/logo5_512.col" />
+	<file src="assets/girlanda.dff" />
+	<file src="assets/girlanda.col" />
+	<file src="assets/girlanda.txd" />
+	<file src="assets/girlanda2.dff" />
+	<file src="assets/girlanda2.col" />
+	<file src="assets/Streetlamp1.dff" />
+	<file src="assets/cxrf_frway1sig.dff" />
+	<file src="assets/vgs_roadsign1.dff" />
+	<file src="assets/vegasmotsigncj.dff" />
+
+	<script type="client" src="main.lua" cache="false" />
+</meta>

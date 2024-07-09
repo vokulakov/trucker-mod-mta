@@ -1,0 +1,9 @@
+<meta>
+	<oop>true</oop>
+	<file src="flakes/real_tile.png"/>
+	<script src="snow.lua" type="client"/>
+
+	<export function="start" type="client" />
+	<export function="stop" type="client" />
+	<export function="getStatus" type="client" />
+</meta>

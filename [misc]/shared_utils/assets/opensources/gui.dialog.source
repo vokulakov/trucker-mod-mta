@@ -1,0 +1,369 @@
+
+	setAnimData('dialog-text', 0.1)
+	setAnimData('dialog-buttons', 0.1)
+
+	local dialogWindowSection = {
+
+		{'list',
+			sx/2 - 621/2,
+			sy/2 - 138/2,
+			621, 138,
+			scrollBg = scrollTexture,
+			scrollColor = {14, 108, 196,255},
+			scrollBgColor = {25, 25, 25,255},
+
+			scrollWidth = 5,
+			listOffset = 0,
+
+			listElements = {},
+
+			font = 'default',
+			scale = 1,
+			listElementHeight = 25,
+
+			color = {255,255,255,255},
+
+			onInit = function(element)
+				textDialogElement = element
+			end,
+
+			onPreRender = function(element)
+				local alpha = getElementDrawAlpha(element)
+
+				local padding = 20
+
+				dxDrawImage(
+					element[2] - padding, element[3] - padding,
+					element[4] + padding*2, element[5] + padding*2,
+					':shared_utils/assets/images/dialog/dialog_top.png', 0, 0, 0,
+					tocolor(30, 30, 30, 255*alpha)
+				)
+
+				local x,y,w,h =
+					element[2] - padding, element[3] - padding - 15 - 110,
+					element[4] + padding*2, 110
+
+				dxDrawImage(
+					x,y,w,h,
+					':shared_utils/assets/images/dialog/dialog_name.png', 0, 0, 0,
+					tocolor(30, 30, 30, 255*alpha)
+				)
+
+				local percent = 8/element[4]
+					
+				dxDrawImageSection(
+					x, y,
+					w * percent, h,
+					0, 0,
+					w * percent, h,
+					':shared_utils/assets/images/dialog/dialog_name.png',
+					0,0,0, tocolor(14, 108, 196, 255*alpha)
+				)
+
+				dxDrawText(currentDialogStructure.speaker,
+					x + 40,y,
+					x + 40,y+h,
+					tocolor(255,255,255,255*alpha),
+					1,1, getFont('proximanova_bold', 16, 'light'),
+					'left', 'center'
+				)
+			end,
+
+			onRender = function(element)
+				local alpha = getElementDrawAlpha(element)
+			end,
+
+			additionalElementDrawing = function(lElement, x,y,w,ey, element, animData, index)
+
+				local alpha = element.color[4]*windowAlpha/255
+
+				local splitted = splitString(lElement.rowText, '<img>')
+				local startX = x
+
+				local scale, font = 1, getFont('proximanova', 16, 'light')
+				local imgSize = 30
+
+				local animData = getAnimData('dialog-text')
+				animData = getEasingValue(animData, 'InOutQuad')
+
+				if #splitted == 1 then
+
+					for i = 1,2 do
+						dxDrawText(splitted[1],
+							startX,
+							y,
+							startX,
+							y + element.listElementHeight,
+							tocolor(255,255,255,255*alpha*animData),
+							scale, scale, font,
+							'left', 'center'
+						)
+					end
+
+				else
+
+					for _, row in pairs( splitted ) do
+
+						local sRow = splitString(row, '</img>')
+
+
+						if #sRow == 1 then
+
+							local textWidth = dxGetTextWidth(sRow[1], scale, font)
+
+							for i = 1,2 do
+								dxDrawText(sRow[1],
+									startX,
+									y,
+									startX,
+									y + element.listElementHeight,
+									tocolor(255,255,255,255*alpha*animData),
+									scale, scale, font,
+									'left', 'center'
+								)
+							end
+
+							startX = startX + textWidth/real_sx*sx + 5
+
+						else
+							dxDrawImage(
+								startX, y + element.listElementHeight/2 - imgSize/2,
+								imgSize, imgSize, sRow[1], 0, 0, 0,
+								tocolor(255,255,255,255*alpha*animData)
+							)
+							startX = startX + imgSize + 5
+
+							local textWidth = dxGetTextWidth(sRow[2], scale, font)
+
+							for i = 1,2 do
+								dxDrawText(sRow[2],
+									startX,
+									y,
+									startX,
+									y + element.listElementHeight,
+									tocolor(255,255,255,255*alpha*animData),
+									scale, scale, font,
+									'left', 'center'
+								)
+							end
+
+							startX = startX + textWidth/real_sx*sx + 5
+						end
+
+
+
+					end
+
+				end
+
+			end,
+
+		},
+
+		{'list',
+			sx/2 - 621/2,
+			sy/2 + 138/2 + 20 + 20,
+			621, 210,
+			scrollBg = scrollTexture,
+			scrollColor = {14, 108, 196,255},
+			scrollBgColor = {25, 25, 25,255},
+
+			scrollWidth = 5,
+			listOffset = 0,
+
+			listElements = {},
+
+			font = 'default',
+			scale = 1,
+			listElementHeight = 70,
+
+			color = {255,255,255,255},
+
+			onInit = function(element)
+				answersDialogElement = element
+			end,
+
+			onPreRender = function(element)
+				local alpha = getElementDrawAlpha(element)
+
+				local padding = 20
+
+				dxDrawImage(
+					element[2] - padding, element[3] - padding,
+					element[4] + padding*2, element[5] + padding*2,
+					':shared_utils/assets/images/dialog/dialog_bottom.png', 0, 0, 0,
+					tocolor(40, 40, 40, 255*alpha)
+				)
+			end,
+
+			onRender = function(element)
+				local alpha = getElementDrawAlpha(element)
+			end,
+
+			additionalElementDrawing = function(lElement, x,y,w,ey, element, animData, index, hovered)
+
+				local alpha = element.color[4]*windowAlpha/255
+
+				local animData = getAnimData('dialog-buttons')
+				animData = getEasingValue(animData, 'InOutQuad')
+
+				local animId = 'dialog-row-'..index
+
+				local hoverAnim = getAnimData(animId)
+				if not hoverAnim then
+					setAnimData(animId, 0.1)
+					hoverAnim = 0
+				end
+
+				animate(animId, hovered and 1 or 0)
+
+
+				local r,g,b = interpolateBetween(
+					30, 30, 30, 11,111,231,
+					hoverAnim, 'InOutQuad'
+				)
+
+				dxDrawImage(
+					x, y + 10,
+					element[4], element.listElementHeight - 20,
+					':shared_utils/assets/images/dialog/dialog_row.png', 0, 0, 0,
+					tocolor(r,g,b, 255*alpha*animData)
+				)
+
+				for i = 1,2 do
+					dxDrawText(lElement._text,
+						x + 10, y+10,
+						x + element[4], y + 10 + element.listElementHeight - 20,
+						tocolor(255,255,255,255*alpha*animData),
+						1,1, getFont('proximanova', 15, 'light'),
+						'center', 'center'
+					)
+				end
+
+			end,
+
+			onListElementClick = function(element, lElement)
+
+				if dialogAnimation then return end
+
+				animate('dialog-text', 0)
+				animate('dialog-buttons', 0)
+				dialogAnimation = true
+
+				c_lElement = lElement
+
+				local section = lElement.section
+				if type(lElement.section) == 'function' then
+					section = lElement.section()
+				end
+
+				local timerAction = function()
+
+					local lElement = c_lElement
+
+					animate('dialog-text', 1)
+					animate('dialog-buttons', 1)
+
+					if type(lElement.section) == 'function' then
+						local section = lElement.section()
+						loadDialogSection(section)
+					else
+						loadDialogSection(lElement.section)
+					end
+
+					if lElement.action then
+						lElement.action()
+					end
+
+					dialogAnimation = false
+
+				end
+
+				if section then
+					setTimer(timerAction, 200, 1)
+				else
+					loadDialogSection(section)
+
+					if lElement.action then
+						lElement.action()
+					end
+
+					dialogAnimation = false
+				end
+
+			end,
+
+		},
+
+	}
+
+	_loadGuiModule = loadGuiModule
+	function loadGuiModule()
+		windowModel.dialogs_window = dialogWindowSection
+		_loadGuiModule()
+	end
+
+--------------------------------------------------------------------------------
+
+	function loadDialogSection(section)
+
+		if not section then
+			return closeDialog()
+		end
+
+		local section = currentDialogStructure.dialog[section]
+
+		local text = {}
+		local answers = {}
+
+		local sText = section.text
+		if type(sText) == 'function' then
+			sText = sText()
+		end
+
+		for _, row in pairs(sText) do
+			table.insert(text, {
+				rowText = row,
+			})
+		end
+
+		for _, answer in pairs(section.answers) do
+			if not answer.condition or answer.condition() then
+				table.insert(answers, {
+					action = answer.action,
+					section = answer.section,
+					_text = answer.text,
+				})
+			end
+		end
+
+		textDialogElement.listElements = text
+		answersDialogElement.listElements = answers
+
+		textDialogElement.listOffset = 0
+		answersDialogElement.listOffset = 0
+
+	end
+
+	function openDialog(structure)
+		currentDialogStructure = structure
+
+		currentWindowSection = 'dialogs_window'
+		setWindowOpened(true)
+
+		loadDialogSection('main')
+
+		animate('dialog-text', 1)
+		animate('dialog-buttons', 1)
+
+	end
+
+	function closeDialog()
+
+		animate('dialog-text', 0)
+		animate('dialog-buttons', 0)
+
+		setWindowOpened(false)
+	end
+
+--------------------------------------------------------------------------------

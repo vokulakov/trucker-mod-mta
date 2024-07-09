@@ -1,0 +1,9 @@
+<meta>
+	<oop>true</oop>
+	<download_priority_group>999</download_priority_group>
+	<script type="server" src="Logger.lua"/>
+	<script type="server" src="exports.lua"/>
+	
+	<export type="server" function="log"/>
+	<export type="server" function="debug"/>
+</meta>

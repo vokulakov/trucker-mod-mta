@@ -1,0 +1,18 @@
+<meta>
+    <download_priority_group>-8</download_priority_group>
+    
+    <min_mta_version server="1.5.2-9.07903" client="1.5.2-9.07903" />
+    
+    <script src="client.lua" type="client" cache="false"></script>
+    <script src="server.lua" type="server" cache="false"></script>
+    
+    <file src="files/sounds/bulle.wav" />  
+    <file src="files/images/shadow.png" />
+    <file src="files/fonts/GTWalsheimProBold.ttf" type="client" cache="false"/>
+    <file src="files/fonts/GTWalsheimProLight.ttf" type="client" cache="false"/>
+    <file src="files/fonts/GTWalsheimProMedium.ttf" type="client" cache="false"/>
+    <file src="files/fonts/GTWalsheimProRegular.ttf" type="client" cache="false"/>
+    
+    <export type="client" function="showInfobox" />
+    <export type="server" function="showInfobox" />
+</meta>

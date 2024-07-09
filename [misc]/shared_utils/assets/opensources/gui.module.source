@@ -1,0 +1,2132 @@
+
+setAnimData('dxGui.window-alpha', 0.1)
+
+
+selectedInput = false
+inputFocused = false
+activeList = false
+
+function getListAverageElementHeight(list)
+	local height = 0
+	
+	local dHeight = list.listElementHeight or 35
+
+	for _, element in pairs(list.listElements) do
+		height = height + ( element.height or dHeight )
+	end
+
+	return height / #(list.listElements)
+end
+
+drawFunctions = {
+
+	element = function()
+	end,
+
+	image = function(element)
+
+		local path = element[6]
+
+		if not isElement(path) then
+			createDrawingTexture(path)
+		end
+
+		local drawFunc = dxDrawImage
+		if element.mtaDraw then
+			drawFunc = mta_dxDrawImage
+		end
+
+		local color = element.color or {255,255,255,255}
+		if isElement(element[6]) or fileExists(element[6]) then
+
+			drawFunc(
+				element[2], element[3],
+				element[4],element[5],
+				curDrawingTextures[path] or element[6], element.rot or 0, 0, 0,
+				tocolor(
+					color[1],color[2],color[3],
+					color[4]*windowAlpha
+				)
+			)
+		end
+	end,
+	button = function(element, id)
+
+		local drawFunc1 = dxDrawImage
+		local drawFunc2 = dxDrawText
+		local hoverFunc = isMouseInPosition
+		if element.mtaDraw then
+			drawFunc1 = mta_dxDrawImage
+			drawFunc2 = mta_dxDrawText
+			hoverFunc = mta_isMouseInPosition
+		end
+
+		local animId = string.format('dxGui.button-%s', id)
+		element.animId = element.animId or animId
+
+		local animData = getAnimData(animId)
+
+		if not animData then
+			animData = 0
+			setAnimData(animId, 0.1, 0)
+		end
+
+		animData = getEasingValue(animData, 'InOutQuad')
+
+		local coords = element.coords or {element[2],element[3],element[4],element[5]}
+		local x,y,w,h = unpack(coords)
+
+		if hoverFunc(x,y,w,h) then
+			animate(animId, 1)
+		else
+			animate(animId, 0)
+		end
+
+		local eColor = element.color or {255,255,255,255}
+
+		local colorHover = element.activeColor
+
+
+		local color = {unpack(eColor)}
+
+		if not colorHover then
+			colorHover = {
+				color[1], color[2], color[3], color[4]
+			}
+			color[1] = color[1] * 0.8
+			color[2] = color[2] * 0.8
+			color[3] = color[3] * 0.8
+		end
+
+		colorHover[4] = eColor[4]
+
+
+
+
+		if element.bg then
+
+			local hr,hg,hb = interpolateBetween(
+				color[1], color[2], color[3],
+				colorHover[1], colorHover[2], colorHover[3],
+				animData, 'Linear'
+			)
+
+			drawFunc1(
+				element[2],element[3],element[4],element[5],
+				element.bg, element.rot or 0, 0, 0,
+				tocolor(
+					hr,hg,hb,
+					color[4]*windowAlpha
+				)
+			)
+			if element.activeBg then
+				drawFunc1(
+					element[2],element[3],element[4],element[5],
+					element.activeBg, element.rot or 0, 0, 0,
+					tocolor(
+						colorHover[1],colorHover[2],colorHover[3],
+						colorHover[4]*animData*windowAlpha
+					)
+				)
+			end
+		end
+
+		if element.activeFg then
+			local r,g,b = unpack( element.activeFgColor or {255,255,255} )
+			drawFunc1(
+				element[2],element[3],element[4],element[5],
+				element.activeFg, element.rot or 0, 0, 0,
+				tocolor(
+					r,g,b,
+					animData*eColor[4]*windowAlpha
+				)
+			)
+		end
+
+		local textColor = element.textColor or {255,255,255}
+		local activeTextColor = element.activeTextColor or textColor
+
+		local tr,tg,tb = interpolateBetween(
+			textColor[1], textColor[2], textColor[3],
+			activeTextColor[1], activeTextColor[2], activeTextColor[3],
+			animData, 'Linear'
+		)
+
+		drawFunc2(element[6],
+			element[2],element[3],
+			element[4] + element[2],
+			element[5] + element[3],
+			tocolor(tr,tg,tb,255*windowAlpha* (color[4]/255) ),
+			element.scaleX or (element.scale or 0.9),
+			element.scaleY or (element.scale or 0.9),
+			element.font or 'default',
+			element.alignX or 'center', 'center',
+			false, false, false, true
+		)
+	end,
+	clickbox = function(element, id)
+
+		local drawFunc1 = dxDrawImage
+		local drawFunc2 = dxDrawText
+		local hoverFunc = isMouseInPosition
+		if element.mtaDraw then
+			drawFunc1 = mta_dxDrawImage
+			drawFunc2 = mta_dxDrawText
+			hoverFunc = mta_isMouseInPosition
+		end
+
+		local animId = string.format('dxGui.button-%s', id)
+		element.animId = element.animId or animId
+
+		local animData = getAnimData(animId)
+
+		if not animData then
+			animData = 0
+			setAnimData(animId, 0.1, 0)
+		end
+
+		animData = getEasingValue(animData, 'InOutQuad')
+
+		if hoverFunc(element[2],element[3],element[4],element[5]) then
+			animate(animId, 1)
+		else
+			animate(animId, 0)
+		end
+
+		local eColor = element.color or {255,255,255,255}
+
+		local colorHover = element.activeColor
+
+
+		local color = {unpack(eColor)}
+
+		if not colorHover then
+			colorHover = {
+				color[1], color[2], color[3], color[4]
+			}
+			color[1] = color[1] * 0.8
+			color[2] = color[2] * 0.8
+			color[3] = color[3] * 0.8
+		end
+
+		colorHover[4] = eColor[4]
+
+
+
+
+		if element.bg then
+
+			local hr,hg,hb = interpolateBetween(
+				color[1], color[2], color[3],
+				colorHover[1], colorHover[2], colorHover[3],
+				animData, 'Linear'
+			)
+
+			drawFunc1(
+				element[2],element[3],element[4],element[5],
+				element.bg, element.rot or 0, 0, 0,
+				tocolor(
+					hr,hg,hb,
+					color[4]*windowAlpha
+				)
+			)
+			if element.activeBg then
+				drawFunc1(
+					element[2],element[3],element[4],element[5],
+					element.activeBg, element.rot or 0, 0, 0,
+					tocolor(
+						colorHover[1],colorHover[2],colorHover[3],
+						colorHover[4]*animData*windowAlpha
+					)
+				)
+			end
+		end
+
+		if element.activeFg then
+			local r,g,b = unpack( element.activeFgColor or {255,255,255} )
+			drawFunc1(
+				element[2],element[3],element[4],element[5],
+				element.activeFg, element.rot or 0, 0, 0,
+				tocolor(
+					r,g,b,
+					animData*eColor[4]*windowAlpha
+				)
+			)
+		end
+
+		local textColor = element.textColor or {255,255,255}
+		local activeTextColor = element.activeTextColor or textColor
+
+		local tr,tg,tb = interpolateBetween(
+			textColor[1], textColor[2], textColor[3],
+			activeTextColor[1], activeTextColor[2], activeTextColor[3],
+			animData, 'Linear'
+		)
+
+		local text = ((element.values or {})[element.selected or 1] or {}).text
+
+		drawFunc2(text,
+			element[2],element[3],
+			element[4] + element[2],
+			element[5] + element[3],
+			tocolor(tr,tg,tb,255*windowAlpha* (color[4]/255) ),
+			element.scaleX or (element.scale or 0.9),
+			element.scaleY or (element.scale or 0.9),
+			element.font or 'default',
+			element.alignX or 'center', 'center',
+			false, false, false, true
+		)
+	end,
+	text = function(element, id)
+		local cText = element[6]
+		if type(cText) == 'function' then
+			cText = cText(element)
+		end
+
+		local drawFunc = dxDrawText
+		if element.mtaDraw then
+			drawFunc = mta_dxDrawText
+		end
+
+		local color = element.color or {255,255,255,255}
+
+		drawFunc(cText,
+			element[2],element[3],
+			element[4],element[5],
+			tocolor(
+				color[1],color[2],color[3],
+				color[4]*windowAlpha
+			),
+			element.scaleX or element.scale,
+			element.scaleY or element.scale,
+			element.font,
+			element.alignX, element.alignY,
+			false, true, false, true
+		)
+	end,
+	rectangle = function(element, id)
+
+		local drawFunc = dxDrawRectangle
+		local drawFunc2 = dxDrawImage
+		local hoverFunc = isMouseInPosition
+		if element.mtaDraw then
+			drawFunc = mta_dxDrawRectangle
+			drawFunc2 = mta_dxDrawImage
+			hoverFunc = mta_isMouseInPosition
+		end
+
+		local color = element.color or {255,255,255,255}
+
+		if element.activeColor then
+
+			local animId = string.format('dxGui.rectangle-%s', id)
+
+			local animData = getAnimData(animId)
+
+			if not animData then
+				animData = 0
+				setAnimData(animId, 0.1, 0)
+			end
+
+			animData = getEasingValue(animData, 'InOutQuad')
+
+			if hoverFunc(element[2],element[3],element[4],element[5]) then
+				animate(animId, 1)
+			else
+				animate(animId, 0)
+			end
+
+			local alpha = color[4] + ( element.activeColor[4] - color[4] ) * animData
+			color = {interpolateBetween(
+				color[1], color[2], color[3],
+				element.activeColor[1], element.activeColor[2], element.activeColor[3],
+				animData, 'InOutQuad')}
+			color[4] = alpha
+
+		end
+
+		drawFunc(
+			element[2],element[3],
+			element[4],element[5],
+			tocolor(
+				color[1],color[2],color[3],
+				color[4]*windowAlpha
+			)
+		)
+
+		if element.attachedImage then
+
+			drawFunc2(
+				element[2],element[3],
+				element[4],element[5],
+				element.attachedImage,
+				0, 0, 0, tocolor(255,255,255,color[4]*windowAlpha)
+			)
+
+		end
+	end,
+	input = function(element, id)
+
+
+		local drawFunc1 = dxDrawRectangle
+		local drawFunc2 = dxDrawImage
+		local drawFunc3 = dxDrawText
+		if element.mtaDraw then
+			drawFunc1 = mta_dxDrawRectangle
+			drawFunc2 = mta_dxDrawImage
+			drawFunc3 = mta_dxDrawText
+		end
+
+		local inputId = id
+		local curText = element.placeholder or ''
+		local textIsPlaceholder = true
+		local hideSymbols = false
+
+		if selectedInput == inputId then
+			element.selectedInput = true
+			curText = element[6]
+			textIsPlaceholder = false
+			hideSymbols = element.hideText
+		else
+			element.selectedInput = false
+			hideSymbols = element.hideText
+			if utf8.len(element[6]) > 0 then
+				curText = element[6]
+				textIsPlaceholder = false
+			end
+
+			if element.handleText then
+				curText = tostring(element.handleText(curText))
+			end
+		end
+
+		if hideSymbols then
+			if utf8.len(element[6]) > 0 then
+				curText = ''
+				for i = 1, utf8.len(element[6]) do
+					curText = curText .. '*'
+				end
+			end
+		end
+
+		local color = element.color or {255,255,255,255}
+
+		local bg = element.bg
+		if selectedInput == inputId then
+			color = element.activeColor or color
+			bg = element.activeBg or element.bg
+		end
+
+		local elementAlpha = color[4]/255
+
+		if bg and (type(bg) ~= 'string' or fileExists(bg)) then
+			drawFunc2(
+				element[2],element[3],element[4],element[5],
+				bg, 0, 0, 0,
+				tocolor(
+					color[1],color[2],color[3],
+					color[4]*windowAlpha
+				)
+			)
+		end
+
+		local maxTextWidth = element[4]*0.8
+		local iconSize = 0
+		if element.icon then
+			local iconSize = element.iconSize or element[5]*0.6
+			local color = element.iconColor or {255,255,255,255}
+			maxTextWidth = maxTextWidth - iconSize - 5
+			drawFunc2(
+				element[2] + element[4] - iconSize - 20,
+				element[3] + element[5]/2 - iconSize/2,
+				iconSize,
+				iconSize,
+				element.icon, 0, 0, 0,
+				tocolor(
+					color[1],color[2],color[3],
+					color[4]*windowAlpha*elementAlpha
+				)
+			)
+		end
+
+		local scaleX, scaleY = 
+			element.scaleX or (element.scale or 0.45),
+			element.scaleY or (element.scale or 0.45)
+
+
+		local color = element.textColor or {255,255,255,255}
+
+		if selectedInput == inputId then
+			color = element.activeTextColor or color
+		end
+
+		if textIsPlaceholder then
+			color = element.placeholderColor or color
+		end
+
+		-- local textScaleMul = 1
+		local hCurText = curText
+		local textWidth = dxGetTextWidth(curText, scaleX, element.font or 'default')
+
+		while (textWidth + 20) > px(maxTextWidth) do
+			hCurText = utf8.sub(hCurText, 2)
+			textWidth = dxGetTextWidth(hCurText,
+				scaleX, element.font or 'default')
+		end
+
+		local alignX = element.alignX or 'left'
+		local x1,y1,x2,y2 = element[2] + 20,element[3],
+			element[4] + element[2] - 20 - iconSize,
+			element[5] + element[3]
+
+		if alignX == 'center' then
+			x1,y1,x2,y2 = element[2],element[3],
+				element[4] + element[2],
+				element[5] + element[3]
+		else
+			x1 = x1 + (element.textPadding or 0)
+		end
+
+		if selectedInput == inputId then
+			if inputBlim then
+				local height = element[5]*0.5
+
+				if alignX == 'left' then
+					local x,y,w,h
+
+					if element.mtaDraw then
+						x,y,w,h =
+							element[2] + 25 + (element.textPadding or 0) + textWidth,
+							element[3] + (element[5] - height)/2,
+							2,
+							height
+					else
+						x,y,w,h =
+							px(element[2] + 25 + (element.textPadding or 0)) + textWidth,
+							px(element[3] + (element[5] - height)/2),
+							px(2),
+							px(height)
+					end
+					mta_dxDrawRectangle(
+						x,y,w,h,
+						tocolor(
+							color[1],color[2],color[3],
+							color[4]*windowAlpha*elementAlpha
+						)
+					)
+				elseif alignX == 'center' then
+					local add = 0
+					if textWidth > 0 then
+						add = 5
+					end
+
+					local x,y,w,h
+
+					if element.mtaDraw then
+						x,y,w,h =
+							element[2] + textWidth/2 + element[4]/2 + add,
+							element[3] + (element[5] - height)/2,
+							2, height
+					else
+						x,y,w,h =
+							px(element[2] + element[4]/2 + add) + textWidth/2,
+							px(element[3] + (element[5] - height)/2),
+							px(2),
+							px(height)
+					end
+					mta_dxDrawRectangle(
+						x,y,w,h,
+						tocolor(
+							color[1],color[2],color[3],
+							color[4]*windowAlpha*elementAlpha
+						)
+					)
+				end
+
+			end
+		end
+
+		drawFunc3(hCurText,
+			x1,y1,x2,y2,
+			tocolor(
+				color[1],color[2],color[3],
+				color[4]*windowAlpha*elementAlpha
+			),
+			scaleX,scaleY,
+			element.font or 'default',
+			alignX, 'center',
+			false, false, false, false
+		)
+	end,
+
+	textarea = function(element, id)
+
+
+		local drawFunc1 = dxDrawRectangle
+		local drawFunc2 = dxDrawImage
+		local drawFunc3 = dxDrawText
+		if element.mtaDraw then
+			drawFunc1 = mta_dxDrawRectangle
+			drawFunc2 = mta_dxDrawImage
+			drawFunc3 = mta_dxDrawText
+		end
+
+		local inputId = id
+		local curText = element.placeholder or ''
+		local textIsPlaceholder = true
+
+		local render_text = utf8.gsub(element.render_text, '\n', '')
+		if render_text ~= element[6] then
+			element.render_text = element[6]
+		end
+
+		if selectedInput == inputId then
+
+			curText = element.render_text
+			
+			textIsPlaceholder = false
+			element.selectedInput = true
+
+		else
+			element.selectedInput = false
+
+			if utf8.len(element.render_text) > 0 then
+				curText = element.render_text
+				textIsPlaceholder = false
+			end
+
+			if element.handleText then
+				curText = tostring(element.handleText(curText))
+			end
+		end
+
+		local color = element.color or {255,255,255,255}
+
+		local bg = element.bg
+		if selectedInput == inputId then
+			color = element.activeColor or color
+			bg = element.activeBg or element.bg
+		end
+
+		local elementAlpha = color[4]/255
+
+		if bg and (type(bg) ~= 'string' or fileExists(bg)) then
+			drawFunc2(
+				element[2],element[3],element[4],element[5],
+				bg, 0, 0, 0,
+				tocolor(
+					color[1],color[2],color[3],
+					color[4]*windowAlpha
+				)
+			)
+		end
+
+		local scaleX, scaleY = 
+			element.scaleX or (element.scale or 1),
+			element.scaleY or (element.scale or 1)
+
+
+		local color = element.textColor or {255,255,255,255}
+
+		if selectedInput == inputId then
+			color = element.activeTextColor or color
+		end
+
+		if textIsPlaceholder then
+			color = element.placeholderColor or color
+		end
+
+		local padding = element.padding or 0
+
+		local x,y = element[2] + padding, element[3] + padding
+
+		if selectedInput == inputId then
+			if inputBlim then
+
+				local height = element.fontHeight
+
+				local text = splitString(element.render_text, '\n')
+				local offset = (#text-1) * height
+
+				local lastRow = text[#text]
+				local width = dxGetTextWidth(lastRow, element.scale, element.font) * sx/real_sx
+
+				local bx,by = x + width + 3, y + offset
+
+				dxDrawRectangle(
+					bx,by, 3, height,
+					tocolor(
+						color[1],color[2],color[3],
+						color[4]*windowAlpha*elementAlpha
+					)
+				)
+
+			end
+		end
+
+		drawFunc3(element.render_text,
+			x,y,x,y,
+			tocolor(
+				color[1],color[2],color[3],
+				color[4]*windowAlpha*elementAlpha
+			),
+			scaleX,scaleY,
+			element.font or 'default',
+			'left', 'top',
+			false, false, false, false
+		)
+	end,
+
+	checkbox = function(element, id)
+
+
+		local drawFunc1 = dxDrawImage
+		local hoverFunc = isMouseInPosition
+		if element.mtaDraw then
+			drawFunc1 = mta_dxDrawImage
+			hoverFunc = mta_isMouseInPosition
+		end
+
+		local animId = string.format('dxGui.checkbox-%s', id)
+		local animData = getAnimData(animId)
+
+		if not animData then
+			animData = 0
+			setAnimData(animId, 0.1, 0)
+		end
+
+		animData = getEasingValue(animData, 'InOutQuad')
+
+		if element.checked then
+			animate(animId, 1)
+		else
+			animate(animId, 0)
+		end
+
+		local color = element.color or {255,255,255,255}
+
+		local fgColor = element.fgColor or color
+		local activeColor = element.activeColor or fgColor
+
+		local r,g,b = interpolateBetween(
+			fgColor[1], fgColor[2], fgColor[3],
+			activeColor[1], activeColor[2], activeColor[3],
+			animData, 'Linear'
+		)
+
+		local elementAlpha = color[4]/255
+		
+		drawFunc1(
+			element[2], element[3],
+			element[4], element[5],
+			element.bg, 0, 0, 0, 
+			tocolor(color[1], color[2], color[3],
+				color[4]*windowAlpha*elementAlpha)
+		)
+
+		local size = element.size or 30
+		local padding = (element[5] - size)/2 + (element.padding or 0)
+
+		local x0, xe = element[2] + padding, element[2] + element[4] - padding - size
+		local x = x0 + (xe - x0)*animData
+
+		drawFunc1(
+			x, element[3] + element[5]/2 - size/2,
+			size, size,
+			element.fg, 0, 0, 0, 
+			tocolor(r,g,b,
+				color[4]*windowAlpha*elementAlpha)
+		)
+
+		local hovered = hoverFunc(element[2], element[3], element[4], element[5])
+
+		if handleClick and hovered then
+			element.checked = not element.checked
+
+			if element.onCheck then
+				element.onCheck(element)
+			end
+
+			handleClick = false
+		end
+
+	end,
+
+	slider = function(element, id)
+
+		local drawFunc1 = dxDrawImage
+		local drawFunc2 = dxDrawImageSection
+		if element.mtaDraw then
+			drawFunc1 = mta_dxDrawImage
+			drawFunc2 = mta_dxDrawImageSection
+		end
+
+		local color = element.color or {255,255,255,255}
+		local activeColor = element.activeColor or color
+
+		local r,g,b,a = unpack(color)
+		local ar,ag,ab = unpack(activeColor)
+
+		local sliderColor = element.sliderColor or activeColor
+		local sr,sg,sb = unpack(sliderColor)
+
+
+		local elementAlpha = color[4]/255
+
+		local min, max = unpack(element.range or {0,1})
+		local percent = math.clamp((element.value-min)/(max-min), 0, 1)
+
+		drawFunc2(
+			element[2], element[3],
+			element[4] * percent, element[5],
+			0, 0,
+			element[4] * percent, element[5],
+			element.bg,
+			0,0,0, tocolor(ar,ag,ab, a*windowAlpha*elementAlpha)
+		)
+
+		drawFunc2(
+			element[2] + element[4] * percent, element[3],
+			element[4] - element[4] * percent, element[5],
+			element[4] * percent, 0,
+			element[4] - element[4] * percent, element[5],
+			element.bg,
+			0,0,0, tocolor(r,g,b, a*windowAlpha*elementAlpha)
+		)
+
+		local size = element.sliderSize or (element[5] + 20)
+		local x = element[2] + element[4]*percent
+
+		if element.slider then
+			drawFunc1(
+				x - size/2, element[3] + element[5]/2 - size/2,
+				size, size,
+				element.slider, 0, 0, 0, 
+				tocolor(sr,sg,sb, a*windowAlpha*elementAlpha)
+			)
+		end
+
+	end,
+
+	list = function(element, id)
+
+
+		local drawFunc1 = dxDrawRectangle
+		local drawFunc2 = dxDrawImage
+		local drawFunc3 = dxDrawText
+		local hoverFunc = isMouseInPosition
+		if element.mtaDraw then
+			drawFunc1 = mta_dxDrawRectangle
+			drawFunc2 = mta_dxDrawImage
+			drawFunc3 = mta_dxDrawText
+			hoverFunc = mta_isMouseInPosition
+		end
+
+		local color = element.color or {255,255,255,255}
+
+		if element.bg then
+
+			local bgColor = element.bgColor or {255,255,255,255}
+
+			drawFunc2(
+				element[2],element[3],
+				element[4],element[5],
+				element.bg, 0,0,0,
+				tocolor(bgColor[1], bgColor[2], bgColor[3], bgColor[4]*windowAlpha*(color[4]/255))
+			)
+
+		end
+
+		local width,height = element[4], element[5]
+		if not element.renderTarget then
+			if not element.mtaDraw then
+				width,height = px(width), px(height)
+			end
+
+			element.renderTarget = dxCreateRenderTarget(width, height, true)
+		end
+
+		local elementHeight = getListAverageElementHeight(element)
+		-- local elementHeight = element.listElementHeight or 35
+		local elements = element.listElements or {}
+
+		element.listOffset = math.max(
+			element.listOffset or 0,
+			-#elements
+		)
+		local offset = element.listOffset or 0
+
+		local activeColor = element.activeColor or color
+
+		local scaleX, scaleY = 
+			element.scaleX or (element.scale or 0.45),
+			element.scaleY or (element.scale or 0.45)
+
+		element.visibleElements = element.visibleElements or math.floor(element[5] / elementHeight)
+		element.visibleElements = math.max(0, element.visibleElements)
+
+		local animId = string.format('dxGui.list-%s', id)
+		element.animId = animId
+		animate(animId, offset)
+
+		local animY = getAnimData(animId)
+		if not tonumber(animY) then
+			animY = 0
+			setAnimData(animId, element.animSpeed or 0.1, 0)
+		end
+
+		local textPadding = element.textPadding or 0
+
+		local elementY = animY*elementHeight
+
+		dxSetRenderTarget(element.renderTarget, true)
+
+			for index, listElement in pairs(elements) do
+
+
+				-- local lOffset = animY + (index - 1)
+
+				-- local elementY = lOffset*elementHeight
+				elementY = math.floor(elementY)
+
+				local dColor = listElement.color or color
+				local aColor = listElement.activeColor or activeColor
+
+				
+				local animId = string.format('dxGui.list-%s-element-%s', id, index)
+				animate(animId, element.selectedItem == index and 1 or 0)
+
+				local animData = getAnimData(animId)
+				if not tonumber(animData) then
+					animData = 0
+					setAnimData(animId, 0.1, 0)
+				end
+
+				local lec = {interpolateBetween(
+					dColor[1], dColor[2], dColor[3],
+					aColor[1], aColor[2], aColor[3],
+					animData, 'InOutQuad'
+				)}
+
+				lec[4] = color[4]
+
+				if elementY > (- (listElement.height or element.listElementHeight) ) and elementY < height then
+
+
+					if element.lastSelectedItem and element.selectedItem then
+
+						local wrongSelectionFlag
+
+						if element.wrongSelection then
+							wrongSelectionFlag = element.wrongSelection(
+								element.lastSelectedItem, elements[element.selectedItem])
+						else
+							wrongSelectionFlag = element.lastSelectedItem ~= elements[element.selectedItem]
+						end
+
+						if wrongSelectionFlag then
+							element.selectedItem = false
+							element.lastSelectedItem = false
+						end
+
+					end
+
+					local lElementHovered = hoverFunc(
+						element[2],
+						element[3] + elementY,
+						element[4],
+						elementHeight
+					)
+					if not element.noHandleHover and lElementHovered then
+
+						local lx,ly = 
+							element[2],
+							element[3]
+
+						for _, handler in pairs( listElement.clickHandlers or {} ) do
+							local hx,hy,hw,hh = unpack(handler.coords or handler.getCoords(
+								element,
+								0, elementY
+							))
+
+							handler.hovered = hoverFunc(
+								lx + hx,
+								ly + hy,
+								hw,
+								hh
+							)
+
+							if handler.hovered then
+								if handleClick then
+									if handler.handle then
+										handler.handle(listElement, index, element, handler)
+										handleClick = false
+									end
+								end
+							end
+
+						end
+
+						if handleClick then
+
+							if not element.noSelection then
+								element.selectedItem = index
+								element.lastSelectedItem = listElement
+								handleClick = false
+							end
+
+							if element.onListElementClick then
+								element.onListElementClick(element, listElement, index)
+								handleClick = false
+							end
+
+						end
+
+					else
+						for _, handler in pairs( listElement.clickHandlers or {} ) do
+							handler.hovered = false
+						end
+					end
+
+					local text = listElement.text
+					if element.getListElementText then
+						text = element.getListElementText(element, listElement, index)
+					end
+
+					if text then
+						for i = 1,2 do
+							drawFunc3(text or '',
+								0 + textPadding,
+								elementY,
+								width + textPadding, elementY + elementHeight,
+								tocolor(
+									lec[1],lec[2],lec[3],
+									lec[4]*windowAlpha
+								),
+								scaleX, scaleY,
+								element.font or 'default',
+								listElement.alignX or (element.alignX or 'left'), 'center',
+								false, true, false, true
+							)
+						end
+					end
+
+					if element.additionalElementDrawing then
+						element.additionalElementDrawing(
+							listElement, 
+							0,
+							elementY,
+							element[4],
+							elementY,
+							element, animData, index, lElementHovered
+
+						)
+					end
+
+					-- if listElement.elements then
+					-- 	for _index, _element in pairs(listElement.elements) do
+					-- 		local x,y,w,h = unpack(_element.getCoords(
+					-- 			element, 0, lOffset*elementHeight
+					-- 		))
+
+					-- 		_element[2] = x
+					-- 		_element[3] = y
+					-- 		_element[4] = w
+					-- 		_element[5] = h
+
+					-- 		local func = drawFunctions[_element[1]]
+					-- 		if func then
+					-- 			func(_element, string.format('list-%s-_%s', id, _index))
+					-- 		end
+
+					-- 	end
+					-- end
+
+				end
+
+				elementY = elementY + (listElement.height or element.listElementHeight)
+
+
+			end
+
+
+		dxSetRenderTarget()
+
+		dxDrawImage(
+			element[2], element[3],
+			element[4], element[5],
+			element.renderTarget,
+			0, 0, 0, tocolor(255,255,255,windowAlpha*element.color[4])
+		)
+
+		if #elements*elementHeight > height and element.scrollBg then
+
+			local animId = string.format('dxGui.list-scroll-%s', id)
+
+			local scrollHeight = element.scrollHeight or element[5]
+			local scrollY = element.scrollHeight and (
+				element[3] + element[5]/2 - element.scrollHeight/2
+			) or element[3]
+
+			scrollY = scrollY + (element.scrollYOffset or 0)
+
+			local scrollColor = element.scrollColor or {255,255,255,255}
+			local scrollBgColor = element.scrollBgColor or {255,255,255,255}
+
+			local scrollWidth = element.scrollWidth or 5
+			local sHeight = scrollHeight * height / (#elements*elementHeight)
+
+			local y = scrollY + ((scrollHeight) * (-offset)/#elements )
+
+			y = math.min(y, scrollY + scrollHeight - sHeight)
+
+			animate(animId, y)
+
+			local animY = getAnimData(animId)
+			if not tonumber(animY) then
+				animY = scrollY
+				setAnimData(animId, element.animSpeed or 0.1, scrollY)
+			end
+
+			local scrollX = element[2] + element[4] + 8 + (element.scrollXOffset or 0)
+
+			drawFunc2(
+				scrollX,
+				scrollY, scrollWidth, scrollHeight,
+				element.scrollBg, 0, 0, 0,
+				tocolor(
+					scrollBgColor[1],scrollBgColor[2],
+					scrollBgColor[3],scrollBgColor[4]*windowAlpha*(color[4]/255)
+				)
+			)
+
+			drawFunc2(
+				scrollX,
+				animY, scrollWidth, sHeight,
+				element.scrollBg, 0, 0, 0,
+				tocolor(
+					scrollColor[1],scrollColor[2],
+					scrollColor[3],scrollColor[4]*windowAlpha*(color[4]/255)
+				)
+			)
+
+			if handleClick then
+
+
+				local s_x,s_y,s_w,s_h = scrollX, scrollY, scrollWidth, scrollHeight
+
+				if not element.mtaDraw then
+					s_x,s_y,s_w,s_h = px(s_x), px(s_y), px(s_w), px(s_h)
+				end
+
+				if mta_isMouseInPosition(s_x,s_y,s_w,s_h) then
+
+					local x,y = getCursorPosition()
+					x,y = x * real_sx, y * real_sy
+
+					x,y = x-s_x, y-s_y
+
+					local yState = y/s_h
+
+					element.listOffset = -(yState * #elements) + element.visibleElements
+					element.listOffset = math.min(0, element.listOffset)
+
+					handleClick = false
+				end
+			end
+		end
+
+
+	end,
+
+	select = function(element, id)
+
+		local drawFunc1 = dxDrawRectangle
+		local drawFunc2 = dxDrawText
+		local drawFunc3 = dxDrawImage
+		local hoverFunc = isMouseInPosition
+		if element.mtaDraw then
+			drawFunc1 = mta_dxDrawRectangle
+			drawFunc2 = mta_dxDrawText
+			drawFunc3 = mta_dxDrawImage
+			hoverFunc = mta_isMouseInPosition
+		end
+
+		local r,g,b,a = unpack(element.color or {255,255,255,255})
+		local tr,tg,tb,ta = unpack(element.textColor or {0,0,0,255})
+
+		local x,y,w,h = element[2], element[3], element[4], element[5]
+
+		local selectList = element.selectList
+		local animData = getAnimData(element.animData)
+		animData = getEasingValue(animData, 'InOutQuad')
+
+		if element.bg then
+			drawFunc3(
+				x,y,w,h,
+				element.bg,
+				0, 0, 0,
+				tocolor(r,g,b,a*windowAlpha)
+			)			
+		else
+			drawFunc1(
+				x,y,w,h,
+				tocolor(r,g,b,a*windowAlpha)
+			)
+		end
+
+		if element.icon then
+			local size = element.iconSize or element[5]*0.8
+			local offset = (element[5] - size)/2
+
+			local ir,ig,ib,ia = unpack( element.iconColor or {255,255,255} )
+			ia = a
+
+			drawFunc3(
+				element[2] + element[4] - size - offset, element[3] + offset,
+				size, size,
+				element.icon,
+				animData*180,
+				0, 0, tocolor(ir,ig,ib,ia*windowAlpha)
+			)
+
+		end
+
+		drawFunc1(
+			selectList[2], selectList[3],
+			selectList[4], selectList[5],
+			tocolor(r,g,b,a*animData*windowAlpha)
+		)	
+
+		if element.selectedItem then
+
+			local textPadding = (element.alignX or 'left') == 'center' and 0 or 20
+
+			drawFunc2(element[6] or element.selectedItem.text,
+				x + textPadding, y,
+				x + w + textPadding,
+				y + h,
+				tocolor(tr,tg,tb,ta*windowAlpha),
+				element.scale or 1, element.scale or 1,
+				element.font or 'default',
+				element.alignX, 'center'
+			)
+		end
+
+		if hoverFunc(x,y,w,h) then
+
+			if handleClick then
+
+				if activeSelect == element then
+					animate(activeSelect.animData, 0)
+					activeSelect = false
+				else
+					activeSelect = element
+					animate(element.animData, 1)
+				end
+
+			end
+
+		end
+
+
+	end,
+}
+
+handleClick = false
+------------------------------------------------------------
+
+	whiteTexture = exports['shared_utils']:getWhiteTexture(  )
+	closeTexture = exports['shared_utils']:getCloseTexture(  )
+	scrollTexture = exports['shared_utils']:getScrollTexture(  )
+
+	-- addEventHandler('onClientResourceStart', resourceRoot, function(resource)
+	-- 	whiteTexture = exports['shared_utils']:getWhiteTexture()
+	-- 	closeTexture = exports['shared_utils']:getCloseTexture()
+	-- 	scrollTexture = exports['shared_utils']:getScrollTexture()
+	-- end)
+
+------------------------------------------------------------
+
+windowModel = {}
+
+function initializeSelect(element, elementId, section)
+
+	element.animData = string.format('dxGui.select-%s-%s', section, elementId)
+	setAnimData(element.animData, element.animSpeed or 1)
+
+	local elementHeight = math.min(
+		element.selectHeight or element[5]*4,
+		(element.selectHeight or element[5]) * #element.selectElements
+	)
+
+	if element.selectList then
+		element.selectList.listElements = element.selectElements or {}
+	else
+		local window = windowModel[section]
+		window[#window + 1] = {
+			'list',
+			element[2], element[3] + element[5],
+			element[4],
+			elementHeight,
+			scrollBg = element.scrollBg or scrollTexture,
+			scrollBgColor = element.scrollBgColor or {0,0,0,255},
+			scrollColor = element.scrollColor or {60,60,60,255},
+			color = table.copy(element.textColor or {255,255,255,255}),
+
+			__data = {
+				id = #window + 1,
+				__alpha0 = (element.color or {255,255,255,255})[4] or 255,
+			},
+
+
+			scollWidth = 5,
+			scrollXOffset = -13,
+			scrollHeight = elementHeight*0.8,
+
+			animationAlpha = element.animData,
+
+			parent = element,
+
+			listElements = element.selectElements or {},
+			listElementHeight = element.listElementHeight or element[5],
+
+			font = element.font,
+			scale = element.scale,
+
+			alignX = element.alignX or 'left',
+			textPadding = (element.alignX or 'left') == 'center' and 0 or 20,
+
+			additionalElementDrawing = element.additionalElementDrawing,
+
+			onListElementClick = function(element, lElement, index)
+
+				local _, target = getAnimData(element.animationAlpha)
+				if target == 0 then
+					element.lastSelectedItem = false
+					element.selectedItem = false
+					return
+				end
+
+				if element.parent.onSelect then
+					element.parent.selectedItem = lElement
+					element.parent.onSelect(element.parent, lElement)
+				end
+
+				activeSelect = nil
+				animate(element.animationAlpha, 0)
+			end,
+		}
+
+		element.selectList = window[#window]
+		element.selectedItem = element.selectElements[1]
+	end
+
+end
+
+function initializeSlider(element, elementId, section)
+
+	if not element.cancelSlide then
+		element.onDragDrop = function(element, x,y)
+
+			local hx,hy = x,y
+			if element.mtaDraw then
+				hx,hy = px(x), px(y)
+			end
+
+			local progress = hx/element[4]
+
+			local min,max = unpack(element.range or {0,1})
+			local value = min + (max - min)*progress
+
+			element.value = value
+
+			if element.onSlide then
+				element.onSlide(element, value, progress)
+			end
+
+		end
+
+		element.onClick = function(element, pos)
+
+			local hx,hy
+
+			-- if element.mtaDraw then
+				hx,hy = pos[1], pos[2]
+			-- else
+			-- 	hx,hy = pos[1] * sx/real_sx, pos[2] * sx/real_sx
+			-- end
+
+			local progress = hx/element[4]
+
+			local min,max = unpack(element.range or {0,1})
+			local value = min + (max - min)*progress
+
+			element.value = value
+
+			if element.onSlide then
+				element.onSlide(element, value, progress)
+			end
+
+
+		end
+	end
+
+end
+
+function initializeTextarea(element)
+
+	element.fontHeight = dxGetFontHeight(element.scale, element.font) * sx/real_sx
+
+	element.maxRowWidth = element[4] - (element.padding or 0)*2
+
+	element.render_text = ''
+	element._ontextareainput = function(element, text)
+
+		if not text then
+
+			element.render_text = utf8.sub(element.render_text, 0, -2)
+
+			local lastSymbol = utf8.sub(element.render_text, -1)
+			if lastSymbol == '\n' then
+				element.render_text = utf8.sub(element.render_text, 0, -2)
+			end
+
+		else
+
+			for _, symbol in pairs( string.split(text, '') ) do
+
+				local splitted = splitString(element.render_text, '\n')
+
+				local curRow = splitted[#splitted]
+				local str = curRow .. symbol
+
+				local width = dxGetTextWidth(str, element.scale, element.font) * sx/real_sx
+
+				if math.abs(width - element.maxRowWidth) < 10 then
+					element.render_text = element.render_text .. '\n' .. symbol
+				else
+					element.render_text = element.render_text .. symbol
+				end 
+
+			end
+
+		end
+
+	end
+
+end
+
+local guiModuleLoaded = false
+function loadGuiModule()
+
+	for sectionName, section in pairs(windowModel) do
+		for elementId, element in pairs(section) do
+			element.__data = {
+				id = elementId,
+				__alpha0 = (element.color or {255,255,255,255})[4] or 255,
+			}
+
+			if element.onInit then
+				element.onInit(element)
+			end
+
+			if not guiModuleLoaded then
+				if element[1] == 'select' then
+					initializeSelect(element, elementId, sectionName)
+				end
+
+				if element[1] == 'slider' then
+					initializeSlider(element, elementId, sectionName)
+				end
+
+				if element[1] == 'textarea' then
+					initializeTextarea(element, elementId, sectionName)
+				end
+			end
+
+
+			if element[1] == 'clickbox' then
+				element.values = element.values or {}
+				element.selected = 1
+				element[6] = (element.values[element.selected] or {}).text or ''
+			end
+
+			if element.onPostInit then
+				element.onPostInit(element)
+			end
+		end
+	end
+
+	guiModuleLoaded = true
+
+
+end
+
+setTimer(function()
+	inputBlim = not inputBlim
+end, 300, 0)
+
+function getElementDrawAlpha(element)
+	return element.color[4]*windowAlpha/(element.__data.__alpha0 or 255)
+end
+
+function clearAllInputs()
+	for _, section in pairs(windowModel) do
+		for index, element in pairs(section) do
+			if (element[1] == 'input') or (element[1] == 'textarea') then element[6] = '' end
+		end
+	end
+end
+
+function findElementById(id)
+	for index, element in pairs(windowModel[currentWindowSection]) do
+		if id == element.id then
+			return element
+		end
+	end
+end
+
+function animate_timed(animData, time, to_1, to_2)
+	if isTimer(animate_timed_timer) then killTimer(animate_timed_timer) end
+	animate(animData, to_1)
+	animate_timed_timer = setTimer(function(animData, to)
+		animate(animData, to)
+	end, time, 1, animData, to_2)
+end
+
+function deleteElementById(id)
+	for index, element in pairs(windowModel[currentWindowSection]) do
+		if id == element.id then
+			windowModel[index] = nil
+		end
+	end
+end
+
+function focusInput(element)
+	if selectedInput then
+		windowModel[currentWindowSection][selectedInput].selectedInput = false
+	end
+	element.selectedInput = true
+
+	local id = element.__data.id
+	selectedInput = id
+
+end
+
+windowOpened = false
+
+
+function toggleWindowOpened()
+	
+	windowOpened = not windowOpened
+
+	if windowOpened then
+
+		showCursor(true)
+
+		if not windowRender then
+			addEventHandler('onClientRender', root, drawWindow, true, windowPriority or 'low-2')
+			windowRender = true
+		end
+		addEventHandler('onClientClick', root, onClick) 
+		addEventHandler('onClientCursorMove', root, onCursorMove)
+		addEventHandler('onClientCharacter', root, onCharacter)
+		addEventHandler('onClientKey', root, onKey)
+		addEventHandler('onClientPaste', root, onPaste)
+
+		if openHandler then
+			openHandler(handleResourceStop)
+		end
+
+		addCurrentWindow()
+
+		animate('dxGui.window-alpha', 1)
+
+	else
+
+		showCursor(false)
+		dragDropFlag = false
+
+		if closeHandler then
+			closeHandler(handleResourceStop)
+		end
+
+		removeCurrentWindow()
+
+		animate('dxGui.window-alpha', 0)
+
+		removeEventHandler('onClientClick', root, onClick) 
+		removeEventHandler('onClientCursorMove', root, onCursorMove)
+		removeEventHandler('onClientCharacter', root, onCharacter)
+		removeEventHandler('onClientKey', root, onKey)
+		removeEventHandler('onClientPaste', root, onPaste)
+
+	end
+
+	selectedInput = false
+	guiSetInputMode("allow_binds")
+
+end
+
+function setWindowOpened(state)
+	if state then
+		if not windowOpened then
+			toggleWindowOpened()
+		end
+	else
+		if windowOpened then
+			toggleWindowOpened()
+		end
+	end
+end
+
+addEventHandler('onClientResourceStop', resourceRoot, function()
+	if windowOpened then
+		handleResourceStop = true
+		setWindowOpened(false)
+		destroyAllDrawingTextures()
+		removeCurrentWindow()
+	end
+end)
+
+function drawWindow()
+
+
+	if not currentWindowSection then return end
+	if not windowModel[currentWindowSection] then return end
+
+	local wAnim, wTarget = getAnimData('dxGui.window-alpha')
+
+	windowAlpha = getEasingValue(wAnim, 'InOutQuad')
+	if windowAlpha < 0.1 and wTarget == 0 then
+		destroyAllDrawingTextures()
+		
+		if windowRender then
+			removeEventHandler('onClientRender', root, drawWindow, true, 'low-2')
+			windowRender = false
+		end
+
+		return 
+	end
+
+	if not hideBackground then
+		mta_dxDrawRectangle(
+			0, 0, real_sx, real_sy,
+			tocolor(0, 0, 0, 220*windowAlpha)
+		)
+	end
+
+	local windowColor = tocolor(255,255,255,255*windowAlpha)
+
+	if windowPreRender then
+		windowPreRender()
+	end
+
+	if not dragDropFlag then
+		activeDDElement = false
+	end
+
+	activeList = false
+	activeScrollElement = false
+
+	local noDraw, hovered,
+		x1,y1,x2,y2
+
+	local nearestBlockHover
+
+	hasHoveredElement = false
+	local _lastHoveredElement
+
+	local postRender = {}
+	local renderTooltip = {}
+
+	for k,v in pairs(windowModel[currentWindowSection]) do
+		if drawFunctions[v[1]] then
+
+			noDraw = v.noDraw
+			if type(noDraw) == 'function' then
+				noDraw = noDraw(v)
+			end
+
+			if v[1] == 'text' then
+				x1,y1,x2,y2 = v[2],v[3],v[4]-v[2],v[5]-v[3]
+			else
+				x1,y1,x2,y2 = v[2],v[3],v[4],v[5]
+			end
+
+			if not noDraw then
+
+
+				local animAlpha = 1
+				if v.animationAlpha then
+					local animAlpha = getEasingValue(
+						getAnimData(v.animationAlpha),
+						'InOutQuad'
+					)
+					if not v.startcolor then
+						if v.color then
+							v.startcolor = v.color[4]
+						else
+							v.startcolor = 255
+						end
+					end
+
+					v.color = v.color or {255,255,255,255}
+					v.color[4] = v.startcolor * animAlpha
+				end
+
+				if animAlpha > 0.05 and ( (v.color or ({[4]=255}))[4] > 1 or v.drawAnyway) then
+
+					if v.onPreRender then
+						v.onPreRender(v, animAlpha)
+					end
+
+					if v.onPostRender then
+						if v.postRenderPriority then
+							table.insert(postRender, { v, animAlpha, k })
+						else
+							table.insert(postRender, 1, { v, animAlpha, k })
+						end
+					end
+
+
+
+					drawFunctions[v[1]](v, k)
+
+					if v.mtaDraw then
+						hovered = mta_isMouseInPosition(x1,y1,x2,y2)
+					else
+						hovered = isMouseInPosition(x1,y1,x2,y2)
+					end
+
+					if hovered then
+						_lastHoveredElement = v
+					end
+
+					if hovered and not v.noHandleHover then
+						hasHoveredElement = hovered
+					end
+
+					if hovered and v.onDragDrop and not activeDDElement then
+						activeDDElement = v
+					end
+
+					if v[1] == 'list' and hovered then
+						activeList = k
+					end
+
+					if v.onScroll and hovered then
+						activeScrollElement = v
+					end 
+
+					if v.onRender then
+						v.onRender(v, animAlpha)
+					end
+
+					local currentSelectHover
+					if activeSelect then
+
+						local sx1,sy1,sx2,sy2 = 
+							activeSelect.selectList[2],
+							activeSelect.selectList[3],
+							activeSelect.selectList[4],
+							activeSelect.selectList[5]
+
+						if activeSelect.mtaDraw then
+							currentSelectHover = mta_isMouseInPosition(sx1,sy1,sx2,sy2)
+						else
+							currentSelectHover = isMouseInPosition(sx1,sy1,sx2,sy2)
+						end
+
+					end
+
+					if handleClick and not currentSelectHover then
+
+						inputFocused = false
+						if v.onClick then
+
+							-- if hovered then
+							-- 	handleClick = false
+
+							-- 	local result = v.onClick(v, unpack(v.onClickArgs or {}))
+
+							-- 	if type(result) == 'table' and result.focusedInput then
+							-- 		inputFocused = true
+							-- 	end
+
+							-- end
+
+							if hovered then
+								handleClick = false
+
+								local args = { unpack(v.onClickArgs or {}) }
+								table.insert(args, v)
+
+								local posX, posY = getCursorPosition()
+
+								posX = posX * (v.mtaDraw and real_sx or sx) - x1
+								posY = posY * (v.mtaDraw and real_sy or sy) - y1
+
+								table.insert(args, {posX, posY})
+								table.insert(args, currentButtonHandle)
+								local result = v.onClick( unpack(args) )
+
+								if type(result) == 'table' and result.focusedInput then
+									inputFocused = true
+								end
+
+							end
+
+						elseif (v[1] == 'input' or v[1] == 'textarea') and not v.noEdit then
+
+							local noFocus = v.noFocus
+							if type(noFocus) == 'function' then
+								noFocus = noFocus()
+							end
+							if hovered and not noFocus then
+								handleClick = false
+								selectedInput = k
+								inputFocused = true
+
+								if v.onFocus then
+									v.onFocus(v)
+								end
+
+								guiSetInputMode("no_binds")
+							end
+
+						elseif v[1] == 'checkbox' then
+
+							if hovered then
+								v.checked = not v.checked
+
+								if v.onCheck then
+									v.onCheck(v, v.checked)
+								end
+							end 
+
+						elseif v[1] == 'clickbox' then
+
+							if hovered then
+
+								v.selected = (v.selected or 1) + 1
+								if v.selected > #(v.values or {}) then
+									v.selected = 1
+								end
+
+								v.onChange(v, v.values[v.selected], v.selected)
+							end
+
+						end
+						if not inputFocused then
+
+							if selectedInput then
+								local fInput = windowModel[currentWindowSection][selectedInput]
+								if fInput.onBlur then
+									fInput.onBlur(fInput)
+								end
+							end
+
+							selectedInput = false
+						end
+					end
+
+				end
+			end
+		end
+	end
+
+	if _lastHoveredElement and lastHoveredElement ~= _lastHoveredElement
+	and _lastHoveredElement.onClick then
+		exports['common_sounds']:playSound('hover')
+	end
+
+	if _lastHoveredElement and _lastHoveredElement.renderTooltip then
+		if _lastHoveredElement.renderTooltip then
+			local cx,cy = getCursorPosition()
+			_lastHoveredElement.renderTooltip(_lastHoveredElement, cx*sx, cy*sy)
+		end
+	end
+
+	lastHoveredElement = _lastHoveredElement
+
+	for _, data in pairs(postRender) do
+		data[1].onPostRender(unpack(data))
+	end
+
+	handleClick = false
+end
+
+
+dragDropFlag = false
+function onClick(button,state)
+	if not windowOpened then return end
+	if not isCurrentWindow() then return end
+
+	if state == 'up' then
+		dragDropFlag = false
+		return
+	end
+	dragDropFlag = true
+
+	guiSetInputMode("allow_binds")
+
+
+	if activeSelect then
+
+		local hoverFunc = activeSelect.mtaDraw and mta_isMouseInPosition or isMouseInPosition
+		local x,y,w,h = activeSelect[2], activeSelect[3],
+			activeSelect[4], activeSelect[5] + activeSelect.selectList[5]
+
+		if not hoverFunc(x,y,w,h) then
+			animate(activeSelect.animData, 0)
+			activeSelect = nil
+		else
+			drawFunctions.list(activeSelect.selectList, activeSelect.__data.id)
+		end
+
+	end
+
+	currentButtonHandle = button
+
+	exports['common_sounds']:playSound('click')
+	handleClick = true
+
+
+end
+
+local prevMouseX, prevMouseY
+local slidePowerCoef = 1.5
+function onCursorMove(x,y)
+	x,y = x * sx, y * sy
+
+	if dragDropFlag then
+
+		if activeDDElement then
+			local posX, posY = getCursorPosition()
+
+			local sw,sh
+
+			if activeDDElement.mtaDraw then
+				sw,sh = real_sx, real_sy
+			else
+				sw,sh = sx,sy
+			end
+
+
+			if not posX then return end
+
+			posX = posX * sw - activeDDElement[2]
+			posY = posY * sh - activeDDElement[3]
+
+			posX = math.max( math.min( posX, activeDDElement[4] ), 0 )
+			posY = math.max( math.min( posY, activeDDElement[5] ), 0 )
+
+			activeDDElement.onDragDrop(activeDDElement, posX, posY)
+		end
+
+	end
+end
+
+function deleteCurInputSymbol()
+	if not selectedInput then return end
+	if not currentWindowSection then return end
+	local element = windowModel[currentWindowSection][selectedInput]
+	if element then
+		local prev = element[6]
+		element[6] = utf8.sub(element[6], 0, utf8.len(element[6]) - 1)
+
+		if element._ontextareainput then
+			element._ontextareainput(element)
+		end
+
+		if element.onInput then
+			element.onInput(element, false, prev)
+		end
+
+	end
+end
+
+local pressed = {}
+
+setTimer(function()
+	if not windowOpened then return end
+	if pressed['backspace'] and pressed['backspace'][1] then
+		if (getTickCount() - pressed['backspace'][2]) > 400 then
+			deleteCurInputSymbol()
+		end
+	end
+end, 50, 0)
+
+function scrollList(element, offset)
+	activeList = element.__data.id
+	scrollActiveList(offset)
+	activeList = false
+end
+
+function scrollActiveList(eOffset)
+
+
+	local element = windowModel[currentWindowSection][activeList]
+
+	if element then
+		local _offset = (element.listOffset or 0) + eOffset * (element.scrollStep or 1) 
+		element.listOffset = math.clamp(_offset,
+			-#element.listElements + element[5]/( getListAverageElementHeight(element) ),
+			0)
+	end
+
+end
+
+function onCharacter(hKey)
+	if not windowOpened then return end
+
+	if not selectedInput then return end
+
+	local element = windowModel[currentWindowSection][selectedInput]
+
+	if element.numbersOnly then
+		if not tonumber(hKey) then return end
+	end
+
+	if element.possibleSymbols then
+		if not utf8.find( element.possibleSymbols, utf8.lower(hKey) ) then
+			return
+		end
+	end
+
+	if pressed['lshift'] and pressed['lshift'][1] then
+		hKey = utf8.upper(hKey)
+	end
+
+	local max = element.maxSymbols or 30
+
+	if not element.maxSymbols and element[1] == 'textarea' then
+		max = 999999
+	end
+
+	if utf8.len(element[6]) < max then
+		local prev = element[6]
+		element[6] = element[6]..hKey
+
+		if element.onInput then
+			element.onInput(element, hKey, prev)
+		end
+
+		if element._ontextareainput then
+			element._ontextareainput(element, hKey)
+		end
+
+	end
+end
+
+function onPaste(data)
+	if not windowOpened then return end
+
+	if not selectedInput then return end
+
+	local element = windowModel[currentWindowSection][selectedInput]
+
+	if element.numbersOnly then
+
+		for _, symbol in pairs( string.split(data) ) do
+			if not tonumber(symbol) then return end
+		end
+
+	end
+
+	if element.possibleSymbols then
+		for _, symbol in pairs( string.split(data) ) do
+			if not utf8.find( element.possibleSymbols, utf8.lower(symbol) ) then
+				return
+			end
+		end
+	end
+
+	local max = element.maxSymbols or 30
+
+	if not element.maxSymbols and element[1] == 'textarea' then
+		max = 999999
+	end
+
+	if (utf8.len(element[6]) + utf8.len(data)) < max then
+		local prev = element[6]
+		element[6] = element[6]..data
+
+		if element.onInput then
+			element.onInput(element, data, prev)
+		end
+
+		if element._ontextareainput then
+			element._ontextareainput(element, data)
+		end
+
+	end
+
+end
+
+function onKey(key, state)
+	if not windowOpened then return end
+
+	if key == 'mouse_wheel_down' then
+		if cancelScroll then return end
+		if activeList then
+			return scrollActiveList(-1)
+		elseif activeScrollElement then
+			activeScrollElement.onScroll(activeScrollElement, 'down')
+		end
+
+		cancelEvent()
+	elseif key == 'mouse_wheel_up' then
+		if cancelScroll then return end
+		if activeList then
+			return scrollActiveList(1)
+		elseif activeScrollElement then
+			activeScrollElement.onScroll(activeScrollElement, 'up')
+		end
+
+		cancelEvent()
+	end
+
+	if cancelButtons and cancelButtons[key:lower()] then
+		cancelEvent()
+	end
+
+	pressed[key] = {state, getTickCount(  )}
+	if not state then return end
+
+	if key == 'backspace' then
+		deleteCurInputSymbol()
+	end
+
+end
+
+function isCurrentWindow()
+	local windows_assoc = localPlayer:getData('__gui.windows') or {}
+
+	local windows = {}
+
+	for window, timestamp in pairs( windows_assoc ) do
+		table.insert( windows, { window = window, timestamp = timestamp } )
+	end
+
+	table.sort(windows, function(a,b)
+		return (tonumber(a.timestamp) or 0) > (tonumber(b.timestamp) or 0)
+	end)
+
+	return windows[1].window == getThisResource().name
+
+end
+
+function addCurrentWindow()
+	local windows = localPlayer:getData('__gui.windows') or {}
+	windows[ getThisResource().name ] = getTickCount()
+	localPlayer:setData('__gui.windows', windows, false)
+end
+
+function removeCurrentWindow()
+	local windows = localPlayer:getData('__gui.windows') or {}
+	windows[ getThisResource().name ] = nil
+	localPlayer:setData('__gui.windows', windows, false)
+end

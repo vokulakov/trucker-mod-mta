@@ -1,0 +1,49 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>999</download_priority_group>
+
+    <script type="shared" src="shared/models.lua" cache="false" />
+
+    <script type="server" src="server/pprint.lua" />
+    <script type="server" src="server/encrypt.lua" />
+    <script type="client" src="client/paths.lua" cache="false" />
+    <script type="client" src="client/loader.lua" cache="false" />
+    <script type="client" src="client/main.lua" cache="false" />
+
+    <export type="shared" function="getReplacedModel" />
+
+	<file src="data/2f8f70.tmta" />
+	<file src="data/3a11ab.tmta" />
+	<file src="data/5eb395.tmta" />
+	<file src="data/08c60c.tmta" />
+	<file src="data/9af700.tmta" />
+	<file src="data/9e10d0.tmta" />
+	<file src="data/14f209.tmta" />
+	<file src="data/43cbc1.tmta" />
+	<file src="data/43e522.tmta" />
+	<file src="data/59e29c.tmta" />
+	<file src="data/77bfc1.tmta" />
+	<file src="data/355e52.tmta" />
+	<file src="data/441ce7.tmta" />
+	<file src="data/669ba1.tmta" />
+	<file src="data/714f17.tmta" />
+	<file src="data/757b40.tmta" />
+	<file src="data/777dbc.tmta" />
+	<file src="data/1223ad.tmta" />
+	<file src="data/3418ad.tmta" />
+	<file src="data/061723.tmta" />
+	<file src="data/98015a.tmta" />
+	<file src="data/242047.tmta" />
+	<file src="data/297369.tmta" />
+	<file src="data/450049.tmta" />
+	<file src="data/a6fdf2.tmta" />
+	<file src="data/a89042.tmta" />
+	<file src="data/aea443.tmta" />
+	<file src="data/afbe4b.tmta" />
+	<file src="data/bc16ee.tmta" />
+	<file src="data/c6351c.tmta" />
+	<file src="data/cb6cf8.tmta" />
+	<file src="data/d22734.tmta" />
+	<file src="data/dc8d8b.tmta" />
+	<file src="data/f73bdc.tmta" />
+</meta>
