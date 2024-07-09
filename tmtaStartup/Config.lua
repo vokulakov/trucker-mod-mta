@@ -87,6 +87,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaMap',
     'tmtaControlHelp',
     'tmtaRadar',
+    'tmtaNametags',
 
     'tmtaLogin',
 }
