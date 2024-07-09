@@ -1,0 +1,32 @@
+<meta>
+    <oop>true</oop>
+    <file src="assets/images/bg_shadow.png" />
+    <file src="assets/images/bg_speed.png" />
+    <file src="assets/images/bg_racelogic.png" />
+    <file src="assets/images/i_launch.png" />
+    <file src="assets/images/fuel_circle.png" />
+    <file src="assets/images/fuel_mask.png" />
+    <file src="assets/images/nos_circle.png" />
+    <file src="assets/images/nos_mask.png" />
+    <file src="assets/images/th_circle1.png" />
+    <file src="assets/images/th_circle2.png" />
+    <file src="assets/images/th_circle3.png" />
+    <file src="assets/images/th_circle4.png" />
+    <file src="assets/images/th_circle5.png" />
+    <file src="assets/images/th_mask.png" />
+    <file src="assets/images/i_turn_off.png" />
+    <file src="assets/images/i_turn_on.png" />
+
+    <file src="assets/images/i_engine_off.png" />
+    <file src="assets/images/i_engine_on.png" />
+    <file src="assets/images/i_cruise_off.png" />
+    <file src="assets/images/i_cruise_on.png" />
+    <file src="assets/images/i_door_off.png" />
+    <file src="assets/images/i_door_on.png" />
+    <file src="assets/images/i_light_off.png" />
+    <file src="assets/images/i_light_on.png" />
+
+    <script type="client" src="client/include.lua" cache="false" />
+    <script type="client" src="client/Racelogic.lua" cache="false" />
+    <script type="client" src="client/Speed.lua" cache="false" />
+</meta>

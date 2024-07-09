@@ -1,0 +1,28 @@
+<meta>
+    <oop>true</oop>
+	<min_mta_version client="1.5.6-9.16404" server="1.5.5-9.11915.0" />
+	<download_priority_group>-100</download_priority_group>
+	<include resource="tmtaModule" />
+
+    <file src="assets/images/bg_shadow.png" />
+	<file src="assets/images/bg_x2.png" />
+	<file src="assets/images/i_hp.png" />
+	<file src="assets/images/i_armor.png" />
+	<file src="assets/images/i_oxygen.png" />
+	<file src="assets/images/i_hunger.png" />
+
+	<file src="assets/misc/i_green_off.png" />
+	<file src="assets/misc/i_green_on.png" />
+	<file src="assets/misc/i_voice_off.png" />
+	<file src="assets/misc/i_voice_on.png" />
+
+	<script type="client" src="client/include.lua" cache="false" />
+	<script type="client" src="client/Experience.lua" cache="false" />
+	<script type="client" src="client/Money.lua" cache="false" />
+	<script type="client" src="client/Misc.lua" cache="false" />
+	<script type="client" src="client/main.lua" cache="false" />
+
+	<!-- Exports -->
+	<export type="client" function="moneyShow" />
+	<export type="client" function="moneyHide" />
+</meta>

@@ -1,0 +1,6 @@
+<meta>
+	<script src="c_water_ref.lua" type="client" />
+	<file src="water_ref.fx" type="client" />
+	<file src="mta-helper.fx" type="client" />
+	<file src="images/smallnoise3d.dds" type="client" />
+</meta>

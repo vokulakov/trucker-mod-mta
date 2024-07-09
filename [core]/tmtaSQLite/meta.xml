@@ -1,0 +1,20 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>1000</download_priority_group>
+    <include resource="tmtaUtils" />
+
+    <script type="server" src="Database.lua" />
+    <script type="server" src="DatabaseTable.lua" />
+
+    <!-- Exports -->
+    <export type="server" function="dbConnect" />
+    <export type="server" function="dbDisconnect" />
+	<export type="server" function="dbGetConnection" />
+
+    <export type="server" function="dbTableCreate" />
+    <export type="server" function="dbTableSelect" />
+    <export type="server" function="dbTableInsert" />
+    <export type="server" function="dbTableUpdate" />
+    <export type="server" function="dbTableDelete" />
+    <export type="server" function="dbTableAlter" />
+</meta>

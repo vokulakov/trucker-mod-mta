@@ -1,0 +1,15 @@
+<meta>
+	<oop>true</oop>
+	<download_priority_group>999</download_priority_group>
+	<script type="client" src="export.lua"/>
+
+	<file src="shaders/mta-helper.fx" />
+
+	<file src="shaders/mask3d.fx" />
+	<file src="shaders/texreplace.fx" />
+	<file src="shaders/tex_matrix.fx" />
+	<file src="shaders/blur.fx" />
+	<file src="shaders/damage.fx" />
+
+	<export type="client" function="createShader"/>
+</meta>

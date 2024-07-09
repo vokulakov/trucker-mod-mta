@@ -1,0 +1,6 @@
+<meta>
+	<oop>true</oop>
+	<script type="shared" src="shared/Config.lua" />
+	<script type="shared" src="shared/Hospital.lua" />
+	<export type="shared" function="getNearestToPlayer"/>
+</meta>

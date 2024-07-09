@@ -1,0 +1,7 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>99</download_priority_group>
+    <script type="shared" src="Blip.lua" cache="false" />
+    <!-- Exports -->
+    <export type="shared" function="createAttachedTo" />
+</meta>

@@ -1,0 +1,58 @@
+<meta>
+	<oop>true</oop>
+	<min_mta_version client="1.5.6-9.16404" server="1.5.5-9.11915.0" />
+	<download_priority_group>999</download_priority_group>
+
+	<file src="assets/logo/64.png" />
+	<file src="assets/logo/86.png" />
+
+	<file src="assets/ui/icons/i_error.png" />
+	<file src="assets/ui/icons/i_info.png" />
+	<file src="assets/ui/icons/i_money.png" />
+	<file src="assets/ui/icons/i_clock.png" />
+	<file src="assets/ui/icons/i_warning.png" />
+	<file src="assets/ui/icons/i_success.png" />
+
+	<file src="assets/ui/particles/dot.png" />
+	<file src="assets/ui/particles/round_1.png" />
+	<file src="assets/ui/particles/round_2.png" />
+	<file src="assets/ui/particles/round_3.png" />
+	<file src="assets/ui/particles/round_4.png" />
+
+	<!-- Keys -->
+	<file src="assets/ui/keys/mouse_down.png" />
+	<file src="assets/ui/keys/mouse_left.png" />
+	<file src="assets/ui/keys/mouse_right.png" />
+	<file src="assets/ui/keys/mouse_up.png" />
+	<file src="assets/ui/keys/mouse_wheel.png" />
+	<file src="assets/ui/keys/mouse.png" />
+	<file src="assets/ui/keys/b_e.png" />
+	<file src="assets/ui/keys/b_enter.png" />
+	<file src="assets/ui/keys/b_f11.png" />
+	<file src="assets/ui/keys/b_space.png" />
+
+	<!-- Hud -->
+	<file src="assets/hud/radar/localPlayer.png" />
+	<file src="assets/hud/radar/marker.png" />
+	<file src="assets/hud/radar/markerHigher.png" />
+	<file src="assets/hud/radar/markerLower.png" />
+	<file src="assets/hud/radar/gasStation.png" />
+	<file src="assets/hud/radar/property.png" />
+	<file src="assets/hud/radar/clothes.png" />
+	<file src="assets/hud/radar/carshop.png" />
+	<file src="assets/hud/radar/sto.png" />
+	<file src="assets/hud/radar/numberPlate.png" />
+	<file src="assets/hud/radar/paint.png" />
+	<file src="assets/hud/radar/restaurant.png" />
+	<file src="assets/hud/radar/scooterRent.png" />
+	<file src="assets/hud/radar/tuning.png" />
+	<file src="assets/hud/radar/trucker.png" />
+	<file src="assets/hud/radar/checkpoint.png" />
+	
+	<script type="client" cache="false" src="Config.lua" />
+	<script type="client" cache="false" src="Texture.lua" />
+
+	<!-- Exports -->
+	<export type="client" function="createStaticImage" />
+	<export type="client" function="createTexture" />
+</meta>

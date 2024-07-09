@@ -1,0 +1,51 @@
+RealTime = {}
+
+addEvent("tmtaServerTimecycle.onServerTimeUpdate", true) -- обновление серверного времени
+addEvent("tmtaServerTimecycle.onServerHourPassed", true) -- на сервере прошел час
+
+-- Задача: каждый час вызывать событие
+function RealTime.get()
+    local time = getRealTime()
+    if RealTime.currentHour ~= time.hour then
+		RealTime.currentHour = time.hour
+		--outputDebugString('На сервере '..string.format("%2d:%2d:%2d", time.hour, time.minute, time.second))
+        --triggerEvent("tmtaRealTime.onServerHourPassed", root, { time.hour, time.minute, time.second })
+		triggerEvent("tmtaServerTimecycle.onServerHourPassed", root)
+    end
+end
+
+-- Каждые 6 часов с 00:00 проходят новые сутки
+function RealTime.resetTimeOfDay()
+    local CYCLES_PER_DAY = 4
+    local MINUTE_DURATION = 60 * 1000 / CYCLES_PER_DAY
+    local FULL_DAY_MINUTES = 24 * 60
+
+    local REALTIME = getRealTime()
+    local REAL_H, REAL_M = REALTIME.hour, REALTIME.minute
+
+    local passed_minutes = REAL_H * 60 + REAL_M
+    local passed_percent = passed_minutes / ( 24 * 60 )
+
+    local required_percent = passed_percent * CYCLES_PER_DAY
+    local required_minutes_total = ( required_percent - math.floor( required_percent ) ) * FULL_DAY_MINUTES
+
+    local required_hours = math.floor( required_minutes_total / 60 )
+    local required_minutes = math.floor( required_minutes_total - required_hours * 60 )
+
+    setTime( required_hours, required_minutes )
+    setMinuteDuration( MINUTE_DURATION )
+end
+
+function RealTime.onGameTimeRequest()
+    triggerClientEvent(source, "tmtaServerTimecycle.onGameTimeRecieve", source, { getTime() }, getWeather())
+end
+addEvent("tmtaServerTimecycle.onGameTimeRequest", true )
+addEventHandler("tmtaServerTimecycle.onGameTimeRequest", root, RealTime.onGameTimeRequest)
+
+addEventHandler("onResourceStart", resourceRoot, function()
+    RealTime.currentHour = getRealTime().hour
+	--outputDebugString('На сервере '..string.format("%2d:%2d:%2d", getRealTime().hour, getRealTime().minute, getRealTime().second))
+    setTimer(RealTime.get, 1000, 0)
+
+    RealTime.resetTimeOfDay()
+end)

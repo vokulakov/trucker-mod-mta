@@ -1,0 +1,19 @@
+Config = {}
+
+--- Конфигурация сервера
+Config.SERVER = {
+    MAP_NAME = "San-Andreas", -- карта
+	GAME_TYPE = "Trucker RPG 1.0.0", -- игровой режим
+
+	MOD_INFO = "TRUCKER × MTA 1.0.0", -- информация о моде
+	SERVER_COMMUNITY = "vk.com/truckermta", -- паблик сервера
+    SITE = "truckermta.ru", -- сайт сервера
+
+	SERVER_PASSWORD = "4727eXv4727" -- пароль
+}
+
+Config.AUTOSAVE_INTERVAL = 5 -- время автосохранения в минутах
+Config.PRIVATE_SLOTS_COUNT = 3 -- количество приватных слотов
+
+-- Глобальные переменные (параметры)
+resourceName = getResourceName(resource)

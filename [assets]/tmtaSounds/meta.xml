@@ -1,0 +1,30 @@
+<meta>
+	<oop>true</oop>
+	<min_mta_version client="1.5.6-9.16404" server="1.5.5-9.11915.0" />
+	<download_priority_group>999</download_priority_group>
+
+	<!-- UI -->
+	<file src="assets/ui/ui_change.wav" />
+	<file src="assets/ui/ui_select.wav" />
+	<file src="assets/ui/ui_back.wav" />
+	<file src="assets/ui/ui_hover.mp3" />
+	<file src="assets/ui/ui_notice_error.mp3" />
+	<file src="assets/ui/ui_notice_warning.mp3" />
+	<file src="assets/ui/ui_notice_success.mp3" />
+	<file src="assets/ui/ui_notice_info.mp3" />
+
+	<!-- Systems -->
+	<file src="assets/systems/sell.wav" />
+	<file src="assets/systems/reward_small.mp3" />
+
+	<!-- Background music -->
+	<file src="assets/music_bg/game_theme_1.mp3" />
+	<file src="assets/music_bg/game_theme_2.mp3" />
+	<file src="assets/music_bg/game_theme_3.mp3" />
+
+	<script type="client" cache="false" src="Config.lua" />
+	<script type="client" cache="false" src="main.lua" />
+
+	<export type="client" function="playSound" />
+	<export type="client" function="playSound3D" />
+</meta>

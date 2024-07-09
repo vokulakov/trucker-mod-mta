@@ -1,0 +1,21 @@
+<meta>
+	<oop>true</oop>
+	<download_priority_group>999</download_priority_group>
+    <include resource="tmtaSounds" />
+
+    <script type="client" src="client/Params.lua" cache="false" />
+    <script type="client" src="client/Utils.lua" cache="false" />
+    <script type="client" src="client/Sounds.lua" cache="false" />
+    <script type="client" src="client/Notices.lua" cache="false" />
+
+    <export type="client" function="windowCentralize" />
+    <export type="client" function="setEditRequired" />
+    <export type="client" function="setEditPlaceholder" />
+    <export type="client" function="getEditPlaceholder" />
+    <export type="client" function="setEditMasked" />
+
+    <export type="client" function="createNotice" />
+    <export type="client" function="deleteNotice" />
+    <export type="client" function="setNoticeTitle" />
+    <export type="client" function="setNoticeMessage" />
+</meta>

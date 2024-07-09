@@ -1,0 +1,15 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>-999</download_priority_group>
+
+    <include resource="tmtaGUI" />
+    <include resource="tmtaCore" />
+
+    <!-- Assets -->
+    <file src="assets/img/bg.png" />
+
+    <!-- Client -->
+    <script type="client" src="client/Autologin.lua" cache="false" />
+    <script type="client" src="client/GUI.lua" cache="false" />
+    <script type="client" src="client/main.lua" cache="false" />
+</meta>

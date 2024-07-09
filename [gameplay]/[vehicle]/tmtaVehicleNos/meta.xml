@@ -1,0 +1,9 @@
+<meta>
+	<script src="client/client.lua" type="client" cache="false" />
+	<script src="client/effects.lua" type="client" cache="false" />
+
+	<file src="assets/shaders/deletenitro.fx" type="client" cache="false"/>
+	<file src="assets/shaders/deletenitro_2.fx" type="client" cache="false"/>
+	
+	<min_mta_version>1.5.5</min_mta_version>
+</meta>

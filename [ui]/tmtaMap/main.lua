@@ -1,0 +1,327 @@
+Map = {}
+Map.visible = false
+
+local sW, sH = guiGetScreenSize()
+local sDW, sDH = exports.tmtaUI:getScreenSize()
+local Textures = {}
+
+Map.waterColor = tocolor(110, 158, 204)
+
+Map.x = 0
+Map.y = 0
+Map.stateMove = false
+
+Map.scale = 1 -- масштаб (const)
+Map.minScale = 0.045 * 12
+Map.maxScale = 1.7
+Map.scaleSpeed = 0.05 -- скорость изменения масштаба
+Map.zoomSpeed = 0.15 -- скорость зума
+
+Map.sectionVisible = true 
+
+local sectionNames = { 
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+}
+
+-- Move --
+local Pozmx, Pozmy = 0, 0
+local Pozm, Pozym = 0, 0
+
+local function updateMoving()
+    local xX, yX = getMousePos()
+	local Rx = Pozm - (Pozmx/Map.scale)
+	local Ry = Pozym - (Pozmy/Map.scale)
+
+    Map.x, Map.y = ((xX/Map.scale))+Rx, ((yX/Map.scale))+Ry
+
+	if Map.x > 0  then
+        Map.x = 0
+    elseif Map.x < -3000 then
+        Map.x = -3000
+    end
+
+    if Map.y > 0 then
+        Map.y = 0
+    elseif Map.y < -3000 then
+        Map.y = -3000
+    end
+end
+
+function Map.moveTo ( x, y )
+    Map.x = x;
+    Map.y = y;
+end
+
+local function posWorldToMapPos ( x, y )
+    local offsetX = sW / 2;
+    local offsetY = sH / 2;
+    local mapX = offsetX + (x + 3000) / 6000 * 3072;
+    local mapY = offsetY + (-y + 3000) / 6000 * 3072;
+    return mapX, mapY;
+end
+
+function Map.moveToPlayer()
+    x, y = posWorldToMapPos(getElementPosition(localPlayer))
+    x = x - sW / 2
+    y = y - sH / 2
+    Map.x = -x
+    Map.y = -y
+    Map.moveTo(-x, -y)
+end
+
+local function posWorldToMap( x, y )
+    local offsetX = Map.x * Map.scale + sW / 2
+    local offsetY = Map.y * Map.scale + sH / 2
+    local mapX = offsetX + (x + 3000) / 6000 * 3072 * Map.scale
+    local mapY = offsetY + (-y + 3000) / 6000 * 3072 * Map.scale
+    return mapX, mapY
+end
+
+function Map.zoomIn()
+    Map.scale = Map.scale + Map.zoomSpeed
+    if Map.scale > Map.maxScale then
+        Map.scale = Map.maxScale
+    end
+end
+
+function Map.zoomOut()
+    Map.scale = Map.scale - Map.zoomSpeed
+    if Map.scale < Map.minScale then
+        Map.scale = Map.minScale
+    end
+end
+
+addEventHandler('onClientKey', root,
+    function(key)
+        if not Map.visible then
+            return
+        end
+        if key == 'mouse_wheel_down' then
+            Map.zoomOut()
+        elseif key == 'mouse_wheel_up' then
+            Map.zoomIn()
+        end
+    end
+)
+
+local function posMapToWorld(x, y)
+    local offsetX = Map.x * Map.scale + Display.Width / 2
+    local offsetY = Map.y * Map.scale + Display.Height / 2
+    local worldX = (x - offsetX) / (3072 * Map.scale) * 6000 - 3000
+    local worldY = 6000 - (y - offsetY) / (3072 * Map.scale) * 6000 - 3000
+    return worldX, worldY
+end
+
+local function isMouseInPositionBut(x, y, width, height)
+	if not isCursorShowing() then
+		return false
+	end
+    local sx, sy = guiGetScreenSize()
+    local cx, cy = getCursorPosition()
+    local cx, cy = (cx * sx), (cy * sy)
+    if (cx >= x and cx <= x + width) and (cy >= y and cy <= y + height) then
+        return true
+    else
+        return false
+    end
+end
+
+function getMousePos()
+	local mx, my = getCursorPosition()
+	if not mx or not my then
+		mx, my = 0, 0
+	end
+	return mx * sW, my * sH
+end
+
+local str_title = 1;
+
+addEventHandler('onClientClick', root, function(button, state)
+    if not Map.visible then
+        return 
+    end
+
+    if button == 'left' and state == 'down' and not getKeyState ( 'lctrl' ) then
+	    local xZ, yZ = getCursorPosition ( )
+        local xZ = ( xZ * sW )
+        local yZ = ( yZ * sH )
+	    Pozmx, Pozmy = xZ, yZ
+		Pozm, Pozym = Map.x, Map.y
+		Map.stateMove = true
+	    elseif button == 'left' and state == 'up' and not getKeyState ( 'lctrl' ) then
+            Map.stateMove = false
+
+		local s, h = ( sW / 3 ), 100;
+		local x, y, s, h = ( sW / 2 )- ( s / 2 ), sH - h, s, h;
+
+        if isMouseInPositionBut ( ( x + s ) - 55, ( y + h ) - 25, 50, 20 ) then
+            if str_title < 8 then
+            str_title = str_title + 1;
+            else
+            str_title = 1;
+            end
+        end
+
+        if isMouseInPositionBut ( ( x + s ) - 160, ( y + h ) - 25, 50, 20 ) then
+            if str_title > 1 then
+            str_title = str_title - 1;
+            else
+            str_title = 8;
+            end
+        end
+	end
+
+end)
+
+----------
+function Map.draw()
+    if not Map.visible then
+        Map.close()
+        return 
+    end
+
+    if Map.stateMove then
+		updateMoving()
+	end
+    
+    dxDrawRectangle(0, 0, sW,sH, Map.waterColor, false)
+    local offsetX = sW /2
+    local offsetY = sH /2
+
+    dxSetTextureEdge(Textures.world, 'clamp')
+    dxDrawImage(Map.x*Map.scale +offsetX, Map.y*Map.scale +offsetY, 3072 * Map.scale, 3072 * Map.scale, Textures.world, 0, 0, 0)
+
+    -- Blips
+    local px, py, pz = getElementPosition(localPlayer)
+	for _, blip in ipairs(getElementsByType("blip")) do
+        local icon = blip:getData("icon")
+        if icon then
+            local x, y = posWorldToMap(getElementPosition(blip))
+            if x >= 0 and x <= sW and y >= 0 and y <= sH then
+                if Textures[icon] and localPlayer.interior == 0 then
+                    dxDrawImage((x-32/2), (y-32/2), 32, 32, Textures[icon], 0, 0, 0, blip:getData("color"))
+                end
+            end
+        end
+	end
+
+    -- Локальный игрок
+    dxSetTextureEdge(Textures.localPlayer, 'clamp')
+    local x, y = posWorldToMap(getElementPosition(localPlayer))
+    local playerRotation = getPedRotation(localPlayer)
+    dxDrawImage((x-32/2), (y-32/2), 32, 32, Textures.localPlayer, -playerRotation)
+
+    -- Сетка
+    --[[
+    if Map.sectionVisible then
+        local St2 = 0
+        for i = 1, 27 do
+            local stx, sty = Map.x*Map.scale+offsetX, ((Map.y*Map.scale+offsetY))+St2
+            local stx2, sty2 = ((Map.x*Map.scale+offsetX))+St2, (Map.y*Map.scale+offsetY)
+            local space = 3
+            --TODO:: попробовать реализовать пунктирные линии
+            dxDrawRectangle(stx+((space /2) *Map.scale), sty, 3072 *Map.scale, space *Map.scale, tocolor(0, 40, 40, 180), false)
+            dxDrawRectangle(stx2, sty2  + ( ( space / 2 ) * Map.scale ), space *Map.scale, 3072 *Map.scale, tocolor(0, 40, 40, 180), false)
+            St2 = St2 + (3072*Map.scale)/26
+        end
+    end
+
+    -- Секции (линейки)
+    if Map.sectionVisible then
+        local St = 0
+        dxDrawRectangle((Map.x*Map.scale+offsetX), 0, 3072*Map.scale, 30, tocolor(40, 40, 40, 230), false)
+        dxDrawRectangle(0, (Map.y*Map.scale+offsetY), 30, 3072*Map.scale, tocolor(40, 40, 40, 230), false)
+        for i = 1, 26 do
+            local section = sectionNames[i]
+            if section then
+                dxDrawText(tostring(section), ((Map.x*Map.scale+offsetX)+St)+((3072*Map.scale)/26)/2, 15, _, _, tocolor(255,255,255,255), 1, 1, 'default-bold', 'center', 'center', false, false, false, false, false)
+                dxDrawText(tostring(i), 15, ((Map.y*Map.scale+offsetY)+St)+((3072*Map.scale)/26)/2, _, _, tocolor(255,255,255,255), 1, 1, 'default-bold', 'center', 'center', false, false, false, false, false)
+            end
+            St = St + (3072*Map.scale)/26
+        end
+    end
+    ]]
+end
+
+function Map.setVisibleHelpPanel(state)
+	if state then
+		if isElement(Map.keyPane) then
+			return
+		end
+		Map.keyPane = exports.tmtaUI:createKeyPane(sW*((sDW-450) /sDW), sH*((sDH-80) /sDH), {
+			{"keyMouseLeft", "Перемещение"},
+            {"keyMouseWheel", "Масштаб"},
+            {"keySpace", "Легенда"},
+            {"keyF11", "Закрыть"},
+		}, true)
+	else
+		if not isElement(Map.keyPane) then
+			return
+		end
+		destroyElement(Map.keyPane)
+	end
+end 
+
+function Map.open()
+    if not exports.tmtaUI:isPlayerComponentVisible("map") or Camera.interior ~= 0 then
+        return
+    end
+
+    showChat(false)
+    showCursor(true)
+    Map.scale = 1
+    Map.moveToPlayer()
+    fadeCamera(false, 1, 0, 0, 0)
+    addEventHandler("onClientRender", root, Map.draw)
+    exports.tmtaUI:setPlayerComponentVisible("all", false)
+    Map.setVisibleHelpPanel(true)
+    Map.visible = true
+end 
+
+function Map.close()
+    if not Map.visible then
+        return
+    end
+    showChat(true)
+	showCursor(false)
+    Map.setVisibleHelpPanel(false)
+    fadeCamera(true, 1, 0, 0, 0)
+    removeEventHandler("onClientRender", root, Map.draw)
+    exports.tmtaUI:setPlayerComponentVisible("all", true)
+    Map.stateMove = false
+    Map.visible = false
+end
+
+function Map.start()
+    setTimer(toggleControl, 50, 0, "radar", false) -- принудительная блокировка стандартной карты
+
+    Textures.world = dxCreateTexture("assets/world.jpg", "dxt5", true, "clamp") -- карта
+
+    Textures.localPlayer = exports.tmtaTextures:createTexture('localPlayer')
+
+    -- Blips
+    Textures.blipMarker          = exports.tmtaTextures:createTexture('blipMarker')
+    Textures.blipMarkerHigher    = exports.tmtaTextures:createTexture('blipMarkerHigher')
+    Textures.blipMarkerLower     = exports.tmtaTextures:createTexture('blipMarkerLower')
+    Textures.blipProperty        = exports.tmtaTextures:createTexture('blipProperty')
+    Textures.blipGasStation      = exports.tmtaTextures:createTexture('blipGasStation')
+    Textures.blipClothes         = exports.tmtaTextures:createTexture('blipClothes')
+    Textures.blipSto             = exports.tmtaTextures:createTexture('blipSto')
+    Textures.blipCarshop         = exports.tmtaTextures:createTexture('blipCarshop')
+    Textures.blipTuning          = exports.tmtaTextures:createTexture('blipTuning')
+    Textures.blipScooterRent     = exports.tmtaTextures:createTexture('blipScooterRent')
+    Textures.blipRestaurant      = exports.tmtaTextures:createTexture('blipRestaurant')
+    Textures.blipPaint           = exports.tmtaTextures:createTexture('blipPaint')
+    Textures.blipNumberPlate     = exports.tmtaTextures:createTexture('blipNumberPlate')
+    Textures.blipTrucker         = exports.tmtaTextures:createTexture('blipTrucker')
+    Textures.blipCheckpoint      = exports.tmtaTextures:createTexture('blipCheckpoint')
+    
+    bindKey("f11", "down", function()
+        if not isCursorShowing() then
+            return Map.open()
+        end
+        Map.close()
+    end)
+end
+addEventHandler("onClientResourceStart", resourceRoot, Map.start)

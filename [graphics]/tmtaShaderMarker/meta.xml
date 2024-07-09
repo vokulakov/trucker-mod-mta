@@ -1,0 +1,6 @@
+<meta>
+	<oop>true</oop>
+	<script src="client.lua" type="client" cache="false"/>
+	<download_priority_group>-1000</download_priority_group>
+	<file src="img.png" cache="false"/>
+</meta>

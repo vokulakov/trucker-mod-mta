@@ -1,0 +1,5 @@
+<meta>
+	<oop>true</oop>
+	<download_priority_group>1000</download_priority_group>
+	<script type="server" src="main.lua" />
+</meta>
