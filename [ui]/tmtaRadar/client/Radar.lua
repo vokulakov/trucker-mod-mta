@@ -18,6 +18,7 @@ local mapRenderTarget
 local camera
 local playerDamageLost = 0
 local scale = DEFAULT_SCALE
+local mapZoomScale = 6000/WORLD_SIZE
 
 local width, height
 local posX, posY
@@ -26,28 +27,6 @@ local mapWidth, mapHeight
 local radarLeft, radarTop
 local radarCenterX, radarCenterY
 local radarRadius
-
--- local function drawAreas()
--- end
-
--- local function drawBlips()
--- end
-
--- local function drawMap()
---     local x = (localPlayer.position.x + 3000) / 6000 * WORLD_SIZE
--- 	local y = (-localPlayer.position.y + 3000) / 6000 * WORLD_SIZE
-
---     --dxDrawRectangle(0, 0, mapWidth, mapHeight, tocolor(110, 158, 204))
-
-   
---     -- dxDrawImage(X - (zmW)/2, Y - (zmH)/2, zmW, zmH, WORLD_TXT, camera_rotation.z, px/mapZoomScale, -(py/mapZoomScale), 0xFFFFFFFF)
-    
---     dxDrawImage(mapWidth /2 - x, mapHeight /2 - y, mapWidth, mapHeight, Textures.world, camera.rotation.z)
-
---     -- Локальный игрок (стрелка)
---     local arrowSize = ARROW_SIZE*scale/(SCALE_FACTOR)
---     dxDrawImage((mapWidth - arrowSize) /2, (mapHeight - arrowSize) /2, arrowSize, arrowSize, Textures.arrowLocalPlayer, camera.rotation.z-localPlayer.rotation.z, 0, 0)
--- end
 
 addEventHandler('onClientHUDRender', root, 
     function()
@@ -59,36 +38,33 @@ addEventHandler('onClientHUDRender', root,
             return
         end
 
-        scale = DEFAULT_SCALE
-        if localPlayer.vehicle then
-            local speed = localPlayer.vehicle.velocity.length
-            scale = scale - math.min(MAX_SPEED_SCALE, speed * 1)
-        end
+        -- scale = DEFAULT_SCALE
+        -- if localPlayer.vehicle then
+        --     local speed = localPlayer.vehicle.velocity.length
+        --     scale = scale - math.min(MAX_SPEED_SCALE, speed * 1)
+        -- end
 
-        local playerPosX, playerPosY, playerPosZ = getElementPosition(localPlayer)
-        local playerDimension = getElementDimension(localPlayer)
-        local playerInterior = getElementInterior(localPlayer)
+        local playerPos = Vector2(localPlayer.position)
+        --local playerDimension = getElementDimension(localPlayer)
+        --local playerInterior = getElementInterior(localPlayer)
 
         -- Основа
         dxDrawRectangle(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), tocolor(0, 0, 0, 155))
 
         -- Карта
-        dxSetRenderTarget(mapRenderTarget, true)
-            local mapZoomScale = 6000/WORLD_SIZE
-            local X, Y = mapWidth/2 - (playerPosX/mapZoomScale), mapHeight*(3/5) + (playerPosY/mapZoomScale)
-            local zmW, zmH = mapWidth, mapHeight
-
-            dxDrawRectangle(0, 0, mapWidth, mapHeight, tocolor(110, 158, 204))
-            dxDrawImage(X - (zmW)/2, Y - (zmH)/2, zmW, zmH, Textures.world, camera.rotation.z, playerPosX/mapZoomScale, -(playerPosY/mapZoomScale), 0xFFFFFFFF)
+        local X, Y = radarCenterX - (playerPos.x/mapZoomScale), radarCenterY + (playerPos.y/mapZoomScale)
+        dxSetRenderTarget(mapRenderTarget)
+            dxDrawRectangle(0, 0, radarWidth, radarHeight, tocolor(110, 158, 204))
+            dxDrawImage(X - (mapWidth)/2, Y - (mapHeight)/2, mapWidth, mapHeight, Textures.world, camera.rotation.z, playerPos.x/mapZoomScale, -(playerPos.y/mapZoomScale), 0xFFFFFFFF)
         dxSetRenderTarget()
 
         dxSetBlendMode("modulate_add")
-            dxDrawImage(radarLeft, radarTop, radarWidth, radarHeight, mapRenderTarget, 0, 0, 0, tocolor(255, 255, 255, 255))
+            dxDrawImage(radarPosX, radarPosY, radarWidth, radarHeight, mapRenderTarget, 0, 0, 0, tocolor(255, 255, 255, 255))
         dxSetBlendMode("blend")
 
         -- Урон по игроку
         local animData = getEasingValue(getAnimData('hiteffect'), 'InOutQuad')
-        dxDrawImage(radarLeft, radarTop, radarWidth, radarHeight, Textures.damage, 0, 0, 0, tocolor(186, 58, 58, playerDamageLost*animData))
+        dxDrawImage(radarPosX, radarPosY, radarWidth, radarHeight, Textures.damage, 0, 0, 0, tocolor(186, 58, 58, playerDamageLost*animData))
     
         -- Север
         local direction = math.rad(-camera.rotation.z + 180)
@@ -97,7 +73,14 @@ addEventHandler('onClientHUDRender', root,
         local blipY = math.max(0, math.min(blipY, radarHeight))
         local blipSize = 28
 
-        dxDrawImage(radarLeft + blipX - blipSize/2, radarTop + blipY - blipSize/2, blipSize, blipSize, Textures.north, 0, 0, 0, tocolor(255, 255, 255, 255))
+        dxDrawImage(radarPosX + blipX - blipSize/2, radarPosY + blipY - blipSize/2, blipSize, blipSize, Textures.north, 0, 0, 0, tocolor(255, 255, 255, 255))
+
+        -- Локальный игрок
+        local arrowSize = ARROW_SIZE/1.2
+        dxDrawImage(radarPosX + radarCenterX - arrowSize/2, radarPosY + radarCenterY - arrowSize/2, arrowSize, arrowSize, Textures.arrowLocalPlayer, camera.rotation.z-localPlayer.rotation.z, 0, 0)
+    
+        --dxDrawRectangle(radarPosX, radarPosY + radarCenterY, radarWidth, 1, tocolor(255, 0, 0))
+        --dxDrawRectangle(radarPosX + radarCenterX, radarPosY, 1, radarHeight, tocolor(255, 0, 0))
     end
 )
 
@@ -109,20 +92,19 @@ function Radar.start()
     width, height = 250, 170
     posX, posY = 20, sDH-height-40
 
-    mapRenderTarget = dxCreateRenderTarget(sW*((width) /sDW), sH*((height) /sDH), true)
+    mapRenderTarget = dxCreateRenderTarget(sW*((width-10) /sDW), sH*((height-10) /sDH))
     if not (mapRenderTarget) then
 		outputDebugString("Radar: Failed to create renderTarget")
 		return
 	end
 
-    
     Textures.world = dxCreateTexture('assets/map.jpg', 'dxt5', true, 'wrap')
     mapWidth, mapHeight = dxGetMaterialSize(Textures.world)
 
-    radarLeft, radarTop = sW*((posX+5) /sDW), sH*((posY+5) /sDH)
-    radarWidth, radarHeight = sW*((width-10) /sDW), sH*((height-10) /sDH)
-    radarCenterX, radarCenterY = radarWidth/2, radarHeight*(3/5)
-    radarRadius = math.sqrt((radarWidth/2)^2 + (radarHeight*(3/5))^2)
+    radarPosX, radarPosY = sW*((posX+5) /sDW), sH*((posY+5) /sDH)
+    radarWidth, radarHeight = dxGetMaterialSize(mapRenderTarget)
+    radarCenterX, radarCenterY = radarWidth/2, radarHeight/2
+    radarRadius = math.sqrt(radarCenterX^2 + radarCenterY^2)
 
     Textures.north               = dxCreateTexture('assets/north.png')
     Textures.damage              = dxCreateTexture('assets/damage.png')
