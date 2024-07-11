@@ -33,7 +33,6 @@ local Setups = {
 }
 
 local playersList = {}
-local playersOnlineCount = 0
 local playersMaxCount = root:getData("ServerMaxPlayers")
 
 local scrollCurrentPage = 0
@@ -172,8 +171,8 @@ local function drawScoreboard()
 
 	dxDrawText("из "..playersMaxCount, sW*((posX) /sDW), sH*((posY+60) /sDH), sW*((posX+SB_WIDTH-50) /sDW), sH*((posY+60) /sDH), tocolor(255, 255, 255, 155), sW/sDW*1.0, Fonts.RR_14, "right", "center")
 	local posOffsetX = dxGetTextWidth("из "..playersMaxCount, sW/sDW*1.0, Fonts.RR_14)+5
-	dxDrawText(playersOnlineCount, sW*((posX) /sDW), sH*((posY+60) /sDH), sW*((posX+SB_WIDTH-50) /sDW)-posOffsetX, sH*((posY+60) /sDH), tocolor(255, 255, 255, 255), sW/sDW*1.0, Fonts.RR_14, "right", "center")
-	posOffsetX = posOffsetX+dxGetTextWidth(playersOnlineCount, sW/sDW*1.0, Fonts.RR_14)+sW*((18) /sDW)+10
+	dxDrawText(#playersList, sW*((posX) /sDW), sH*((posY+60) /sDH), sW*((posX+SB_WIDTH-50) /sDW)-posOffsetX, sH*((posY+60) /sDH), tocolor(255, 255, 255, 255), sW/sDW*1.0, Fonts.RR_14, "right", "center")
+	posOffsetX = posOffsetX+dxGetTextWidth(#playersList, sW/sDW*1.0, Fonts.RR_14)+sW*((18) /sDW)+10
 	dxDrawImage(sW*((posX+SB_WIDTH-50) /sDW)-posOffsetX, sH*((posY+60-18/2) /sDH), sW*((18) /sDW), sH*((18) /sDH), Textures.icon_online, 0, 0, 0, tocolor(255, 255, 255, 255), false)
 	dxDrawText("Онлайн", sW*((posX) /sDW), sH*((posY+60) /sDH), sW*((posX+SB_WIDTH-50) /sDW)-posOffsetX-10, sH*((posY+60) /sDH), tocolor(255, 255, 255, 255), sW/sDW*1.0, Fonts.RR_14, "right", "center")
 
@@ -333,8 +332,6 @@ function Scoreboard.open()
         return
     end
 
-	local players = getElementsByType("player")
-	playersOnlineCount = #players
 	playersMaxCount = root:getData("ServerMaxPlayers") or 0
 
 	Scoreboard.updatePlayersList()
