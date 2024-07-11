@@ -62,7 +62,7 @@ local function showPlayer(player)
 
 	setPlayerNametagShowing(player, false)
 	if player == localPlayer then
-		--return
+		return
 	end
 
     streamedPlayers[player] = {

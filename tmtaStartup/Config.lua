@@ -89,6 +89,8 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaRadar',
     'tmtaNametags',
     --'tmtaDashboard',
+    'tmtaNotification',
+    'tmtaVehicleOnlineRadio',
 
     'tmtaLogin',
 }
