@@ -1,0 +1,102 @@
+Animation = {}
+
+Animation.category = {
+    [1] = "Приветствие",
+    [2] = "Танцульки",
+    [3] = "Лежать-Сидеть",
+    [4] = "Машина",
+    [5] = "Разное",
+}
+
+Animation.list = {
+	{"BD_FIRE", "BD_GF_Wave", Animation.category[1], "Hello!"},
+	{"BD_FIRE", "Grlfrd_Kiss_03", Animation.category[1], "Kiss"},
+    {"ON_LOOKERS", "wave_loop", Animation.category[1], "Здарова!!"},
+		
+		
+    {"STRIP", "strip_A", Animation.category[2], "Стриптиз #1"},
+    {"STRIP", "strip_B", Animation.category[2], "Стриптиз #2"},
+    {"STRIP", "strip_C", Animation.category[2], "Стриптиз #3"},
+    {"STRIP", "strip_D", Animation.category[2], "Стриптиз #4"},
+    {"STRIP", "strip_E", Animation.category[2], "Стриптиз #5"},
+    {"STRIP", "strip_F", Animation.category[2], "Стриптиз #6"},
+    {"STRIP", "strip_G", Animation.category[2], "Стриптиз #7"},
+    {"DANCING", "bd_clap", Animation.category[2], "Танцы #1"},
+    {"DANCING", "dance_loop", Animation.category[2], "Танцы #2"},
+    {"DANCING", "DAN_Down_A", Animation.category[2], "Танцы #3"},
+    {"DANCING", "DAN_Left_A", Animation.category[2], "Танцы #4"},
+    {"DANCING", "DAN_Loop_A", Animation.category[2], "Танцы #5"},
+    {"DANCING", "DAN_Right_A", Animation.category[2], "Танцы #6"},
+    {"DANCING", "DAN_Up_A", Animation.category[2], "Танцы #7"},
+    {"DANCING", "dnce_M_a", Animation.category[2], "Танцы #8"},
+    {"DANCING", "dnce_M_b", Animation.category[2], "Танцы #9"},
+    {"DANCING", "dnce_M_c", Animation.category[2], "Танцы #10"},
+    {"DANCING", "dnce_M_d", Animation.category[2], "Танцы #11"},
+    {"DANCING", "dnce_M_e", Animation.category[2], "Танцы #12"},
+	
+    {"BEACH", "bather", Animation.category[3], "Прилечь #1"},
+    {"BEACH", "Lay_Bac_Loop", Animation.category[3], "Прилечь #2"},
+    {"BEACH", "ParkSit_M_loop", Animation.category[3], "Прилечь #3"},
+    {"BEACH", "ParkSit_W_loop", Animation.category[3], "Прилечь #4"},
+    {"BEACH", "SitnWait_loop_W", Animation.category[3], "Прилечь #5"},
+    {"CRACK", "crckidle1", Animation.category[3], "Поза #1"},
+    {"CRACK", "crckidle3", Animation.category[3], "Поза #2"},
+    {"CRACK", "crckidle4", Animation.category[3], "Поза #3"},
+    {"BIKED", "BIKEd_Ride", Animation.category[3], "Поза #4"},
+    {"CRACK", "crckidle2", Animation.category[3], "Спать"},
+    
+    {"CAR", "Fixn_Car_Loop", Animation.category[4], "Смотреть"},
+    {"CAR", "Fixn_Car_Out", Animation.category[4], "Вылезти"},
+    {"CAR", "flag_drop", Animation.category[4], "Подать старт"},
+    {"CAR", "Tyd2car_low", Animation.category[4], "На капоте"},
+    
+    {"BOMBER", "BOM_Plant", Animation.category[5], "Бомба"},
+    {"CRACK", "crckdeth2", Animation.category[5], "Судороги"},
+    {"DEALER", "DEALER_IDLE", Animation.category[5], "Охрана #1"},
+    {"DEALER", "DEALER_IDLE_01", Animation.category[5], "Охрана #2"},
+    {"FAT", "IDLE_tired", Animation.category[5], "Уставший"},
+    {"MISC", "plyr_shkhead", Animation.category[5], "Ой, д....."},
+    {"PARK", "Tai_Chi_Loop", Animation.category[5], "Кунг фу"},
+    {"PAULNMAC", "Piss_loop", Animation.category[5], "Писать"},
+   -- {"PAULNMAC", "wank_loop", Animation.category[5], "Наяривать"},
+    {"ped", "cower", Animation.category[5], "Руки за голову!"},
+    {"ped", "gang_gunstand", Animation.category[5], "Рука вперед"},
+    {"ped", "SEAT_idle", Animation.category[5], "Присесть"},
+    {"SMOKING", "M_smklean_loop", Animation.category[5], "Курить #1"},
+    {"GANGS", "smkcig_prtl_F", Animation.category[5], "Курить #2"},
+    {"SWEET", "Sweet_injuredloop", Animation.category[5], "Что-то искать"},
+    {"RAPPING", "RAP_C_Loop", Animation.category[5], "Бить по коленям"},
+    {"RAPPING", "RAP_B_Loop", Animation.category[5], "Йоу, йоу"},
+    {"RAPPING", "RAP_A_Loop", Animation.category[5], "Махать руками"},
+    {"BD_FIRE", "BD_Panic_03", Animation.category[5], "Паника"},
+    {"ped", "fucku", Animation.category[5], "Пошёл на ***"},
+    {"GANGS", "prtial_gngtlkC", Animation.category[5], "Разговор №1"},
+    {"GANGS", "prtial_gngtlkH", Animation.category[5], "Разговор №2"},
+    {"ped", "phone_talk", Animation.category[5], "Разговор по тел."},
+    {"BAR", "dnk_stndM_loop", Animation.category[5], "Выпить"},
+    {"BASEBALL", "BAT_PART", Animation.category[5], "Лещь"},
+   -- {"BIKED", "BIKEd_hit", Animation.category[5], "Рок-н-ролл"},
+  --  {"BIKELEAP", "bk_jmp", Animation.category[5], "Легуха"},
+   -- {"BSKTBALL", "BBALL_Net_Dnk_O", Animation.category[5], "Полный Пи*"},
+    {"CAMERA", "camcrch_cmon", Animation.category[5], "Подойди"},
+    {"CASINO", "manwinb", Animation.category[5], "Нож в пузо"},
+    {"CASINO", "manwind", Animation.category[5], "Ю-Ху"},
+    {"CASINO", "Roulette_lose", Animation.category[5], "Ударить кулаком"},
+    {"COP_AMBIENT", "Coplook_loop", Animation.category[5], "Я, не причём"},
+    {"COP_AMBIENT", "Coplook_think", Animation.category[5], "Задуматься.."},
+    {"DAM_JUMP", "DAM_Dive_Loop", Animation.category[5], "Встать на руки"},
+   -- {"FINALE", "FIN_Cop1_Stomp", Animation.category[5], "Тарахан өлтіру"},
+    {"FINALE", "FIN_Land_Die", Animation.category[5], "Кубарем"},
+    {"GANGS", "hndshkda", Animation.category[5], "Толкнуть"},
+    {"GANGS", "shake_carK", Animation.category[5], "Пнуть"},
+    {"GHANDS", "gsign1LH", Animation.category[5], "Ёу"},
+    {"GYMNASIUM", "GYMshadowbox", Animation.category[5], "Апперкот"},
+}
+
+-- function Animation.get(cat)
+--     for i, v in ipairs(animsTable) do
+--         if v[3] == cat then
+--             setAnim(v[1],v[2],v[4])
+--         end
+--     end
+-- end

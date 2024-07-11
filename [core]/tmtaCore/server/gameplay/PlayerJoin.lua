@@ -22,6 +22,13 @@ local function handlePlayerFirstSpawn(player)
 	PlayerSpawn.spawn(player)
 end
 
+local function sendWelcomeMessage(player)
+    exports.tmtaChat:clearChat()
+    exports.tmtaChat:sendGlobalMessage("#00b9ff► Приветствуем на #ffffffTRUCKER × MTA", nil, player)
+    exports.tmtaChat:sendGlobalMessage("#00b9ff► Наша официальная страница #ffffffvk.com/truckermta #00b9ffприсоединяйся!", nil, player)
+    exports.tmtaChat:sendGlobalMessage("#d43422► Администрация проекта желает вам приятной игры!", nil, player)
+end
+
 addEvent(resourceName..".login", true)
 addEventHandler(resourceName..".login", root, 
     function(success)
@@ -35,5 +42,7 @@ addEventHandler(resourceName..".login", root,
         else
             PlayerSpawn.spawn(player)
         end
+
+        sendWelcomeMessage(player)
     end
 )

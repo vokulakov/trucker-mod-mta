@@ -201,7 +201,7 @@ local function drawScoreboard()
 	for i = scrollCurrentPage + 1, math.min(Setups.itemsCount + scrollCurrentPage, #playersList) do
 		local player = playersList[i].player
 		local posOffsetX = sW*((posX+marginLeft) /sDW) -- начальная позиция
-		if isElement(player) then
+		if isElement(player) and player:getData('userId') then
 			local fieldsColor = Setups.playerColor
 			if player == localPlayer then
 				fieldsColor = Setups.playerLocalColor
@@ -285,7 +285,10 @@ end
 
 -- Добавить игрока в список
 function Scoreboard.addPlayerToList(player)
-	return table.insert(playersList, {player = player, data = getPlayerData(player)})
+	return table.insert(playersList, {
+		player = player, 
+		data = getPlayerData(player)
+	})
 end
 
 -- Убрать игрока из списка
@@ -303,12 +306,6 @@ function Scoreboard.updatePlayersList()
 	for _, player in pairs(getElementsByType('player')) do
 		Scoreboard.addPlayerToList(player)
 	end
---[[
-	for i=1, 10 do
-		table.insert(list, localPlayer)
-	end
---]]
-
 end
 
 local function mouseDown()

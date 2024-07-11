@@ -17,6 +17,8 @@ Map.maxScale = 1.7
 Map.scaleSpeed = 0.05 -- скорость изменения масштаба
 Map.zoomSpeed = 0.15 -- скорость зума
 
+local MAX_DISTANCE_PLAYER_VISIBLE = 180
+
 Map.sectionVisible = true 
 
 local sectionNames = { 
@@ -175,6 +177,40 @@ addEventHandler('onClientClick', root, function(button, state)
 end)
 
 ----------
+local streamedPlayer = {}
+
+local function drawPlayers()
+    local playerPosition = Vector3(localPlayer.position)
+    for player in pairs(streamedPlayer) do
+        if (player ~= localPlayer) then
+            local x, y, z = getElementPosition(player)
+            local distance = getDistanceBetweenPoints2D(x, y, playerPosition.x, playerPosition.y)
+            if (distance <= MAX_DISTANCE_PLAYER_VISIBLE) then
+                local x, y = posWorldToMap(x, y)
+                if x >= 0 and x <= sW and y >= 0 and y <= sH then
+                    local blipIcon = Textures.blipMarker
+                    local diffPosZ = z - playerPosition.z
+                    if diffPosZ >= 5 then
+                        blipIcon = Textures.blipMarkerHigher
+                    elseif diffPosZ <= -5 then
+                        blipIcon = Textures.blipMarkerLower
+                    end
+
+                    local blipColor = tocolor(255, 255, 255)
+                    local vehicle = player.vehicle
+                    if isElement(vehicle) then
+                        local r, g, b = getVehicleColor(vehicle, true)
+                        blipColor = tocolor(r, g, b)
+                    end
+
+                    local blipSize = 32/1.3
+                    dxDrawImage((x-blipSize/2), (y-blipSize/2), blipSize, blipSize, blipIcon, 0, 0, 0, blipColor)
+                end
+            end
+        end
+    end
+end
+
 function Map.draw()
     if not Map.visible then
         Map.close()
@@ -193,7 +229,6 @@ function Map.draw()
     dxDrawImage(Map.x*Map.scale +offsetX, Map.y*Map.scale +offsetY, 3072 * Map.scale, 3072 * Map.scale, Textures.world, 0, 0, 0)
 
     -- Blips
-    local px, py, pz = getElementPosition(localPlayer)
 	for _, blip in ipairs(getElementsByType("blip")) do
         local icon = blip:getData("icon")
         if icon then
@@ -206,11 +241,7 @@ function Map.draw()
         end
 	end
 
-    -- Локальный игрок
-    dxSetTextureEdge(Textures.localPlayer, 'clamp')
-    local x, y = posWorldToMap(getElementPosition(localPlayer))
-    local playerRotation = getPedRotation(localPlayer)
-    dxDrawImage((x-32/2), (y-32/2), 32, 32, Textures.localPlayer, -playerRotation)
+    drawPlayers()
 
     -- Сетка
     --[[
@@ -242,6 +273,12 @@ function Map.draw()
         end
     end
     ]]
+
+    -- Локальный игрок
+    dxSetTextureEdge(Textures.localPlayer, 'clamp')
+    local x, y = posWorldToMap(getElementPosition(localPlayer))
+    local playerRotation = getPedRotation(localPlayer)
+    dxDrawImage((x-32/2), (y-32/2), 32, 32, Textures.localPlayer, -playerRotation)
 end
 
 function Map.setVisibleHelpPanel(state)
@@ -325,3 +362,36 @@ function Map.start()
     end)
 end
 addEventHandler("onClientResourceStart", resourceRoot, Map.start)
+
+addEventHandler("onClientElementStreamIn", root, 
+    function()
+        if source.type ~= "player" then
+            return
+        end
+        streamedPlayer[source] = true
+    end
+)
+
+addEventHandler("onClientElementStreamOut", root, 
+    function()
+        if source.type ~= "player" then
+            return
+        end
+        streamedPlayer[source] = nil
+    end
+)
+
+addEventHandler("onClientPlayerJoin", root, 
+    function()
+        if (not isElementStreamedIn(source)) then
+            return
+        end
+	    streamedPlayer[source] = true
+    end
+)
+
+addEventHandler("onClientPlayerQuit", root, 
+    function()
+	    streamedPlayer[source] = nil
+    end
+)

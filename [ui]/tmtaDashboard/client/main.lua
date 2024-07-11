@@ -1,0 +1,84 @@
+Dashboard = {}
+Dashboard.windows = {}
+Dashboard.visible = false
+Dashboard.activeWindow = false
+
+sW, sH = guiGetScreenSize()
+sDW, sDH = exports.tmtaUI:getScreenSize()
+
+-- Добавить окно в стек окон dashboard
+function Dashboard.addWindow(window, visibilityFunction)
+    if not isElement(window) then
+        return false
+    end
+    Dashboard.windows[window] = visibilityFunction
+end
+
+-- Установить видимость окна
+function Dashboard.setWindowVisible(window, state)
+    if not isElement(window) then
+        return false
+    end
+    
+    local state = (type(state) == 'boolean') and state or not window.visible
+
+    -- Скрыть все окна
+    for currentWindow in pairs(Dashboard.windows) do
+        if window ~= currentWindow and currentWindow.visible then
+            Dashboard.windows[currentWindow]()
+        end
+    end
+
+    window.visible = state
+    showCursor(window.visible)
+
+    triggerEvent("tmtaDashboard.onChangeVisible", localPlayer, state)
+
+    Dashboard.activeWindow = window
+    return window.visible
+end
+
+function Dashboard.setVisible(state)
+    local state = (type(state) == 'boolean') and state or not Dashboard.getVisible()
+    if not state then
+        if Dashboard.activeWindow and not Dashboard.activeWindow.visible then
+            Dashboard.activeWindow = nil
+        end
+        for window in pairs(Dashboard.windows) do
+            if window.visible then
+                Dashboard.windows[window]()
+            end
+        end
+    --else
+        --if Dashboard.activeWindow then
+            --Dashboard.windows[Dashboard.activeWindow]()
+        --end
+    end
+    Dashboard.visible = state
+end
+
+function Dashboard.getVisible()
+    return Dashboard.visible
+end
+
+--TODO нужно событие, которое будет закрывать все окна дашборда
+addEventHandler("tmtaUI.onSetPlayerComponentVisible", root,
+    function(changedComponent, componentVisible)
+        if changedComponent ~= 'dashboard' then
+            return
+        end
+        Dashboard.setVisible(componentVisible)
+    end
+)
+
+addEventHandler("onClientResourceStart", resourceRoot,
+    function()
+        Freeroam.create()
+        Settings.create()
+        Help.create()
+        Dashboard.visible = true
+    end
+)
+
+-- Events
+addEvent("tmtaDashboard.onChangeVisible", true)

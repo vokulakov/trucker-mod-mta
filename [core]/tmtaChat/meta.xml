@@ -1,0 +1,21 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>99</download_priority_group>
+
+    <script type="shared" src="shared/Config.lua" cache="false" />
+    <script type="shared" src="shared/Utils.lua" cache="false" />
+    <script type="shared" src="shared/AntiCaps.lua" cache="false" />
+    <script type="shared" src="shared/AntiSpam.lua" cache="false" />
+    <script type="shared" src="shared/AntiFlood.lua" cache="false" />
+    <script type="shared" src="shared/WordsFilter.lua" cache="false" />
+    <script type="shared" src="shared/exports.lua" cache="false" />
+
+    <script type="client" src="client/InputBox.lua" cache="false" />
+    <script type="client" src="client/main.lua" cache="false" />
+
+    <script type="server" src="server/main.lua" />
+
+    <!-- Exports -->
+    <export type="server" function="sendGlobalMessage" />
+    <export type="shared" function="clearChat" />
+</meta>

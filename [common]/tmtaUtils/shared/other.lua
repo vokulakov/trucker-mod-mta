@@ -12,9 +12,7 @@ function capitalizeString(str)
 end
 
 function clearChat(...)
-	for i = 1, 30 do
-		outputChatBox(" ", ...)
-	end
+	outputChatBox(('\n'):rep(getChatboxLayout("chat_lines")))
 end
 
 function isResourceRunning(name)

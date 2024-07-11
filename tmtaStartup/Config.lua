@@ -32,7 +32,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaTimecycle',
     -- 'tmtaTrucker',
     -- 'tmtaVehicle',
-    -- 'tmtaChat',
+    'tmtaChat',
 
     -- gameplay --
     "defaultstats",
@@ -88,6 +88,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaControlHelp',
     'tmtaRadar',
     'tmtaNametags',
+    --'tmtaDashboard',
 
     'tmtaLogin',
 }

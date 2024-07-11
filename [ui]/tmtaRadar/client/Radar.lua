@@ -77,7 +77,7 @@ local function drawPlayers()
                 local blipColor = tocolor(255, 255, 255)
                 local vehicle = player.vehicle
                 if isElement(vehicle) then
-                    local r, g, b = getVehicleColor(vehicle)
+                    local r, g, b = getVehicleColor(vehicle, true)
                     blipColor = tocolor(r, g, b)
                 end
 

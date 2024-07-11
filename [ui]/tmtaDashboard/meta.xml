@@ -1,0 +1,18 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="shared" src="shared/Animation.lua" cache="false" />
+
+    <script type="client" src="client/Utils.lua" cache="false" />
+  
+    <script type="client" src="client/Freeroam/FreeroamGUI.lua" cache="false" />
+    <script type="client" src="client/Freeroam/AnimationGUI.lua" cache="false" />
+
+    <script type="client" src="client/SettingsGUI.lua" cache="false" />
+
+    <script type="client" src="client/Help/HelpGUI.lua" cache="false" />
+    <script type="client" src="client/Help/RuleTab.lua" cache="false" />
+    <script type="client" src="client/Help/AboutTab.lua" cache="false" />
+
+    <script type="client" src="client/main.lua" cache="false" />
+</meta>
