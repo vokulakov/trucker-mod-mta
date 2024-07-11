@@ -14,6 +14,9 @@ local SCALE_FACTOR = 2.5
 local DEFAULT_SCALE = 2.5
 local MAX_SPEED_SCALE = 0.9
 
+local MAX_DISTANCE_BLIP_VISIBLE = 240
+local MAX_DISTANCE_PLAYER_VISIBLE = 80
+
 local mapRenderTarget
 local camera
 local playerDamageLost = 0
@@ -30,11 +33,6 @@ local radarRadius
 
 local playerPosition
 
-
--- Test blip
-local marker = createMarker(837, -1988, 12.8, "checkpoint")
-exports.tmtaBlip:createAttachedTo(marker, 'blipCheckpoint', 'Точка загрузки', tocolor(255, 9, 0, 255))
-
 local function drawBlips()
     for _, blip in ipairs(getElementsByType("blip")) do
         local blipIcon = blip:getData("icon")
@@ -43,13 +41,9 @@ local function drawBlips()
             local distance = getDistanceBetweenPoints2D(x, y, playerPosition.x, playerPosition.y)
             if (distance <= blip.visibleDistance) then
                 local radius = distance/mapZoomScale
-                local direction = math.atan2(blip.position.x - playerPosition.x, blip.position.y - playerPosition.y) + math.rad(Camera.rotation.z)
-    
-                --local blipX, blipY = radarCenterX + math.sin(direction) * radius, radarCenterY - math.cos(direction) * radius
-                --local blipX = math.max(0, math.min(blipX, radarWidth))
-                --local blipY = math.max(0, math.min(blipY, radarHeight))
+                local direction = math.atan2(blip.position.x - playerPosition.x, blip.position.y - playerPosition.y) + math.rad(camera.rotation.z)
                 local blipX, blipY = Radar.calcBlipPos(direction, radius)
-                
+
                 local blipSize = BLIP_SIZE/1.3
                 local blipColor = blip:getData("color") or tocolor(255, 255, 255)
                 local isVisible = true
@@ -62,16 +56,45 @@ local function drawBlips()
     end
 end
 
+local function drawPlayers()
+    for player in pairs(streamedPlayer) do
+        if (player ~= localPlayer) then
+            local x, y, z = getElementPosition(player)
+            local distance = getDistanceBetweenPoints2D(x, y, playerPosition.x, playerPosition.y)
+            if (distance <= MAX_DISTANCE_PLAYER_VISIBLE) then
+                local radius = distance/mapZoomScale
+                local direction = math.atan2(x - playerPosition.x, y - playerPosition.y) + math.rad(camera.rotation.z)
+                local blipX, blipY = Radar.calcBlipPos(direction, radius)
+
+                local blipIcon = Textures.blipMarker
+                local diffPosZ = z - playerPosition.z
+                if diffPosZ >= 5 then
+                    blipIcon = Textures.blipMarkerHigher
+                elseif diffPosZ <= -5 then
+                    blipIcon = Textures.blipMarkerLower
+                end
+
+                local blipColor = tocolor(255, 255, 255)
+                local vehicle = player.vehicle
+                if isElement(vehicle) then
+                    local r, g, b = getVehicleColor(vehicle)
+                    blipColor = tocolor(r, g, b)
+                end
+
+                local blipSize = BLIP_SIZE/1.3
+                dxDrawImage(radarPosX + blipX - (blipSize)/2, radarPosY + blipY - (blipSize)/2, blipSize, blipSize, blipIcon, -camera.rotation.z, 0, 0, blipColor)
+            end
+        end
+    end
+end
 
 addEventHandler('onClientHUDRender', root, 
     function()
-        if not Radar.visible or not exports.tmtaUI:isPlayerComponentVisible("radar") then
+        if (not Radar.visible or not exports.tmtaUI:isPlayerComponentVisible("radar") or camera.interior ~= 0) then
             return
         end
 
-        if camera.interior ~= 0 then
-            return
-        end
+        playerPosition = Vector3(localPlayer.position)
 
         -- scale = DEFAULT_SCALE
         -- if localPlayer.vehicle then
@@ -79,11 +102,16 @@ addEventHandler('onClientHUDRender', root,
         --     scale = scale - math.min(MAX_SPEED_SCALE, speed * 1)
         -- end
 
-        playerPosition = Vector3(localPlayer.position)
-        --local playerDimension = getElementDimension(localPlayer)
-        --local playerInterior = getElementInterior(localPlayer)
+        -- Север
+        local direction = math.rad(-camera.rotation.z + 180)
+        local blipX, blipY = radarCenterX + math.sin(direction) * radarRadius, radarCenterY + math.cos(direction) * radarRadius
+        local blipX = math.max(0, math.min(blipX, radarWidth))
+        local blipY = math.max(0, math.min(blipY, radarHeight))
+        local blipSize = 28
 
-        -- Основа
+        dxDrawImage(radarPosX + blipX - blipSize/2, radarPosY + blipY - blipSize/2, blipSize, blipSize, Textures.north, 0, 0, 0, tocolor(255, 255, 255, 255), true)
+
+        -- Рамка
         dxDrawRectangle(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), tocolor(0, 0, 0, 155))
 
         --dxDrawRectangle(radarPosX, radarPosY + radarCenterY, radarWidth, 1, tocolor(255, 0, 0))
@@ -99,7 +127,7 @@ addEventHandler('onClientHUDRender', root,
         dxSetBlendMode("modulate_add")
             dxDrawImage(radarPosX, radarPosY, radarWidth, radarHeight, mapRenderTarget, 0, 0, 0, tocolor(255, 255, 255, 255))
             drawBlips()
-
+            drawPlayers()
             -- Локальный игрок
             local arrowSize = ARROW_SIZE/1.2
             dxDrawImage(radarPosX + radarCenterX - arrowSize/2, radarPosY + radarCenterY - arrowSize/2, arrowSize, arrowSize, Textures.arrowLocalPlayer, camera.rotation.z-localPlayer.rotation.z, 0, 0)
@@ -108,15 +136,6 @@ addEventHandler('onClientHUDRender', root,
         -- Урон по игроку
         local animData = getEasingValue(getAnimData('hiteffect'), 'InOutQuad')
         dxDrawImage(radarPosX, radarPosY, radarWidth, radarHeight, Textures.damage, 0, 0, 0, tocolor(186, 58, 58, playerDamageLost*animData))
-    
-        -- Север
-        local direction = math.rad(-camera.rotation.z + 180)
-        local blipX, blipY = radarCenterX + math.sin(direction) * radarRadius, radarCenterY + math.cos(direction) * radarRadius
-        local blipX = math.max(0, math.min(blipX, radarWidth))
-        local blipY = math.max(0, math.min(blipY, radarHeight))
-        local blipSize = 28
-
-        dxDrawImage(radarPosX + blipX - blipSize/2, radarPosY + blipY - blipSize/2, blipSize, blipSize, Textures.north, 0, 0, 0, tocolor(255, 255, 255, 255))
     end
 )
 
