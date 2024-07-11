@@ -28,6 +28,41 @@ local radarLeft, radarTop
 local radarCenterX, radarCenterY
 local radarRadius
 
+local playerPosition
+
+
+-- Test blip
+local marker = createMarker(837, -1988, 12.8, "checkpoint")
+exports.tmtaBlip:createAttachedTo(marker, 'blipCheckpoint', 'Точка загрузки', tocolor(255, 9, 0, 255))
+
+local function drawBlips()
+    for _, blip in ipairs(getElementsByType("blip")) do
+        local blipIcon = blip:getData("icon")
+        if (blipIcon and Textures[blipIcon]) then
+            local x, y, z = getElementPosition(blip)
+            local distance = getDistanceBetweenPoints2D(x, y, playerPosition.x, playerPosition.y)
+            if (distance <= blip.visibleDistance) then
+                local radius = distance/mapZoomScale
+                local direction = math.atan2(blip.position.x - playerPosition.x, blip.position.y - playerPosition.y) + math.rad(Camera.rotation.z)
+    
+                --local blipX, blipY = radarCenterX + math.sin(direction) * radius, radarCenterY - math.cos(direction) * radius
+                --local blipX = math.max(0, math.min(blipX, radarWidth))
+                --local blipY = math.max(0, math.min(blipY, radarHeight))
+                local blipX, blipY = Radar.calcBlipPos(direction, radius)
+                
+                local blipSize = BLIP_SIZE/1.3
+                local blipColor = blip:getData("color") or tocolor(255, 255, 255)
+                local isVisible = true
+    
+                if isVisible then
+                    dxDrawImage(radarPosX + blipX - (blipSize)/2, radarPosY + blipY - (blipSize)/2, blipSize, blipSize, Textures[blipIcon], -camera.rotation.z, 0, 0, blipColor)
+                end
+            end
+        end
+    end
+end
+
+
 addEventHandler('onClientHUDRender', root, 
     function()
         if not Radar.visible or not exports.tmtaUI:isPlayerComponentVisible("radar") then
@@ -44,22 +79,30 @@ addEventHandler('onClientHUDRender', root,
         --     scale = scale - math.min(MAX_SPEED_SCALE, speed * 1)
         -- end
 
-        local playerPos = Vector2(localPlayer.position)
+        playerPosition = Vector3(localPlayer.position)
         --local playerDimension = getElementDimension(localPlayer)
         --local playerInterior = getElementInterior(localPlayer)
 
         -- Основа
         dxDrawRectangle(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), tocolor(0, 0, 0, 155))
 
+        --dxDrawRectangle(radarPosX, radarPosY + radarCenterY, radarWidth, 1, tocolor(255, 0, 0))
+        --dxDrawRectangle(radarPosX + radarCenterX, radarPosY, 1, radarHeight, tocolor(255, 0, 0))
+
         -- Карта
-        local X, Y = radarCenterX - (playerPos.x/mapZoomScale), radarCenterY + (playerPos.y/mapZoomScale)
+        local X, Y = radarCenterX - (playerPosition.x/mapZoomScale), radarCenterY + (playerPosition.y/mapZoomScale)
         dxSetRenderTarget(mapRenderTarget)
             dxDrawRectangle(0, 0, radarWidth, radarHeight, tocolor(110, 158, 204))
-            dxDrawImage(X - (mapWidth)/2, Y - (mapHeight)/2, mapWidth, mapHeight, Textures.world, camera.rotation.z, playerPos.x/mapZoomScale, -(playerPos.y/mapZoomScale), 0xFFFFFFFF)
+            dxDrawImage(X - (mapWidth)/2, Y - (mapHeight)/2, mapWidth, mapHeight, Textures.world, camera.rotation.z, playerPosition.x/mapZoomScale, -(playerPosition.y/mapZoomScale), 0xFFFFFFFF)
         dxSetRenderTarget()
 
         dxSetBlendMode("modulate_add")
             dxDrawImage(radarPosX, radarPosY, radarWidth, radarHeight, mapRenderTarget, 0, 0, 0, tocolor(255, 255, 255, 255))
+            drawBlips()
+
+            -- Локальный игрок
+            local arrowSize = ARROW_SIZE/1.2
+            dxDrawImage(radarPosX + radarCenterX - arrowSize/2, radarPosY + radarCenterY - arrowSize/2, arrowSize, arrowSize, Textures.arrowLocalPlayer, camera.rotation.z-localPlayer.rotation.z, 0, 0)
         dxSetBlendMode("blend")
 
         -- Урон по игроку
@@ -74,15 +117,15 @@ addEventHandler('onClientHUDRender', root,
         local blipSize = 28
 
         dxDrawImage(radarPosX + blipX - blipSize/2, radarPosY + blipY - blipSize/2, blipSize, blipSize, Textures.north, 0, 0, 0, tocolor(255, 255, 255, 255))
-
-        -- Локальный игрок
-        local arrowSize = ARROW_SIZE/1.2
-        dxDrawImage(radarPosX + radarCenterX - arrowSize/2, radarPosY + radarCenterY - arrowSize/2, arrowSize, arrowSize, Textures.arrowLocalPlayer, camera.rotation.z-localPlayer.rotation.z, 0, 0)
-    
-        --dxDrawRectangle(radarPosX, radarPosY + radarCenterY, radarWidth, 1, tocolor(255, 0, 0))
-        --dxDrawRectangle(radarPosX + radarCenterX, radarPosY, 1, radarHeight, tocolor(255, 0, 0))
     end
 )
+
+function Radar.calcBlipPos(direction, radius)
+    local x, y = radarCenterX + math.sin(direction) * radius, radarCenterY - math.cos(direction) * radius
+    local x = math.max(0, math.min(x, radarWidth))
+    local y = math.max(0, math.min(y, radarHeight))
+    return x, y
+end
 
 function Radar.start()
     if (mapRenderTarget) then
@@ -113,6 +156,7 @@ function Radar.start()
     Textures.blipMarker          = exports.tmtaTextures:createTexture('blipMarker')
     Textures.blipMarkerHigher    = exports.tmtaTextures:createTexture('blipMarkerHigher')
     Textures.blipMarkerLower     = exports.tmtaTextures:createTexture('blipMarkerLower')
+
     Textures.blipProperty        = exports.tmtaTextures:createTexture('blipProperty')
     Textures.blipGasStation      = exports.tmtaTextures:createTexture('blipGasStation')
     Textures.blipClothes         = exports.tmtaTextures:createTexture('blipClothes')
@@ -124,6 +168,8 @@ function Radar.start()
     Textures.blipRestaurant      = exports.tmtaTextures:createTexture('blipRestaurant')
     Textures.blipPaint           = exports.tmtaTextures:createTexture('blipPaint')
     Textures.blipNumberPlate     = exports.tmtaTextures:createTexture('blipNumberPlate')
+    Textures.blipTrucker         = exports.tmtaTextures:createTexture('blipTrucker')
+    Textures.blipCheckpoint      = exports.tmtaTextures:createTexture('blipCheckpoint')
 
     camera = getCamera()
     setAnimData('hiteffect', 0.1)
