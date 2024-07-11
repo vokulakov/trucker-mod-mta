@@ -1,0 +1,14 @@
+<meta>
+    <oop>true</oop>
+
+    <!-- <script src="assets/Config.lua" type="shared" cache="false" /> -->
+
+    <!-- <script src="client/c_belt.lua" type="client" cache="false" /> -->
+    <script src="client/c_cruise.lua" type="client" cache="false" />
+    <script src="client/c_main.lua" type="client" cache="false" />
+    
+    <!-- <script src="server/s_belt.lua" type="server" /> -->
+    <script src="server/s_cruise.lua" type="server" />
+    <script src="server/s_main.lua" type="server" />
+
+</meta>

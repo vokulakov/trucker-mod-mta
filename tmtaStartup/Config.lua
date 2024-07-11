@@ -45,6 +45,10 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaVehicleNos',
     'tmtaVehicleSounds',
     'tmtaVehicleWheelsRotation',
+    'tmtaVehicleColor',
+    'tmtaVehicleFuel',
+    'tmtaVehicleMusic',
+    'tmtaVehicleTurnlights',
     
     'tmtaCameraView',
     'tmtaHospital',
