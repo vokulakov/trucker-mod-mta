@@ -410,7 +410,7 @@ local draw = function (  )
 
 				if isElement( music.sounds[ music.currentVehicle ] ) then 
 					setClipboard( music_data.author .. " - " .. music_data.name )
-					outputChatBox( "[Музыкальный плеер]#ffffff " .. music_data.author .. " - " .. music_data.name .. " #999999- скопировано в буфер обмена.", 200, 200, 200, true )
+					--outputChatBox( "[Музыкальный плеер]#ffffff " .. music_data.author .. " - " .. music_data.name .. " #999999- скопировано в буфер обмена.", 200, 200, 200, true )
 				end
 			end
 		else
