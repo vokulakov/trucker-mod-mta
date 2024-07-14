@@ -30,7 +30,7 @@ function Business.get(businessId, fields, callbackFunctionName, ...)
     return exports.tmtaSQLite:dbTableSelect(BUSINESS_TABLE_NAME, fields, {businessId = businessId}, callbackFunctionName, ...)
 end
 
-function Business.add(callbackFunctionName, ...)
+function Business.add(posX, posY, posZ, callbackFunctionName, ...)
     local player = client
     if not isElement(player) then
         return false
@@ -40,10 +40,25 @@ end
 function Business.remove()
 end
 
-function Business.update(businessId)
+function Business.update(businessId, fields, callbackFunctionName, ...)
+    if (type(businessId) ~= "number" or type(fields) ~= "table") then
+        outputDebugString("Business.update: bad arguments", 1)
+        return false
+    end
+
+    local success = DatabaseTable.update(BUSINESS_TABLE_NAME, fields, {businessId = businessId}, callbackFunctionName, ...)
+
+    if not success then
+		executeCallback(callbackFunctionName, false)
+	end
+
+    return success
 end
 
 function Business.buy(player, businessId)
+end
+
+function Business.takeMoney(player, businessId)
 end
 
 function Business.sell(player, businessId)
@@ -55,5 +70,5 @@ end
 function Business.buyUpgrade(player, businessId)
 end
 
-function Business.takeMoney(player, businessId)
+function Business.changeName(businessId)
 end
