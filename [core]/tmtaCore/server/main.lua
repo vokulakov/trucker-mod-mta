@@ -30,7 +30,7 @@ addEventHandler('onResourceStart', resourceRoot,
 
 addEventHandler("onResourceStop", resourceRoot, 
     function ()
-        for i, player in ipairs(getElementsByType("player")) do
+        for _, player in ipairs(getElementsByType("player")) do
             User.logout(player)
         end
     
