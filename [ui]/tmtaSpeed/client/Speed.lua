@@ -124,7 +124,7 @@ function Speed.draw()
     dxDrawText("КМ/Ч", sW*((posX) /sDW), sH*((posY+136) /sDH), sW*((posX+width) /sDW), sH*((posY+height) /sDH), tocolor(255, 255, 255, 255), sW/sDW*1.0, Fonts.GPM_7, "center", "top", false, false, false, true)
     
     -- Racelogic
-    --Racelogic.draw(posX+width, posY, math.floor(currentSpeed))
+    Racelogic.draw(posX+width, posY, math.floor(currentSpeed))
 
     -- Тахометр
     if veh.engineState then

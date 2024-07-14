@@ -12,6 +12,7 @@ local loadData = {
     "skin",
 	"hp",
 	"armor",
+	'mileage',
     
     "position",
     "rotation",

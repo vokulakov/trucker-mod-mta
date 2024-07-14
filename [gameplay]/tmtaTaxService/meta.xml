@@ -1,0 +1,4 @@
+<meta>
+    <oop>true</oop>
+    <script type="shared" src="shared/Config.lua" cache="false" />
+</meta>

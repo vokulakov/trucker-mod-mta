@@ -4,5 +4,6 @@
     <!-- Client -->
     <script type="client" src="client/SpeedLimit.lua" cache="false" />
     <script type="client" src="client/Mileage.lua" cache="false" />
+    <script type="client" src="client/WheelsRotation.lua" cache="false" />
     <script type="client" src="client/main.lua" cache="false" />
 </meta>

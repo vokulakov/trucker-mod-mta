@@ -31,7 +31,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaLogger',
     'tmtaTimecycle',
     -- 'tmtaTrucker',
-    -- 'tmtaVehicle',
+    'tmtaVehicle',
     'tmtaChat',
 
     -- gameplay --
@@ -44,19 +44,20 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
 
     'tmtaVehicleNos',
     'tmtaVehicleSounds',
-    'tmtaVehicleWheelsRotation',
     'tmtaVehicleColor',
     'tmtaVehicleFuel',
     'tmtaVehicleMusic',
     'tmtaVehicleTurnlights',
     
     'tmtaCameraView',
-    'tmtaHospital',
     'tmtaPlayerLookAt',
     'tmtaPlayerMoneyCase',
     'tmtaTrafficLights',
     'tmtaPlayerNeeds',
     'tmtaGreenZone',
+
+    'tmtaHospital',
+    'tmtaTaxService',
 
     -- graphics --
     'tmtaReplacingTextures',
