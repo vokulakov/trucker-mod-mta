@@ -16,11 +16,15 @@
 	<!-- Systems -->
 	<file src="assets/systems/sell.wav" />
 	<file src="assets/systems/reward_small.mp3" />
+	<file src="assets/systems/sound_eat1.mp3" />
+	<file src="assets/systems/sound_eat2.mp3" />
 
 	<!-- Background music -->
 	<file src="assets/music_bg/game_theme_1.mp3" />
 	<file src="assets/music_bg/game_theme_2.mp3" />
 	<file src="assets/music_bg/game_theme_3.mp3" />
+	<file src="assets/music_bg/music_restaurant.mp3" />
+	<file src="assets/music_bg/music_skinshop.mp3" />
 
 	<script type="client" cache="false" src="Config.lua" />
 	<script type="client" cache="false" src="main.lua" />

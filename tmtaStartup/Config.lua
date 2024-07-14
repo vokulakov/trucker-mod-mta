@@ -35,12 +35,12 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaChat',
 
     -- gameplay --
-    "defaultstats",
-    "headshot",
-    "parachute",
-    "realdriveby",
-    "reload",
-    "voice",
+    'defaultstats',
+    'headshot',
+    'parachute',
+    'realdriveby',
+    'reload',
+    'voice',
 
     'tmtaVehicleNos',
     'tmtaVehicleSounds',
@@ -58,6 +58,10 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
 
     'tmtaHospital',
     'tmtaTaxService',
+    'tmtaTruckerAllowance',
+
+    'tmtaRestaurants',
+    'tmtaSkinShop',
 
     -- graphics --
     'tmtaReplacingTextures',
