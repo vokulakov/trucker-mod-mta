@@ -5,7 +5,7 @@ addEventHandler("queenSkinShop.onPlayerSkinChange", root, function(skinid, skinp
 		exports.tmtaNotification:showInfobox(
 			source, 
 			"info", 
-			"#FFA07AМагазин одежды", 
+			"#FFA07AМагазин скинов", 
 			"#FFFFFFУ вас недостаточно денежных средств", 
 			_, 
 			{240, 146, 115}
@@ -20,8 +20,8 @@ addEventHandler("queenSkinShop.onPlayerSkinChange", root, function(skinid, skinp
 	exports.tmtaNotification:showInfobox(
         source, 
         "info", 
-        "#FFA07AМагазин одежды", 
-        "#FFFFFFВы купили одежду за #FFA07A"..skinprice.." #FFFFFF₽", 
+        "#FFA07AМагазин скинов", 
+        "#FFFFFFВы купили скин за #FFA07A"..skinprice.." #FFFFFF₽", 
         _, 
         {240, 146, 115}
     )
@@ -71,7 +71,7 @@ addEventHandler('onResourceStart', getResourceRootElement(), function()
 		exports.tmtaBlip:createAttachedTo(
 			pickup_entrance, 
 			'blipClothes',
-			'Магазин одежды',
+			'Магазин скинов',
 			tocolor(0, 255, 255, 255)
 		)
 		

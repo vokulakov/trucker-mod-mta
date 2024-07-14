@@ -16,8 +16,8 @@ Config.SOUND_LIST = {
 	['sell'] = "assets/systems/sell.wav",
 	['reward_small'] = "assets/systems/reward_small.mp3",
 	
-	['sound_eat1'] = "assets/systems_sound/sound_eat1.mp3",
-	['sound_eat2'] = "assets/systems_sound/sound_eat2.mp3",
+	['sound_eat1'] = "assets/systems/sound_eat1.mp3",
+	['sound_eat2'] = "assets/systems/sound_eat2.mp3",
 
 	-- Background music --
 	['music_game_theme_1'] = "assets/music_bg/game_theme_1.mp3",

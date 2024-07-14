@@ -1,6 +1,6 @@
 <meta>
 	<oop>true</oop>
-
+	<download_priority_group>-999</download_priority_group>
 	<file src="assets/img/BURHEAL.png" />
 	<file src="assets/img/BURHIG.png" />
 	<file src="assets/img/BURLOW.png" />

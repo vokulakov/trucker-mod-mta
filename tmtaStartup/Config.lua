@@ -10,6 +10,8 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaSQLite',
     -- --'tmtaBackup',
 
+    'tmtaBlip',
+    
     -- admin --
     'admin',
     'ipb',
@@ -48,6 +50,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaVehicleFuel',
     'tmtaVehicleMusic',
     'tmtaVehicleTurnlights',
+    'tmtaVehicleControl',
     
     'tmtaCameraView',
     'tmtaPlayerLookAt',
@@ -84,7 +87,6 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'streetlights_models',
 
     -- ui --
-    'tmtaBlip',
     'tmtaUI',
     'tmtaGUI',
     'tmtaCursor',

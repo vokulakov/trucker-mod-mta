@@ -37,7 +37,7 @@ function Money.givePlayer(player, amount)
         string.format(
             "Игроку %s (userId %d) выданы деньги в количестве %d", 
             player.name,
-            player:getData("_id"),
+            player:getData("userId"),
             amount
         )
     )
@@ -66,7 +66,7 @@ function Money.takePlayer(player, amount)
         string.format(
             "У игрока %s (userId %d) списаны деньги в количестве %d", 
             player.name,
-            player:getData("_id"),
+            player:getData("userId"),
             amount
         )
     )

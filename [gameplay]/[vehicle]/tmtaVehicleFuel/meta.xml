@@ -1,5 +1,6 @@
 <meta>
-	
+	<oop>true</oop>
+	<download_priority_group>-999</download_priority_group>
 	<file src="assets/garageData.xml" />
 	<file src="assets/carData.xml" />
 	
