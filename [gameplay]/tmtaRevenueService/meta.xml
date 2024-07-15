@@ -1,0 +1,11 @@
+<meta>
+    <oop>true</oop>
+    <script type="shared" src="shared/Config.lua" cache="false" />
+
+    <script type="client" src="client/RevenueService.lua" cache="false" />
+    <script type="client" src="client/GUI.lua" cache="false" />
+    <script type="client" src="client/main.lua" cache="false" />
+
+    <script type="server" src="server/RevenueService.lua" />
+    <script type="server" src="server/main.lua" />
+</meta>

@@ -66,6 +66,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaRestaurants',
     'tmtaSkinShop',
     'tmtaHouse',
+    'tmtaRevenueService',
 
     -- graphics --
     'tmtaReplacingTextures',

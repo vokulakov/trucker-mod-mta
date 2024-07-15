@@ -8,9 +8,9 @@ function House.setup()
         { name = "userId", type = 'INTEGER' },
         { name = "position", type = "TEXT" },
         { name = "interiorId", type = "INTEGER", options = "NOT NULL" },
-        { name = "price", type = "INTEGER", options = "UNSIGNED NOT NULL" },
-        { name = "propertyTax", type = "INTEGER", options = "UNSIGNED NOT NULL DEFAULT 0" },
-        { name = "communalPayment", type = "INTEGER", options = "UNSIGNED NOT NULL DEFAULT 0" },
+        { name = "price", type = "INTEGER", options = "NOT NULL" },
+        { name = "propertyTax", type = "INTEGER", options = "NOT NULL DEFAULT 0" },
+        { name = "communalPayment", type = "INTEGER", options = "NOT NULL DEFAULT 0" },
         { name = "doorLock", type = "INTEGER", options = "DEFAULT 0" }, -- открыт или закрыт
         { name = "doorCode", type = "VARCHAR", size = 6 }, -- код от двери
         { name = "parkingSpaces", type = "INTEGER", options = "NOT NULL DEFAULT 0" }, -- парковочные места
