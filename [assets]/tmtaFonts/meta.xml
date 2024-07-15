@@ -9,6 +9,9 @@
 	<file src="assets/GothamPro/bold.ttf" />
 	<file src="assets/GothamPro/medium.ttf" />
 	
+	<file src="assets/Elowen.ttf" />
+	
+	<!-- Script -->
 	<script type="client" src="Config.lua" cache="false" />
 	<script type="client" src="Font.lua" cache="false" />
 

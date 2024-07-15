@@ -30,4 +30,7 @@
     <!-- Функции для авторизации -->
 	<export type="client" function="signUp" />
     <export type="client" function="login" />
+
+    <export type="server" function="getUserPlayerById" />
+    <export type="server" function="getUserDataById" />
 </meta>

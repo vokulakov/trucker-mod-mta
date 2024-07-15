@@ -6,4 +6,6 @@ Config.FONT_LIST = {
 	
 	['GothamProBold'] = "assets/GothamPro/bold.ttf",
 	['GothamProMedium'] = "assets/GothamPro/medium.ttf",
+	
+	['Elowen'] = "assets/Elowen.ttf",
 }

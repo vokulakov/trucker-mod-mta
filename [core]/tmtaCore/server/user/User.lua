@@ -234,13 +234,6 @@ function callbackLoginPlayer(result, params)
     triggerEvent(resourceName..".login", player, success, errorType)
 end
 
-function User.getByLogin(login, fields, callbackFunctionName, ...)
-    if (type(login) ~= "string" or type(fields) ~= "table") then
-        return false
-    end
-    return exports.tmtaSQLite:dbTableSelect(USER_TABLE_NAME, fields, {login = login}, callbackFunctionName, ...)
-end
-
 function User.update(login, fields)
     if (type(login) ~= "string" or type(fields) ~= "table") then
         return false
@@ -305,3 +298,32 @@ addEventHandler("onPlayerQuit", root,
     end, 
     true, "low"
 )
+
+function User.getByLogin(login, fields, callbackFunctionName, ...)
+    if (type(login) ~= "string" or type(fields) ~= "table") then
+        executeCallback(callbackFunctionName, false)
+        return false
+    end
+    return exports.tmtaSQLite:dbTableSelect(USER_TABLE_NAME, fields, {login = login}, callbackFunctionName, ...)
+end
+
+function User.getPlayerById(userId)
+    if not userId then
+        return false
+    end
+    for i, player in ipairs(getElementsByType("player")) do
+        local playerId = player:getData("userId")
+        if playerId and playerId == userId then
+            return player
+        end
+    end
+    return false
+end
+
+function User.getById(userId, fields, callbackFunctionName, ...)
+    if type(userId) ~= "number" or type(fields) ~= "table" then
+        executeCallback(callbackFunctionName, false)
+        return false
+    end
+    return exports.tmtaSQLite:dbTableSelect(USER_TABLE_NAME, fields, {userId = userId}, callbackFunctionName, ...)
+end
