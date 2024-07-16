@@ -22,21 +22,18 @@ function GUI.render()
     guiWindowSetMovable(GUI.wnd, false)
     GUI.wnd.alpha = 0.8
 
-    GUI.btnClose  = guiCreateButton(sW*((width-35)/sDW), sH*(25/sDH), sW*(25/sDW), sH*(25/sDH), 'Х', false, GUI.wnd)
+    GUI.btnClose = guiCreateButton(sW*((width-35)/sDW), sH*(25/sDH), sW*(25/sDW), sH*(25/sDH), 'Х', false, GUI.wnd)
     guiSetFont(GUI.btnClose, Fonts['RB_10'])
     guiSetProperty(GUI.btnClose, "NormalTextColour", "FFCE070B")
     addEventHandler("onClientGUIClick", GUI.btnClose, GUI.closeWindow, false)
 
+    --GUI.btnRegBusinessEntity = guiCreateButton(0, sH*((height-90)/sDH), sW*(width/sDW), sH*(40/sDH), 'Зарегистрироваться в налоговой службе', false, GUI.wnd)
+
+    GUI.btnPayTax = guiCreateButton(0, sH*((height-50)/sDH), sW*(width/sDW), sH*(40/sDH), 'Оплатить налоги', false, GUI.wnd)
+    guiSetFont(GUI.btnPayTax, Fonts['RB_10'])
+    guiSetProperty(GUI.btnPayTax, "NormalTextColour", "FF01D51A")
+    addEventHandler("onClientGUIClick", GUI.btnPayTax, function() end, false)
 end
-
-addEventHandler("onClientGUIClick", root, 
-    function()
-        if not isElement(GUI.wnd) then 
-            return 
-        end
-
-    end
-)
 
 function GUI.openWindow()
     GUI.render()

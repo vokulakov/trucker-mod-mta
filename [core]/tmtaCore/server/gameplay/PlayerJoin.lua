@@ -29,7 +29,6 @@ local function sendWelcomeMessage(player)
     exports.tmtaChat:sendGlobalMessage("#d43422► Администрация проекта желает вам приятной игры!", nil, player)
 end
 
-addEvent(resourceName..".login", true)
 addEventHandler(resourceName..".login", root, 
     function(success)
         if (not success) then

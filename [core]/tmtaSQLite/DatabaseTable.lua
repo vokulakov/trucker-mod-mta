@@ -17,7 +17,7 @@ local function retrieveQueryResults(connection, queryString, sourceResourceRoot,
 		if (not result) then
 			outputDebugString(string.format("[ERROR] dbQuery error on %s", queryString), 1)
 		end
-		return result, errorCode, errorMessage
+		return result[1], errorCode, errorMessage
 	else
 		-- Если передали callback, вернуть результат асинхронно
 		return not not connection:query(function(queryHandle, args)
@@ -28,7 +28,7 @@ local function retrieveQueryResults(connection, queryString, sourceResourceRoot,
 			if type(args) ~= "table" then
 				args = {}
 			end
-			triggerEvent("dbCallback", sourceResourceRoot, result, callbackFunctionName, args)
+			triggerEvent("dbCallback", sourceResourceRoot, result[1], callbackFunctionName, args)
 		end, {...}, queryString)
 	end
 end

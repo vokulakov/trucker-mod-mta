@@ -74,6 +74,9 @@ function User.setup()
     end
 end
 
+addEvent(resourceName..".login", true)
+addEvent(resourceName..".register", true)
+
 -- Функция хэширования паролей пользователей
 local function hashUserPassword(login, password)
     return sha256(password .. tostring(login) .. tostring(string.len(login)) .. tostring(PASSWORD_SECRET))
@@ -212,7 +215,7 @@ function callbackLoginPlayer(result, params)
     if (success) then
 		if (Session.start(player)) then
 
-            account = result[1]
+            account = result
             login = params.login
             password = params.password
 

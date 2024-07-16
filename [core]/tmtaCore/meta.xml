@@ -17,16 +17,16 @@
     <script type="client" src="client/main.lua" cache="false" />
 
     <!-- Server -->
-    <script type="server" src="server/gameplay/PlayerId.lua" />
-    <script type="server" src="server/gameplay/PlayerJoin.lua" />
-    <script type="server" src="server/gameplay/PlayerSpawn.lua" />
-
     <script type="server" src="server/user/User.lua" />
     <script type="server" src="server/user/Session.lua" />
     <script type="server" src="server/user/PlayerData.lua" />
     <script type="server" src="server/user/export.lua" />
     <script type="server" src="server/main.lua" />
 
+    <script type="server" src="server/gameplay/PlayerId.lua" />
+    <script type="server" src="server/gameplay/PlayerJoin.lua" />
+    <script type="server" src="server/gameplay/PlayerSpawn.lua" />
+    
     <!-- Функции для авторизации -->
 	<export type="client" function="signUp" />
     <export type="client" function="login" />

@@ -1,7 +1,8 @@
 <meta>
     <oop>true</oop>
     <script type="shared" src="shared/Config.lua" cache="false" />
-
+	<script type="shared" src="shared/include.lua" cache="false" />
+	
     <script type="client" src="client/RevenueService.lua" cache="false" />
     <script type="client" src="client/GUI.lua" cache="false" />
     <script type="client" src="client/main.lua" cache="false" />
