@@ -10,24 +10,27 @@ Config.TAX_GRACE_PERIOD = 3 -- сколько можно не оплачиват
 Config.businessType = {
 	{
 		name = 'Магазин 24/7',
+		price = {3000000, 6000000},
 	},
 	{
 		name = 'Магазин одежды',
+		price = {3000000, 6000000},
 	},
 	{
 		name = 'АЗС',
+		price = {15000000, 20000000},
 	},
 	{
 		name = 'Закусочная',
+		price = {3000000, 6000000},
 	},
 	{
 		name = 'Автосервис',
+		price = {3000000, 6000000},
 	},
 	{
 		name = 'Автосалон',
-	},
-	{
-		name = 'Амуниция',
+		price = {50000000, 70000000},
 	},
 }
 
@@ -36,3 +39,4 @@ Config.upgrades = {}
 function getConfigSetting(name)
 	return Config[name]
 end
+

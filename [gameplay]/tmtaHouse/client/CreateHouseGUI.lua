@@ -153,7 +153,6 @@ addEventHandler("onClientGUIClick", root,
             CreateHouseGUI.editEnteryPosY.text = localPlayer.position.y
             CreateHouseGUI.editEnteryPosZ.text = localPlayer.position.z
         elseif source == CreateHouseGUI.btnCreate then
-
             local x = tonumber(CreateHouseGUI.editEnteryPosX.text)
             local y = tonumber(CreateHouseGUI.editEnteryPosY.text)
             local z = tonumber(CreateHouseGUI.editEnteryPosZ.text)
@@ -161,12 +160,14 @@ addEventHandler("onClientGUIClick", root,
             local price = tonumber(CreateHouseGUI.editPrice.text)
             local parkingSpaces = tonumber(CreateHouseGUI.editParkingSpaces.text)
 
-            if not x or not y or not z or not interiorId or not price or not parkingSpaces then
-                exports.tmtaGUI:createNotice(sW*((sDW-400)/2 /sDW), sH*((sDH-150)/sDH), sW*(400/sDW), 'warning', 'Для создания дома необходимо заполнить все поля', true)
-                return
+            if (not x or not y or not z or not interiorId or not price or not parkingSpaces) then
+                return exports.tmtaGUI:createNotice(sW*((sDW-400)/2 /sDW), sH*((sDH-150)/sDH), sW*(400/sDW), 'warning', 'Для создания дома необходимо заполнить все поля', true)
+            elseif (price <= 0) then
+                return exports.tmtaGUI:createNotice(sW*((sDW-400)/2 /sDW), sH*((sDH-150)/sDH), sW*(400/sDW), 'warning', 'Стоимость дома должна быть больше 0', true)
             end
-            triggerServerEvent("tmtaHouse.addHouseRequest", resourceRoot, x, y, z, interiorId, price, parkingSpaces)
-            return
+
+            
+            return triggerServerEvent("tmtaHouse.addHouseRequest", resourceRoot, x, y, z, interiorId, price, parkingSpaces)
             --CreateHouseGUI.closeWindow()
         end
     end
@@ -259,7 +260,7 @@ function CreateHouseGUI.closeWindow()
     CreateHouseGUI.mainWnd.visible = false
     CreateHouseGUI.interiorWnd.visible = false
     showCursor(false)
-    unbindKey("mouse2", "down", CreateHouseGUI.changeCursorShowing)
+    unbindKey("mouse2", "up", CreateHouseGUI.changeCursorShowing)
 end
 
 

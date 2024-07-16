@@ -8,13 +8,15 @@ function Business.setup()
         {name = 'price', type = 'INTEGER', options = 'DEFAULT 0 NOT NULL'},
         {name = 'balance', type = 'INTEGER'},
 
+        {name = 'revenue', type = 'INTEGER'}, -- выплата
+
         {name = 'payAmount', type = 'INTEGER'},
         {name = 'taxAmount', type = 'INTEGER'}, -- сумма налога (к оплате)
         {name = 'taxUnpayedWeeks', type = 'INTEGER'}, -- сколько недель не оплачивался налог
 
         {name = 'position', type = 'TEXT'},
         {name = 'upgrades', type = 'TEXT'},
-        {name = 'ownerId', type = 'INTEGER'},
+        {name = 'userId', type = 'INTEGER'},
         {name = 'editorId', type = 'INTEGER'},
     }, 
         "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL,\n"..
@@ -30,7 +32,7 @@ function Business.get(businessId, fields, callbackFunctionName, ...)
     return exports.tmtaSQLite:dbTableSelect(BUSINESS_TABLE_NAME, fields, {businessId = businessId}, callbackFunctionName, ...)
 end
 
-function Business.add(posX, posY, posZ, callbackFunctionName, ...)
+function Business.add(posX, posY, posZ, price, callbackFunctionName, ...)
     local player = client
     if not isElement(player) then
         return false
