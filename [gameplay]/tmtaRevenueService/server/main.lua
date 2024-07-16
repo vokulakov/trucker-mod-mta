@@ -45,19 +45,18 @@ function callbackGetUserData(result, params)
     end
 
     local player = params.player
-    if not isElement(player) then
-        return
-    end
-
 	local success = not not result
-    if (not success) then
-        if (result == nil) then
-            local userId = player:getData('userId')
-            return RevenueService.add(userId, "callbackGetUserData", {player = player})
-        end
 
+    if (not success or not isElement(player)) then
         return
     end
+
+    if (type(result) ~= 'table' or #result == 0) then
+        local userId = player:getData('userId')
+        return RevenueService.add(userId, "callbackGetUserData", {player = player})
+    end
+
+    result = result[1]
 
     player:setData('individualNumber', result.individualNumber)
 end

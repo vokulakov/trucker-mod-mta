@@ -215,7 +215,7 @@ function callbackLoginPlayer(result, params)
     if (success) then
 		if (Session.start(player)) then
 
-            account = result
+            account = result[1]
             login = params.login
             password = params.password
 
