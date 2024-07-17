@@ -36,8 +36,9 @@ function CreateBusinessGUI.render()
 
     CreateBusinessGUI.listType = guiCreateComboBox(sW*(10/sDW), sH*(85/sDH), sW*(width/sDW), sH*(130/sDH), "Выберите тип бизнеса...", false, CreateBusinessGUI.wnd )
     guiSetFont(CreateBusinessGUI.listType, Utils.fonts.RR_10)
+    addEventHandler("onClientGUIComboBoxAccepted", CreateBusinessGUI.listType, CreateBusinessGUI.onTypeSelect, false)
 
-    for _, typeData in ipairs (Config.businessType) do
+    for _, typeData in pairs (Config.businessTypeList) do
 		guiComboBoxAddItem(CreateBusinessGUI.listType, typeData.name)
 	end
 
@@ -110,31 +111,78 @@ addEventHandler("onClientGUIClick", root,
             local y = tonumber(CreateBusinessGUI.editPosY.text)
             local z = tonumber(CreateBusinessGUI.editPosZ.text)
 
-            local typeItem = guiComboBoxGetSelected(CreateBusinessGUI.listType)
-            local text = guiComboBoxGetItemText(CreateBusinessGUI.listType, typeItem)
+            local selectedItem = guiComboBoxGetSelected(CreateBusinessGUI.listType)
+            local itemText = guiComboBoxGetItemText(CreateBusinessGUI.listType, selectedItem)
             
-            local price = tonumber(CreateBusinessGUI.editPrice.text) or 0
-
-            if (typeItem == -1 or not x or not y or not z or not price) then
-                return exports.tmtaGUI:createNotice(sW*((sDW-400)/2 /sDW), sH*((sDH-150)/sDH), sW*(400/sDW), 'warning', 'Для создания бизнеса необходимо заполнить все поля', true)
-            elseif (price <= 0) then
-                return exports.tmtaGUI:createNotice(sW*((sDW-400)/2 /sDW), sH*((sDH-150)/sDH), sW*(400/sDW), 'warning', 'Стоимость бизнеса должна быть больше 0', true)
+            local businessConfig = Utils.getBusinessConfigByName(itemText)
+            if not businessConfig then
+                return exports.tmtaGUI:createNotice(sW*((sDW-400)/2 /sDW), sH*((sDH-150)/sDH), sW*(400/sDW), 'warning', 'Ошибка получения конфигурации', true)
             end
 
-            return
+            local price = tonumber(CreateBusinessGUI.editPrice.text) or 0
+            local revenue = tonumber(CreateBusinessGUI.editRevenue.text) or 0
+
+            if (selectedItem == -1 or not x or not y or not z or not price) then
+                return exports.tmtaGUI:createNotice(sW*((sDW-400)/2 /sDW), sH*((sDH-150)/sDH), sW*(400/sDW), 'warning', 'Для создания бизнеса необходимо заполнить все поля', true)
+            elseif (price <= 0 or revenue <= 0 ) then
+                return exports.tmtaGUI:createNotice(sW*((sDW-400)/2 /sDW), sH*((sDH-150)/sDH), sW*(400/sDW), 'warning', 'Стоимость/доход бизнеса должны быть больше 0', true)
+            elseif (price < businessConfig.price[1]) then
+                return exports.tmtaGUI:createNotice(sW*((sDW-400)/2 /sDW), sH*((sDH-150)/sDH), sW*(400/sDW), 'warning', 'Стоимость бизнеса не может быть меньше '..businessConfig.price[1], true)
+            end
+
+            return triggerServerEvent("tmtaBusiness.addBusinessRequest", resourceRoot, x, y, z, businessConfig.type, price, revenue)
         end
     end
 )
+
+function CreateBusinessGUI.onTypeSelect()
+    if source ~= CreateBusinessGUI.listType then
+        return
+    end
+
+    local selectedItem = guiComboBoxGetSelected(source)
+    local itemText = tostring(guiComboBoxGetItemText(source , selectedItem))
+    if (selectedItem == -1) then
+        return
+    end
+
+    local businessConfig = Utils.getBusinessConfigByName(itemText)
+    if not businessConfig then
+        return
+    end
+
+    CreateBusinessGUI.editRevenue.text = businessConfig.revenue
+    CreateBusinessGUI.editPrice.text = businessConfig.price[1]
+end
 
 function CreateBusinessGUI.onPriceChanged()
     if source ~= CreateBusinessGUI.editPrice then
         return
     end
+
     local price = tonumber(CreateBusinessGUI.editPrice.text)
     if not price then
         return
     end
+
+    local businessConfig = Utils.getBusinessConfigByPrice(price)
+    if not businessConfig then
+        return
+    end
+
+    CreateBusinessGUI.editRevenue.text = businessConfig.revenue
+    --CreateBusinessGUI.editPrice.text = businessConfig.price[1]
+    --CreateBusinessGUI.setTypeSelected(businessConfig.name)
 end
+
+-- function CreateBusinessGUI.setTypeSelected(itemText)
+--     local comboBox = CreateBusinessGUI.listType
+--     for item = 0, guiComboBoxGetItemCount(comboBox) do
+--         if (tostring(guiComboBoxGetItemText(comboBox, item)) == itemText) then
+--             return guiComboBoxSetSelected(comboBox, item)
+--         end
+--     end
+-- end
 
 function CreateBusinessGUI.reset()
     CreateBusinessGUI.editPosX.text = ''

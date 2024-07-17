@@ -81,6 +81,13 @@ function format_num(amount, decimal, prefix, neg_prefix)
 end
 
 --
+function isBetween(num, limit_1, limit_2)
+    if num and limit_1 and limit_2 then
+        return num >= limit_1 and num <= limit_2
+    end
+end
+
+--
 function lerp(a, b, k)
 	local result = a * (1-k) + b * k
 	if result >= b then

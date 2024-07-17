@@ -37,6 +37,7 @@
 	<export type="shared" function="roundDownHundred"/>
 	<export type="shared" function="round"/>
 	<export type="shared" function="lerp"/>
+	<export type="shared" function="isBetween"/>
 	<export type="shared" function="formatMoney"/>
 	<export type="shared" function="formatMoneyToShortValue"/>
 	<export type="shared" function="format_num"/>

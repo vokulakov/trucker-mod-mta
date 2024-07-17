@@ -10,6 +10,10 @@ local function dxDrawCustomText(text, x1, y1, x2, y2, color, scale)
 end
 
 addEventHandler("onClientRender", root, function()
+	if not exports.tmtaUI:isPlayerComponentVisible("text3d") then
+		return
+	end
+	
 	local cx, cy, cz = getCameraMatrix()
 	for _, pickup in pairs(FUELING_STREAMED_TEXT) do
 		local xP, yP, zP = getElementPosition(pickup.pickup)

@@ -162,7 +162,6 @@ function House.create(houseData)
     houseData.position = Vector3(position.x, position.y, position.z)
 
     -- Маркер дома
-    local position = houseData.position
     local houseMarker = createMarker(position.x, position.y, position.z-0.6, 'cylinder', 1.5, 255, 255, 255, 0)
     local pickupId = houseData.userId and 1272 or 1273
     local housePickup = createPickup(position.x+0.05, position.y-0.05, position.z, 3, pickupId, 500)

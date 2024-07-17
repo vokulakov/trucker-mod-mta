@@ -8,7 +8,7 @@ function RevenueService.setup()
         {name = 'individualNumber', type = 'VARCHAR', size = '12', options = 'NOT NULL UNIQUE'},
         {name = 'isBusinessEntity', type = 'INTEGER', options = 'DEFAULT 0'}, -- флаг юридической регистрации
         {name = 'propertyTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате налог на имущество
-        {name = 'incomeTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате подоходный налог
+        {name = 'revenueTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате подоходный налог
         {name = 'vehicleTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате транспортный налог
     }, "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL")
 end

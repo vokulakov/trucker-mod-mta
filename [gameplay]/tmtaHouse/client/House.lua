@@ -64,4 +64,3 @@ addEventHandler("tmtaHouse.addHouseResponse", root,
         Utils.showNotice(typeNotice, typeMessage)
     end
 )
-

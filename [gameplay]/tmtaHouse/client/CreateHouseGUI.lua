@@ -168,7 +168,6 @@ addEventHandler("onClientGUIClick", root,
 
             
             return triggerServerEvent("tmtaHouse.addHouseRequest", resourceRoot, x, y, z, interiorId, price, parkingSpaces)
-            --CreateHouseGUI.closeWindow()
         end
     end
 )
@@ -262,7 +261,6 @@ function CreateHouseGUI.closeWindow()
     showCursor(false)
     unbindKey("mouse2", "up", CreateHouseGUI.changeCursorShowing)
 end
-
 
 addEvent("tmtaHouse.openCreateHouseWindow", true)
 addEventHandler("tmtaHouse.openCreateHouseWindow", root, CreateHouseGUI.openWindow)

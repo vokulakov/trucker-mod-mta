@@ -6,11 +6,15 @@
 
     <!-- Shared -->
     <script type="shared" src="shared/Config.lua" cache="false" />
+    <script type="shared" src="shared/Utils.lua" cache="false" />
     <script type="shared" src="shared/include.lua" cache="false" />
 
     <!-- Client -->
     <script type="client" src="client/Utils.lua" cache="false" />
     <script type="client" src="client/CreateBusinessGUI.lua" cache="false" />
+    <script type="client" src="client/Business.lua" cache="false" />
+    <script type="client" src="client/BusinessBlip.lua" cache="false" />
+    <script type="client" src="client/BusinessMarker.lua" cache="false" />
     <script type="client" src="client/main.lua" cache="false" />
 
     <!-- Server -->

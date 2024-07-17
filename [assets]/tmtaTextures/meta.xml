@@ -48,7 +48,9 @@
 	<file src="assets/hud/radar/tuning.png" />
 	<file src="assets/hud/radar/trucker.png" />
 	<file src="assets/hud/radar/checkpoint.png" />
-	
+	<file src="assets/hud/radar/bolka.png" />
+	<file src="assets/hud/radar/business.png" />
+
 	<script type="client" cache="false" src="Config.lua" />
 	<script type="client" cache="false" src="Texture.lua" />
 

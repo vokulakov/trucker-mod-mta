@@ -1,18 +1,20 @@
 Business = {}
+local createdBusiness = {}
 
 BUSINESS_TABLE_NAME = 'business'
 
 function Business.setup()
     exports.tmtaSQLite:dbTableCreate(BUSINESS_TABLE_NAME, {
-        {name = 'name', type = 'VARCHAR', size = 128, options = 'NOT NULL'},
-        {name = 'price', type = 'INTEGER', options = 'DEFAULT 0 NOT NULL'},
-        {name = 'balance', type = 'INTEGER'},
+        {name = 'type', type = 'INTEGER'}, -- тип бизнеса
+        {name = 'name', type = 'VARCHAR', size = 128, options = 'NOT NULL'}, -- название бизнеса
+        {name = 'price', type = 'INTEGER', options = 'DEFAULT 0 NOT NULL'}, -- рыночная стоимость
+        {name = 'balance', type = 'INTEGER', options = 'DEFAULT 0'}, -- баланс бизнеса
 
-        {name = 'revenue', type = 'INTEGER'}, -- выплата
-
-        {name = 'payAmount', type = 'INTEGER'},
+        {name = 'revenue', type = 'INTEGER'}, -- доход
         {name = 'taxAmount', type = 'INTEGER'}, -- сумма налога (к оплате)
-        {name = 'taxUnpayedWeeks', type = 'INTEGER'}, -- сколько недель не оплачивался налог
+
+        {name = 'accrueRevenueAt', type = 'TIMESTAMP'}, -- время начисления прибыли (в timestamp)
+        {name = 'confiscateAt', type = 'TIMESTAMP'}, -- время конфискации в пользу государства (в timestamp)
 
         {name = 'position', type = 'TEXT'},
         {name = 'upgrades', type = 'TEXT'},
@@ -21,6 +23,23 @@ function Business.setup()
     }, 
         "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL,\n"..
         "FOREIGN KEY (editorId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL")
+
+    local successCount, errorCount = 0, 0
+    for _, business in pairs(Business.getAll()) do
+        if (Business.create(business)) then
+            successCount = successCount + 1
+        else
+            errorCount = errorCount + 1
+        end
+    end
+
+    outputDebugString('Система бизнесов загружена')
+    outputDebugString('Успешно создано: '..successCount)
+    outputDebugString('Не удалось создать: '..errorCount)
+end
+
+function Business.getAll()
+    return exports.tmtaSQLite:dbTableSelect(BUSINESS_TABLE_NAME)
 end
 
 function Business.get(businessId, fields, callbackFunctionName, ...)
@@ -32,11 +51,55 @@ function Business.get(businessId, fields, callbackFunctionName, ...)
     return exports.tmtaSQLite:dbTableSelect(BUSINESS_TABLE_NAME, fields, {businessId = businessId}, callbackFunctionName, ...)
 end
 
-function Business.add(posX, posY, posZ, price, callbackFunctionName, ...)
+function Business.add(posX, posY, posZ, type, price, revenue, callbackFunctionName, ...)
     local player = client
     if not isElement(player) then
         return false
     end
+
+    local businessConfig = Utils.getBusinessConfigByType(type)
+    if not businessConfig then
+        return false
+    end
+
+    local businessData = {
+        type = type,
+        name = businessConfig.name,
+        position = tostring(toJSON({x = posX, y = posY, z = posZ})),
+        price = price,
+        revenue = revenue,
+        editorId = player:getData("userId"),
+    }
+
+    local success = exports.tmtaSQLite:dbTableInsert(BUSINESS_TABLE_NAME, businessData, callbackFunctionName, ...)
+    if success then
+        exports.tmtaLogger:log("business", "Added business")
+    end
+
+    return success
+end
+
+addEvent("tmtaBusiness.addBusinessRequest", true)
+addEventHandler("tmtaBusiness.addBusinessRequest", resourceRoot,
+    function(posX, posY, posZ, type, price, revenue)
+        local player = client
+        local success = Business.add(posX, posY, posZ, type, price, revenue, "dbAddBusiness", {player = player})
+        if not success then
+            triggerClientEvent(player, "tmtaBusiness.addBusinessResponse", resourceRoot, false)
+        end
+    end
+)
+
+function dbAddBusiness(result, params)
+	if not params or not isElement(params.player) then
+        return
+    end
+    local player = params.player
+	result = not not result
+    if result then
+    end
+
+    triggerClientEvent(player, "tmtaBusiness.addBusinessResponse", resourceRoot, result)
 end
 
 function Business.remove()
@@ -57,20 +120,52 @@ function Business.update(businessId, fields, callbackFunctionName, ...)
     return success
 end
 
-function Business.buy(player, businessId)
+function Business.create(businessData)
+    if type(businessData) ~= 'table' then
+        return false
+    end
+
+    local businessId = businessData.businessId
+    if (not businessId or type(businessId) ~= 'number') then
+        outputDebugString("Business.create: error businessId", 1)
+        return false
+    end
+
+    if businessData.userId then
+        local result = exports.tmtaCore:getUserDataById(tonumber(businessData.userId), {'nickname'})
+        businessData.owner = result[1].nickname
+    end
+
+    local position = fromJSON(businessData.position)
+    businessData.position = Vector3(position.x, position.y, position.z)
+
+    local businessMarker = createMarker(position.x, position.y, position.z-0.6, 'cylinder', 1.5, 255, 255, 255, 0)
+    local businessPickup = createPickup(position.x+0.05, position.y-0.05, position.z, 3, Config.PICKUP_ID, 500)
+
+    businessMarker:setData('businessId', businessId)
+    businessMarker:setData('isBusinessMarker', true)
+    businessMarker:setData('businessData', businessData)
+
+    createdBusiness[businessId] = {
+        data = businessData,
+        businessMarker = businessMarker,
+        businessPickup = businessPickup,
+    }
+
+    return true
 end
 
-function Business.takeMoney(player, businessId)
-end
+-- function Business.buy(player, businessId)
+-- end
 
-function Business.sell(player, businessId)
-end
+-- function Business.takeMoney(player, businessId)
+-- end
 
-function Business.sellToPlayer(player, businessId)
-end
+-- function Business.sell(player, businessId)
+-- end
 
-function Business.buyUpgrade(player, businessId)
-end
+-- function Business.sellToPlayer(player, businessId)
+-- end
 
-function Business.changeName(businessId)
-end
+-- function Business.changeName(businessId)
+-- end
