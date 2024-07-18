@@ -15,4 +15,18 @@ addCommandHandler("delcurbusiness", function(player, cmd, businessId)
     if not hasObjectPermissionTo(player, "command.delcurbusiness", false) then
         return false
     end
+
+    local success = Business.remove(player, tonumber(businessId))
+    if not success then
+        return
+    end
+
+    local success = Business.destroy(tonumber(businessId))
+    if not success then
+        return
+    end
+    
+    local message = string.format("Бизнес #%d удален!", businessId)
+    triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'success', message)
+
 end, true, false)

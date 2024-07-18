@@ -12,7 +12,7 @@ function BusinessBlip.add(businessMarker, businessId, color)
         'blipBusiness',
         'Бизнес #'..tostring(businessId),
         color or tocolor(255, 255, 255, 255),
-        40
+        80
     )
 
     if not blip then
@@ -26,6 +26,7 @@ function BusinessBlip.remove(businessMarker)
     if not isElement(createdBlips[businessMarker]) then
         return false
     end
+
     destroyElement(createdBlips[businessMarker])
     createdBlips[businessMarker] = nil
 end

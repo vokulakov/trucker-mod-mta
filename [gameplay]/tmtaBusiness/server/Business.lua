@@ -76,7 +76,7 @@ function Business.add(posX, posY, posZ, type, price, revenue, callbackFunctionNa
         exports.tmtaLogger:log("business", "Added business")
     end
 
-    return success
+    return exports.tmtaSQLite:dbQuery('SELECT * FROM `business` ORDER BY `businessId` DESC LIMIT 1', callbackFunctionName, ...)
 end
 
 addEvent("tmtaBusiness.addBusinessRequest", true)
@@ -95,14 +95,39 @@ function dbAddBusiness(result, params)
         return
     end
     local player = params.player
-	result = not not result
-    if result then
+	local success = not not result
+    
+    if success then
+        Business.create(result[1])
     end
 
-    triggerClientEvent(player, "tmtaBusiness.addBusinessResponse", resourceRoot, result)
+    triggerClientEvent(player, "tmtaBusiness.addBusinessResponse", resourceRoot, success)
 end
 
-function Business.remove()
+function Business.remove(player, businessId, callbackFunctionName, ...)
+    if not isElement(player) then
+        return false
+    end
+
+    if type(businessId) ~= "number" then
+        outputDebugString("Business.remove: bad arguments", 1)
+        executeCallback(callbackFunctionName, false)
+        return false
+    end
+
+    local success = exports.tmtaSQLite:dbTableDelete(BUSINESS_TABLE_NAME, { businessId = businessId }, callbackFunctionName, ...)
+	if not success then
+		executeCallback(callbackFunctionName, false)
+	end
+
+    exports.tmtaLogger:log("business", 
+		string.format("Removed business %s. Success: %s", 
+			tostring(businessId), 
+			tostring(success)
+        )
+    )
+
+    return success
 end
 
 function Business.update(businessId, fields, callbackFunctionName, ...)
@@ -151,6 +176,19 @@ function Business.create(businessData)
         businessMarker = businessMarker,
         businessPickup = businessPickup,
     }
+
+    return true
+end
+
+function Business.destroy(businessId)
+    if type(businessId) ~= "number" or not createdBusiness[businessId] then
+        outputDebugString("Business.destroy: bad arguments", 1)
+        return false
+    end
+
+    destroyElement(createdBusiness[businessId].businessMarker)
+    destroyElement(createdBusiness[businessId].businessPickup)
+    createdBusiness[businessId] = nil
 
     return true
 end

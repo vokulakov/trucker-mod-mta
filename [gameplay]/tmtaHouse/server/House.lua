@@ -51,7 +51,8 @@ function House.add(posX, posY, posZ, interiorId, price, parkingSpaces, callbackF
     if success then
         exports.tmtaLogger:log("houses", "Added house")
     end
-    return success
+
+    return exports.tmtaSQLite:dbQuery('SELECT * FROM `house` ORDER BY `houseId` DESC LIMIT 1', callbackFunctionName, ...)
 end
 
 -- Удалить дом
@@ -353,13 +354,12 @@ function dbAddHouse(result, params)
         return
     end
     local player = params.player
-	result = not not result
-    if result then
-        local houses = House.getList()
-        for _, houseData in pairs(houses) do
-            House.create(houseData)
-        end
+    local success = not not result
+    
+    if success then
+        House.create(result[1])
     end
+
     triggerClientEvent(player, "tmtaHouse.addHouseResponse", resourceRoot, result)
 end
 

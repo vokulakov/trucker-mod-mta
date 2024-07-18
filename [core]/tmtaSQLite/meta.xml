@@ -17,4 +17,5 @@
     <export type="server" function="dbTableUpdate" />
     <export type="server" function="dbTableDelete" />
     <export type="server" function="dbTableAlter" />
+    <export type="server" function="dbQuery" />
 </meta>

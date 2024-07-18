@@ -295,6 +295,29 @@ function DatabaseTable.alter(tableName, options, callbackFunctionName, ...)
 		"ALTER TABLE `??` " .. options .. ";",
 		tableName
 	)
+
+	local queryString = connection:prepareString([[SELECT count(*) 
+		FROM information_schema.TABLES 
+		WHERE (TABLE_SCHEMA = ?) AND (TABLE_NAME = ?)
+	]], DatabaseConfig.dbName, tableName)
+
+	return retrieveQueryResults(connection, queryString, sourceResourceRoot, callbackFunctionName, ...)
+end
+
+-- Прямой запрос
+function DatabaseTable.query(queryString, callbackFunctionName, ...)
+	if type(queryString) ~= "string" then
+		outputDebugString("ERROR: DatabaseTable.query: bad arguments")
+		return false
+	end
+	local connection = Database.getConnection()
+	if not connection then
+		outputDebugString("ERROR: DatabaseTable.query: no database connection")
+		return false
+	end
+
+	local queryString = connection:prepareString(queryString)
+
 	return retrieveQueryResults(connection, queryString, sourceResourceRoot, callbackFunctionName, ...)
 end
 
@@ -305,3 +328,5 @@ dbTableInsert = DatabaseTable.insert
 dbTableUpdate = DatabaseTable.update
 dbTableDelete = DatabaseTable.delete
 dbTableAlter  = DatabaseTable.alter
+
+dbQuery = DatabaseTable.query

@@ -11,7 +11,7 @@ function HouseBlip.add(houseMarker, houseNumber, color)
         'blipProperty',
         'Дом #'..tostring(houseNumber),
         color or tocolor(255, 255, 255, 255),
-        40
+        80
     )
 
     if not blip then
