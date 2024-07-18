@@ -39,14 +39,20 @@ addEventHandler("onClientRender", root,
                         offsetY = offsetY + 15
                         dxDrawText3D(status, nx, ny + offsetY*scale, nx + width, ny + height, statusColor, scale, Utils.fonts.DX_Elowen_22, 'center', 'top')
 
+                        -- Название
+					    local propertyClassStr = 'Название: #f2ab12'..data.name
+					    offsetY = offsetY + 45
+					    dxDrawText3D(propertyClassStr, nx, ny + offsetY*scale, nx + width, ny + height, tocolor(255, 255, 255, 255), scale, Utils.fonts.DX_RB_12, 'center', 'top')
+
                         -- Владелец
                         local businessOwner = data.owner or 'государство'
                         local businessOwnerStr = 'Владелец: #f2ab12'..businessOwner
-                        offsetY = offsetY + 45
+                        offsetY = offsetY + 25
                         dxDrawText3D(businessOwnerStr, nx, ny + offsetY*scale, nx + width, ny + height, tocolor(255, 255, 255, 255), scale, Utils.fonts.DX_RB_12, 'center', 'top')
                     
-                        -- Цена
-                        local titleStr = 'Стоимость:'
+                        
+                        -- Стоимость
+                        local titleStr = 'Цена:'
                         local priceStr = data.price
                         
                         local textTittleWidth = dxGetTextWidth(titleStr, 1, Utils.fonts.DX_RB_12) -- ширина текста
@@ -70,6 +76,31 @@ addEventHandler("onClientRender", root,
                     end
                 end
             end
+        end
+    end
+)
+
+addEventHandler("onClientMarkerHit", resourceRoot, 
+    function(player, matchingDimension)
+        local marker = source
+        if getElementType(player) ~= "player" or player ~= localPlayer or isPedInVehicle(player) then 
+            return 
+        end
+
+        local verticalDistance = player.position.z - source.position.z
+        if verticalDistance > 5 or verticalDistance < -1 then
+            return
+        end
+
+        if not matchingDimension then
+            return
+        end
+    
+        if marker:getData('isBusinessMarker') then
+            local businessData = marker:getData('businessData')
+		    businessData.number = tostring(businessData.businessId)
+		    businessData.price = tostring(exports.tmtaUtils:formatMoney(businessData.price))
+            BusinessGUI.openWindow(businessData)
         end
     end
 )

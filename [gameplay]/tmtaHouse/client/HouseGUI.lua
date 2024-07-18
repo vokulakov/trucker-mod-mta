@@ -75,7 +75,7 @@ function HouseGUI.render(houseData)
     guiLabelSetColor(HouseGUI.lblHomeSpaces, 242, 171, 18)
     HouseGUI.lblHomeSpaces.enabled = false
     --
-    HouseGUI.lblHomePrice = guiCreateLabel(15, sH*(180/sDH), sW*(width/sDW), 30, "Стоимость:", false, HouseGUI.wnd)
+    HouseGUI.lblHomePrice = guiCreateLabel(15, sH*(180/sDH), sW*(width/sDW), 30, "Цена:", false, HouseGUI.wnd)
     guiLabelSetHorizontalAlign(HouseGUI.lblHomeSpaces, "left", false)
     guiSetFont(HouseGUI.lblHomePrice, Utils.fonts.RR_11)
     HouseGUI.lblHomePrice.enabled = false

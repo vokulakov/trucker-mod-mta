@@ -344,7 +344,6 @@ addEventHandler("tmtaHouse.onPlayerBuyHouse", resourceRoot,
                 housePrice = houseData.price
             }
         )
-
     end
 )
 

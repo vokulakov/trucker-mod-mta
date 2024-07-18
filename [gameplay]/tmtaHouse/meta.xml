@@ -26,5 +26,9 @@
 
 	<!-- Server -->
 	<script type="server" src="server/House.lua" />
+	<script type="server" src="server/exports.lua" />
 	<script type="server" src="server/main.lua" />
+
+	<!-- Exports -->
+	<export type="server" function="getPlayerHouses" />
 </meta>

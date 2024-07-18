@@ -62,7 +62,7 @@ addEventHandler("onClientRender", root, function()
 					dxDrawText3D(parkingSpacesStr, nx, ny + offsetY*scale, nx + width, ny + height, tocolor(255, 255, 255, 255), scale, Utils.fonts.DX_RB_12, 'center', 'top')
 					
 					-- Цена
-					local titleStr = 'Стоимость:'
+					local titleStr = 'Цена:'
 					local priceStr = houseData.price
 					
 					local textTittleWidth = dxGetTextWidth(titleStr, 1, Utils.fonts.DX_RB_12) -- ширина текста

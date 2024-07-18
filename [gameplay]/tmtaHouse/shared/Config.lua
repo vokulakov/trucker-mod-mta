@@ -2,7 +2,7 @@ Config = {}
 
 -- Const
 Config.SELL_COMMISSION = 0.5 -- комиссия за продажу дома государству 
-Config.PLAYER_MAX_HOUSES = 3 -- максимальное количество домов у игрока
+Config.PLAYER_MAX_HOUSES = 1 -- максимальное количество домов у игрока
 Config.PROPERTY_TAX = 0.13 -- налог на имущество
 
 -- communal payments

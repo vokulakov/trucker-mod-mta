@@ -15,6 +15,7 @@
     <script type="client" src="client/Business.lua" cache="false" />
     <script type="client" src="client/BusinessBlip.lua" cache="false" />
     <script type="client" src="client/BusinessMarker.lua" cache="false" />
+    <script type="client" src="client/BusinessGUI.lua" cache="false" />
     <script type="client" src="client/main.lua" cache="false" />
 
     <!-- Server -->

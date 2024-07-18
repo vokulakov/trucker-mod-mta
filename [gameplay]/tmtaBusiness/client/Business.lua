@@ -78,3 +78,11 @@ addEventHandler("tmtaBusiness.addBusinessResponse", root,
         Utils.showNotice(typeNotice, typeMessage)
     end
 )
+
+function Business.buy(businessId)
+    if type(businessId) ~= "number" then
+        return false
+    end
+    BusinessGUI.closeWindow()
+    triggerServerEvent("tmtaBusiness.onPlayerBuyBusiness", resourceRoot, businessId)
+end
