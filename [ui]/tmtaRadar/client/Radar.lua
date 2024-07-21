@@ -5,6 +5,7 @@ local sW, sH = guiGetScreenSize()
 local sDW, sDH = exports.tmtaUI:getScreenSize()
 
 local Textures = {}
+
 local streamedPlayer = {}
 
 local WORLD_SIZE = 3072
@@ -146,6 +147,20 @@ function Radar.calcBlipPos(direction, radius)
     return x, y
 end
 
+local function onPlayerStreamIn(player)
+    if (player.type ~= "player") then
+        return
+    end
+    streamedPlayer[player] = true
+end
+
+local function onPlayerStremOut(player)
+    if (player.type ~= "player") then
+        return
+    end
+    streamedPlayer[player] = nil
+end
+
 function Radar.start()
     if (mapRenderTarget) then
         return
@@ -196,6 +211,10 @@ function Radar.start()
     camera = getCamera()
     setAnimData('hiteffect', 0.1)
 
+    for _, player in pairs(getElementsByType("player", true)) do 
+        onPlayerStremOut(player)
+    end
+
     Radar.visible = true
 end
 addEventHandler("onClientResourceStart", resourceRoot, Radar.start)
@@ -213,19 +232,13 @@ addEventHandler("onClientPlayerDamage", localPlayer,
 
 addEventHandler("onClientElementStreamIn", root, 
     function()
-        if source.type ~= "player" then
-            return
-        end
-        streamedPlayer[source] = true
+        onPlayerStreamIn(source)
     end
 )
 
 addEventHandler("onClientElementStreamOut", root, 
     function()
-        if source.type ~= "player" then
-            return
-        end
-        streamedPlayer[source] = nil
+        onPlayerStremOut(source)
     end
 )
 
@@ -234,12 +247,8 @@ addEventHandler("onClientPlayerJoin", root,
         if (not isElementStreamedIn(source)) then
             return
         end
-	    streamedPlayer[source] = true
+	    onPlayerStreamIn(source)
     end
 )
 
-addEventHandler("onClientPlayerQuit", root, 
-    function()
-	    streamedPlayer[source] = nil
-    end
-)
+addEventHandler("onClientPlayerQuit", root, onPlayerStremOut)
