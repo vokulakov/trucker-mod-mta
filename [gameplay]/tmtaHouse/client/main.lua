@@ -7,9 +7,6 @@ addEventHandler("onClientResourceStart", resourceRoot,
 
 addEventHandler("onClientResourceStop", resourceRoot,
     function()
-        for _, houseMarker in pairs(getElementsByType('marker', resourceRoot)) do
-            HouseBlip.remove(houseMarker)
-        end
     end
 )
 

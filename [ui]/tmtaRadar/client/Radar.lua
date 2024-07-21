@@ -39,19 +39,17 @@ local function drawBlips()
         if (blipIcon and Textures[blipIcon]) then
             local x, y, z = getElementPosition(blip)
             local distance = getDistanceBetweenPoints2D(x, y, playerPosition.x, playerPosition.y)
-            if (distance <= blip.visibleDistance) then
-                if (distance <= MAX_DISTANCE_BLIP_VISIBLE) then
-                    local radius = distance/mapZoomScale
-                    local direction = math.atan2(blip.position.x - playerPosition.x, blip.position.y - playerPosition.y) + math.rad(camera.rotation.z)
-                    local blipX, blipY = Radar.calcBlipPos(direction, radius)
+            if (distance <= blip.visibleDistance and distance <= MAX_DISTANCE_BLIP_VISIBLE) then
+                local radius = distance/mapZoomScale
+                local direction = math.atan2(blip.position.x - playerPosition.x, blip.position.y - playerPosition.y) + math.rad(camera.rotation.z)
+                local blipX, blipY = Radar.calcBlipPos(direction, radius)
 
-                    local blipSize = BLIP_SIZE/1.3
-                    local blipColor = blip:getData("color") or tocolor(255, 255, 255)
-                    local isVisible = true
-        
-                    if isVisible then
-                        dxDrawImage(radarPosX + blipX - (blipSize)/2, radarPosY + blipY - (blipSize)/2, blipSize, blipSize, Textures[blipIcon], 0, 0, 0, blipColor)
-                    end
+                local blipSize = BLIP_SIZE/1.3
+                local blipColor = blip:getData("color") or tocolor(255, 255, 255)
+                local isVisible = true
+    
+                if isVisible then
+                    dxDrawImage(radarPosX + blipX - (blipSize)/2, radarPosY + blipY - (blipSize)/2, blipSize, blipSize, Textures[blipIcon], 0, 0, 0, blipColor)
                 end
             end
         end
@@ -193,6 +191,7 @@ function Radar.start()
     Textures.blipCheckpoint      = exports.tmtaTextures:createTexture('blipCheckpoint')
     Textures.blipHospital        = exports.tmtaTextures:createTexture('blipHospital')
     Textures.blipBusiness        = exports.tmtaTextures:createTexture('blipBusiness')
+    Textures.blipRevenueService  = exports.tmtaTextures:createTexture('blipRevenueService')
     
     camera = getCamera()
     setAnimData('hiteffect', 0.1)

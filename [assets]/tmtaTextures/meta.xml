@@ -50,6 +50,7 @@
 	<file src="assets/hud/radar/checkpoint.png" />
 	<file src="assets/hud/radar/hospital.png" />
 	<file src="assets/hud/radar/business.png" />
+	<file src="assets/hud/radar/revenueService.png" />
 
 	<script type="client" cache="false" src="Config.lua" />
 	<script type="client" cache="false" src="Texture.lua" />

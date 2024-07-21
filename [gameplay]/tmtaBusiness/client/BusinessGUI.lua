@@ -6,6 +6,10 @@ local sDW, sDH = Utils.sDW, Utils.sDH
 local width, height = 350, 220
 local posX, posY = (sDW-width) /2, (sDH-height) /2
 
+local textures = {
+	moneyIcon = exports.tmtaTextures:createTexture('i_money'),
+}
+
 function BusinessGUI.render(businessData)
     if isElement(BusinessGUI.wnd) then 
         return 
@@ -79,7 +83,7 @@ function BusinessGUI.render(businessData)
     BusinessGUI.iconMoney = exports.tmtaTextures:createStaticImage(15+offsetX, sH*((155)/sDH), sW*(32 /sDW), sH*(28 /sDH), 'i_money', false, BusinessGUI.wnd)
     BusinessGUI.iconMoney.enabled = false
 
-    BusinessGUI.lblBusinessPrice = guiCreateLabel(15+offsetX+32+5, sH*((155+2.5)/sDH), sW*(width/sDW), 30, businessData.price, false, BusinessGUI.wnd)
+    BusinessGUI.lblBusinessPrice = guiCreateLabel(15+offsetX+32+5, sH*((155+5)/sDH), sW*(width/sDW), 30, businessData.price, false, BusinessGUI.wnd)
     guiLabelSetHorizontalAlign(BusinessGUI.lblBusinessPrice, "left", false)
     guiSetFont(BusinessGUI.lblBusinessPrice, Utils.fonts.RB_11)
     guiLabelSetColor(BusinessGUI.lblBusinessPrice, 242, 171, 18)

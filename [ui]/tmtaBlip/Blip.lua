@@ -26,22 +26,23 @@ function Blip.createAttachedTo(elementToAttachTo, iconName, blipInfo, color, vis
     return blip
 end
 
-addEventHandler("onClientResourceStop", root,
-	function(stoppedRes)
-		local blips = Blip.created[stoppedRes]
-		if not blips then
-			return
-		end
-
-		for _, blip in ipairs(blips) do
-			if isElement(blip) then
-				destroyElement(blip)
-			end
-		end
-
-		Blip.created[stoppedRes] = nil
+local function onResourceStop(stoppedRes)
+	local blips = Blip.created[stoppedRes]
+	if not blips then
+		return
 	end
-)
+
+	for _, blip in ipairs(blips) do
+		if isElement(blip) then
+			destroyElement(blip)
+		end
+	end
+
+	Blip.created[stoppedRes] = nil
+end
+
+addEventHandler("onClientResourceStop", root, onResourceStop)
+addEventHandler('onResourceStop', resourceRoot, onResourceStop)
 
 -- Exports
 createAttachedTo = Blip.createAttachedTo

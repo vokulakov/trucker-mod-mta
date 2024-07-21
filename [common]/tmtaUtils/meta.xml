@@ -8,7 +8,7 @@
 	<script type="shared" src="shared/math.lua"/>
 	<script type="shared" src="shared/other.lua"/>
 	<script type="shared" src="shared/vehicles.lua"/>
-
+	<script type="shared" src="shared/formatter.lua"/>
 	<script type="server" src="server/players.lua"/>
 
 
@@ -57,4 +57,8 @@
 	<export type="shared" function="differenceBetweenAnglesRadians"/>
 
 	<export type="server" function="isPlayerAdmin"/>
+
+	<!-- Formatter -->
+	<export type="shared" function="tobool" />
+	tobool
 </meta>

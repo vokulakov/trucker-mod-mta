@@ -5,7 +5,6 @@ Utils.textures = {
 	moneyIcon = exports.tmtaTextures:createTexture('i_money'),
 }
 
-
 -- Шрифты
 Utils.fonts = {
     ['RR_8'] = exports.tmtaFonts:createFontGUI('RobotoRegular', 8),

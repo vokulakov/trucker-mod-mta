@@ -355,6 +355,7 @@ function Map.start()
     Textures.blipCheckpoint      = exports.tmtaTextures:createTexture('blipCheckpoint')
     Textures.blipHospital        = exports.tmtaTextures:createTexture('blipHospital')
     Textures.blipBusiness        = exports.tmtaTextures:createTexture('blipBusiness')
+    Textures.blipRevenueService  = exports.tmtaTextures:createTexture('blipRevenueService')
 
     bindKey("f11", "down", function()
         if not isCursorShowing() then

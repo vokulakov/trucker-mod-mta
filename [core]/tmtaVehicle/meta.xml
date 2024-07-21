@@ -1,9 +1,20 @@
 <meta>
     <oop>true</oop>
+    <download_priority_group>99</download_priority_group>
+    <include resource="tmtaSQLite" />
+    <include resource="tmtaModule" />
+
+    <!-- Shared -->
+    <script type="shared" src="shared/include.lua" cache="false" />
+    <script type="shared" src="shared/Config.lua" cache="false" />
+    <script type="shared" src="shared/Utils.lua" cache="false" />
 
     <!-- Client -->
     <script type="client" src="client/SpeedLimit.lua" cache="false" />
     <script type="client" src="client/Mileage.lua" cache="false" />
     <script type="client" src="client/WheelsRotation.lua" cache="false" />
     <script type="client" src="client/main.lua" cache="false" />
+
+    <!-- Server -->
+    <script type="server" src="server/main.lua" />
 </meta>

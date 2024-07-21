@@ -8,7 +8,7 @@ function RevenueService.setup()
         {name = 'individualNumber', type = 'VARCHAR', size = '12', options = 'NOT NULL UNIQUE'},
         {name = 'isBusinessEntity', type = 'INTEGER', options = 'DEFAULT 0'}, -- флаг юридической регистрации
         {name = 'propertyTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате налог на имущество
-        {name = 'revenueTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате подоходный налог
+        {name = 'incomeTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате подоходный налог
         {name = 'vehicleTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате транспортный налог
     }, "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL")
 end
@@ -59,6 +59,13 @@ function RevenueService.add(userId, callbackFunctionName, ...)
 	return not not success, RevenueService.getUserDataById(userId, {}, callbackFunctionName, ...)
 end
 
+function RevenueService.update()
+    if (type(userId) ~= "string" or type(fields) ~= "table") then
+        return false
+    end
+    return exports.tmtaSQLite:dbTableUpdate(REVENUE_SERVICE_TABLE_NAME, fields, {userId = userId}, "callback")
+end
+
 function RevenueService.getUserDataById(userId, fields, callbackFunctionName, ...)
     if (type(userId) ~= "number" or type(fields) ~= "table") then
 		executeCallback(callbackFunctionName, false)
@@ -69,9 +76,45 @@ function RevenueService.getUserDataById(userId, fields, callbackFunctionName, ..
     return exports.tmtaSQLite:dbTableSelect(REVENUE_SERVICE_TABLE_NAME, fields, {userId = userId}, callbackFunctionName, ...)
 end
 
-function RevenueService.update()
-    if (type(userId) ~= "string" or type(fields) ~= "table") then
+function RevenueService.getPlayerData(player)
+    if not isElement(player) then
         return false
     end
-    return exports.tmtaSQLite:dbTableUpdate(REVENUE_SERVICE_TABLE_NAME, fields, {userId = userId}, "callback")
+
+    local userId = player:getData('userId')
+    return RevenueService.getUserDataById(userId, {}, 'callbackGetUserData', {player = player})
+end
+
+function callbackGetUserData(result, params)
+	if not params then
+        return
+    end
+
+    local player = params.player
+	local success = not not result
+
+    if (not success or not isElement(player)) then
+        return
+    end
+
+    if (type(result) ~= 'table' or #result == 0) then
+        local userId = player:getData('userId')
+        return RevenueService.add(userId, "callbackGetUserData", {player = player})
+    end
+
+    result = result[1]
+
+    player:setData('individualNumber', result.individualNumber)
+    player:setData('isBusinessEntity', exports.tmtaUtils:tobool(result.isBusinessEntity))
+
+    local propertyTaxPayable = tonumber(result.propertyTaxPayable) or 0
+    player:setData('propertyTaxPayable', propertyTaxPayable)
+
+    local incomeTaxPayable = tonumber(result.incomeTaxPayable) or 0
+    player:setData('incomeTaxPayable', incomeTaxPayable)
+
+    local vehicleTaxPayable = tonumber(result.vehicleTaxPayable) or 0
+    player:setData('vehicleTaxPayable', vehicleTaxPayable)
+
+    player:setData('taxAmount', propertyTaxPayable+incomeTaxPayable+vehicleTaxPayable)
 end

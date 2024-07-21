@@ -3,6 +3,13 @@ local function createRevenueServicePickup(posX, posY, posZ)
     local pickup = createPickup(posX+0.05, posY-0.05, posZ, 3, Config.PICKUP_ID, 500)
     marker:setData('isRevenueServiceMarker', true)
 
+    exports.tmtaBlip:createAttachedTo(
+        marker, 
+        'blipRevenueService',
+        'Налоговая служба',
+        tocolor(255, 0, 0, 255)
+    )
+
     return marker
 end
 
@@ -11,6 +18,10 @@ addEventHandler("onResourceStart", resourceRoot,
         RevenueService.setup()
         for _, revenueService in ipairs(Config.REVENUE_SERVICE) do
             createRevenueServicePickup(revenueService.position.x, revenueService.position.y, revenueService.position.z)
+        end
+
+        for _, player in pairs(getElementsByType("player")) do 
+            RevenueService.getPlayerData(player)
         end
     end
 )
@@ -34,29 +45,6 @@ addEventHandler('tmtaCore.login', root,
             return
         end
 
-        local userId = player:getData('userId')
-        RevenueService.getUserDataById(userId, {}, 'callbackGetUserData', {player = player})
+        RevenueService.getPlayerData(player)
     end
 )
-
-function callbackGetUserData(result, params)
-	if not params then
-        return
-    end
-
-    local player = params.player
-	local success = not not result
-
-    if (not success or not isElement(player)) then
-        return
-    end
-
-    if (type(result) ~= 'table' or #result == 0) then
-        local userId = player:getData('userId')
-        return RevenueService.add(userId, "callbackGetUserData", {player = player})
-    end
-
-    result = result[1]
-
-    player:setData('individualNumber', result.individualNumber)
-end

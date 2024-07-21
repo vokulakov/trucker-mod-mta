@@ -84,7 +84,7 @@ function HouseGUI.render(houseData)
     HouseGUI.iconMoney = exports.tmtaTextures:createStaticImage(15+offsetX, sH*((180)/sDH), sW*(32 /sDW), sH*(28 /sDH), 'i_money', false, HouseGUI.wnd)
     HouseGUI.iconMoney.enabled = false
 
-    HouseGUI.lblHomePrice = guiCreateLabel(15+offsetX+32+5, sH*((180+2.5)/sDH), sW*(width/sDW), 30, houseData.price, false, HouseGUI.wnd)
+    HouseGUI.lblHomePrice = guiCreateLabel(15+offsetX+32+5, sH*((180+5)/sDH), sW*(width/sDW), 30, houseData.price, false, HouseGUI.wnd)
     guiLabelSetHorizontalAlign(HouseGUI.lblHomePrice, "left", false)
     guiSetFont(HouseGUI.lblHomePrice, Utils.fonts.RB_11)
     guiLabelSetColor(HouseGUI.lblHomePrice, 242, 171, 18)
