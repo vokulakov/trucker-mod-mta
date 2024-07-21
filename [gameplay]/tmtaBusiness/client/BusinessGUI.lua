@@ -86,7 +86,6 @@ function BusinessGUI.render(businessData)
     BusinessGUI.lblBusinessPrice.enabled = false
 
     -- Кнопки
-
     if isSell then
         BusinessGUI.btnBuy = guiCreateButton(sW*(0/sDW), sH*((height-50)/sDH), sW*(width/sDW), sH*(40/sDH), "Купить", false, BusinessGUI.wnd)
         guiSetFont(BusinessGUI.btnBuy, Utils.fonts.RR_10)

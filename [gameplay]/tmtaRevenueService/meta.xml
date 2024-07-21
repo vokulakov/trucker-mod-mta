@@ -8,5 +8,9 @@
     <script type="client" src="client/main.lua" cache="false" />
 
     <script type="server" src="server/RevenueService.lua" />
+    <script type="server" src="server/exports.lua" />
     <script type="server" src="server/main.lua" />
+
+    <!-- Exports -->
+	<export type="server" function="isPlayerBusinessEntity" />
 </meta>

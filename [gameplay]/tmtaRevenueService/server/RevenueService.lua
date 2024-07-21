@@ -73,6 +73,5 @@ function RevenueService.update()
     if (type(userId) ~= "string" or type(fields) ~= "table") then
         return false
     end
-
     return exports.tmtaSQLite:dbTableUpdate(REVENUE_SERVICE_TABLE_NAME, fields, {userId = userId}, "callback")
 end

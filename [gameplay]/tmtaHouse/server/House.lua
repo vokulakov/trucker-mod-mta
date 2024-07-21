@@ -27,6 +27,20 @@ function House.setup()
         "FOREIGN KEY (editorId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL")
 end
 
+-- Получить данные дома
+function House.get(houseId)
+    if type(houseId) ~= "number" then
+        outputDebugString("House.get: bad arguments", 1)
+        return false
+    end
+    return exports.tmtaSQLite:dbTableSelect(HOUSE_TABLE_NAME, {}, { houseId = houseId })
+end
+
+-- Получить список всех домов
+function House.getList()
+    return exports.tmtaSQLite:dbTableSelect(HOUSE_TABLE_NAME)
+end
+
 -- Добавить дом
 function House.add(posX, posY, posZ, interiorId, price, parkingSpaces, callbackFunctionName, ...)
     local player = client
@@ -53,6 +67,31 @@ function House.add(posX, posY, posZ, interiorId, price, parkingSpaces, callbackF
     end
 
     return exports.tmtaSQLite:dbQuery('SELECT * FROM `house` ORDER BY `houseId` DESC LIMIT 1', callbackFunctionName, ...)
+end
+
+addEvent("tmtaHouse.addHouseRequest", true)
+addEventHandler("tmtaHouse.addHouseRequest", resourceRoot,
+    function(posX, posY, posZ, interiorId, price, parkingSpaces)
+        local player = client
+        local success = House.add(posX, posY, posZ, interiorId, price, parkingSpaces, "dbAddHouse", {player = player})
+        if not success then
+            triggerClientEvent(player, "tmtaHouse.addHouseResponse", resourceRoot, false)
+        end
+    end
+)
+
+function dbAddHouse(result, params)
+	if not params or not isElement(params.player) then
+        return
+    end
+    local player = params.player
+    local success = not not result
+    
+    if success then
+        House.create(result[1])
+    end
+
+    triggerClientEvent(player, "tmtaHouse.addHouseResponse", resourceRoot, result)
 end
 
 -- Удалить дом
@@ -102,15 +141,6 @@ function House.update(houseId, fields, callbackFunctionName, ...)
     return success
 end
 
--- Получить данные дома
-function House.get(houseId)
-    if type(houseId) ~= "number" then
-        outputDebugString("House.get: bad arguments", 1)
-        return false
-    end
-    return exports.tmtaSQLite:dbTableSelect(HOUSE_TABLE_NAME, {}, { houseId = houseId })
-end
-
 -- Получить список всех домов игрока
 function House.getHousesPlayer(userId, callbackFunctionName, ...)
     if type(userId) ~= "number" then
@@ -119,11 +149,6 @@ function House.getHousesPlayer(userId, callbackFunctionName, ...)
         return false
     end
     return exports.tmtaSQLite:dbTableSelect(HOUSE_TABLE_NAME, {}, { userId = userId }, callbackFunctionName, ...)
-end
-
--- Получить список всех домов
-function House.getList()
-    return exports.tmtaSQLite:dbTableSelect(HOUSE_TABLE_NAME)
 end
 
 -- Создать дом
@@ -226,18 +251,6 @@ function House.destroy(houseId)
     return true
 end
 
--- Events
-addEvent("tmtaHouse.addHouseRequest", true)
-addEventHandler("tmtaHouse.addHouseRequest", resourceRoot,
-    function(posX, posY, posZ, interiorId, price, parkingSpaces)
-        local player = client
-        local success = House.add(posX, posY, posZ, interiorId, price, parkingSpaces, "dbAddHouse", {player = player})
-        if not success then
-            triggerClientEvent(player, "tmtaHouse.addHouseResponse", resourceRoot, false)
-        end
-    end
-)
-
 addEvent("tmtaHouse.onPlayerHouseEnter", true)
 addEventHandler("tmtaHouse.onPlayerHouseEnter", resourceRoot,
     function(houseId)
@@ -336,7 +349,7 @@ addEventHandler("tmtaHouse.onPlayerBuyHouse", resourceRoot,
 
         updatePlayerLots(player, houseData)
 
-        House.update(houseId, {userId = userId}, "dbBuyHouse", 
+        return House.update(houseId, {userId = userId}, "dbBuyHouse", 
             {
                 player = player, 
                 userId = userId, 
@@ -346,21 +359,6 @@ addEventHandler("tmtaHouse.onPlayerBuyHouse", resourceRoot,
         )
     end
 )
-
--- Callbacks
-function dbAddHouse(result, params)
-	if not params or not isElement(params.player) then
-        return
-    end
-    local player = params.player
-    local success = not not result
-    
-    if success then
-        House.create(result[1])
-    end
-
-    triggerClientEvent(player, "tmtaHouse.addHouseResponse", resourceRoot, result)
-end
 
 function dbBuyHouse(result, params)
     if not params or not isElement(params.player) then
