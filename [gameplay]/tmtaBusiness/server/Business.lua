@@ -206,6 +206,42 @@ end
 function Business.buy(player, businessId)
 end
 
+function Business.validatePlayerOnBuy(player)
+    if not isElement(player) then
+        return false
+    end
+
+    local userId = player:getData("userId")
+    local playerBusiness = Business.getPlayerBusiness(userId)
+    if (#playerBusiness >= Config.PLAYER_MAX_BUSINESS) then
+        local errorMessage = string.format('Вы можете одновремено владеть только %d бизнесом', Config.PLAYER_MAX_BUSINESS)
+        return false, errorMessage
+    end
+
+    if (exports.tmtaExperience:getPlayerLvl(player) < Config.PLAYER_REQUIRED_LVL) then
+        local errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
+        return false, errorMessage
+    end
+
+    if (not exports.tmtaRevenueService:isPlayerBusinessEntity(player)) then
+        local errorMessage = 'Для владения бизнесом Вам необходимо всать на учёт в налоговой службе'
+        return false, errorMessage
+    end
+
+    local playerHouses = exports.tmtaHouse:getPlayerHouses(player)
+    if (type(playerHouses) ~= 'table' or #playerHouses == 0) then
+        local errorMessage = 'Для покупки бизнеса необходимо наличие недвижимости'
+        return false, errorMessage
+    end
+    
+    if (exports.tmtaMoney:getPlayerMoney(player) < businessData.price) then
+        local errorMessage = 'Недостаточно средств для покупки бизнеса'
+        return false, errorMessage
+    end
+
+    return true
+end
+
 addEvent("tmtaBusiness.onPlayerBuyBusiness", true)
 addEventHandler("tmtaBusiness.onPlayerBuyBusiness", resourceRoot,
     function(businessId)
@@ -228,33 +264,11 @@ addEventHandler("tmtaBusiness.onPlayerBuyBusiness", resourceRoot,
             return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Ошибка покупки бизнеса. Обратитесь к Администратору!')
         end
 
-        local errorMessage = null
-
-        local userId = player:getData("userId")
-        local playerBusiness = Business.getPlayerBusiness(userId)
-        if (#playerBusiness >= Config.PLAYER_MAX_BUSINESS) then
-            errorMessage = string.format('Вы можете одновремено владеть только %d бизнесом', Config.PLAYER_MAX_BUSINESS)
-        end
-
-        local lvl = exports.tmtaExperience:getPlayerLvl(player)
-        if (lvl < Config.PLAYER_REQUIRED_LVL) then
-            errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
-        end
-
-        local playerHouses = exports.tmtaHouse:getPlayerHouses(player)
-        if (type(playerHouses) ~= 'table' or #playerHouses == 0) then
-            errorMessage = 'Для покупки бизнеса необходимо наличие недвижимости'
+        local success, errorMessage = Business.validatePlayerOnBuy(player)
+        if (not success and errorMessage) then
+            triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'warning', errorMessage)
         end
         
-        local playerMoney = exports.tmtaMoney:getPlayerMoney(player)
-        if (playerMoney < businessData.price) then
-            errorMessage = 'Недостаточно средств для покупки бизнеса'
-        end
-
-        if (errorMessage ~= null) then
-            return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'warning', errorMessage)
-        end
-
         --TODO:: покупка бизнеса
 
     end
