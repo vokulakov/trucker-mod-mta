@@ -6,4 +6,8 @@
 	<file src="assets/world.jpg"/>
     
 	<script type="client" src="main.lua" cache="false" />
+
+	<!-- Exports -->
+	<export type="client" function="open" />
+	<export type="client" function="map" />
 </meta>

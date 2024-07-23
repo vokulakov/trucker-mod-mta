@@ -398,3 +398,7 @@ addEventHandler("onClientPlayerQuit", root,
 	    streamedPlayer[source] = nil
     end
 )
+
+-- Exports
+open = Map.open
+close = Map.close

@@ -53,6 +53,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaVehicleControl',
     
     'tmtaCameraView',
+    'tmtaCamHack',
     'tmtaPlayerLookAt',
     'tmtaPlayerMoneyCase',
     'tmtaTrafficLights',

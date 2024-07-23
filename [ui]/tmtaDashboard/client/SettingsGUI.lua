@@ -34,7 +34,7 @@ function Settings.create()
     -- Графика
     Settings.tabGraphics = guiCreateTab("Графика", Settings.tabPanel)
 
-    Settings.lbl = guiCreateLabel(0, 15, width-15, height, "Улучшения графики", false, Settings.tabGraphics)
+    Settings.lbl = guiCreateLabel(0, 15, width-25, 20, "Улучшения графики", false, Settings.tabGraphics)
     guiSetFont(Settings.lbl, Utils.fonts['RR_10'])
     guiLabelSetColor(Settings.lbl, 33, 177, 255)
     guiLabelSetHorizontalAlign(Settings.lbl, 'center')

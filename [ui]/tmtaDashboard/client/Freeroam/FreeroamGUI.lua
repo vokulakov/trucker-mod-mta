@@ -86,8 +86,16 @@ bindKey(Freeroam.params['bindKey'], 'down',
 
 addEventHandler("onClientGUIClick", root, 
     function()
-        if not Dashboard.getVisible() then
+        if (not Dashboard.getVisible()) then
             return
+        end
+
+        if (source == Freeroam.btnMap) then
+            Freeroam.setVisible()
+            return exports.tmtaMap:open()
+        elseif (source == Freeroam.btnPhotoMode) then
+            Freeroam.setVisible()
+            return exports.tmtaCamHack.startCamHack()
         end
     end
 )

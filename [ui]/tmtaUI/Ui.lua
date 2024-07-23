@@ -30,7 +30,7 @@ UI.components = {
 
     ['radio'] = true, -- радиостанции
 
-    ['killmessages'] = true, 
+    ['killmessages'] = true,
 }
 
 --- Компоненты худа
