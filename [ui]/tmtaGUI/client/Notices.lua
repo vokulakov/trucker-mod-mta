@@ -41,7 +41,7 @@ local Params = {
 --TODO:: через определенное время уведомление исчезает (если есть параметр), либо можно закрыть его принудительно
 --TODO:: проигрывать звук уведомления (добавить параметр будет ли проигрываться или нет)
 --TODO:: если на экране уже есть уведомление, то его нужно уничтожить 
--- Notice.create(sW/2-width/2, 170, width, 'info', 'Добро пожаловать на сервер!', false)
+
 function Notice.create(x, y, width, noticeType, message, disappear)
     local params = Params[noticeType]
     if not params then
@@ -58,7 +58,13 @@ function Notice.create(x, y, width, noticeType, message, disappear)
         Notice.delete(notice)
     end
 
-    local height = sH*(100 /sDH)
+    -- Рассчитатть размер текста
+    local lineCount = 1
+    for _ in string.gmatch(message, "\n") do
+		lineCount = lineCount + 1
+	end
+
+    local height = sH*(60*lineCount /sDH)
     disappear = (disappear == nil) and true or disappear
 
     local wnd = guiCreateWindow(x, y, width, height, "", false)
@@ -148,7 +154,7 @@ function Notice.delete(notice)
 
     if isElement(notice) then
         notice.visible = false 
-    --TODO:: костыль, чтобы звук щелчка успевал проигрываться 
+        --TODO:: костыль, чтобы звук щелчка успевал проигрываться 
         setTimer(destroyElement, 500, 1, notice)
     end
 

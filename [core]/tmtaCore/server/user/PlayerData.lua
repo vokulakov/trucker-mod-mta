@@ -11,6 +11,7 @@ local loadData = {
     "nickname",
     "skin",
 	"hp",
+	'hunger',
 	"armor",
 	'mileage',
     
@@ -28,6 +29,7 @@ local saveData = {
 	"donateCoins",
 	"skin",
 	"hp",
+	'hunger',
 	"armor",
 	"weapon",
 	"money",
@@ -98,9 +100,9 @@ function PlayerData.prepare(player)
 	player:setData("nickname", tostring(nickname))
 
 	-- Основное
-	player:setData("skin", tostring(player.model))
-	player:setData("hp", tostring(player.health))
-	player:setData("armor", tostring(player.armor))
+	player:setData("skin", tonumber(player.model))
+	player:setData("hp", tonumber(player.health))
+	player:setData("armor", tonumber(player.armor))
 
 	-- Местоположение
 	local position = Vector3(player.position)
@@ -109,8 +111,12 @@ function PlayerData.prepare(player)
 	local rotation = Vector3(player.rotation)
     player:setData("rotation", tostring(toJSON({rx = rotation.x, ry = rotation.y, rz = rotation.z})))
 
-	player:setData("interior", player.interior)
-	player:setData("dimension", player.dimension)
+	player:setData("interior", tonumber(player.interior))
+	player:setData("dimension", tonumber(player.dimension))
+
+	-- Потребности
+	local hunger = exports.tmtaPlayerNeeds:getPlayerHungerLevel(player) or 100
+	player:setData("hunger", tonumber(hunger))
 
 	return true
 end

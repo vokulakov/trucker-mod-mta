@@ -59,11 +59,12 @@ function RevenueService.add(userId, callbackFunctionName, ...)
 	return not not success, RevenueService.getUserDataById(userId, {}, callbackFunctionName, ...)
 end
 
-function RevenueService.update()
-    if (type(userId) ~= "string" or type(fields) ~= "table") then
+function RevenueService.update(userId, fields, callbackFunctionName, ...)
+    if (type(userId) ~= "number" or type(fields) ~= "table") then
         return false
     end
-    return exports.tmtaSQLite:dbTableUpdate(REVENUE_SERVICE_TABLE_NAME, fields, {userId = userId}, "callback")
+    
+    return exports.tmtaSQLite:dbTableUpdate(REVENUE_SERVICE_TABLE_NAME, fields, {userId = userId}, callbackFunctionName, ...)
 end
 
 function RevenueService.getUserDataById(userId, fields, callbackFunctionName, ...)
@@ -118,3 +119,45 @@ function callbackGetUserData(result, params)
 
     player:setData('taxAmount', propertyTaxPayable+incomeTaxPayable+vehicleTaxPayable)
 end
+
+function RevenueService.setPlayerBisinessEntity(player)
+    if not isElement(player) then
+        return false
+    end
+    return not not RevenueService.update(player:getData('userId'), {isBusinessEntity = true})
+end
+
+addEvent('tmtaRevenueService.onPlayerRegisterBusinessEntity', true)
+addEventHandler('tmtaRevenueService.onPlayerRegisterBusinessEntity', root, 
+    function()
+        local player = client
+        if not isElement(player) then
+            return
+        end
+
+        if (player:getData('isBusinessEntity')) then
+            local message = 'Вы уже зарегистрированы в налоговой службе'
+            triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'warning', message)
+            return
+        end
+
+        if (exports.tmtaMoney:getPlayerMoney(player) < Config.BUSINESS_ENTITY_PRICE) then
+            local message = 'У вас недостаточно средств для регистрации в налоговой службе'
+            triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'error', message)
+            return
+        end
+
+        local success = RevenueService.setPlayerBisinessEntity(player)
+        if (not success) then
+            local message = 'Неизвестная ошибка. Обратитесь к администратору!'
+            triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'error', message)
+            return
+        end
+
+        exports.tmtaMoney:takePlayerMoney(player, tonumber(Config.BUSINESS_ENTITY_PRICE))
+        RevenueService.getPlayerData(player)
+
+        local message = 'Поздравляем! Теперь Вы можете заниматься предпринимательской\nдеятельностью.'
+        triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'success', message)
+    end
+)

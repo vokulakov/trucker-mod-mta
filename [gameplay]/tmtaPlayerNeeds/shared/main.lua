@@ -50,13 +50,11 @@ function Needs.getPlayer(player)
     if not isElement(player) then
         return
     end
-    local playerNeeds = player:getData("needs")
-    if not playerNeeds then
-        player:setData("needs", toJSON({
-            hunger = 100,
-        }))
-    end
-    return fromJSON(player:getData("needs"))
+
+	local hunger = Hunger.getPlayer(player)
+	player:setData('hunger', hunger)
+
+    return { hunger = hunger }
 end
 
 addEventHandler("tmtaCore.onPlayerSpawn", root, 
@@ -65,7 +63,9 @@ addEventHandler("tmtaCore.onPlayerSpawn", root,
         if not isElement(player) then
             return
         end
+
         Needs.getPlayer(player)
+
         if isWasted then
             Hunger.setPlayer(player, 100)
         end

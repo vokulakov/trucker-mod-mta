@@ -6,8 +6,8 @@ function Hunger.getPlayer(player)
 	if not isElement(player) then
 		return false
 	end
-	local playerNeeds = Needs.getPlayer(player)
-	return tonumber(playerNeeds.hunger) or 0
+
+	return tonumber(player:getData('hunger')) or 100
 end
 
 -- Установить уровень голода
@@ -15,9 +15,9 @@ function Hunger.setPlayer(player, amount)
 	if not isElement(player) then
 		return false
 	end
-	local playerNeeds = Needs.getPlayer(player)
-	playerNeeds.hunger = (amount > 0) and math.abs(amount) or 0
-	return player:setData('needs', toJSON(playerNeeds))
+
+	local amount = (amount > 0) and math.abs(amount) or 0
+	return player:setData('hunger', tonumber(amount))
 end
 
 -- Понизить уровень голода
@@ -25,8 +25,8 @@ function Hunger.givePlayer(player, amount)
     if not isElement(player) then
 		return false
 	end
-	local hunger = Hunger.getPlayer(player)
-	return Hunger.setPlayer(player, hunger+math.abs(amount))
+
+	return Hunger.setPlayer(player, Hunger.getPlayer(player) + math.abs(amount))
 end
 
 -- Повысить уровень голода
@@ -34,9 +34,9 @@ function Hunger.takePlayer(player, amount)
 	if not isElement(player) then
 		return false
 	end
-	local hunger = Hunger.getPlayer(player)
+
 	Hunger.onPlayerTakeHunger()
-	return Hunger.setPlayer(player, hunger-math.abs(amount))
+	return Hunger.setPlayer(player, Hunger.getPlayer(player) - math.abs(amount))
 end
 
 function Hunger.onPlayerTakeHunger()
@@ -45,7 +45,7 @@ function Hunger.onPlayerTakeHunger()
 	end
 
 	local hungerAmount = Hunger.getPlayer(localPlayer)
-	if hungerAmount > 20 then
+	if (hungerAmount > 20) then
 		return
 	end
 

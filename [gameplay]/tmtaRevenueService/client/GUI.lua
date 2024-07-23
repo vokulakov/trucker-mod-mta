@@ -162,6 +162,7 @@ function GUI.renderTemplate(window)
         GUI.btnRegBusinessEntity = guiCreateButton(0, sH*((posY)/sDH), sW*(width/sDW), sH*(40/sDH), "Зарегистрироваться", false, window)
         guiSetFont(GUI.btnRegBusinessEntity, Fonts.RB_10)
         guiSetProperty(GUI.btnRegBusinessEntity, "NormalTextColour", "FF01D51A")
+        addEventHandler("onClientGUIClick", GUI.btnRegBusinessEntity, RevenueService.registerBusinessEntity, false)
 
         posY = posY + 40
         local line = guiCreateLabel(0, sH*((posY)/sDH), sW*(width/sDW), sH*(30/sDH), ('_'):rep(width/4), false, window)
@@ -269,3 +270,11 @@ function GUI.closeWindow()
     exports.tmtaUI:setPlayerBlurScreen(false)
     exports.tmtaUI:setPlayerComponentVisible("all", true)
 end
+
+local function showNotice(typeNotice, typeMessage)
+	local posX, posY = sW*((sDW-400)/2 /sDW), sH*((sDH-150) /sDH)
+	local width = sW*(400 /sDW)
+	exports.tmtaGUI:createNotice(posX, posY, width, typeNotice, typeMessage, true)
+end
+addEvent("tmtaRevenueService.showNotice", true)
+addEventHandler("tmtaRevenueService.showNotice", root, showNotice)

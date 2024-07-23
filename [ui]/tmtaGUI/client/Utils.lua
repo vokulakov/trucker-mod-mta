@@ -99,7 +99,7 @@ function Utils.getEditPlaceholder(editBox)
         return false 
     end
     return editBox:getData("placeholder") or ""
-end 
+end
 
 -- exports 
 windowCentralize = Utils.windowCentralize
