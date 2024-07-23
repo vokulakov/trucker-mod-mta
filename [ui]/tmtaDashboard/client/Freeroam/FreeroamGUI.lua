@@ -96,6 +96,8 @@ addEventHandler("onClientGUIClick", root,
         elseif (source == Freeroam.btnPhotoMode) then
             Freeroam.setVisible()
             return exports.tmtaCamHack.startCamHack()
+        elseif (source == Freeroam.btnSettings) then
+            return Settings.setVisible()
         end
     end
 )
