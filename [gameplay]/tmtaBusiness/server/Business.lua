@@ -43,11 +43,12 @@ function Business.getAll()
 end
 
 function Business.get(businessId, fields, callbackFunctionName, ...)
-    if (type(businessId) ~= "number" or type(fields) ~= "table") then
+    if (type(businessId) ~= "number") then
         outputDebugString("Business.get: bad arguments", 1)
         return false
     end
 
+    fields = (type(fields) ~= "table") and {} or fields
     return exports.tmtaSQLite:dbTableSelect(BUSINESS_TABLE_NAME, fields, {businessId = businessId}, callbackFunctionName, ...)
 end
 
@@ -68,6 +69,7 @@ function Business.add(posX, posY, posZ, type, price, revenue, callbackFunctionNa
         position = tostring(toJSON({x = posX, y = posY, z = posZ})),
         price = price,
         revenue = revenue,
+        balance = 0,
         editorId = player:getData("userId"),
     }
 
@@ -136,7 +138,7 @@ function Business.update(businessId, fields, callbackFunctionName, ...)
         return false
     end
 
-    local success = DatabaseTable.update(BUSINESS_TABLE_NAME, fields, {businessId = businessId}, callbackFunctionName, ...)
+    local success = exports.tmtaSQLite:dbTableUpdate(BUSINESS_TABLE_NAME, fields, {businessId = businessId}, callbackFunctionName, ...)
 
     if not success then
 		executeCallback(callbackFunctionName, false)
@@ -204,8 +206,18 @@ function Business.destroy(businessId)
 end
 
 function Business.buy(player, businessId)
-    if not isElement(player) then
+    if (not isElement(player) or type(businessId) ~= 'number') then
         return false
+    end
+
+    local businessData = createdBusiness[businessId].data
+    if (businessData.userId) then
+        outputDebugString("tmtaBusiness.onPlayerBuyBusiness: error buying business", 1)
+        exports.tmtaLogger:log(
+            "business",
+            string.format("Error buying business (%d). Business owner user %d", businessId, businessData.userId)
+        )
+        return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Ошибка покупки бизнеса. Обратитесь к Администратору!')
     end
 
     local userId = player:getData("userId")
@@ -236,28 +248,26 @@ function Business.buy(player, businessId)
         return false, errorMessage
     end
 
+    local businnesData = {
+        player = player, 
+        userId = userId, 
+        businessId = businessId, 
+        businessPrice = businessData.price
+    }
+
+    return Business.update(businessId, {userId = userId}, "dbBuyBusiness", businnesData)
 end
 
 addEvent("tmtaBusiness.onPlayerBuyBusiness", true)
 addEventHandler("tmtaBusiness.onPlayerBuyBusiness", resourceRoot,
     function(businessId)
         local player = client
-        if type(businessId) ~= "number" or not isElement(player) then
+        if (not isElement(player) or type(businessId) ~= "number") then
             return
         end
 
         if not createdBusiness[businessId] then
             return
-        end
-
-        local businessData = createdBusiness[businessId].data
-        if (businessData.userId) then
-            outputDebugString("tmtaBusiness.onPlayerBuyBusiness: error buying business", 1)
-            exports.tmtaLogger:log(
-                "business",
-                string.format("Error buying business (%d). Business owner user %d", businessId, businessData.userId)
-            )
-            return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Ошибка покупки бизнеса. Обратитесь к Администратору!')
         end
 
         local success, errorMessage = Business.buy(player, businessId)
@@ -268,10 +278,26 @@ addEventHandler("tmtaBusiness.onPlayerBuyBusiness", resourceRoot,
 )
 
 function dbBuyBusiness(result, params)
-    if not params or not isElement(params.player) then
+    if (not params or not isElement(params.player)) then
         return false
     end
     local player = params.player
+    local businessId = params.businessId
+    local businessPrice = params.businessPrice
+
+    result = not not result
+    if result then
+        exports.tmtaMoney:takePlayerMoney(player, tonumber(businessPrice))
+        triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'success', 'Поздравляем с покупкой бизнеса!')
+
+        Business.destroy(businessId)
+        local businessData = Business.get(businessId)
+        if businessData[1] then
+            Business.create(businessData[1])
+        end
+    end
+
+    return result
 end
 
 -- function Business.takeMoney(player, businessId)

@@ -64,7 +64,7 @@ function Notice.create(x, y, width, noticeType, message, disappear)
 		lineCount = lineCount + 1
 	end
 
-    local height = sH*(60*lineCount /sDH)
+    local height = sH*(100*lineCount /sDH)
     disappear = (disappear == nil) and true or disappear
 
     local wnd = guiCreateWindow(x, y, width, height, "", false)
@@ -111,9 +111,7 @@ function Notice.create(x, y, width, noticeType, message, disappear)
     addEventHandler("onClientGUIClick", btnClose,
         function()
             Notice.delete(wnd)
-        end, 
-        false
-    )
+        end, false)
 
     local sound = exports.tmtaSounds:playSound(params.sound)
     setSoundVolume(sound, 0.4)

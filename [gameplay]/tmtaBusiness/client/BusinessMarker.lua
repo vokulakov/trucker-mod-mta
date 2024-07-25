@@ -2,7 +2,7 @@ BusinessMarker = {}
 
 local sW, sH = guiGetScreenSize()
 
-local MARKER_OFFSET = 1.8
+local MARKER_OFFSET = 1.5
 local MARKER_WIDTH = 250
 local MARKER_HEIGHT = 200
 local MARKER_MAX_DISTANCE = 25
@@ -49,30 +49,31 @@ addEventHandler("onClientRender", root,
                         local businessOwnerStr = 'Владелец: #f2ab12'..businessOwner
                         offsetY = offsetY + 25
                         dxDrawText3D(businessOwnerStr, nx, ny + offsetY*scale, nx + width, ny + height, tocolor(255, 255, 255, 255), scale, Utils.fonts.DX_RB_12, 'center', 'top')
-                    
                         
                         -- Стоимость
-                        local titleStr = 'Цена:'
-                        local priceStr = data.price
-                        
-                        local textTittleWidth = dxGetTextWidth(titleStr, 1, Utils.fonts.DX_RB_12) -- ширина текста
-                        local textTittleWidth, textTitleHeight = dxGetTextSize(titleStr, textTittleWidth, 1, Utils.fonts.DX_RB_12, true)
-                        local textPriceWidth = dxGetTextWidth(priceStr, 1, Utils.fonts.DX_RB_12) -- ширина текста
-                        local iconW, iconH = dxGetMaterialSize(Utils.textures.moneyIcon) -- размеры иконки
-                        local iconPadding = 10 -- отступ между текстом и иконкой
-                        local textPadding = 10
-                        local heightFrame = textTitleHeight
-                        local widthFrame = textTittleWidth+textPadding+iconW+iconPadding+textPriceWidth -- общая длина
-                        offsetY = offsetY + 35
+                        if (not data.owner) then
+                            local titleStr = 'Цена:'
+                            local priceStr = data.price
+                            
+                            local textTittleWidth = dxGetTextWidth(titleStr, 1, Utils.fonts.DX_RB_12) -- ширина текста
+                            local textTittleWidth, textTitleHeight = dxGetTextSize(titleStr, textTittleWidth, 1, Utils.fonts.DX_RB_12, true)
+                            local textPriceWidth = dxGetTextWidth(priceStr, 1, Utils.fonts.DX_RB_12) -- ширина текста
+                            local iconW, iconH = dxGetMaterialSize(Utils.textures.moneyIcon) -- размеры иконки
+                            local iconPadding = 10 -- отступ между текстом и иконкой
+                            local textPadding = 10
+                            local heightFrame = textTitleHeight
+                            local widthFrame = textTittleWidth+textPadding+iconW+iconPadding+textPriceWidth -- общая длина
+                            offsetY = offsetY + 35
 
-                        local dxPosX, dxPosY, dxW, dxH = 0, offsetY, width, offsetY+heightFrame
-                        local dxPosX = dxPosX+(width-(widthFrame*scale))/2
-                        dxDrawText3D(titleStr, nx + dxPosX, ny+(dxPosY)*scale, nx+dxW, ny+(dxH)*scale, tocolor(255, 255, 255, 255), scale, Utils.fonts.DX_RB_12, 'left', 'center')
-                        local offsetX = textTittleWidth+textPadding
-                        dxSetTextureEdge(Utils.textures.moneyIcon, "clamp")
-                        dxDrawImage(nx + dxPosX + (offsetX)*scale, ny + (dxPosY+((heightFrame-iconH) /2))*scale, iconW*scale, iconH*scale, Utils.textures.moneyIcon)
-                        local offsetX = offsetX+iconW+iconPadding
-                        dxDrawText3D('#f2ab12'..priceStr, nx + dxPosX + (offsetX)*scale, ny+(dxPosY)*scale, nx+dxW, ny+(dxH)*scale, tocolor(255, 255, 255, 255), scale, Utils.fonts.DX_RB_12, 'left', 'center')
+                            local dxPosX, dxPosY, dxW, dxH = 0, offsetY, width, offsetY+heightFrame
+                            local dxPosX = dxPosX+(width-(widthFrame*scale))/2
+                            dxDrawText3D(titleStr, nx + dxPosX, ny+(dxPosY)*scale, nx+dxW, ny+(dxH)*scale, tocolor(255, 255, 255, 255), scale, Utils.fonts.DX_RB_12, 'left', 'center')
+                            local offsetX = textTittleWidth+textPadding
+                            dxSetTextureEdge(Utils.textures.moneyIcon, "clamp")
+                            dxDrawImage(nx + dxPosX + (offsetX)*scale, ny + (dxPosY+((heightFrame-iconH) /2))*scale, iconW*scale, iconH*scale, Utils.textures.moneyIcon)
+                            local offsetX = offsetX+iconW+iconPadding
+                            dxDrawText3D('#f2ab12'..priceStr, nx + dxPosX + (offsetX)*scale, ny+(dxPosY)*scale, nx+dxW, ny+(dxH)*scale, tocolor(255, 255, 255, 255), scale, Utils.fonts.DX_RB_12, 'left', 'center')
+                        end
                     end
                 end
             end
@@ -96,11 +97,14 @@ addEventHandler("onClientMarkerHit", resourceRoot,
             return
         end
     
-        if marker:getData('isBusinessMarker') then
-            local businessData = marker:getData('businessData')
-		    businessData.number = tostring(businessData.businessId)
-		    businessData.price = tostring(exports.tmtaUtils:formatMoney(businessData.price))
-            BusinessGUI.openWindow(businessData)
+        if (not marker:getData('isBusinessMarker')) then
+            return
         end
+
+        local businessData = marker:getData('businessData')
+        businessData.number = tostring(businessData.businessId)
+        businessData.price = tostring(exports.tmtaUtils:formatMoney(businessData.price))
+        
+        BusinessGUI.openWindow(businessData)
     end
 )

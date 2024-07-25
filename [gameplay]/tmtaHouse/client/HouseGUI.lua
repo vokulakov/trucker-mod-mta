@@ -13,6 +13,7 @@ function HouseGUI.render(houseData)
     local height = isSell and height+40 or height
 
     HouseGUI.wnd = guiCreateWindow(sW*(posX/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(height/sDH), "", false)
+    exports.tmtaGUI:windowCentralize(HouseGUI.wnd)
     guiWindowSetSizable(HouseGUI.wnd, false)
     guiWindowSetMovable(HouseGUI.wnd, false)
     HouseGUI.wnd.alpha = 0.8

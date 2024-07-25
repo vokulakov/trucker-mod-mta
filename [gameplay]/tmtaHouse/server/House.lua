@@ -28,12 +28,14 @@ function House.setup()
 end
 
 -- Получить данные дома
-function House.get(houseId)
-    if type(houseId) ~= "number" then
+function House.get(houseId, fields, callbackFunctionName, ...)
+    if (type(houseId) ~= "number") then
         outputDebugString("House.get: bad arguments", 1)
         return false
     end
-    return exports.tmtaSQLite:dbTableSelect(HOUSE_TABLE_NAME, {}, { houseId = houseId })
+
+    fields = (type(fields) ~= "table") and {} or fields
+    return exports.tmtaSQLite:dbTableSelect(HOUSE_TABLE_NAME, fields, {houseId = houseId}, callbackFunctionName, ...)
 end
 
 -- Получить список всех домов
@@ -370,7 +372,7 @@ function dbBuyHouse(result, params)
     result = not not result
     if result then
         exports.tmtaMoney:takePlayerMoney(player, tonumber(housePrice))
-        triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'success', 'Поздравляем с покупкой дома')
+        triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'success', 'Поздравляем с покупкой дома!')
         House.destroy(houseId)
         local houseData = House.get(houseId)
         if houseData[1] then
