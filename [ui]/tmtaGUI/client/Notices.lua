@@ -64,7 +64,7 @@ function Notice.create(x, y, width, noticeType, message, disappear)
 		lineCount = lineCount + 1
 	end
 
-    local height = sH*(100*lineCount /sDH)
+    local height = sH*((100+8*lineCount) /sDH)
     disappear = (disappear == nil) and true or disappear
 
     local wnd = guiCreateWindow(x, y, width, height, "", false)

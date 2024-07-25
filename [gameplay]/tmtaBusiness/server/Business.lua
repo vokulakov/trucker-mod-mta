@@ -227,10 +227,10 @@ function Business.buy(player, businessId)
         return false, errorMessage
     end
 
-    if (exports.tmtaExperience:getPlayerLvl(player) < Config.PLAYER_REQUIRED_LVL) then
-        local errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
-        return false, errorMessage
-    end
+    -- if (exports.tmtaExperience:getPlayerLvl(player) < Config.PLAYER_REQUIRED_LVL) then
+    --     local errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
+    --     return false, errorMessage
+    -- end
 
     if (not exports.tmtaRevenueService:isPlayerBusinessEntity(player)) then
         local errorMessage = 'Для владения бизнесом Вам необходимо всать на учёт в налоговой службе'
@@ -252,7 +252,8 @@ function Business.buy(player, businessId)
         player = player, 
         userId = userId, 
         businessId = businessId, 
-        businessPrice = businessData.price
+        businessPrice = businessData.price,
+        accrueRevenueAt = Business.getDateAccrueRevenue(),
     }
 
     return Business.update(businessId, {userId = userId}, "dbBuyBusiness", businnesData)
@@ -298,6 +299,12 @@ function dbBuyBusiness(result, params)
     end
 
     return result
+end
+
+--- Получить временную метку начисления дохода
+-- @return timestamp
+function Business.getDateAccrueRevenue()
+    return exports.tmtaUtils:getTimestamp(_, _, getRealTime().monthday + Config.ACCRUE_REVENUE_DAY)
 end
 
 -- function Business.takeMoney(player, businessId)

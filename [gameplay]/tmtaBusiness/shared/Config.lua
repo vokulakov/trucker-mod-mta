@@ -6,7 +6,7 @@ Config.PLAYER_REQUIRED_LVL = 7 -- требуемый уровень
 Config.SELL_COMMISSION = 50 -- комиссия за продажу бизнеса государству (в %)
 Config.WITHDRAWAL_FEE = 10 -- комиссия за снятие денег с баланса бизнеса (в %)
 
-Config.ACCRUE_REVENUE_DAY = 7 -- день получения дохода/налога
+Config.ACCRUE_REVENUE_DAY = 7 -- день получения дохода/налога с момента покупки бизнеса
 
 Config.REVENUE_TAX = 15 -- налог на прибыль (в %)
 Config.TAX_PAYMENT_PERIOD = 3 -- сколько дней дается на оплату налога

@@ -21,8 +21,8 @@ function getTimestamp(year, month, day, hour, minute, second)
 	for i=1, month-1 do timestamp = timestamp + ((isLeapYear(year) and i == 2) and 2505600 or monthseconds[i]) end
 	timestamp = timestamp + 86400 * (day - 1) + 3600 * hour + 60 * minute + second
 
-	timestamp = timestamp - 3600 --GMT+1 compensation
-	if datetime.isdst then timestamp = timestamp - 3600 end
+	timestamp = timestamp - 10800 --GMT+3 compensation
+	--if datetime.isdst then timestamp = timestamp - 3600 end
 
 	return timestamp
 end
