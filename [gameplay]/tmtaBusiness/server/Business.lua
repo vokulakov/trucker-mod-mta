@@ -204,9 +204,6 @@ function Business.destroy(businessId)
 end
 
 function Business.buy(player, businessId)
-end
-
-function Business.validatePlayerOnBuy(player)
     if not isElement(player) then
         return false
     end
@@ -239,7 +236,6 @@ function Business.validatePlayerOnBuy(player)
         return false, errorMessage
     end
 
-    return true
 end
 
 addEvent("tmtaBusiness.onPlayerBuyBusiness", true)
@@ -264,15 +260,19 @@ addEventHandler("tmtaBusiness.onPlayerBuyBusiness", resourceRoot,
             return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Ошибка покупки бизнеса. Обратитесь к Администратору!')
         end
 
-        local success, errorMessage = Business.validatePlayerOnBuy(player)
+        local success, errorMessage = Business.buy(player, businessId)
         if (not success and errorMessage) then
             triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'warning', errorMessage)
         end
-        
-        --TODO:: покупка бизнеса
-
     end
 )
+
+function dbBuyBusiness(result, params)
+    if not params or not isElement(params.player) then
+        return false
+    end
+    local player = params.player
+end
 
 -- function Business.takeMoney(player, businessId)
 -- end
