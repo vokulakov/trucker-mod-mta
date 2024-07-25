@@ -2,15 +2,18 @@ RealTime = {}
 
 addEvent("tmtaServerTimecycle.onServerTimeUpdate", true) -- обновление серверного времени
 addEvent("tmtaServerTimecycle.onServerHourPassed", true) -- на сервере прошел час
+addEvent("tmtaServerTimecycle.onServerMinutePassed", true)
 
 -- Задача: каждый час вызывать событие
 function RealTime.get()
     local time = getRealTime()
-    if RealTime.currentHour ~= time.hour then
+    if (RealTime.currentHour ~= time.hour) then
 		RealTime.currentHour = time.hour
-		--outputDebugString('На сервере '..string.format("%2d:%2d:%2d", time.hour, time.minute, time.second))
-        --triggerEvent("tmtaRealTime.onServerHourPassed", root, { time.hour, time.minute, time.second })
+		outputDebugString('Серверное время '..string.format("%02d:%02d:%02d", getRealTime().hour, getRealTime().minute, getRealTime().second))
 		triggerEvent("tmtaServerTimecycle.onServerHourPassed", root)
+    elseif (RealTime.currentMinute ~= time.minute) then
+        RealTime.currentMinute = time.minute
+        triggerEvent("tmtaServerTimecycle.onServerMinutePassed", root)
     end
 end
 
@@ -44,7 +47,8 @@ addEventHandler("tmtaServerTimecycle.onGameTimeRequest", root, RealTime.onGameTi
 
 addEventHandler("onResourceStart", resourceRoot, function()
     RealTime.currentHour = getRealTime().hour
-	--outputDebugString('На сервере '..string.format("%2d:%2d:%2d", getRealTime().hour, getRealTime().minute, getRealTime().second))
+    RealTime.currentMinute = getRealTime().minute
+	outputDebugString('Серверное время '..string.format("%02d:%02d:%02d", getRealTime().hour, getRealTime().minute, getRealTime().second))
     setTimer(RealTime.get, 1000, 0)
 
     RealTime.resetTimeOfDay()

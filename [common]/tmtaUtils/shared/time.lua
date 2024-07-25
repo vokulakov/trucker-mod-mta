@@ -67,16 +67,15 @@ function convertMinToHour(minutes)
 	if type(minutes) ~= 'number' then
 		return false
 	end
-	local hour = math.floor(minutes/60)
-	local minute = math.fmod(minutes, 60)
-	return hour, minute
+	
+	return math.floor(minutes/60), math.fmod(minutes, 60)
 end
 
 -- Преобразует простое целое число секунд в удобное для пользователя описание времени
 -- @link https://wiki.multitheftauto.com/wiki/SecondsToTimeDesc
 function secondAsTimeFormat(seconds)
-	if (type(seconds) ~= 'number' or seconds == nil) then
-		return nil
+	if (type(seconds) ~= 'number' or seconds == nil or seconds < 0) then
+		return { d = 0, h = 0, i = 0, s = 0 }
 	end
 
 	return {

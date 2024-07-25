@@ -206,7 +206,7 @@ function BusinessGUI.updateLabelAccrueRevenueAt()
 
     local formattedTime = exports.tmtaUtils:secondAsTimeFormat(tonumber(_businessData.accrueRevenueAt - getRealTime().timestamp))
     BusinessGUI.lblAccrueRevenueAt.text = (formattedTime ~= nil) 
-        and string.format("%sд. %sч. %sмин. %sсек.", formattedTime.d, formattedTime.h, formattedTime.i, formattedTime.s) 
+        and string.format("%dд. %02dч. %02dмин. %02dсек.", formattedTime.d, formattedTime.h, formattedTime.i, formattedTime.s) 
         or "ожидание информации"
 end
 

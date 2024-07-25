@@ -185,6 +185,8 @@ function Business.create(businessData)
         businessPickup = businessPickup,
     }
 
+    BusinessRevenue.startTracking(businessData)
+
     return true
 end
 
@@ -246,7 +248,7 @@ function Business.buy(player, businessId)
 
     local businnesData = {
         userId = userId, 
-        accrueRevenueAt = Business.getDateAccrueRevenue()
+        accrueRevenueAt = BusinessRevenue.getDateAccrueRevenue(),
     }
 
     return Business.update(businessId, businnesData, "dbBuyBusiness", {
@@ -289,19 +291,14 @@ function dbBuyBusiness(result, params)
         exports.tmtaMoney:takePlayerMoney(player, tonumber(businessPrice))
         triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'success', 'Поздравляем с покупкой бизнеса!')
 
-        Business.destroy(businessId)
         local businessData = Business.get(businessId)
         if businessData[1] then
+            Business.destroy(businessId)
             Business.create(businessData[1])
         end
     end
 
     return result
-end
-
---- Получить временную метку начисления дохода
-function Business.getDateAccrueRevenue()
-    return tonumber(exports.tmtaUtils:getTimestamp(_, _, getRealTime().monthday + Config.ACCRUE_REVENUE_DAY))
 end
 
 -- function Business.takeMoney(player, businessId)
