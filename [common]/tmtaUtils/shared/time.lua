@@ -71,3 +71,18 @@ function convertMinToHour(minutes)
 	local minute = math.fmod(minutes, 60)
 	return hour, minute
 end
+
+-- Преобразует простое целое число секунд в удобное для пользователя описание времени
+-- @link https://wiki.multitheftauto.com/wiki/SecondsToTimeDesc
+function secondAsTimeFormat(seconds)
+	if (type(seconds) ~= 'number' or seconds == nil) then
+		return nil
+	end
+
+	return {
+		d = math.floor(seconds /86400),
+		h = math.floor((seconds % 86400) /3600),
+		i = math.floor((seconds % 3600) /60),
+		s = (seconds %60),
+	}
+end

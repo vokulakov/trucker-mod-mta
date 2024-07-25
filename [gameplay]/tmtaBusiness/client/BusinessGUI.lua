@@ -5,7 +5,9 @@ local sDW, sDH = Utils.sDW, Utils.sDH
 
 local width, height = 350, 220
 
-function BusinessGUI.renderInfoBusinessWindow(businessData)
+local _businessData = nil
+
+function BusinessGUI.renderInfoBusinessWindow()
     local height = height + 40
 
     BusinessGUI.wnd = guiCreateWindow(sW*(0/sDW), sH*(0/sDH), sW*(width/sDW), sH*(height/sDH), "", false)
@@ -31,7 +33,7 @@ function BusinessGUI.renderInfoBusinessWindow(businessData)
     BusinessGUI.lblBusinessNumber.enabled = false
 
     local offsetX = guiLabelGetTextExtent(BusinessGUI.lblBusinessNumber)+5
-    BusinessGUI.lblBusinessNumber = guiCreateLabel(15+offsetX, sH*(80/sDH), sW*(width/sDW), 30, businessData.number, false, BusinessGUI.wnd)
+    BusinessGUI.lblBusinessNumber = guiCreateLabel(15+offsetX, sH*(80/sDH), sW*(width/sDW), 30, _businessData.number, false, BusinessGUI.wnd)
     guiLabelSetHorizontalAlign(BusinessGUI.lblBusinessNumber, "left", false)
     guiSetFont(BusinessGUI.lblBusinessNumber, Utils.fonts.RB_11)
     guiLabelSetColor(BusinessGUI.lblBusinessNumber, 242, 171, 18)
@@ -44,7 +46,7 @@ function BusinessGUI.renderInfoBusinessWindow(businessData)
     BusinessGUI.lblBusinessName.enabled = false
 
     local offsetX = guiLabelGetTextExtent(BusinessGUI.lblBusinessName)+5
-    BusinessGUI.lblBusinessName = guiCreateLabel(15+offsetX, sH*(105/sDH), sW*(width/sDW), 30, businessData.name, false, BusinessGUI.wnd)
+    BusinessGUI.lblBusinessName = guiCreateLabel(15+offsetX, sH*(105/sDH), sW*(width/sDW), 30, _businessData.name, false, BusinessGUI.wnd)
     guiLabelSetHorizontalAlign(BusinessGUI.lblBusinessName, "left", false)
     guiSetFont(BusinessGUI.lblBusinessName, Utils.fonts.RB_11)
     guiLabelSetColor(BusinessGUI.lblBusinessName, 242, 171, 18)
@@ -70,7 +72,7 @@ function BusinessGUI.renderInfoBusinessWindow(businessData)
     BusinessGUI.lblBusinessPrice.enabled = false
 
     local offsetX = guiLabelGetTextExtent(BusinessGUI.lblBusinessPrice)+10
-    BusinessGUI.lblBusinessPrice = Utils.guiCreateMoneyLabel(15+offsetX, sH*((155)/sDH), businessData.price, BusinessGUI.wnd)
+    BusinessGUI.lblBusinessPrice = Utils.guiCreateMoneyLabel(15+offsetX, sH*((155)/sDH), _businessData.price, BusinessGUI.wnd)
     guiSetFont(BusinessGUI.lblBusinessPrice, Utils.fonts.RB_11)
     guiLabelSetColor(BusinessGUI.lblBusinessPrice, 242, 171, 18)
     BusinessGUI.lblBusinessPrice.enabled = false
@@ -81,12 +83,12 @@ function BusinessGUI.renderInfoBusinessWindow(businessData)
     guiSetProperty(BusinessGUI.btnBuy, "NormalTextColour", "FF01D51A")
     addEventHandler("onClientGUIClick", BusinessGUI.btnBuy, 
         function()
-            Business.buy(tonumber(businessData.number))
+            Business.buy(tonumber(_businessData.number))
         end, false
     )
 end
 
-function BusinessGUI.renderManagerBusinessWindow(businessData)
+function BusinessGUI.renderManagerBusinessWindow()
     local height = height + 240
 
     BusinessGUI.wnd = guiCreateWindow(sW*(0/sDW), sH*(0/sDH), sW*(width/sDW), sH*(height/sDH), "", false)
@@ -101,7 +103,7 @@ function BusinessGUI.renderManagerBusinessWindow(businessData)
     guiSetProperty(BusinessGUI.btnClose, "NormalTextColour", "FFCE070B")
     addEventHandler("onClientGUIClick", BusinessGUI.btnClose, BusinessGUI.closeWindow, false)
 
-    BusinessGUI.lblTitle = guiCreateLabel(sW*((15)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "Мой бизнес\n«"..businessData.name.."»", false, BusinessGUI.wnd)
+    BusinessGUI.lblTitle = guiCreateLabel(sW*((15)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "Мой бизнес\n«".._businessData.name.."»", false, BusinessGUI.wnd)
     guiSetFont(BusinessGUI.lblTitle, Utils.fonts.RB_10)
     BusinessGUI.lblTitle.enabled = false
 
@@ -125,11 +127,11 @@ function BusinessGUI.renderManagerBusinessWindow(businessData)
     lblAccrueRevenueAt.enabled = false
 
     local offsetX = guiLabelGetTextExtent(lblAccrueRevenueAt)+5
-    --TODO:: обновление в онлайн режиме
-    local lblAccrueRevenueAt= guiCreateLabel(sW*((15+offsetX)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "6 д. 11 ч. 50 мин.", false, BusinessGUI.wnd)
-    guiSetFont(lblAccrueRevenueAt, Utils.fonts['RR_10'])
-    guiLabelSetColor(lblAccrueRevenueAt, 242, 171, 18)
-    lblAccrueRevenueAt.enabled = false
+
+    BusinessGUI.lblAccrueRevenueAt = guiCreateLabel(sW*((15+offsetX)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "", false, BusinessGUI.wnd)
+    guiSetFont(BusinessGUI.lblAccrueRevenueAt, Utils.fonts['RR_10'])
+    guiLabelSetColor(BusinessGUI.lblAccrueRevenueAt, 242, 171, 18)
+    BusinessGUI.lblAccrueRevenueAt.enabled = false
 
     posY = posY + 25
     local lblRevenueAmount = guiCreateLabel(15, sH*(posY/sDH), sW*(width/sDW), 30, "Доход:", false, BusinessGUI.wnd)
@@ -138,7 +140,7 @@ function BusinessGUI.renderManagerBusinessWindow(businessData)
     lblRevenueAmount.enabled = false
 
     local offsetX = guiLabelGetTextExtent(lblRevenueAmount)+10
-    lblRevenueAmount = Utils.guiCreateMoneyLabel(15+offsetX, sH*((posY)/sDH), exports.tmtaUtils:formatMoney(businessData.revenue), BusinessGUI.wnd)
+    lblRevenueAmount = Utils.guiCreateMoneyLabel(15+offsetX, sH*((posY)/sDH), exports.tmtaUtils:formatMoney(_businessData.revenue), BusinessGUI.wnd)
     guiSetFont(lblRevenueAmount, Utils.fonts.RB_11)
     guiLabelSetColor(lblRevenueAmount, 242, 171, 18)
     lblRevenueAmount.enabled = false
@@ -164,7 +166,7 @@ function BusinessGUI.renderManagerBusinessWindow(businessData)
     lblBalance.enabled = false
 
     local offsetX = guiLabelGetTextExtent(lblBalance)+10
-    lblBalance = Utils.guiCreateMoneyLabel(15+offsetX, sH*((posY)/sDH), exports.tmtaUtils:formatMoney(businessData.balance), BusinessGUI.wnd)
+    lblBalance = Utils.guiCreateMoneyLabel(15+offsetX, sH*((posY)/sDH), exports.tmtaUtils:formatMoney(_businessData.balance), BusinessGUI.wnd)
     guiSetFont(lblBalance, Utils.fonts.RB_11)
     guiLabelSetColor(lblBalance, 242, 171, 18)
     lblBalance.enabled = false
@@ -197,22 +199,35 @@ function BusinessGUI.renderManagerBusinessWindow(businessData)
     addEventHandler("onClientGUIClick", BusinessGUI.btnClose, BusinessGUI.closeWindow, false)
 end
 
+function BusinessGUI.updateLabelAccrueRevenueAt()
+    if (not isElement(BusinessGUI.lblAccrueRevenueAt)) then
+        return
+    end
+
+    local formattedTime = exports.tmtaUtils:secondAsTimeFormat(tonumber(_businessData.accrueRevenueAt - getRealTime().timestamp))
+    BusinessGUI.lblAccrueRevenueAt.text = (formattedTime ~= nil) 
+        and string.format("%sд. %sч. %sмин. %sсек.", formattedTime.d, formattedTime.h, formattedTime.i, formattedTime.s) 
+        or "ожидание информации"
+end
+
 function BusinessGUI.openWindow(businessData)
     if type(businessData) ~= 'table' then
         return
     end
+    _businessData = businessData
 
     if isElement(BusinessGUI.wnd) then 
         return
     end
 
-    if (businessData.owner) then
-        if (businessData.owner ~= localPlayer:getData('nickname')) then
+    if (_businessData.owner) then
+        if (_businessData.owner ~= localPlayer:getData('nickname')) then
             return
         end
-        BusinessGUI.renderManagerBusinessWindow(businessData)
+        BusinessGUI.renderManagerBusinessWindow()
+        addEventHandler("onClientHUDRender", root, BusinessGUI.updateLabelAccrueRevenueAt)
     else
-        BusinessGUI.renderInfoBusinessWindow(businessData)
+        BusinessGUI.renderInfoBusinessWindow()
     end
 
     showCursor(true)
@@ -224,6 +239,7 @@ end
 function BusinessGUI.closeWindow()
     BusinessGUI.wnd.visible = false
     setTimer(destroyElement, 100, 1, BusinessGUI.wnd)
+    removeEventHandler("onClientHUDRender", root, BusinessGUI.updateLabelAccrueRevenueAt)
     showCursor(false)
     showChat(true)
     exports.tmtaUI:setPlayerBlurScreen(false)

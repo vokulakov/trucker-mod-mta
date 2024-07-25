@@ -49,6 +49,7 @@
 	<export type="shared" function="convertTimestampToSeconds"/>
 	<export type="shared" function="convertMsToTimeStr"/>
 	<export type="shared" function="convertMinToHour" />
+	<export type="shared" function="secondAsTimeFormat" />
 
 	<!-- Геометрия -->
 	<export type="shared" function="wrapAngle"/>
@@ -60,5 +61,4 @@
 
 	<!-- Formatter -->
 	<export type="shared" function="tobool" />
-	tobool
 </meta>

@@ -9,17 +9,13 @@ function Business.setup()
         {name = 'name', type = 'VARCHAR', size = 128, options = 'NOT NULL'}, -- название бизнеса
         {name = 'price', type = 'INTEGER', options = 'DEFAULT 0 NOT NULL'}, -- рыночная стоимость
         {name = 'balance', type = 'INTEGER', options = 'DEFAULT 0'}, -- баланс бизнеса
-
         {name = 'revenue', type = 'INTEGER'}, -- доход
-        {name = 'taxAmount', type = 'INTEGER'}, -- сумма налога (к оплате)
-
-        {name = 'accrueRevenueAt', type = 'TIMESTAMP'}, -- время начисления прибыли (в timestamp)
-        {name = 'confiscateAt', type = 'TIMESTAMP'}, -- время конфискации в пользу государства (в timestamp)
-
         {name = 'position', type = 'TEXT'},
         {name = 'upgrades', type = 'TEXT'},
         {name = 'userId', type = 'INTEGER'},
         {name = 'editorId', type = 'INTEGER'},
+        {name = 'accrueRevenueAt', type = 'INTEGER'}, -- время начисления прибыли (в timestamp)
+        {name = 'confiscateAt', type = 'INTEGER'}, -- время конфискации в пользу государства (в timestamp)
     }, 
         "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL,\n"..
         "FOREIGN KEY (editorId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL")
@@ -249,14 +245,16 @@ function Business.buy(player, businessId)
     end
 
     local businnesData = {
+        userId = userId, 
+        accrueRevenueAt = Business.getDateAccrueRevenue()
+    }
+
+    return Business.update(businessId, businnesData, "dbBuyBusiness", {
         player = player, 
         userId = userId, 
         businessId = businessId, 
         businessPrice = businessData.price,
-        accrueRevenueAt = Business.getDateAccrueRevenue(),
-    }
-
-    return Business.update(businessId, {userId = userId}, "dbBuyBusiness", businnesData)
+    })
 end
 
 addEvent("tmtaBusiness.onPlayerBuyBusiness", true)
@@ -302,9 +300,8 @@ function dbBuyBusiness(result, params)
 end
 
 --- Получить временную метку начисления дохода
--- @return timestamp
 function Business.getDateAccrueRevenue()
-    return exports.tmtaUtils:getTimestamp(_, _, getRealTime().monthday + Config.ACCRUE_REVENUE_DAY)
+    return tonumber(exports.tmtaUtils:getTimestamp(_, _, getRealTime().monthday + Config.ACCRUE_REVENUE_DAY))
 end
 
 -- function Business.takeMoney(player, businessId)
