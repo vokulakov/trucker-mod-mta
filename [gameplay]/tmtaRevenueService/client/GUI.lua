@@ -32,6 +32,7 @@ function GUI.renderTemplate(window)
     guiLabelSetHorizontalAlign(line, "center")
     guiSetFont(line, "default-bold-small")
     guiLabelSetColor(line, 105, 105, 105)
+    guiSetEnabled(line, false)
 
     posY = posY + 20
     GUI.lblInfo = guiCreateLabel(sW*((0)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "ЕДИНЫЙ НАЛОГОВЫЙ СЧЕТ", false, window)
@@ -96,6 +97,7 @@ function GUI.renderTemplate(window)
     guiLabelSetHorizontalAlign(line, "center")
     guiSetFont(line, "default-bold-small")
     guiLabelSetColor(line, 105, 105, 105)
+    guiSetEnabled(line, false)
 
     posY = posY + 25
     GUI.lblTax = guiCreateLabel(sW*((0)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "", false, window)
@@ -129,6 +131,7 @@ function GUI.renderTemplate(window)
     guiLabelSetHorizontalAlign(line, "center")
     guiSetFont(line, "default-bold-small")
     guiLabelSetColor(line, 105, 105, 105)
+    guiSetEnabled(line, false)
 
     --
     if (not localPlayer:getData('isBusinessEntity')) then
@@ -169,6 +172,7 @@ function GUI.renderTemplate(window)
         guiLabelSetHorizontalAlign(line, "center")
         guiSetFont(line, "default-bold-small")
         guiLabelSetColor(line, 105, 105, 105)
+        guiSetEnabled(line, false)
     end
     
     posY = posY + 25

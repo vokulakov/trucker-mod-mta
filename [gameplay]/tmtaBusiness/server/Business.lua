@@ -225,10 +225,10 @@ function Business.buy(player, businessId)
         return false, errorMessage
     end
 
-    -- if (exports.tmtaExperience:getPlayerLvl(player) < Config.PLAYER_REQUIRED_LVL) then
-    --     local errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
-    --     return false, errorMessage
-    -- end
+    if (exports.tmtaExperience:getPlayerLvl(player) < Config.PLAYER_REQUIRED_LVL) then
+        local errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
+        return false, errorMessage
+    end
 
     if (not exports.tmtaRevenueService:isPlayerBusinessEntity(player)) then
         local errorMessage = 'Для владения бизнесом Вам необходимо всать на учёт в налоговой службе'
@@ -282,6 +282,7 @@ function dbBuyBusiness(result, params)
     if (not params or not isElement(params.player)) then
         return false
     end
+
     local player = params.player
     local businessId = params.businessId
     local businessPrice = params.businessPrice
@@ -295,6 +296,31 @@ function dbBuyBusiness(result, params)
         if businessData[1] then
             Business.destroy(businessId)
             Business.create(businessData[1])
+        end
+    end
+
+    return result
+end
+
+function dbUpdateBusiness(result, params)
+    if (not params) then
+        return false
+    end
+    
+    result = not not result
+    if result then
+        local businessId = params.businessId
+        local businessData = params.businessData
+       
+        if (createdBusiness[businessId]) then
+             --local player = exports.tmtaCore:getUserPlayerById(businessData.userId)
+            if businessData.userId then
+                local result = exports.tmtaCore:getUserDataById(tonumber(businessData.userId), {'nickname'})
+                businessData.owner = result[1].nickname
+            end
+
+            createdBusiness[businessId].businessMarker:setData('businessData', businessData)
+            createdBusiness[businessId].data = businessData
         end
     end
 

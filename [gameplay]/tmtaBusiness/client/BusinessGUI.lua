@@ -112,6 +112,7 @@ function BusinessGUI.renderManagerBusinessWindow()
     guiLabelSetHorizontalAlign(line, "center")
     guiSetFont(line, "default-bold-small")
     guiLabelSetColor(line, 105, 105, 105)
+    guiSetEnabled(line, false)
 
     posY = posY + 20
     local lblBusiness = guiCreateLabel(0, sH*(posY/sDH), sW*(width/sDW), 30, "ОБЩАЯ СВОДКА", false, BusinessGUI.wnd)
@@ -176,6 +177,7 @@ function BusinessGUI.renderManagerBusinessWindow()
     guiLabelSetHorizontalAlign(line, "center")
     guiSetFont(line, "default-bold-small")
     guiLabelSetColor(line, 105, 105, 105)
+    guiSetEnabled(line, false)
 
     posY = posY + 20
     local lblBusiness = guiCreateLabel(0, sH*(posY/sDH), sW*(width/sDW), 30, "УПРАВЛЕНИЕ БИЗНЕСОМ", false, BusinessGUI.wnd)
@@ -184,7 +186,12 @@ function BusinessGUI.renderManagerBusinessWindow()
     guiLabelSetColor(lblBusiness, 242, 171, 18)
     lblBusiness.enabled = false
 
-    posY = posY + 30
+    posY = posY + 25
+    local btnTakeMoney = guiCreateButton(sW*(0/sDW), sH*((posY)/sDH), sW*((width)/sDW), sH*(40/sDH), "Взять деньги с кассы", false, BusinessGUI.wnd)
+    guiSetFont(btnTakeMoney, Utils.fonts.RB_10)
+    guiSetProperty(btnTakeMoney, "NormalTextColour", "FF01D51A")
+
+    posY = posY + 45
     local btnSell = guiCreateButton(sW*(0/sDW), sH*((posY)/sDH), sW*((width)/sDW), sH*(40/sDH), "Продать бизнес", false, BusinessGUI.wnd)
     guiSetFont(btnSell, Utils.fonts.RB_10)
     guiSetProperty(btnSell, "NormalTextColour", "FFCE070B")
@@ -193,6 +200,7 @@ function BusinessGUI.renderManagerBusinessWindow()
     guiLabelSetHorizontalAlign(line, "center")
     guiSetFont(line, "default-bold-small")
     guiLabelSetColor(line, 105, 105, 105)
+    guiSetEnabled(line, false)
 
     BusinessGUI.btnClose = guiCreateButton(0, sH*((height-50)/sDH), sW*(width/sDW), sH*(40/sDH), 'Закрыть', false, BusinessGUI.wnd)
     guiSetFont(BusinessGUI.btnClose, Utils.fonts.RB_10)
