@@ -225,10 +225,10 @@ function Business.buy(player, businessId)
         return false, errorMessage
     end
 
-    if (exports.tmtaExperience:getPlayerLvl(player) < Config.PLAYER_REQUIRED_LVL) then
-        local errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
-        return false, errorMessage
-    end
+    -- if (exports.tmtaExperience:getPlayerLvl(player) < Config.PLAYER_REQUIRED_LVL) then
+    --     local errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
+    --     return false, errorMessage
+    -- end
 
     if (not exports.tmtaRevenueService:isPlayerBusinessEntity(player)) then
         local errorMessage = 'Для владения бизнесом Вам необходимо всать на учёт в налоговой службе'
@@ -293,15 +293,16 @@ function dbBuyBusiness(result, params)
         triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'success', 'Поздравляем с покупкой бизнеса!')
 
         local businessData = Business.get(businessId)
-        if businessData[1] then
+        businessData = businessData[1]
+        if businessData then
             --TODO: обновлять данные без пересоздания
             Business.destroy(businessId)
-            Business.create(businessData[1])
+            Business.create(businessData)
         end
 
         exports.tmtaLogger:log(
             "business",
-            string.format("User id=%d buy business id=%d for %d", businessData.userId, businessId, tonumber(businessPrice))
+            string.format("User id=%d buy business id=%d for %d", player:getData('userId'), businessId, tonumber(businessPrice))
         )
     end
 
@@ -369,7 +370,6 @@ function Business.sell(player, businessId)
         player = player, 
         userId = userId, 
         businessId = businessId,
-        businessData = businessData,
         price = price,
         balance = balance,
     })
@@ -412,15 +412,15 @@ function dbSellBusiness(result, params)
         triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'success', message)
 
         local businessData = Business.get(businessId)
-        if businessData[1] then
-            --TODO: обновлять данные без пересоздания
-            Business.destroy(businessId)
-            Business.create(businessData[1])
-        end
+        businessData = businessData[1]
+
+        --TODO: обновлять данные без пересоздания
+        Business.destroy(businessId)
+        Business.create(businessData)
 
         exports.tmtaLogger:log(
             "business",
-            string.format("User id=%d sell business id=%d for %d", businessData.userId, businessId, money)
+            string.format("User id=%d sell business id=%d for %d", player:getData('userId'), businessId, money)
         )
     end
 
