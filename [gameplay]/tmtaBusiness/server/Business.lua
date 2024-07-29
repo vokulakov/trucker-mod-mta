@@ -350,7 +350,40 @@ function Business.sell(player, businessId)
 
     local price = tonumber(businessData.price*Config.SELL_COMMISSION)
 
+    --TODO: снимать неоплаченный налог, выдавать баланс бизнеса
+    
+    return Business.update(businessId, {
+        userId = nil,
+        balance = 0,
+        accrueRevenueAt = nil,
+        confiscateAt = nil,
+    }, "dbBuyBusiness", {
+        player = player, 
+        userId = userId, 
+        businessId = businessId, 
+        price = price,
+        balance = businessData.balance,
+    })
 end
+
+addEvent("tmtaBusiness.onPlayerSellBusiness", true)
+addEventHandler("tmtaBusiness.onPlayerSellBusiness", resourceRoot,
+    function(businessId)
+        local player = client
+        if (not isElement(player) or type(businessId) ~= "number") then
+            return
+        end
+
+        if not createdBusiness[businessId] then
+            return
+        end
+
+        local success, errorMessage = Business.sell(player, businessId)
+        if (not success and errorMessage) then
+            triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'warning', errorMessage)
+        end
+    end
+)
 
 function dbSellBusiness(result, params)
     if (not params or not isElement(params.player)) then
@@ -359,7 +392,8 @@ function dbSellBusiness(result, params)
 
     local player = params.player
     local businessId = params.businessId
-    local sellPrice
+    local price = 0
+    local balance = 0
 
     result = not not result
     if result then
