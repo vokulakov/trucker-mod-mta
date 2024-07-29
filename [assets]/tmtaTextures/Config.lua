@@ -6,6 +6,7 @@ Config.IMAGE_LIST = {
     ['ui_i_info'] 			= "assets/ui/icons/i_info.png",
     ['ui_i_warning'] 		= "assets/ui/icons/i_warning.png",
     ['ui_i_success'] 		= "assets/ui/icons/i_success.png",
+    ['ui_i_question']       = "assets/ui/icons/i_question.png",
 
     ['i_money']				= "assets/ui/icons/i_money.png",
     ['i_clock']				= "assets/ui/icons/i_clock.png",

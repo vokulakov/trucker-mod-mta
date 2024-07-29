@@ -7,6 +7,7 @@
     <script type="client" src="client/Utils.lua" cache="false" />
     <script type="client" src="client/Sounds.lua" cache="false" />
     <script type="client" src="client/Notices.lua" cache="false" />
+    <script type="client" src="client/Confirm.lua" cache="false" />
 
     <export type="client" function="windowCentralize" />
     <export type="client" function="setEditRequired" />

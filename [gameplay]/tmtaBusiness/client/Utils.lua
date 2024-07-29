@@ -43,47 +43,6 @@ function Utils.guiCreateMoneyLabel(posX, posY, money, window)
     return label
 end
 
---TODO: вынести в tmtaGUI для универсального окна подтверждения
-function Utils.showConfirmWindow(title, message, onClickOk, onClickCancel)
-    if (type(title) ~= 'string' or type(message) ~= 'string') then
-        return
-    end
-
-    local width, height = Utils.sW*((380) /Utils.sDW), Utils.sH*((130) /Utils.sDH)
-
-    local windowConfirm = guiCreateWindow(0, 0, width, height, title, false)
-	exports.tmtaGUI:windowCentralize(windowConfirm)
-    guiWindowSetSizable(windowConfirm, false)
-    guiWindowSetMovable(windowConfirm, false)
-    guiSetAlpha(windowConfirm, 0.9)
-
-    local message = guiCreateLabel(0, Utils.sH*((25) /Utils.sDH), width, Utils.sH*((55) /Utils.sDH), message, false, windowConfirm)
-    guiLabelSetHorizontalAlign(message, "center")
-    guiLabelSetVerticalAlign(message, "center")
-    guiSetFont(message, "default-bold-small")
-
-    local line = guiCreateLabel(0, Utils.sH*((75) /Utils.sDH), width, Utils.sH*((25) /Utils.sDH), ('_'):rep(width/4), false, windowConfirm)
-    guiLabelSetHorizontalAlign(line, "center")
-    guiSetFont(line, "default-bold-small")
-    guiLabelSetColor(line, 105, 105, 105)
-    guiSetEnabled(line, false)
-
-    local btnCancel = guiCreateButton(0, Utils.sH*((95) /Utils.sDH), Utils.sW*((165) /Utils.sDW), Utils.sH*((30) /Utils.sDH), 'Нет', false, windowConfirm)
-    guiSetFont(btnCancel, Utils.fonts.RR_10)
-    addEventHandler("onClientGUIClick", btnCancel, function() executeCallback(onClickCancel) end, false)
-
-    local btnOk = guiCreateButton(Utils.sW*((165+15) /Utils.sDW), Utils.sH*((95) /Utils.sDH), Utils.sW*((195) /Utils.sDW), Utils.sH*((30) /Utils.sDH), 'Да', false, windowConfirm)
-    guiSetFont(btnOk, Utils.fonts.RR_10)
-    guiSetProperty(btnOk, "NormalTextColour", "FF01D51A")
-    addEventHandler("onClientGUIClick", btnOk, function() executeCallback(onClickOk) end, false)
-
-    return windowConfirm
-end
-
-Utils.showConfirmWindow('Внимание!', 'Тестовое сообщение', function() iprint('Click Ok') end, function() iprint('Click Cancell') end)
-
-
-
 function Utils.showNotice(typeNotice, typeMessage)
 	local posX, posY = Utils.sW*((Utils.sDW-400)/2 /Utils.sDW), Utils.sH*((Utils.sDH-150) /Utils.sDH)
 	local width = Utils.sW*(400 /Utils.sDW)

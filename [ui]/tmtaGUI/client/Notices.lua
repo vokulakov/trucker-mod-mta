@@ -114,7 +114,7 @@ function Notice.create(x, y, width, noticeType, message, disappear)
         end, false)
 
     local sound = exports.tmtaSounds:playSound(params.sound)
-    setSoundVolume(sound, 0.4)
+    setSoundVolume(sound, 0.2)
 
     -- Скрывать
     if disappear then
