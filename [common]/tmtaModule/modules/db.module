@@ -11,6 +11,15 @@ function executeCallback(callback, ...)
 end
 
 addEvent("dbCallback", false)
-addEventHandler("dbCallback", resourceRoot, function(queryResult, callbackFunctionName, callbackArguments)
-	executeCallback(_G[callbackFunctionName], queryResult, callbackArguments)
-end)
+addEventHandler("dbCallback", resourceRoot, 
+	function(queryResult, callbackFunctionName, callbackArguments)
+		return executeCallback(_G[callbackFunctionName], queryResult, callbackArguments)
+	end
+)
+
+addEvent("executeCallback", false)
+addEventHandler("executeCallback", resourceRoot, 
+	function(callbackFunctionName)
+		return executeCallback(_G[callbackFunctionName])
+	end
+)

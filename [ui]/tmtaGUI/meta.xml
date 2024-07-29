@@ -9,6 +9,8 @@
     <script type="client" src="client/Notices.lua" cache="false" />
     <script type="client" src="client/Confirm.lua" cache="false" />
 
+    <script type="shared" src="shared/include.lua" cache="false" />
+
     <export type="client" function="windowCentralize" />
     <export type="client" function="setEditRequired" />
     <export type="client" function="setEditPlaceholder" />
@@ -19,4 +21,8 @@
     <export type="client" function="deleteNotice" />
     <export type="client" function="setNoticeTitle" />
     <export type="client" function="setNoticeMessage" />
+
+    <export type="client" function="createConfirm" />
+    <export type="client" function="deleteConfirm" />
+    <export type="client" function="setBtnOkLabel" />
 </meta>

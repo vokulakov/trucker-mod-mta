@@ -53,7 +53,7 @@ addEventHandler("onClientRender", root,
                         -- Стоимость
                         if (not data.owner) then
                             local titleStr = 'Цена:'
-                            local priceStr = data.price
+                            local priceStr = data.formattedPrice
                             
                             local textTittleWidth = dxGetTextWidth(titleStr, 1, Utils.fonts.DX_RB_12) -- ширина текста
                             local textTittleWidth, textTitleHeight = dxGetTextSize(titleStr, textTittleWidth, 1, Utils.fonts.DX_RB_12, true)
@@ -103,7 +103,7 @@ addEventHandler("onClientMarkerHit", resourceRoot,
 
         local businessData = marker:getData('businessData')
         businessData.number = tostring(businessData.businessId)
-        businessData.price = tostring(exports.tmtaUtils:formatMoney(businessData.price))
+        businessData.formattedPrice = tostring(exports.tmtaUtils:formatMoney(businessData.price))
         
         BusinessGUI.openWindow(businessData)
     end

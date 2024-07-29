@@ -19,7 +19,7 @@ function Business.onStreamIn(businessMarker)
 		if not businessData then
 			return
 		end
-		businessData.price = tostring(exports.tmtaUtils:formatMoney(businessData.price))
+		businessData.formattedPrice = tostring(exports.tmtaUtils:formatMoney(businessData.price))
 
         local blipColor = businessData.owner and tocolor(0, 153, 255, 255) or tocolor(0, 255, 0, 255)
 		BusinessBlip.add(businessMarker, businessData.houseId, blipColor)
@@ -80,9 +80,15 @@ addEventHandler("tmtaBusiness.addBusinessResponse", root,
 )
 
 function Business.buy(businessId)
-    if type(businessId) ~= "number" then
+    if (type(businessId) ~= "number") then
         return false
     end
     BusinessGUI.closeWindow()
     triggerServerEvent("tmtaBusiness.onPlayerBuyBusiness", resourceRoot, businessId)
+end
+
+function Business.sell(businessId)
+    if (type(businessId) ~= "number") then
+        return false
+    end
 end
