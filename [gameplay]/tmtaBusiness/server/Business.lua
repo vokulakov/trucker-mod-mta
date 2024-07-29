@@ -210,7 +210,7 @@ function Business.buy(player, businessId)
 
     local businessData = createdBusiness[businessId].data
     if (businessData.userId) then
-        outputDebugString("tmtaBusiness.onPlayerBuyBusiness: error buying business", 1)
+        outputDebugString("Business.buy: error buying business", 1)
         exports.tmtaLogger:log(
             "business",
             string.format("Error buying business (%d). Business owner user %d", businessId, businessData.userId)
@@ -327,10 +327,48 @@ function dbUpdateBusiness(result, params)
     return result
 end
 
--- function Business.takeMoney(player, businessId)
--- end
+function Business.sell(player, businessId)
+    if (not isElement(player) or type(businessId) ~= "number") then
+        return false
+    end
 
--- function Business.sell(player, businessId)
+    local businessData = createdBusiness[businessId].data
+    if (businessData.userId) then
+        outputDebugString("Business.sell: error selling  business", 1)
+        exports.tmtaLogger:log(
+            "business",
+            string.format("Error selling  business (%d). Business owner user %d", businessId, businessData.userId)
+        )
+        triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Ошибка продажи бизнеса. Обратитесь к Администратору!')
+        return false
+    end
+
+    local userId = player:getData("userId")
+    if (userId ~= businessData.userId) then
+        return false
+    end
+
+    local price = tonumber(businessData.price*Config.SELL_COMMISSION)
+
+end
+
+function dbSellBusiness(result, params)
+    if (not params or not isElement(params.player)) then
+        return false
+    end
+
+    local player = params.player
+    local businessId = params.businessId
+    local sellPrice
+
+    result = not not result
+    if result then
+    end
+
+    return result
+end
+
+-- function Business.takeMoney(player, businessId)
 -- end
 
 -- function Business.sellToPlayer(player, businessId)

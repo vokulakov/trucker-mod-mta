@@ -21,6 +21,7 @@ function BusinessRevenue.startTracking(businessData)
     trackedBusiness[businessData.businessId] = {
         revenue = businessData.revenue,
         accrueRevenueAt = businessData.accrueRevenueAt,
+        confiscateAt = businessData.confiscateAt,
     }
 
     return true
@@ -66,6 +67,10 @@ addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root,
         local currentTimestamp = getRealTime().timestamp
         for businessId, businessData in ipairs(trackedBusiness) do
             if (businessData.accrueRevenueAt and (currentTimestamp >= businessData.accrueRevenueAt)) then
+                if (currentTimestamp >= businessData.confiscateAt) then
+                    --TODO: конфискация бизнеса
+                    return
+                end
                 BusinessRevenue.accrue(businessId)
             end
         end
