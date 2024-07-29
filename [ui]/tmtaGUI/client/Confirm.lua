@@ -121,6 +121,3 @@ end
 createConfirm = Confirm.create
 deleteConfirm = Confirm.delete
 setBtnOkLabel = Confirm.setBtnOkLabel
-
---Confirm.create('Каждый из нас понимает очевидную вещь: курс на социально-ориентированный национальный проект предполагает независимые способы реализации прогресса профессионального сообщества.', function() end, function() end)
---showCursor(true)

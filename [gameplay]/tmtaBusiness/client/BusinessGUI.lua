@@ -78,14 +78,10 @@ function BusinessGUI.renderInfoBusinessWindow()
     BusinessGUI.lblBusinessPrice.enabled = false
 
     -- Кнопки
-    BusinessGUI.btnBuy = guiCreateButton(sW*(0/sDW), sH*((height-50)/sDH), sW*(width/sDW), sH*(40/sDH), "Купить", false, BusinessGUI.wnd)
-    guiSetFont(BusinessGUI.btnBuy, Utils.fonts.RR_10)
-    guiSetProperty(BusinessGUI.btnBuy, "NormalTextColour", "FF01D51A")
-    addEventHandler("onClientGUIClick", BusinessGUI.btnBuy, 
-        function()
-            Business.buy(tonumber(_businessData.number))
-        end, false
-    )
+    local btnBuy = guiCreateButton(sW*(0/sDW), sH*((height-50)/sDH), sW*(width/sDW), sH*(40/sDH), "Купить", false, BusinessGUI.wnd)
+    guiSetFont(btnBuy, Utils.fonts.RR_10)
+    guiSetProperty(btnBuy, "NormalTextColour", "FF01D51A")
+    addEventHandler("onClientGUIClick", btnBuy, BusinessGUI.onPlayerBuyBusiness, false)
 end
 
 function BusinessGUI.renderManagerBusinessWindow()
@@ -195,7 +191,7 @@ function BusinessGUI.renderManagerBusinessWindow()
     local btnSell = guiCreateButton(sW*(0/sDW), sH*((posY)/sDH), sW*((width)/sDW), sH*(40/sDH), 'Продать бизнес', false, BusinessGUI.wnd)
     guiSetFont(btnSell, Utils.fonts.RB_10)
     guiSetProperty(btnSell, "NormalTextColour", "FFCE070B")
-    addEventHandler("onClientGUIClick", btnSell, BusinessGUI.onPlayerSellBusiness)
+    addEventHandler("onClientGUIClick", btnSell, BusinessGUI.onPlayerSellBusiness, false)
 
     local line = guiCreateLabel(0, sH*((height-80)/sDH), sW*(width/sDW), sH*(30/sDH), ('_'):rep(width/4), false, BusinessGUI.wnd)
     guiLabelSetHorizontalAlign(line, "center")
@@ -255,22 +251,37 @@ function BusinessGUI.closeWindow()
     exports.tmtaUI:setPlayerComponentVisible("all", true)
 end
 
-function BusinessGUI.onPlayerSellBusiness()
-    local price = tonumber(_businessData.price * Config.SELL_COMMISSION/100)
-
+function BusinessGUI.onPlayerBuyBusiness()
     BusinessGUI.wnd.visible = false
 
-    local message = string.format("Вы собираетесь продать бизнес '%s' государству за %s ₽ ?", _businessData.name, exports.tmtaUtils:formatMoney(price))
-    local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onConfirmWindowClose', 'onConfirmWindowOk', 'onConfirmWindowClose')
+    local message = string.format("Вы хотите приобрести бизнес\n'%s' за %s ₽ ?", _businessData.name, exports.tmtaUtils:formatMoney(_businessData.price))
+    local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onConfirmWindowClose', 'onConfirmWindowBuy', 'onConfirmWindowCancel')
+    exports.tmtaGUI:setBtnOkLabel(confirmWindow, 'Купить')
+end
 
+function BusinessGUI.onPlayerSellBusiness()
+    BusinessGUI.wnd.visible = false
+
+    local price = tonumber(_businessData.price * Config.SELL_COMMISSION/100)
+    local message = string.format("Вы собираетесь продать бизнес\n'%s' государству за %s ₽ ?", _businessData.name, exports.tmtaUtils:formatMoney(price))
+    local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onConfirmWindowClose', 'onConfirmWindowSell', 'onConfirmWindowCancel')
     exports.tmtaGUI:setBtnOkLabel(confirmWindow, 'Продать')
 end
 
 function onConfirmWindowClose()
+    BusinessGUI.closeWindow()
+end
+
+function onConfirmWindowCancel()
     BusinessGUI.wnd.visible = true
 end
 
-function onConfirmWindowOk()
+function onConfirmWindowSell()
     BusinessGUI.closeWindow()
     Business.sell(tonumber(_businessData.number))
+end
+
+function onConfirmWindowBuy()
+    BusinessGUI.closeWindow()
+    Business.buy(tonumber(_businessData.number))
 end

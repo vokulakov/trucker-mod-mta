@@ -83,7 +83,6 @@ function Business.buy(businessId)
     if (type(businessId) ~= "number") then
         return false
     end
-    BusinessGUI.closeWindow()
     triggerServerEvent("tmtaBusiness.onPlayerBuyBusiness", resourceRoot, businessId)
 end
 
@@ -91,4 +90,5 @@ function Business.sell(businessId)
     if (type(businessId) ~= "number") then
         return false
     end
+    triggerServerEvent("tmtaBusiness.onPlayerSellBusiness", resourceRoot, businessId)
 end
