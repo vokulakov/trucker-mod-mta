@@ -3,8 +3,8 @@ Config = {}
 Config.PLAYER_MAX_BUSINESS = 1 -- максимальное количество бизнесов у игрока
 Config.PLAYER_REQUIRED_LVL = 7 -- требуемый уровень
 
-Config.SELL_COMMISSION = 50 -- комиссия за продажу бизнеса государству (в %)
-Config.WITHDRAWAL_FEE = 10 -- комиссия за снятие денег с баланса бизнеса (в %)
+Config.SELL_COMMISSION = 30 -- комиссия за продажу бизнеса государству (в %)
+Config.WITHDRAWAL_FEE = 5 -- комиссия за снятие денег с баланса бизнеса (в %)
 
 Config.ACCRUE_REVENUE_DAY = 7 -- день получения дохода/налога с момента покупки бизнеса
 

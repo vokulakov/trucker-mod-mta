@@ -225,10 +225,10 @@ function Business.buy(player, businessId)
         return false, errorMessage
     end
 
-    -- if (exports.tmtaExperience:getPlayerLvl(player) < Config.PLAYER_REQUIRED_LVL) then
-    --     local errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
-    --     return false, errorMessage
-    -- end
+    if (exports.tmtaExperience:getPlayerLvl(player) < Config.PLAYER_REQUIRED_LVL) then
+        local errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
+        return false, errorMessage
+    end
 
     if (not exports.tmtaRevenueService:isPlayerBusinessEntity(player)) then
         local errorMessage = 'Для владения бизнесом Вам необходимо всать на учёт в налоговой службе'
@@ -294,9 +294,15 @@ function dbBuyBusiness(result, params)
 
         local businessData = Business.get(businessId)
         if businessData[1] then
+            --TODO: обновлять данные без пересоздания
             Business.destroy(businessId)
             Business.create(businessData[1])
         end
+
+        exports.tmtaLogger:log(
+            "business",
+            string.format("User id=%d buy business id=%d for %d", businessData.userId, businessId, tonumber(businessPrice))
+        )
     end
 
     return result
@@ -332,9 +338,10 @@ function Business.sell(player, businessId)
         return false
     end
 
-    local businessData = createdBusiness[businessId].businessData
+    local businessData = Business.get(businessId)
+    businessData = businessData[1]
     if (not businessData.userId) then
-        outputDebugString("Business.sell: error selling  business", 1)
+        outputDebugString("Business.sell: error selling business", 1)
         exports.tmtaLogger:log(
             "business",
             string.format("Error selling  business (%d).", businessId)
@@ -348,8 +355,9 @@ function Business.sell(player, businessId)
         return false
     end
 
-    local price = tonumber(businessData.price * Config.SELL_COMMISSION/100)
-    local balance = tonumber(businessData.balance * Config.WITHDRAWAL_FEE/100)
+    local price = tonumber(businessData.price - (businessData.price * Config.SELL_COMMISSION/100))
+    local balance = tonumber(businessData.balance - (businessData.balance * Config.WITHDRAWAL_FEE/100))
+
     --TODO: снимать неоплаченный налог, выдавать баланс бизнеса
     
     return Business.update(businessId, {
@@ -360,7 +368,8 @@ function Business.sell(player, businessId)
     }, "dbSellBusiness", {
         player = player, 
         userId = userId, 
-        businessId = businessId, 
+        businessId = businessId,
+        businessData = businessData,
         price = price,
         balance = balance,
     })
@@ -397,22 +406,111 @@ function dbSellBusiness(result, params)
 
     result = not not result
     if result then
-        exports.tmtaMoney:givePlayerMoney(player, tonumber(price+balance))
-        local message = string.format('Вы продали бизнес. На ваш счет начислено %s ₽', exports.tmtaUtils:formatMoney(tonumber(price+balance)))
+        local money = tonumber(price+balance)
+        exports.tmtaMoney:givePlayerMoney(player, money)
+        local message = string.format('Вы продали бизнес. На ваш счет начислено %s ₽', exports.tmtaUtils:formatMoney(money))
         triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'success', message)
 
         local businessData = Business.get(businessId)
         if businessData[1] then
+            --TODO: обновлять данные без пересоздания
             Business.destroy(businessId)
             Business.create(businessData[1])
         end
+
+        exports.tmtaLogger:log(
+            "business",
+            string.format("User id=%d sell business id=%d for %d", businessData.userId, businessId, money)
+        )
     end
 
     return result
 end
 
--- function Business.takeMoney(player, businessId)
--- end
+function Business.takeMoney(player, businessId)
+    if (not isElement(player) or type(businessId) ~= "number") then
+        return false
+    end
+
+    local businessData = Business.get(businessId)
+    businessData = businessData[1]
+    if (not businessData.userId) then
+        outputDebugString("Business.takeMoney: error take money from business", 1)
+        exports.tmtaLogger:log(
+            "business",
+            string.format("Error take money from  business (%d).", businessId)
+        )
+        triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Ошибка вывода средств с бизнеса. Обратитесь к Администратору!')
+        return false
+    end
+
+    local userId = player:getData("userId")
+    if (userId ~= businessData.userId) then
+        return false
+    end
+
+    return Business.update(businessId, {
+        balance = 0,
+    }, "dbTakeMoneyFromBusiness", {
+        player = player, 
+        userId = userId, 
+        businessId = businessId,
+        balance = tonumber(businessData.balance),
+    })
+end
+
+addEvent("tmtaBusiness.onPlayerTakeMoneyFromBusiness", true)
+addEventHandler("tmtaBusiness.onPlayerTakeMoneyFromBusiness", resourceRoot,
+    function(businessId)
+        local player = client
+        if (not isElement(player) or type(businessId) ~= "number") then
+            return
+        end
+
+        if not createdBusiness[businessId] then
+            return
+        end
+
+        local success, errorMessage = Business.takeMoney(player, businessId)
+        if (not success and errorMessage) then
+            triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'warning', errorMessage)
+        end
+    end
+)
+
+function dbTakeMoneyFromBusiness(result, params)
+    if (not params or not isElement(params.player)) then
+        return false
+    end
+
+    local player = params.player
+    local businessId = params.businessId
+    local balance = params.balance
+
+    result = not not result
+    if result then
+        local money = tonumber(balance - (balance * Config.WITHDRAWAL_FEE/100))
+        exports.tmtaMoney:givePlayerMoney(player, money)
+
+        local message = string.format('Вы сняли с кассы бизнеса деньги. На ваш счет начислено %s ₽', exports.tmtaUtils:formatMoney(money))
+        triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'success', message)
+
+        if (createdBusiness[businessId]) then
+            local businessData = createdBusiness[businessId].businessData
+            businessData.balance = 0
+    
+            createdBusiness[businessId].businessMarker:setData('businessData', businessData)
+            createdBusiness[businessId].businessData = businessData
+
+            exports.tmtaLogger:log(
+                "business",
+                string.format("User id=%d take %d from business id=%d", businessData.userId, money, businessId)
+            )
+        end
+    end
+
+    return result
+end
 
 -- function Business.sellToPlayer(player, businessId)
 -- end

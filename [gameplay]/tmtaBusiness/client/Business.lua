@@ -92,3 +92,10 @@ function Business.sell(businessId)
     end
     triggerServerEvent("tmtaBusiness.onPlayerSellBusiness", resourceRoot, businessId)
 end
+
+function Business.takeMoney(businessId)
+    if (type(businessId) ~= "number") then
+        return false
+    end
+    triggerServerEvent("tmtaBusiness.onPlayerTakeMoneyFromBusiness", resourceRoot, businessId)
+end

@@ -186,6 +186,11 @@ function BusinessGUI.renderManagerBusinessWindow()
     local btnTakeMoney = guiCreateButton(sW*(0/sDW), sH*((posY)/sDH), sW*((width)/sDW), sH*(40/sDH), "Взять деньги с кассы", false, BusinessGUI.wnd)
     guiSetFont(btnTakeMoney, Utils.fonts.RB_10)
     guiSetProperty(btnTakeMoney, "NormalTextColour", "FF01D51A")
+    addEventHandler("onClientGUIClick", btnTakeMoney, BusinessGUI.onPlayerTakeMoney, false)
+
+    if (_businessData.balance <= 0) then
+        btnTakeMoney.enabled = false
+    end 
 
     posY = posY + 45
     local btnSell = guiCreateButton(sW*(0/sDW), sH*((posY)/sDH), sW*((width)/sDW), sH*(40/sDH), 'Продать бизнес', false, BusinessGUI.wnd)
@@ -255,16 +260,30 @@ function BusinessGUI.onPlayerBuyBusiness()
     BusinessGUI.wnd.visible = false
 
     local message = string.format("Вы хотите приобрести бизнес\n'%s' за %s ₽ ?", _businessData.name, exports.tmtaUtils:formatMoney(_businessData.price))
-    local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onConfirmWindowClose', 'onConfirmWindowBuy', 'onConfirmWindowCancel')
+    local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onConfirmWindowBuy', 'onConfirmWindowCancel', 'onConfirmWindowClose')
     exports.tmtaGUI:setBtnOkLabel(confirmWindow, 'Купить')
+end
+
+function BusinessGUI.onPlayerTakeMoney()
+    BusinessGUI.wnd.visible = false
+
+    local message = string.format(
+        "Вы собираетесь вывести %s ₽ с кассы\nбизнеса '%s'. При выводе будет удержана комиссия в размере %d%%",
+        exports.tmtaUtils:formatMoney(_businessData.balance),
+        _businessData.name,
+        Config.WITHDRAWAL_FEE
+    )
+
+    local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onConfirmWindowTakeMoney', 'onConfirmWindowCancel', 'onConfirmWindowCancel')
+    exports.tmtaGUI:setBtnOkLabel(confirmWindow, 'Вывести')
 end
 
 function BusinessGUI.onPlayerSellBusiness()
     BusinessGUI.wnd.visible = false
 
-    local price = tonumber(_businessData.price * Config.SELL_COMMISSION/100)
+    local price = tonumber(_businessData.price - (_businessData.price * Config.SELL_COMMISSION/100))
     local message = string.format("Вы собираетесь продать бизнес\n'%s' государству за %s ₽ ?", _businessData.name, exports.tmtaUtils:formatMoney(price))
-    local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onConfirmWindowClose', 'onConfirmWindowSell', 'onConfirmWindowCancel')
+    local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onConfirmWindowSell', 'onConfirmWindowCancel', 'onConfirmWindowClose')
     exports.tmtaGUI:setBtnOkLabel(confirmWindow, 'Продать')
 end
 
@@ -284,4 +303,9 @@ end
 function onConfirmWindowBuy()
     BusinessGUI.closeWindow()
     Business.buy(tonumber(_businessData.number))
+end
+
+function onConfirmWindowTakeMoney()
+    BusinessGUI.closeWindow()
+    Business.takeMoney(tonumber(_businessData.number))
 end

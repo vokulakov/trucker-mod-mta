@@ -3,7 +3,7 @@ Confirm = {}
 local createdConfirm = {}
 local width, height = 380, 180
 
-function Confirm.create(message, closeCallback, okCallback, cancelCallback)
+function Confirm.create(message, okCallback, cancelCallback, closeCallback)
     if (type(message) ~= 'string' or message:len() == 0) then
         return false
     end
