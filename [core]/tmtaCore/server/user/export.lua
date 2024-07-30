@@ -4,7 +4,7 @@ function userExists(login)
 	return type(users) == "table" and #users > 0
 end
 
-function getUserPlayerById(userId)
+function getPlayerByUserId(userId)
 	return User.getPlayerById(userId)
 end
 
