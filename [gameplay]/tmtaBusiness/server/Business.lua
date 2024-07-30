@@ -393,15 +393,18 @@ function dbSellBusiness(result, params)
         local businessData = Business.get(businessId)
         businessData = businessData[1]
 
+        local userId = tonumber(businessData.userId)
         local money = tonumber(price+balance)
 
-        local player = exports.tmtaCore:getUserPlayerById(businessData.userId)
+        local player = exports.tmtaCore:getUserPlayerById(userId)
         if (isElement(player)) then
             exports.tmtaMoney:givePlayerMoney(player, money)
             local message = string.format('Вы продали бизнес. На ваш счет зачислено %s ₽', exports.tmtaUtils:formatMoney(money))
             triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'success', message)
         else
-            --TODO: начислить деньги в БД
+            local userDataResult = exports.tmtaCore:getUserDataById(userId, {'money'})
+            local userMoney = tonumber(userDataResult[1].money)
+            exports.tmtaCore:updateUserDataById(userId, {money = tonumber(userMoney + money)})
         end
 
         exports.tmtaLogger:log('business', string.format("User id=%d sell business id=%d for %d", userId, businessId, money))

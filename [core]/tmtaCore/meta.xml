@@ -33,4 +33,5 @@
 
     <export type="server" function="getUserPlayerById" />
     <export type="server" function="getUserDataById" />
+    <export type="server" function="updateUserDataById" />
 </meta>

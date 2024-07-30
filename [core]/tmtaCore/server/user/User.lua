@@ -202,7 +202,6 @@ addEventHandler(resourceName..".loginRequest", resourceRoot,
     end
 )
 
-
 function callbackLoginPlayer(result, params)
 	if not params or not isElement(params.player) then
         return
@@ -237,12 +236,12 @@ function callbackLoginPlayer(result, params)
     triggerEvent(resourceName..".login", player, success, errorType)
 end
 
-function User.update(login, fields)
-    if (type(login) ~= "string" or type(fields) ~= "table") then
+function User.update(userId, fields)
+    if (type(userId) ~= "number" or type(fields) ~= "table") then
         return false
     end
 
-    return exports.tmtaSQLite:dbTableUpdate(USER_TABLE_NAME, fields, {login = login}, "callback")
+    return exports.tmtaSQLite:dbTableUpdate(USER_TABLE_NAME, fields, {userId = userId}, "callback")
 end
 
 function User.save(player)
@@ -254,12 +253,10 @@ function User.save(player)
     end
 
     if (PlayerData.prepare(player)) then
-        local login = player:getData("login")
-
         local fields = PlayerData.get(player)
         fields['lastseenTime'] = getRealTime().timestamp
 
-        User.update(login, fields)
+        User.update(player:getData("userId"), fields)
     else
         return false
     end

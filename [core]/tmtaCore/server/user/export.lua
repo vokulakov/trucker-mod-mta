@@ -11,3 +11,7 @@ end
 function getUserDataById(userId, fields)
 	return User.getById(userId, fields)
 end
+
+function updateUserDataById(userId, fields)
+	return User.update(userId, fields)
+end
