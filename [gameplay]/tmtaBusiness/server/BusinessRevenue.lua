@@ -56,10 +56,25 @@ function BusinessRevenue.accrue(businessId)
         balance = currentBalance,
         accrueRevenueAt = BusinessRevenue.getDateAccrueRevenue(),
         confiscateAt = BusinessRevenue.getDateConfiscate(),
-    }, "dbUpdateBusiness", {
-        businessId = businessId, 
-        businessData = businessData,
+    }, "dbAccrueRevenueBusiness", {
+        businessId = businessId,
     })
+end
+
+function dbAccrueRevenueBusiness(result, params)
+    if (not params) then
+        return false
+    end
+    local businessId = params.businessId
+
+    result = not not result
+    if result then
+        --local businessData = Business.get(businessId)
+        --businessData = businessData[1]
+        --TODO: начислить налог
+    end
+
+    return result
 end
 
 addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root, 
