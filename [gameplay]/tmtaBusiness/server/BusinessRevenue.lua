@@ -68,8 +68,7 @@ addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root,
         for businessId, businessData in ipairs(trackedBusiness) do
             if (businessData.accrueRevenueAt and (currentTimestamp >= businessData.accrueRevenueAt)) then
                 if (currentTimestamp >= businessData.confiscateAt) then
-                    --TODO: конфискация бизнеса
-                    return
+                    return Business.sell(businessId)
                 end
                 BusinessRevenue.accrue(businessId)
             end
