@@ -10,7 +10,7 @@ local iconOffsetPosX = 5 -- отступы от иконки
 local Textures = {}
 local Fonts = {}
 
---TODO: переписать ан RenderTarget
+--TODO: переписать на RenderTarget
 
 -- Нарисовать прямоугольник
 function KeyPane.drawRectangle(posX, posY, width, height, alpha)

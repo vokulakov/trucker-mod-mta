@@ -139,42 +139,42 @@ end
 
 local str_title = 1;
 
-addEventHandler('onClientClick', root, function(button, state)
-    if not Map.visible then
-        return 
+addEventHandler('onClientClick', root, 
+    function(button, state)
+        if not Map.visible then
+            return 
+        end
+        if button == 'left' and state == 'down' and not getKeyState ( 'lctrl' ) then
+            local xZ, yZ = getCursorPosition ( )
+            local xZ = ( xZ * sW )
+            local yZ = ( yZ * sH )
+            Pozmx, Pozmy = xZ, yZ
+            Pozm, Pozym = Map.x, Map.y
+            Map.stateMove = true
+            elseif button == 'left' and state == 'up' and not getKeyState ( 'lctrl' ) then
+                Map.stateMove = false
+
+            local s, h = ( sW / 3 ), 100;
+            local x, y, s, h = ( sW / 2 )- ( s / 2 ), sH - h, s, h;
+
+            if isMouseInPositionBut ( ( x + s ) - 55, ( y + h ) - 25, 50, 20 ) then
+                if str_title < 8 then
+                str_title = str_title + 1;
+                else
+                str_title = 1;
+                end
+            end
+
+            if isMouseInPositionBut ( ( x + s ) - 160, ( y + h ) - 25, 50, 20 ) then
+                if str_title > 1 then
+                str_title = str_title - 1;
+                else
+                str_title = 8;
+                end
+            end
+        end
     end
-
-    if button == 'left' and state == 'down' and not getKeyState ( 'lctrl' ) then
-	    local xZ, yZ = getCursorPosition ( )
-        local xZ = ( xZ * sW )
-        local yZ = ( yZ * sH )
-	    Pozmx, Pozmy = xZ, yZ
-		Pozm, Pozym = Map.x, Map.y
-		Map.stateMove = true
-	    elseif button == 'left' and state == 'up' and not getKeyState ( 'lctrl' ) then
-            Map.stateMove = false
-
-		local s, h = ( sW / 3 ), 100;
-		local x, y, s, h = ( sW / 2 )- ( s / 2 ), sH - h, s, h;
-
-        if isMouseInPositionBut ( ( x + s ) - 55, ( y + h ) - 25, 50, 20 ) then
-            if str_title < 8 then
-            str_title = str_title + 1;
-            else
-            str_title = 1;
-            end
-        end
-
-        if isMouseInPositionBut ( ( x + s ) - 160, ( y + h ) - 25, 50, 20 ) then
-            if str_title > 1 then
-            str_title = str_title - 1;
-            else
-            str_title = 8;
-            end
-        end
-	end
-
-end)
+)
 
 ----------
 local streamedPlayer = {}
@@ -301,7 +301,7 @@ function Map.setVisibleHelpPanel(state)
 end 
 
 function Map.open()
-    if not exports.tmtaUI:isPlayerComponentVisible("map") or Camera.interior ~= 0 then
+    if (not exports.tmtaUI:isPlayerComponentVisible("map") or Camera.interior ~= 0) then
         return
     end
 
@@ -314,12 +314,15 @@ function Map.open()
     exports.tmtaUI:setPlayerComponentVisible("all", false)
     Map.setVisibleHelpPanel(true)
     Map.visible = true
+
+    bindKey('space', 'down', MapLegend.setVisible)
 end 
 
 function Map.close()
     if not Map.visible then
         return
     end
+
     showChat(true)
 	showCursor(false)
     Map.setVisibleHelpPanel(false)
@@ -328,6 +331,8 @@ function Map.close()
     exports.tmtaUI:setPlayerComponentVisible("all", true)
     Map.stateMove = false
     Map.visible = false
+
+    unbindKey('space', 'down', MapLegend.setVisible)
 end
 
 function Map.start()
@@ -335,7 +340,7 @@ function Map.start()
 
     Textures.world = dxCreateTexture("assets/world.jpg", "dxt5", true, "clamp") -- карта
 
-    Textures.localPlayer = exports.tmtaTextures:createTexture('localPlayer')
+    Textures.localPlayer         = exports.tmtaTextures:createTexture('localPlayer')
 
     -- Blips
     Textures.blipMarker          = exports.tmtaTextures:createTexture('blipMarker')

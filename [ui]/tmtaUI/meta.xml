@@ -25,4 +25,5 @@
 	<export type="client" function="stopCleanScreen" />
 
 	<export type="client" function="createKeyPane" />
+	<export type="client" function="createRectangle" />
 </meta>

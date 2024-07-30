@@ -6,6 +6,7 @@
 	<file src="assets/world.jpg"/>
     
 	<script type="client" src="main.lua" cache="false" />
+	<script type="client" src="MapLegend.lua" cache="false" />
 
 	<!-- Exports -->
 	<export type="client" function="open" />
