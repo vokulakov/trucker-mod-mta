@@ -21,7 +21,7 @@ addCommandHandler("delcurbusiness", function(player, cmd, businessId)
         return
     end
 
-    local success = Business.destroy(tonumber(businessId))
+    local success = Business.destroyMarker(tonumber(businessId))
     if not success then
         return
     end
