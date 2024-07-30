@@ -33,7 +33,7 @@ function BusinessGUI.renderInfoBusinessWindow()
     BusinessGUI.lblBusinessNumber.enabled = false
 
     local offsetX = guiLabelGetTextExtent(BusinessGUI.lblBusinessNumber)+5
-    BusinessGUI.lblBusinessNumber = guiCreateLabel(15+offsetX, sH*(80/sDH), sW*(width/sDW), 30, _businessData.number, false, BusinessGUI.wnd)
+    BusinessGUI.lblBusinessNumber = guiCreateLabel(15+offsetX, sH*(80/sDH), sW*(width/sDW), 30, _businessData.businessId, false, BusinessGUI.wnd)
     guiLabelSetHorizontalAlign(BusinessGUI.lblBusinessNumber, "left", false)
     guiSetFont(BusinessGUI.lblBusinessNumber, Utils.fonts.RB_11)
     guiLabelSetColor(BusinessGUI.lblBusinessNumber, 242, 171, 18)
@@ -297,15 +297,15 @@ end
 
 function onConfirmWindowSell()
     BusinessGUI.closeWindow()
-    Business.sell(tonumber(_businessData.number))
+    Business.sell(tonumber(_businessData.businessId))
 end
 
 function onConfirmWindowBuy()
     BusinessGUI.closeWindow()
-    Business.buy(tonumber(_businessData.number))
+    Business.buy(tonumber(_businessData.businessId))
 end
 
 function onConfirmWindowTakeMoney()
     BusinessGUI.closeWindow()
-    Business.takeMoney(tonumber(_businessData.number))
+    Business.takeMoney(tonumber(_businessData.businessId))
 end

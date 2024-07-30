@@ -14,18 +14,16 @@ function Business.onStreamIn(businessMarker)
 	if (getElementType(businessMarker) ~= "marker" or not businessMarker:getData('isBusinessMarker')) then
 		return
 	end
-	if not streamedBusiness[businessMarker] then
-		local businessData = businessMarker:getData('businessData')
-		if not businessData then
-			return
-		end
-		businessData.formattedPrice = tostring(exports.tmtaUtils:formatMoney(businessData.price))
-
-        local blipColor = businessData.owner and tocolor(0, 153, 255, 255) or tocolor(0, 255, 0, 255)
-		BusinessBlip.add(businessMarker, businessData.houseId, blipColor)
-
-		streamedBusiness[businessMarker] = businessData
+    
+	if (streamedBusiness[businessMarker]) then
+        Business.onStremOut(businessMarker)
 	end
+
+    local businessData = BusinessMarker.getData(businessMarker)
+    local blipColor = businessData.owner and tocolor(0, 153, 255, 255) or tocolor(0, 255, 0, 255)
+    BusinessBlip.add(businessMarker, businessData.houseId, blipColor)
+
+    streamedBusiness[businessMarker] = businessData
 end
 
 function Business.onStremOut(businessMarker)

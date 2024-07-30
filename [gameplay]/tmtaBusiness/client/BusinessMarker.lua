@@ -81,6 +81,17 @@ addEventHandler("onClientRender", root,
     end
 )
 
+function BusinessMarker.getData(marker)
+    if (not marker:getData('isBusinessMarker')) then
+        return
+    end
+
+    local businessData = marker:getData('businessData')
+    businessData.formattedPrice = tostring(exports.tmtaUtils:formatMoney(businessData.price))
+
+    return businessData
+end
+
 addEventHandler("onClientMarkerHit", resourceRoot, 
     function(player, matchingDimension)
         local marker = source
@@ -96,15 +107,8 @@ addEventHandler("onClientMarkerHit", resourceRoot,
         if not matchingDimension then
             return
         end
-    
-        if (not marker:getData('isBusinessMarker')) then
-            return
-        end
 
-        local businessData = marker:getData('businessData')
-        businessData.number = tostring(businessData.businessId)
-        businessData.formattedPrice = tostring(exports.tmtaUtils:formatMoney(businessData.price))
-        
+        local businessData = BusinessMarker.getData(marker)
         BusinessGUI.openWindow(businessData)
     end
 )

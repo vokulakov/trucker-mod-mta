@@ -180,7 +180,6 @@ function Business.create(businessData)
     businessMarker:setData('businessData', businessData)
 
     createdBusiness[businessId] = {
-        businessData = businessData,
         businessMarker = businessMarker,
         businessPickup = businessPickup,
     }
@@ -208,7 +207,8 @@ function Business.buy(player, businessId)
         return false
     end
 
-    local businessData = createdBusiness[businessId].businessData
+    local businessData = Business.get(businessId)
+    businessData = businessData[1]
     if (businessData.userId) then
         outputDebugString("Business.buy: error buying business", 1)
         exports.tmtaLogger:log(
@@ -292,10 +292,10 @@ function dbBuyBusiness(result, params)
         exports.tmtaMoney:takePlayerMoney(player, tonumber(businessPrice))
         triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'success', 'Поздравляем с покупкой бизнеса!')
 
+        --TODO: обновлять данные без пересоздания
         local businessData = Business.get(businessId)
         businessData = businessData[1]
         if businessData then
-            --TODO: обновлять данные без пересоздания
             Business.destroy(businessId)
             Business.create(businessData)
         end
@@ -326,7 +326,6 @@ function dbUpdateBusiness(result, params)
             end
 
             createdBusiness[businessId].businessMarker:setData('businessData', businessData)
-            createdBusiness[businessId].businessData = businessData
         end
     end
 
@@ -407,6 +406,8 @@ function dbSellBusiness(result, params)
             exports.tmtaCore:updateUserDataById(userId, {money = tonumber(userMoney + money)})
         end
 
+        --TODO: обновить данные о бизнесе в мире
+
         exports.tmtaLogger:log('business', string.format("User id=%d sell business id=%d for %d", userId, businessId, money))
     end
 
@@ -453,7 +454,7 @@ addEventHandler("tmtaBusiness.onPlayerTakeMoneyFromBusiness", resourceRoot,
             return
         end
 
-        if not createdBusiness[businessId] then
+        if (not createdBusiness[businessId]) then
             return
         end
 
@@ -481,18 +482,15 @@ function dbTakeMoneyFromBusiness(result, params)
         local message = string.format('Вы сняли с кассы бизнеса деньги. На ваш счет зачислено %s ₽', exports.tmtaUtils:formatMoney(money))
         triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'success', message)
 
-        if (createdBusiness[businessId]) then
-            local businessData = createdBusiness[businessId].businessData
-            businessData.balance = 0
-    
-            createdBusiness[businessId].businessMarker:setData('businessData', businessData)
-            createdBusiness[businessId].businessData = businessData
-
-            exports.tmtaLogger:log(
-                "business",
-                string.format("User id=%d take %d from business id=%d", businessData.userId, money, businessId)
-            )
+        if (not createdBusiness[businessId]) then
+            return
         end
+
+        local businessData = Business.get(businessId)
+        businessData = businessData[1]
+        businessData.balance = 0
+
+        exports.tmtaLogger:log("business", string.format("User id=%d take %d from business id=%d", businessData.userId, money, businessId))
     end
 
     return result
