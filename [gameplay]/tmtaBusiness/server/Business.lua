@@ -233,10 +233,10 @@ function Business.buy(player, businessId)
         return false, errorMessage
     end
 
-    -- if (exports.tmtaExperience:getPlayerLvl(player) < Config.PLAYER_REQUIRED_LVL) then
-    --     local errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
-    --     return false, errorMessage
-    -- end
+    if (exports.tmtaExperience:getPlayerLvl(player) < Config.PLAYER_REQUIRED_LVL) then
+        local errorMessage = string.format('Для покупки бизнеса требуется %d+ уровень', Config.PLAYER_REQUIRED_LVL)
+        return false, errorMessage
+    end
 
     if (not exports.tmtaRevenueService:isPlayerBusinessEntity(player)) then
         local errorMessage = 'Для владения бизнесом Вам необходимо всать на учёт в налоговой службе'
