@@ -37,13 +37,13 @@ end
 addEventHandler("onPlayerWasted", root, 
 	function()
 		local player = source
-		player:fadeCamera(false, 3)
+		--player:fadeCamera(false, 3)
 		setTimer(function ()
 			if (isElement(player)) then
 				local position = exports.tmtaHospital:getNearestToPlayer(player)
 				local rotation = Vector3(0, 0, 0)
 				PlayerSpawn.spawn(player, position, rotation, _, _, true)
 			end
-		end, 3000, 1)
+		end, 5000, 1)
 	end
 )

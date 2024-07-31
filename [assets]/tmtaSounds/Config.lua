@@ -19,6 +19,9 @@ Config.SOUND_LIST = {
 	['sound_eat1'] = "assets/systems/sound_eat1.mp3",
 	['sound_eat2'] = "assets/systems/sound_eat2.mp3",
 
+	['heart'] = "assets/systems/heart.mp3",
+	['tinnitus'] = "assets/systems/tinnitus.ogg",
+
 	-- Background music --
 	['music_game_theme_1'] = "assets/music_bg/game_theme_1.mp3",
 	['music_game_theme_2'] = "assets/music_bg/game_theme_2.mp3",

@@ -18,6 +18,8 @@
 	<file src="assets/systems/reward_small.mp3" />
 	<file src="assets/systems/sound_eat1.mp3" />
 	<file src="assets/systems/sound_eat2.mp3" />
+	<file src="assets/systems/heart.mp3" />
+	<file src="assets/systems/tinnitus.ogg" />
 
 	<!-- Background music -->
 	<file src="assets/music_bg/game_theme_1.mp3" />

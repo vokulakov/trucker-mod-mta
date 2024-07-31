@@ -8,6 +8,7 @@
 	<script type="client" src="Utils.lua" cache="false" />
 	<script type="client" src="Ui.lua" cache="false" />
 	<script type="client" src="BlurScreen.lua" cache="false" />
+	<script type="client" src="DeadScreen.lua" cache="false" />
 	<script type="client" src="CleanScreen.lua" cache="false" />
 	<script type="client" src="DrawKeyPane.lua" cache="false" />
 
@@ -20,6 +21,7 @@
 	<export type="client" function="setPlayerComponentVisible" />
 
 	<export type="client" function="setPlayerBlurScreen" />
+	<export type="client" function="setPlayerDeadScreen" />
 
 	<export type="client" function="startCleanScreen" />
 	<export type="client" function="stopCleanScreen" />
