@@ -13,14 +13,16 @@ local Fonts = {}
 --TODO: переписать на RenderTarget
 
 -- Нарисовать прямоугольник
-function KeyPane.drawRectangle(posX, posY, width, height, alpha)
-    dxDrawImage(posX, posY, 6, 6, Textures['partRound1'], 0, 0, 0, tocolor(0, 0, 0, alpha))
-    dxDrawImage(posX, posY+6, 6, height-12, Textures['partDot'], 0, 0, 0, tocolor(0, 0, 0, alpha))
-    dxDrawImage(posX, posY+height-6, 6, 6, Textures['partRound4'], 0, 0, 0, tocolor(0, 0, 0, alpha))
-    dxDrawImage(posX+6, posY, width-12, height, Textures['partDot'], 0, 0, 0, tocolor(0, 0, 0, alpha))
-    dxDrawImage(posX+width-6, posY, 6, 6, Textures['partRound2'], 0, 0, 0, tocolor(0, 0, 0, alpha))
-    dxDrawImage(posX+width-6, posY+6, 6, height-12, Textures['partDot'], 0, 0, 0, tocolor(0, 0, 0, alpha))
-    dxDrawImage(posX+width-6, posY+height-6, 6, 6, Textures['partRound3'], 0, 0, 0, tocolor(0, 0, 0, alpha))
+function KeyPane.drawRectangle(posX, posY, width, height, alpha, round)
+    if round then
+        dxDrawImage(posX, posY, 6, 6, Textures['partRound1'], 0, 0, 0, tocolor(0, 0, 0, alpha))
+        dxDrawImage(posX, posY+6, 6, height-12, Textures['partDot'], 0, 0, 0, tocolor(0, 0, 0, alpha))
+        dxDrawImage(posX, posY+height-6, 6, 6, Textures['partRound4'], 0, 0, 0, tocolor(0, 0, 0, alpha))
+        dxDrawImage(posX+6, posY, width-12, height, Textures['partDot'], 0, 0, 0, tocolor(0, 0, 0, alpha))
+        dxDrawImage(posX+width-6, posY, 6, 6, Textures['partRound2'], 0, 0, 0, tocolor(0, 0, 0, alpha))
+        dxDrawImage(posX+width-6, posY+6, 6, height-12, Textures['partDot'], 0, 0, 0, tocolor(0, 0, 0, alpha))
+        dxDrawImage(posX+width-6, posY+height-6, 6, 6, Textures['partRound3'], 0, 0, 0, tocolor(0, 0, 0, alpha))
+    end
 end
 
 -- Нарисовать подсказки клавиш
@@ -32,14 +34,15 @@ end
 
 addEventHandler('onClientRender', root, 
     function()
-        --if not UI.isPlayerComponentVisible('keyPane') then
-            --return
-        --end
+        if (not UI.isPlayerComponentVisible('all')) then
+            return
+        end
+
         dxSetBlendMode("modulate_add")
       
             for _, rectangle in pairs(drawnRectangles) do
                 --dxDrawRectangle(rectangle.x, rectangle.y, 1, rectangle.height, tocolor(0, 255, 255, 255))
-                KeyPane.drawRectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.alpha)
+                KeyPane.drawRectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.alpha, rectangle.round)
                 --dxDrawRectangle(rectangle.x+rectangle.width, rectangle.y, 1, rectangle.height, tocolor(0, 255, 255, 255))
             end
             
@@ -60,7 +63,7 @@ addEventHandler('onClientRender', root,
 -- @tparam number width
 -- @tparam number height
 -- @tparam number alpha
-function KeyPane.createRectangle(posX, posY, width, height, alpha)
+function KeyPane.createRectangle(posX, posY, width, height, alpha, round)
     if type(posX) ~= 'number' or type(posY) ~= 'number' or type(width) ~= 'number' or type(height) ~= 'number' then
         outputDebugString("KeyPane.createRectangle: bad arguments", 1)
         return false
@@ -76,6 +79,7 @@ function KeyPane.createRectangle(posX, posY, width, height, alpha)
         width = width,
         height = height,
         alpha = alpha or 175,
+        round = round or true,
     }
 
     return fakeRectangle
@@ -178,11 +182,11 @@ addEventHandler('onClientResourceStart', resourceRoot,
     function()
 
         -- Particles
-        Textures['partDot']    = exports.tmtaTextures:createTexture('part_dot')
-        Textures['partRound1'] = exports.tmtaTextures:createTexture('part_round1')
-        Textures['partRound2'] = exports.tmtaTextures:createTexture('part_round2')
-        Textures['partRound3'] = exports.tmtaTextures:createTexture('part_round3')
-        Textures['partRound4'] = exports.tmtaTextures:createTexture('part_round4')	
+        Textures['partDot']         = exports.tmtaTextures:createTexture('part_dot')
+        Textures['partRound1']      = exports.tmtaTextures:createTexture('part_round1')
+        Textures['partRound2']      = exports.tmtaTextures:createTexture('part_round2')
+        Textures['partRound3']      = exports.tmtaTextures:createTexture('part_round3')
+        Textures['partRound4']      = exports.tmtaTextures:createTexture('part_round4')	
 
         -- Keys
         Textures['keyMouseDown']    = exports.tmtaTextures:createTexture('keyMouseDown')
