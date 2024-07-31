@@ -13,8 +13,11 @@ local loadData = {
 	"hp",
 	'hunger',
 	"armor",
-	'mileage',
+	"mileage",
     
+	"exp",
+	"lvl",
+
     "position",
     "rotation",
     "interior",

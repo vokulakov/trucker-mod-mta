@@ -22,6 +22,9 @@ Config.SOUND_LIST = {
 	['heart'] = "assets/systems/heart.mp3",
 	['tinnitus'] = "assets/systems/tinnitus.ogg",
 
+	['box_down'] = "assets/systems/box_down.mp3",
+	['box_up'] = "assets/systems/box_up.mp3",
+
 	-- Background music --
 	['music_game_theme_1'] = "assets/music_bg/game_theme_1.mp3",
 	['music_game_theme_2'] = "assets/music_bg/game_theme_2.mp3",

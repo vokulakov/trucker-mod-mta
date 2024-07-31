@@ -207,7 +207,8 @@ function Radar.start()
     Textures.blipHospital        = exports.tmtaTextures:createTexture('blipHospital')
     Textures.blipBusiness        = exports.tmtaTextures:createTexture('blipBusiness')
     Textures.blipRevenueService  = exports.tmtaTextures:createTexture('blipRevenueService')
-    
+    Textures.blipJobLoader       = exports.tmtaTextures:createTexture('blipJobLoader')
+
     camera = getCamera()
     setAnimData('hiteffect', 0.1)
 

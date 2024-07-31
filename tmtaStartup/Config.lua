@@ -90,6 +90,10 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     -- other --
     'streetlights_models',
 
+    -- beta --
+    'tmtaGPS',
+    'jobLoader',
+    
     -- ui --
     'tmtaUI',
     'tmtaGUI',

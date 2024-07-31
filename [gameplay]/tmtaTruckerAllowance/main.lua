@@ -17,7 +17,7 @@ local function givePlayerAllowance()
     local allowanceAmount = exports.tmtaUtils:formatMoney(allowance)
     for _, player in ipairs(players) do 
         exports.tmtaChat:sendGlobalMessage("#0bfc03► Профсоюз дальнобойщиков выделил вам #ffffff".. allowanceAmount .." ₽", nil, player)
-        exports.tmtaMoney:givePlayerMoney(player, allowance) 
+        exports.tmtaMoney:givePlayerMoney(player, tonumber(allowance))
         --TODO: здесь нужно фиксировать статистику выдачи пособий
     end
 end 

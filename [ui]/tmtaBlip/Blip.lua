@@ -31,7 +31,7 @@ local function onResourceStop(stoppedRes)
 	if not blips then
 		return
 	end
-
+	
 	for _, blip in ipairs(blips) do
 		if isElement(blip) then
 			destroyElement(blip)
@@ -41,8 +41,8 @@ local function onResourceStop(stoppedRes)
 	Blip.created[stoppedRes] = nil
 end
 
-addEventHandler("onClientResourceStop", root, onResourceStop)
-addEventHandler('onResourceStop', resourceRoot, onResourceStop)
+addEventHandler('onClientResourceStop', root, onResourceStop)
+addEventHandler('onResourceStop', root, onResourceStop)
 
 -- Exports
 createAttachedTo = Blip.createAttachedTo

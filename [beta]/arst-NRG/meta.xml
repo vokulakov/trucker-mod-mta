@@ -1,5 +1,0 @@
-<meta>
-	<script src="client.lua" type="client"/>
-	<file src="car.txd" type="client"/>
-	<file src="car.dff" type="client"/>
-</meta> 

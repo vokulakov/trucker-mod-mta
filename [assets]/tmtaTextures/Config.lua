@@ -55,4 +55,5 @@ Config.IMAGE_LIST = {
     ['blipHospital']		= "assets/hud/radar/hospital.png",
     ['blipBusiness']		= "assets/hud/radar/business.png",
     ['blipRevenueService']  = "assets/hud/radar/revenueService.png",
+    ['blipJobLoader']		= "assets/hud/radar/loader.png",
 }

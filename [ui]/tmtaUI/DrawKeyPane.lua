@@ -11,6 +11,7 @@ local Textures = {}
 local Fonts = {}
 
 --TODO: переписать на RenderTarget
+--TODO: добавить в отрисовку KeyPane.create allign, чтобы можно было нормально делать отступы по краям экрана
 
 -- Нарисовать прямоугольник
 function KeyPane.drawRectangle(posX, posY, width, height, alpha, round)
@@ -34,10 +35,6 @@ end
 
 addEventHandler('onClientRender', root, 
     function()
-        if (not UI.isPlayerComponentVisible('all')) then
-            return
-        end
-
         dxSetBlendMode("modulate_add")
       
             for _, rectangle in pairs(drawnRectangles) do

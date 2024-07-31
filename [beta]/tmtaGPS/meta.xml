@@ -1,0 +1,10 @@
+<meta>
+	<oop>true</oop>
+	<file src="assets/iPoint.png"/>
+	
+	<script src="client.lua" type="client" cache="false" />	
+	<script src="server.lua" type="server" />
+
+	<export function="showGps" type="client "/>
+	<export function="addPoint" type="shared" />
+</meta>

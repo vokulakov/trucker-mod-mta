@@ -286,10 +286,10 @@ function Map.setVisibleHelpPanel(state)
 		if isElement(Map.keyPane) then
 			return
 		end
-		Map.keyPane = exports.tmtaUI:createKeyPane(sW*((sDW-450) /sDW), sH*((sDH-80) /sDH), {
+		Map.keyPane = exports.tmtaUI:createKeyPane(sW*((sDW-350) /sDW), sH*((sDH-80) /sDH), {
 			{"keyMouseLeft", "Перемещение"},
             {"keyMouseWheel", "Масштаб"},
-            {"keySpace", "Легенда"},
+            --{"keySpace", "Легенда"},
             {"keyF11", "Закрыть"},
 		}, true)
 	else
@@ -361,6 +361,7 @@ function Map.start()
     Textures.blipHospital        = exports.tmtaTextures:createTexture('blipHospital')
     Textures.blipBusiness        = exports.tmtaTextures:createTexture('blipBusiness')
     Textures.blipRevenueService  = exports.tmtaTextures:createTexture('blipRevenueService')
+    Textures.blipJobLoader       = exports.tmtaTextures:createTexture('blipJobLoader')
 
     bindKey("f11", "down", function()
         if not isCursorShowing() then
