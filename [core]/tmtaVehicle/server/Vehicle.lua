@@ -23,10 +23,10 @@ local VEHICLE_TYPE_STATE_LABEL = 'Государственная'
 function Vehicle.setup()
     exports.tmtaSQLite:dbTableCreate(HOUSE_TABLE_NAME, {
         {name = "model", type = "INTEGER", options = "NOT NULL"},
-        {name = "vinCode", type = "varchar", size = 17, options = "UNIQUE NOT NULL"},
+        {name = "vin", type = "varchar", size = 17, options = "UNIQUE NOT NULL"},
 
-        {name = "price", type = "INTEGER", options = "NOT NULL"}, -- государственная цена транспорта 
-        {name = "estimatePrice", type = "INTEGER", options = "NOT NULL"}, -- оценочная цена (тюнинг, пробег)
+        {name = "price", type = "INTEGER", options = "DEFAULT 0 NOT NULL"}, -- государственная цена транспорта 
+        {name = "estimatePrice", type = "INTEGER", options = "DEFAULT 0 NOT NULL"}, -- оценочная цена (тюнинг, пробег)
 
         {name = "position", type = "TEXT"},
         {name = "rotation", type = "TEXT"},
@@ -40,6 +40,7 @@ function Vehicle.setup()
         {name = "gloveCompartment", type = "TEXT"}, -- feature: бардачок
         {name = "inventory", type = "TEXT"}, -- feature: инвентарь (багажник)
         {name = "partsWear", type = "TEXT"}, -- feature: износ деталей
+        {name = "wheelsState", type = "TEXT"}, -- feature: состояние колес
 
         {name = "handling", type = "TEXT"},
         {name = "tuning", type = "TEXT"},
@@ -51,11 +52,27 @@ function Vehicle.setup()
     })
 end
 
+local function generateVehicleIdentificationNumber()
+end
+
 function Vehicle.add(model, callbackFunctionName, ...)
 end
 
-function Vehicle.remove()
+function Vehicle.remove(vehicleId, callbackFunctionName, ...)
+    if (type(vehicleId) ~= "number") then
+        outputDebugString("Vehicle.remove: bad arguments", 1)
+        return false
+    end
+
+    return exports.tmtaSQLite:dbTableDelete(VEHICLE_TABLE_NAME, {vehicleId = vehicleId}, callbackFunctionName, ...)
 end
 
-function Vehicle.get()
+function Vehicle.get(vehicleId, fields, callbackFunctionName, ...)
+    if (type(vehicleId) ~= "number") then
+        outputDebugString("Vehicle.get: bad arguments", 1)
+        return false
+    end
+
+    fields = (type(fields) ~= "table") and {} or fields
+    return exports.tmtaSQLite:dbTableSelect(VEHICLE_TABLE_NAME, fields, {vehicleId = vehicleId}, callbackFunctionName, ...)
 end

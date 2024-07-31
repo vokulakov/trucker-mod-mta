@@ -102,11 +102,7 @@ function dbAddBusiness(result, params)
     triggerClientEvent(player, "tmtaBusiness.addBusinessResponse", resourceRoot, success)
 end
 
-function Business.remove(player, businessId, callbackFunctionName, ...)
-    if not isElement(player) then
-        return false
-    end
-
+function Business.remove(businessId, callbackFunctionName, ...)
     if type(businessId) ~= "number" then
         outputDebugString("Business.remove: bad arguments", 1)
         executeCallback(callbackFunctionName, false)

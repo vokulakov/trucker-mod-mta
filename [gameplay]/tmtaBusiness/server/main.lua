@@ -16,7 +16,7 @@ addCommandHandler("delcurbusiness", function(player, cmd, businessId)
         return false
     end
 
-    local success = Business.remove(player, tonumber(businessId))
+    local success = Business.remove(tonumber(businessId))
     if not success then
         return
     end
