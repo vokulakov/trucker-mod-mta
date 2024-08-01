@@ -5,11 +5,13 @@ local iconOffsetPosX = 5 -- отступы от иконки
 
 local createdKeyPanel = {}
 
-local function dxCreateKeyPanel(rectangleWidth, rectangleHeight, rectangleAlpha)
+local function dxCreateKeyPanel(keys, rectangleWidth, rectangleHeight, rectangleAlpha)
     local renderTarget = dxCreateRenderTarget(sW*(rectangleWidth /sDW), sH*(rectangleHeight /sDH), true)
+    
     dxSetRenderTarget(renderTarget, true)
-        dxSetBlendMode("modulate_add")
-        dxSetBlendMode("blend")
+        dxSetBlendMode('modulate_add')
+        Rectangle.draw(0, 0, rectangleWidth, rectangleHeight, tocolor(0, 0, 0, rectangleAlpha), true)
+        dxSetBlendMode('blend')
     dxSetRenderTarget()
 
     return renderTarget
@@ -27,7 +29,7 @@ function KeyPanel.create(posX, posY, keys, isRectangle)
 
     local iconOffsetPosX = sW*((iconOffsetPosX) /sDW)
 
-    local keyPanelKeys = {}
+    local _keys = {}
     for keyIndex, keyData in pairs(keys) do
         local icon = Textures[keyData[1]]
         local text = keyData[2]
@@ -41,9 +43,8 @@ function KeyPanel.create(posX, posY, keys, isRectangle)
             height = (isRectangle) and height + 10 or height
             height = sH*((height) /sDH)
 
-            table.insert(keyPanelKeys, {
-                x = posX+rectangleWidth,
-                y = posY,
+            table.insert(_keys, {
+                offsetPosX = rectangleWidth,
                 width = width,
                 height = height,
                 text = text,
@@ -59,14 +60,23 @@ function KeyPanel.create(posX, posY, keys, isRectangle)
         end
     end
 
-    rectangleWidth = rectangleWidth + iconOffsetPosX
+    local keyPanel = dxCreateKeyPanel(_keys, rectangleWidth + iconOffsetPosX, rectangleHeight, (not isRectangle) and 0 or 175)
 
-    local rectangleAlpha = (not isRectangle) and 0 or nil
-    local keyPanel = dxCreateKeyPanel(rectangleWidth, rectangleHeight, rectangleAlpha)
-
-    createdKeyPanel[keyPanel] = keyPanelKeys
+    createdKeyPanel[keyPanel] = {
+        posX = posX,
+        posY = posY,
+        keys = _keys,
+    }
 
     return keyPanel
+end
+
+function KeyPanel.render()
+    for keyPanel in pairs(createdKeyPanel) do
+    --         for _, keyData in pairs(createdKeyPanel[keyPanel]) do
+    --             drawKey(keyData.x, keyData.y, keyData.width, keyData.height, keyData.icon, keyData.text)
+    --         end
+    end
 end
 
 addEventHandler("onClientRestore", root, 
@@ -87,34 +97,6 @@ addEventHandler("onClientRestore", root,
 --             drawKey(keyData.x, keyData.y, keyData.width, keyData.height, keyData.icon, keyData.text)
 --         end
 --     end
--- end
-
--- function KeyPanel.create(posX, posY, keys, isRectangle)
-
-
---     local iconOffsetPosX = sW*((iconOffsetPosX) /sDW)
-
---     local _keys = {}
---     for keyIndex, keyData in pairs(keys) do
---         local icon = Textures[keyData[1]]
---         local text = keyData[2]
---         if (isElement(icon) and type(text) == 'string') then
---             local iconWidth, iconHeight = dxGetMaterialSize(icon)
---             local textWidth = dxGetTextWidth(text, sW/sDW*1.0, Font['RR_10'])
---             local textWidth, textHeight = dxGetTextSize(text, textWidth, sW/sDW*1.0, Font['RR_10'], false)
-
---             local width = iconOffsetPosX + iconWidth + iconOffsetPosX + textWidth + iconOffsetPosX
---             local height = (textHeight < iconHeight) and iconHeight or textHeight
---             height = (isRectangle) and height + 10 or height
---             height = sH*((height) /sDH)
-
--- 
-
---             rectangleWidth = rectangleWidth + width
---             rectangleHeight = height
---         end
---     end
-
 -- end
 
 -- function KeyPanel.destroy(panel)

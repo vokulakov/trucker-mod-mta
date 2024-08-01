@@ -43,13 +43,3 @@ addEventHandler('onClientResourceStart', resourceRoot,
         Font['RR_10'] = exports.tmtaFonts:createFontDX("RobotoRegular", 10)
     end
 )
-
-addEventHandler('onClientElementDestroy', root, 
-    function()
-        if (source.type ~= 'gui-label') then
-            return
-        end
-        Rectangle.destroy(source)
-        KeyPanel.destroy(source)
-    end
-)

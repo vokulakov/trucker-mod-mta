@@ -101,6 +101,15 @@ function Rectangle.setPosition(rectangle, posX, posY)
     return true
 end
 
+addEventHandler('onClientElementDestroy', root, 
+    function()
+        if (source.type ~= 'gui-label') then
+            return
+        end
+        Rectangle.destroy(source)
+    end
+)
+
 -- exports
 guiRectangleCreate = Rectangle.create
 guiRectangleGetSize = Rectangle.getSize
