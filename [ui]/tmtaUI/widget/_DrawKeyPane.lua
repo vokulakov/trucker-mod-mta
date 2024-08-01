@@ -84,10 +84,13 @@ end
 
 -- Изменить размер прямоугольника
 -- @tparam element rectangle
-function KeyPane.setRectangleSize(rectangle)
-    if not drawnRectangles[rectangle] then
+function KeyPane.setRectangleSize(rectangle, width, height)
+    if (not drawnRectangles[rectangle] or type(width) ~= 'number' or type(height) ~= 'number') then
+        outputDebugString('KeyPane.setRectangleSize: bad arguments', 1)
         return false
     end
+    drawnRectangles[rectangle].width = width
+    drawnRectangles[rectangle].height = height
     return true
 end
 
@@ -95,36 +98,43 @@ end
 -- @tparam element rectangle
 function KeyPane.getRectangleSize(rectangle)
     if not drawnRectangles[rectangle] then
+        outputDebugString('KeyPane.getRectangleSize: bad arguments', 1)
         return false
     end
+    return drawnRectangles[rectangle].width, drawnRectangles[rectangle].height
 end
 
 -- Получить позицию прямоугольника
 -- @tparam element rectangle
 function KeyPane.getRectanglePosition(rectangle)
     if not drawnRectangles[rectangle] then
+        outputDebugString('KeyPane.getRectanglePosition: bad arguments', 1)
         return false
     end
+    return drawnRectangles[rectangle].x, drawnRectangles[rectangle].y
 end
 
 -- Установить позицию прямоугольника
 -- @tparam element rectangle
-function KeyPane.setRectanglePosition(rectangle)
-    if not drawnRectangles[rectangle] then
+function KeyPane.setRectanglePosition(rectangle, posX, posY)
+    if (not drawnRectangles[rectangle] or type(posX) ~= 'number' or type(posY) ~= 'number') then
+        outputDebugString('KeyPane.setRectanglePosition: bad arguments', 1)
         return false
     end
+    drawnRectangles[rectangle].x = posX
+    drawnRectangles[rectangle].y = posY
     return true
 end
 
 -- Создать подсказки клавиш
 -- @tparam table keys
-function KeyPane.create(posX, posY, keys, rectangled, centralize)
+function KeyPane.create(posX, posY, keys, isRectangle, centralize)
     if type(posX) ~= 'number' or type(posY) ~= 'number' or type(keys) ~= 'table' then
         outputDebugString("KeyPane.create: bad arguments", 1)
         return false
     end
    
-    local isRectangle = (type(rectangled) ~= 'boolean') and true or rectangled
+    local isRectangle = (type(isRectangle) ~= 'boolean') and true or isRectangle
     local rectangleWidth = 0
     local rectangleHeight = 0
 
@@ -175,53 +185,6 @@ function KeyPane.setPosition(pane, posX, posY)
     return true
 end
 
-addEventHandler('onClientResourceStart', resourceRoot,
-    function()
-
-        -- Particles
-        Textures['partDot']         = exports.tmtaTextures:createTexture('part_dot')
-        Textures['partRound1']      = exports.tmtaTextures:createTexture('part_round1')
-        Textures['partRound2']      = exports.tmtaTextures:createTexture('part_round2')
-        Textures['partRound3']      = exports.tmtaTextures:createTexture('part_round3')
-        Textures['partRound4']      = exports.tmtaTextures:createTexture('part_round4')	
-
-        -- Keys
-        Textures['keyMouseDown']    = exports.tmtaTextures:createTexture('keyMouseDown')
-        Textures['keyMouseLeft']    = exports.tmtaTextures:createTexture('keyMouseLeft')
-        Textures['keyMouseRight']   = exports.tmtaTextures:createTexture('keyMouseRight')
-        Textures['keyMouseUp']      = exports.tmtaTextures:createTexture('keyMouseUp')
-	    Textures['keyMouseWheel']   = exports.tmtaTextures:createTexture('keyMouseWheel')
-	    Textures['keyMouse']        = exports.tmtaTextures:createTexture('keyMouse')
-
-        Textures['keyE'] 		    = exports.tmtaTextures:createTexture('keyE')
-        Textures['keyEnter'] 		= exports.tmtaTextures:createTexture('keyEnter')
-        Textures['keyF11'] 			= exports.tmtaTextures:createTexture('keyF11')
-        Textures['keySpace'] 		= exports.tmtaTextures:createTexture('keySpace')
-
-        for _, texture in pairs(Textures) do
-            dxSetTextureEdge(texture, "clamp")
-        end
-      
-        -- Fonts
-        Fonts['RR_10'] = exports.tmtaFonts:createFontDX("RobotoRegular", 10)
-
-        --KeyPane.createRectangle(sW*(((sW-200)/2) /sDW), sH*((800) /sDH), sW*((200) /sDW), sH*((30) /sDH))
-        --[[
-        local keys = {
-            {"keyMouseRight", "Режим просмотра"},
-            {"keyMouse", "Вращать камеру"},
-            {"keyMouseWheel", "Отдалить/приблизить камеру"},
-        }
-
-        local pane = KeyPane.create(sW*((sW/2) /sDW), sH*((sH/2) /sDH), keys, true, true)
-        KeyPane.create(sW*((sW/2) /sDW), sH*((500) /sDH), {{"keyMouse", "Вращать камеру"}}, true, true)
-        --KeyPane.create(sW*((sW/2) /sDW), sH*((600) /sDH), {{"keyMouseRight", "Режим просмотра"}}, false, true)
-        --setTimer(destroyElement, 5000, 1, pane)
-
-        UI.setPlayerComponentVisible("all", true)
-        ]]
-    end
-)
 
 addEventHandler("onClientElementDestroy", root, 
     function()
@@ -238,6 +201,22 @@ addEventHandler("onClientElementDestroy", root,
 		end
     end
 )
+
+--KeyPane.createRectangle(sW*(((sW-200)/2) /sDW), sH*((800) /sDH), sW*((200) /sDW), sH*((30) /sDH))
+--[[
+local keys = {
+    {"keyMouseRight", "Режим просмотра"},
+    {"keyMouse", "Вращать камеру"},
+    {"keyMouseWheel", "Отдалить/приблизить камеру"},
+}
+
+local pane = KeyPane.create(sW*((sW/2) /sDW), sH*((sH/2) /sDH), keys, true, true)
+KeyPane.create(sW*((sW/2) /sDW), sH*((500) /sDH), {{"keyMouse", "Вращать камеру"}}, true, true)
+--KeyPane.create(sW*((sW/2) /sDW), sH*((600) /sDH), {{"keyMouseRight", "Режим просмотра"}}, false, true)
+--setTimer(destroyElement, 5000, 1, pane)
+
+UI.setPlayerComponentVisible("all", true)
+]]
 
 -- Exports
 createKeyPane = KeyPane.create

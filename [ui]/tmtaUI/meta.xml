@@ -6,12 +6,16 @@
 	<include resource="tmtaShaders" />
 	
 	<script type="client" src="Utils.lua" cache="false" />
-	<script type="client" src="Ui.lua" cache="false" />
-	<script type="client" src="BlurScreen.lua" cache="false" />
-	<script type="client" src="DeadScreen.lua" cache="false" />
-	<script type="client" src="CleanScreen.lua" cache="false" />
-	<script type="client" src="DrawKeyPane.lua" cache="false" />
+	<script type="client" src="UI.lua" cache="false" />
 
+	<script type="client" src="screen/BlurScreen.lua" cache="false" />
+	<script type="client" src="screen/DeadScreen.lua" cache="false" />
+	<script type="client" src="screen/CleanScreen.lua" cache="false" />
+
+	<script type="client" src="widget/Rectangle.lua" cache="false" />
+	<script type="client" src="widget/DrawKeyPane.lua" cache="false" />
+	<script type="client" src="widget/main.lua" cache="false" />
+	
 	<!-- Exports -->
 	<export type="client" function="getScreenSize" />
 	<export type="client" function="getScreenScale" />
