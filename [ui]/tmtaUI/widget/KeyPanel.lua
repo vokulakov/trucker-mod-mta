@@ -1,4 +1,5 @@
 KeyPanel = {}
+KeyPanel.created = {}
 
 local isClientRestore = false
 local iconOffsetPosX = 5 -- отступы от иконки
@@ -6,12 +7,12 @@ local iconOffsetPosX = 5 -- отступы от иконки
 local createdKeyPanel = {}
 
 local function dxDrawKeyPanel(keyPanel)
-    local keyPanel = createdKeyPanel[keyPanel]
+    local keyPanelData = createdKeyPanel[keyPanel]
     local iconOffsetPosX = sW*((iconOffsetPosX) /sDW)
-    dxSetRenderTarget(renderTarget, true)
+    dxSetRenderTarget(keyPanel, true)
         dxSetBlendMode('modulate_add')
-        Rectangle.draw(0, 0, keyPanel.width, keyPanel.height, tocolor(0, 0, 0, keyPanel.alpha), true)
-        for _, key in pairs(keyPanel.keys) do
+        Rectangle.draw(0, 0, keyPanelData.width, keyPanelData.height, tocolor(0, 0, 0, keyPanelData.alpha), true)
+        for _, key in pairs(keyPanelData.keys) do
             dxDrawImage(key.offsetPosX+iconOffsetPosX, (key.height-key.icon.height) /2, key.icon.width, key.icon.height, key.icon.img)
             dxDrawText(key.text, key.offsetPosX+iconOffsetPosX+key.icon.width, 0, key.offsetPosX+key.width, key.height, tocolor(255, 255, 255, 255), sW/sDW*1.0, Font['RR_10'], 'center', 'center')
         end
@@ -33,7 +34,7 @@ function KeyPanel.create(posX, posY, keys, isRectangle)
 
     local _keys = {}
     for keyIndex, keyData in pairs(keys) do
-        local icon = Textures[keyData[1]]
+        local icon = Texture[keyData[1]]
         local text = keyData[2]
         if (isElement(icon) and type(text) == 'string') then
             local iconWidth, iconHeight = dxGetMaterialSize(icon)
@@ -62,9 +63,13 @@ function KeyPanel.create(posX, posY, keys, isRectangle)
         end
     end
 
-    local keyPanelWidth = sW*(rectangleWidth + iconOffsetPosX /sDW)
+    local keyPanelWidth = sW*((rectangleWidth + iconOffsetPosX) /sDW)
     local keyPanelHeight = sH*(rectangleHeight /sDH)
     local keyPanel = dxCreateRenderTarget(keyPanelWidth, keyPanelHeight, true)
+    if not (keyPanel) then
+		outputDebugString("KeyPanel: Failed to create renderTarget")
+		return
+	end
 
     createdKeyPanel[keyPanel] = {
         posX    = posX,
@@ -77,15 +82,26 @@ function KeyPanel.create(posX, posY, keys, isRectangle)
 
     dxDrawKeyPanel(keyPanel)
 
+    if sourceResource then
+		if not KeyPanel.created[sourceResource] then
+			KeyPanel.created[sourceResource] = {}
+		end
+		table.insert(KeyPanel.created[sourceResource], keyPanel)
+	end
+
     return keyPanel
+end
+
+function KeyPanel.createActionKey(key, action)
+    local element = KeyPanel.create(0, 0, {{key, action}}, true)
+    local width, height = KeyPanel.getSize(element)
+    KeyPanel.setPosition(element, sW*((sW-width)/2 /sDW), sH*((sH-height-40) /sDH))
+    return element
 end
 
 function KeyPanel.destroy(keyPanel)
     if (not createdKeyPanel[keyPanel]) then
         return false
-    end
-    if isElement(keyPanel) then
-        destroyElement(keyPanel)
     end
     createdKeyPanel[keyPanel] = nil
     return true
@@ -96,11 +112,38 @@ function KeyPanel.render()
         if isClientRestore then
             dxDrawKeyPanel(keyPanel)
         end
-        dxDrawImage(keyPanelData.posX, keyPanelData.posY, keyPanelData.width, keyPanelData.height, keyPanel, 0, 0, 0, tocolor(255, 255, 255, 255), false)
+        dxDrawImage(keyPanelData.posX, keyPanelData.posY, keyPanelData.width, keyPanelData.height, keyPanel, 0, 0, 0, tocolor(255, 255, 255, 255))
     end
 end
 
-addEventHandler("onClientRestore", root, 
+function KeyPanel.getSize(keyPanel)
+    if (not createdKeyPanel[keyPanel]) then
+        outputDebugString('KeyPanel.getSize: bad arguments', 1)
+        return false
+    end
+    return createdKeyPanel[keyPanel].width, createdKeyPanel[keyPanel].height
+end
+
+function KeyPanel.getPosition(keyPanel)
+    if (not createdKeyPanel[keyPanel]) then
+        outputDebugString('KeyPanel.getPosition: bad arguments', 1)
+        return false
+    end
+    return createdKeyPanel[keyPanel].posX, createdKeyPanel[keyPanel].posY
+end
+
+
+function KeyPanel.setPosition(keyPanel, posX, posY)
+    if (not createdKeyPanel[keyPanel] or type(posX) ~= 'number' or type(posY) ~= 'number') then
+        outputDebugString('KeyPanel.setPosition: bad arguments', 1)
+        return false
+    end
+    createdKeyPanel[keyPanel].posX = posX
+    createdKeyPanel[keyPanel].posY = posY
+    return true
+end
+
+addEventHandler('onClientRestore', root, 
     function()
         isClientRestore = true
         setTimer(function() isClientRestore = false end, 500, 1)
@@ -112,17 +155,31 @@ addEventHandler('onClientElementDestroy', root,
         if (source.type ~= 'texture') then
             return
         end
-        Rectangle.destroy(source)
+        KeyPanel.destroy(source)
     end
 )
 
+addEventHandler("onClientResourceStop", root,
+	function(stoppedRes)
+		local keyPanels = KeyPanel.created[stoppedRes]
+		if not keyPanels then
+			return
+		end
+
+		for _, keyPanel in ipairs(keyPanels) do
+			if isElement(keyPanel) then
+				destroyElement(keyPanel)
+			end
+		end
+
+		KeyPanel.created[stoppedRes] = nil
+	end
+)
+
 -- Exports
-createKeyPane = KeyPanel.create
+guiKeyPanelCreate = KeyPanel.create
+guiKeyPanelGetSize = KeyPanel.getSize
+guiKeyPanelGetPosition = KeyPanel.getPosition
+guiKeyPanelSetPosition = KeyPanel.setPosition
 
-
--- function KeyPanel.getSize(panel)
---     if (not createdKeyPanel[panel]) then
---         outputDebugString('KeyPanel.getSize: bad arguments', 1)
---         return false
---     end
--- end
+guiCreateActionKey = KeyPanel.createActionKey

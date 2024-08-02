@@ -37,4 +37,10 @@
 	<export type="client" function="guiRectangleSetSize" />
 	<export type="client" function="guiRectangleGetPosition" />
 	<export type="client" function="guiRectangleSetPositon" />
+	
+	<export type="client" function="guiKeyPanelCreate" />
+	<export type="client" function="guiKeyPanelGetSize" />
+	<export type="client" function="guiKeyPanelGetPosition" />
+	<export type="client" function="guiKeyPanelSetPosition" />
+	<export type="client" function="guiCreateActionKey" />
 </meta>

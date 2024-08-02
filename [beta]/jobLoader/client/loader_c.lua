@@ -128,7 +128,7 @@ local function setPlayerTargetBox()
 			if (isElement(keyPaneElement)) then
 				destroyElement(keyPaneElement)
 			end
-			keyPaneElement = exports.tmtaUI:createKeyPane(0, 0, {{"keyMouseRight", "Бросить ящик"}}, true, true)
+			keyPaneElement = exports.tmtaUI:guiCreateActionKey('keyMouseRight', 'Бросить ящик')
 			isPlayerTargetBox = false
 		end, 2000, 1)
 
@@ -168,7 +168,7 @@ local function onPlayerTargetBox() -- ВЫВОДИМ ПОДСКАЗКУ
 
 	if distanceBetweenPoints < 1.8 then
 		if not isElement(keyPaneElement) then
-			keyPaneElement = exports.tmtaUI:createKeyPane(0, 0, {{"keyMouseRight", "Взять ящик"}}, true, true)
+			keyPaneElement = exports.tmtaUI:guiCreateActionKey('keyMouseRight', 'Взять ящик')
 		end
 	else
 		if isElement(keyPaneElement) then
@@ -229,7 +229,7 @@ local function createShipMarker(remove) -- СОЗДАТЬ МАРКЕР/БЛИП 
 				if (isElement(keyPaneElement)) then
 					destroyElement(keyPaneElement)
 				end
-				keyPaneElement = exports.tmtaUI:createKeyPane(0, 0, {{"keyMouseRight", "Положить ящик"}}, true, true)
+				keyPaneElement = exports.tmtaUI:guiCreateActionKey('keyMouseRight', 'Положить ящик')
 				isPlayerTargetSphere = source
 			end
 		end)	
@@ -241,7 +241,7 @@ local function createShipMarker(remove) -- СОЗДАТЬ МАРКЕР/БЛИП 
 					if (isElement(keyPaneElement)) then
 						destroyElement(keyPaneElement)
 					end
-					keyPaneElement = exports.tmtaUI:createKeyPane(0, 0, {{"keyMouseRight", "Бросить ящик"}}, true, true)
+					keyPaneElement = exports.tmtaUI:guiCreateActionKey('keyMouseRight', 'Бросить ящик')
 					isPlayerTargetSphere = false
 				end
 			end
@@ -292,7 +292,7 @@ local function onPlayerMarkerUnloadEvent(hitPlayer, matchingDimension)
 				if (isElement(keyPaneElement)) then
 					destroyElement(keyPaneElement)
 				end
-				keyPaneElement = exports.tmtaUI:createKeyPane(0, 0, {{"keyMouseRight", "Положить ящик"}}, true, true)
+				keyPaneElement = exports.tmtaUI:guiCreateActionKey('keyMouseRight', 'Положить ящик')
 				isPlayerTargetSphere = source
 				bindKey("mouse2", "down", setPlayerTargetBox)
 			end

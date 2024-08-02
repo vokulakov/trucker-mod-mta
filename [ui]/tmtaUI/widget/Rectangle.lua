@@ -1,4 +1,5 @@
 Rectangle = {}
+Rectangle.created = {}
 
 local createdRectangle = {}
 
@@ -47,15 +48,19 @@ function Rectangle.create(posX, posY, width, height, colorR, colorG, colorB, col
         round = round or true,
     }
 
+    if sourceResource then
+		if not Rectangle.created[sourceResource] then
+			Rectangle.created[sourceResource] = {}
+		end
+		table.insert(Rectangle.created[sourceResource], rectangle)
+	end
+
     return rectangle
 end
 
 function Rectangle.destroy(rectangle)
     if (not createdRectangle[rectangle]) then
         return false
-    end
-    if isElement(rectangle) then
-        destroyElement(rectangle)
     end
     createdRectangle[rectangle] = nil
     return true
@@ -110,7 +115,24 @@ addEventHandler('onClientElementDestroy', root,
     end
 )
 
--- exports
+addEventHandler("onClientResourceStop", root,
+	function(stoppedRes)
+		local rectangles = Rectangle.created[stoppedRes]
+		if not rectangles then
+			return
+		end
+
+		for _, rectangle in ipairs(rectangles) do
+			if isElement(rectangle) then
+				destroyElement(rectangle)
+			end
+		end
+
+		Rectangle.created[stoppedRes] = nil
+	end
+)
+
+-- Exports
 guiRectangleCreate = Rectangle.create
 guiRectangleGetSize = Rectangle.getSize
 guiRectangleSetSize = Rectangle.setSize

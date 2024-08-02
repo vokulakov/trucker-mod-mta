@@ -4,7 +4,7 @@ sDW, sDH = Utils.getLimitedScreenSize()
 Texture = {}
 Font = {}
 
-addEventHandler('onClientHUDRender', root, 
+addEventHandler('onClientRender', root, 
     function()
         dxSetBlendMode("modulate_add")
             Rectangle.render()
