@@ -56,8 +56,11 @@
 
 	<script type="client" cache="false" src="Config.lua" />
 	<script type="client" cache="false" src="Texture.lua" />
+	<script type="client" cache="false" src="BlipTextures.lua" />
 
 	<!-- Exports -->
 	<export type="client" function="createStaticImage" />
 	<export type="client" function="createTexture" />
+
+	<export type="client" function="getBlipTextures" />
 </meta>

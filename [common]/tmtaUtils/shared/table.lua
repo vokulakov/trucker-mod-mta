@@ -31,7 +31,7 @@ function tableMerge(table1, table2, overwrite)
     if (not overwrite or overwrite == nil) then
         for k, v in ipairs(table2) do
             table.insert(table1, v)
-         end 
+        end 
     else
         return extendTable(table1, table2)
     end

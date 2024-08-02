@@ -187,28 +187,15 @@ function Radar.start()
     Textures.damage              = dxCreateTexture('assets/damage.png')
     Textures.arrowLocalPlayer    = exports.tmtaTextures:createTexture('localPlayer')
 
-    Textures.blipMarker          = exports.tmtaTextures:createTexture('blipMarker')
-    Textures.blipMarkerHigher    = exports.tmtaTextures:createTexture('blipMarkerHigher')
-    Textures.blipMarkerLower     = exports.tmtaTextures:createTexture('blipMarkerLower')
+    -- Blips
+    local blipTextures = exports.tmtaTextures:getBlipTextures()
+    if (type(blipTextures) ~= 'table') then
+        outputDebugString('Map.start: erorr load blip Textures', 1)
+        return
+    end
 
-    Textures.blipProperty        = exports.tmtaTextures:createTexture('blipProperty')
-    Textures.blipGasStation      = exports.tmtaTextures:createTexture('blipGasStation')
-    Textures.blipClothes         = exports.tmtaTextures:createTexture('blipClothes')
-    Textures.blipSto             = exports.tmtaTextures:createTexture('blipSto')
-    Textures.blipCarshop         = exports.tmtaTextures:createTexture('blipCarshop')
-    Textures.blipPolice          = exports.tmtaTextures:createTexture('blipPolice')
-    Textures.blipTuning          = exports.tmtaTextures:createTexture('blipTuning')
-    Textures.blipScooterRent     = exports.tmtaTextures:createTexture('blipScooterRent')
-    Textures.blipRestaurant      = exports.tmtaTextures:createTexture('blipRestaurant')
-    Textures.blipPaint           = exports.tmtaTextures:createTexture('blipPaint')
-    Textures.blipNumberPlate     = exports.tmtaTextures:createTexture('blipNumberPlate')
-    Textures.blipTrucker         = exports.tmtaTextures:createTexture('blipTrucker')
-    Textures.blipCheckpoint      = exports.tmtaTextures:createTexture('blipCheckpoint')
-    Textures.blipHospital        = exports.tmtaTextures:createTexture('blipHospital')
-    Textures.blipBusiness        = exports.tmtaTextures:createTexture('blipBusiness')
-    Textures.blipRevenueService  = exports.tmtaTextures:createTexture('blipRevenueService')
-    Textures.blipJobLoader       = exports.tmtaTextures:createTexture('blipJobLoader')
-
+    Textures = exports.tmtaUtils:extendTable(Textures, blipTextures)
+    
     camera = getCamera()
     setAnimData('hiteffect', 0.1)
 
