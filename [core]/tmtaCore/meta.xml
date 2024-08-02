@@ -24,6 +24,7 @@
     <script type="server" src="server/main.lua" />
 
     <script type="server" src="server/gameplay/PlayerId.lua" />
+    <script type="server" src="server/gameplay/Player.lua" />
     <script type="server" src="server/gameplay/PlayerJoin.lua" />
     <script type="server" src="server/gameplay/PlayerSpawn.lua" />
     

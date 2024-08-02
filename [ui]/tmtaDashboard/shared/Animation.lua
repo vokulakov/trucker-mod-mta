@@ -13,7 +13,6 @@ Animation.list = {
 	{"BD_FIRE", "Grlfrd_Kiss_03", Animation.category[1], "Kiss"},
     {"ON_LOOKERS", "wave_loop", Animation.category[1], "Здарова!!"},
 		
-		
     {"STRIP", "strip_A", Animation.category[2], "Стриптиз #1"},
     {"STRIP", "strip_B", Animation.category[2], "Стриптиз #2"},
     {"STRIP", "strip_C", Animation.category[2], "Стриптиз #3"},
@@ -92,11 +91,3 @@ Animation.list = {
     {"GHANDS", "gsign1LH", Animation.category[5], "Ёу"},
     {"GYMNASIUM", "GYMshadowbox", Animation.category[5], "Апперкот"},
 }
-
--- function Animation.get(cat)
---     for i, v in ipairs(animsTable) do
---         if v[3] == cat then
---             setAnim(v[1],v[2],v[4])
---         end
---     end
--- end

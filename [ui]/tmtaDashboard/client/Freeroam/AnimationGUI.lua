@@ -29,11 +29,21 @@ function AnimationGUI.create()
     AnimationGUI.btnAnimStop = guiCreateButton(0, sH*((height-70) /sDH), sW*((width-15) /sDW), sH*((30) /sDH), 'Остановить анимацию', false, AnimationGUI.wnd)
     guiSetFont(AnimationGUI.btnAnimStop, Utils.fonts['RR_10'])
 
-    AnimationGUI.btnClose = guiCreateButton(0, sH*((height-40) /sDH), sW*((width-15) /sDW), sH*((30) /sDH), "Закрыть", false, AnimationGUI.wnd)
+    AnimationGUI.btnClose = guiCreateButton(0, sH*((height-40) /sDH), sW*((width-15) /sDW), sH*((30) /sDH), 'Закрыть', false, AnimationGUI.wnd)
     guiSetFont(AnimationGUI.btnClose, Utils.fonts['RR_10'])
     addEventHandler('onClientGUIClick', AnimationGUI.btnClose, AnimationGUI.setVisible, false)
 
     Dashboard.addWindow(AnimationGUI.wnd, AnimationGUI.setVisible)
+end
+
+function AnimationGUI.updateAnimationList(categoryName)
+    for _, animationData in ipairs(Animation.list) do
+        if animationData[3] == categoryName then
+            local row = guiGridListAddRow(AnimationGUI.animList)
+            guiGridListSetItemText(AnimationGUI.animList, row, 1, animationData[4], false, false)
+            guiGridListSetItemData(AnimationGUI.animList, row, 1, {animationData[1], animationData[2]})
+        end
+    end
 end
 
 function AnimationGUI.getVisible()
