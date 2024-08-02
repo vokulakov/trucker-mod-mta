@@ -304,6 +304,7 @@ addEventHandler('exv_jobLoader.changeJobLoader', root, function()
 
 		setElementData(source, 'exv_jobLoader:loaderData', data)
 		setElementModel(source, loaderSkin)
+
 		--TODO: setElementData(source, 'exv_caseMoney.isWeapon', true) -- убираем кейс
 		
 		exports.tmtaNotification:showInfobox(

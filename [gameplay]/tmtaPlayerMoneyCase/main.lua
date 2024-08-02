@@ -43,7 +43,7 @@ function Case.checkPlayerMoney(player, currentMoney)
 	end
 end
 
-addEventHandler("tmtaMoney.onPlayerGiveMoney", root, 
+addEventHandler('tmtaMoney.onPlayerGiveMoney', root, 
 	function(amountMoney, currentMoney)
 		if source.vehicle then 
 			return
@@ -52,7 +52,7 @@ addEventHandler("tmtaMoney.onPlayerGiveMoney", root,
 	end
 )
 
-addEventHandler("tmtaMoney.onPlayerTakeMoney", root,
+addEventHandler('tmtaMoney.onPlayerTakeMoney', root,
 	function(amountMoney, currentMoney)
 		if source.vehicle then 
 			return
@@ -153,7 +153,7 @@ addEventHandler('onPlayerQuit', root,
 	end
 )
 
-addEventHandler("onResourceStart", resourceRoot, 
+addEventHandler('onResourceStart', resourceRoot, 
 	function()
 		for _, player in ipairs(getElementsByType('player')) do
 			Case.checkPlayerMoney(player)
@@ -161,7 +161,7 @@ addEventHandler("onResourceStart", resourceRoot,
 	end
 )
 
-addEventHandler("onResourceStop", resourceRoot,
+addEventHandler('onResourceStop', resourceRoot,
 	function()
 		for _, player in ipairs(getElementsByType('player')) do
 			Case.deleteFromPlayer(player)
