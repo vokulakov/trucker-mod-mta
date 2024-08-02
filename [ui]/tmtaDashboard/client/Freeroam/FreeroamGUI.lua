@@ -61,7 +61,6 @@ function Freeroam.create()
     guiSetFont(Freeroam.btnRespawn, Utils.fonts['RR_10'])
     guiSetProperty(Freeroam.btnRespawn, "NormalTextColour", "fff01a21")
 
-
     AnimationGUI.create()
 
     -- Add window
@@ -98,7 +97,8 @@ addEventHandler("onClientGUIClick", root,
             return exports.tmtaCamHack.startCamHack()
         elseif (source == Freeroam.btnSettings) then
             return Settings.setVisible()
+        elseif (source == Freeroam.btnHelp) then
+            return Help.setVisible()
         end
     end
 )
- 	

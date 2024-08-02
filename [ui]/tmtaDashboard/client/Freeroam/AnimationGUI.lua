@@ -13,20 +13,27 @@ function AnimationGUI.create()
     AnimationGUI.wnd.movable = false
     AnimationGUI.wnd.visible = false
 
-    AnimationGUI.categoryList = guiCreateGridList(0, 30, width, 120, false, AnimationGUI.wnd)
+    AnimationGUI.categoryList = guiCreateGridList(0, sH*((30) /sDH), sW*((width-15) /sDW), sH*((120) /sDH), false, AnimationGUI.wnd)
     guiGridListSetSortingEnabled(AnimationGUI.categoryList, false)
-    guiGridListAddColumn(AnimationGUI.categoryList, "Категории анимаций", 0.8)
+    guiGridListAddColumn(AnimationGUI.categoryList, 'Категории анимаций', 0.8)
 
     for _, categoryName in pairs(Animation.category) do
         local row = guiGridListAddRow(AnimationGUI.categoryList)
         guiGridListSetItemText(AnimationGUI.categoryList, row, 1, categoryName, false, false)
     end
 
-    AnimationGUI.animList = guiCreateGridList(0, 120, width, height, false, AnimationGUI.wnd)
+    AnimationGUI.animList = guiCreateGridList(0, sH*((120) /sDH), sW*((width-15) /sDW), sH*((height-80) /sDH), false, AnimationGUI.wnd)
     guiGridListSetSortingEnabled(AnimationGUI.animList, false)
-    guiGridListAddColumn(AnimationGUI.animList, "Анимации", 0.8)
+    guiGridListAddColumn(AnimationGUI.animList, 'Анимации', 0.8)
 
-    --Dashboard.addWindow(AnimationGUI.wnd, AnimationGUI.setVisible)
+    AnimationGUI.btnAnimStop = guiCreateButton(0, sH*((height-70) /sDH), sW*((width-15) /sDW), sH*((30) /sDH), 'Остановить анимацию', false, AnimationGUI.wnd)
+    guiSetFont(AnimationGUI.btnAnimStop, Utils.fonts['RR_10'])
+
+    AnimationGUI.btnClose = guiCreateButton(0, sH*((height-40) /sDH), sW*((width-15) /sDW), sH*((30) /sDH), "Закрыть", false, AnimationGUI.wnd)
+    guiSetFont(AnimationGUI.btnClose, Utils.fonts['RR_10'])
+    addEventHandler('onClientGUIClick', AnimationGUI.btnClose, AnimationGUI.setVisible, false)
+
+    Dashboard.addWindow(AnimationGUI.wnd, AnimationGUI.setVisible)
 end
 
 function AnimationGUI.getVisible()
@@ -34,5 +41,5 @@ function AnimationGUI.getVisible()
 end
 
 function AnimationGUI.setVisible()
-    --Freeroam.visible = Dashboard.setWindowVisible(Freeroam.wnd)
+    AnimationGUI.visible = Dashboard.setWindowVisible(AnimationGUI.wnd)
 end

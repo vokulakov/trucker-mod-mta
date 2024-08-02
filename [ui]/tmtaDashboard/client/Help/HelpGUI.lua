@@ -24,7 +24,6 @@ function Help.create()
     addEventHandler("onClientGUIClick", Help.btnClose, Help.setVisible, false)
 
     Help.tabPanel = guiCreateTabPanel(0, sH*((50) /sDH), sW*((width) /sDW), sH*((height) /sDH), false, Help.wnd)
-    
   
     -- Управление
     Help.tabControls = guiCreateTab("Управление", Help.tabPanel)

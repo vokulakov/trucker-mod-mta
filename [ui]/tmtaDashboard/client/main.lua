@@ -61,7 +61,6 @@ function Dashboard.getVisible()
     return Dashboard.visible
 end
 
---TODO нужно событие, которое будет закрывать все окна дашборда
 addEventHandler("tmtaUI.onSetPlayerComponentVisible", root,
     function(changedComponent, componentVisible)
         if changedComponent ~= 'dashboard' then
