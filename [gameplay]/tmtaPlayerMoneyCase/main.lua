@@ -109,6 +109,38 @@ addEventHandler('onPlayerWeaponSwitch', root,
 	end
 )
 
+addEventHandler('onElementDimensionChange', root,
+	function(_, dimension)
+		local player = source
+		if (not isElement(player) or getElementType(player) ~= "player") then
+			return
+		end
+
+		local case = playerCases[player]
+		if not isElement(case) then
+			return
+		end
+	
+		setElementDimension(case, dimension)
+	end
+)
+
+addEventHandler('onElementInteriorChange', root,
+	function(_, interior)
+		local player = source
+		if (not isElement(player) or getElementType(player) ~= "player") then
+			return
+		end
+
+		local case = playerCases[player]
+		if not isElement(case) then
+			return
+		end
+	
+		setElementInterior(case, interior)
+	end
+)
+
 addEventHandler('onPlayerSpawn', root, 
 	function()
 		Case.checkPlayerMoney(source)
@@ -137,7 +169,6 @@ addEventHandler("onResourceStop", resourceRoot,
 	end
 )
 
---TODO:: необходимо протестировать
 setTimer(
 	function()
 		for player, case in pairs(playerCases) do

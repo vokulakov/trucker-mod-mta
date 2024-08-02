@@ -87,6 +87,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'nrp_shaders',
     'weapon_sounds',
     'dynamic_object_shader',
+    'weapon_attach',
 
     -- other --
     'streetlights_models',
