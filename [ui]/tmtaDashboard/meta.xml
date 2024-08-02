@@ -1,6 +1,7 @@
 <meta>
     <oop>true</oop>
 
+    <script type="shared" src="shared/include.lua" cache="false" />
     <script type="shared" src="shared/Animation.lua" cache="false" />
 
     <script type="client" src="client/Utils.lua" cache="false" />

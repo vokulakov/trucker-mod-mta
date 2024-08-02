@@ -100,21 +100,21 @@ addEventHandler("onClientGUIClick", root,
         elseif (source == Freeroam.btnHelp) then
             return Help.setVisible()
         elseif (source == Freeroam.btnRespawn) then
-            return FreeroamGUI.onPlayerClickBtnRespawn()
+            return Freeroam.onPlayerClickBtnRespawn()
         end
     end
 )
 
-function FreeroamGUI.onPlayerClickBtnRespawn()
+function Freeroam.onPlayerClickBtnRespawn()
     Freeroam.setVisible()
-    local confirmWindow = exports.tmtaGUI:createConfirm('Вас доставят в ближайшую больницу.\nВы действительно хотите переродиться?', 'onConfirmWindowAccept', 'onConfirmWindowClose', 'onConfirmWindowClose')
+    local confirmWindow = exports.tmtaGUI:createConfirm('Вас доставят в ближайшую больницу.\nВы действительно хотите переродиться?', 'onFreeroamConfirmWindowRespawn', 'onFreeroamConfirmWindowClose', 'onFreeroamConfirmWindowClose')
     exports.tmtaGUI:setBtnOkLabel(confirmWindow, 'Респавн')
 end
 
-function onConfirmWindowClose()
+function onFreeroamConfirmWindowClose()
     Freeroam.setVisible()
 end
 
-function onConfirmWindowAccept()
+function onFreeroamConfirmWindowRespawn()
     triggerServerEvent('tmtaCore.killPlayer', localPlayer)
 end

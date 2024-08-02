@@ -90,6 +90,10 @@ function Confirm.create(message, okCallback, cancelCallback, closeCallback)
         sound = sound,
     }
 
+    if not isCursorShowing() then
+        showCursor(true)
+    end
+
     return wnd
 end
 
@@ -105,6 +109,10 @@ function Confirm.delete(confirm)
 
     if (isElement(createdConfirm[confirm].sound)) then
         stopSound(createdConfirm[confirm].sound)
+    end
+
+    if isCursorShowing() then
+        showCursor(false)
     end
 
     createdConfirm[confirm] = nil

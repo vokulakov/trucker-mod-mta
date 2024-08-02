@@ -5,16 +5,18 @@ local iconOffsetPosX = 5 -- отступы от иконки
 
 local createdKeyPanel = {}
 
-local function dxCreateKeyPanel(keys, rectangleWidth, rectangleHeight, rectangleAlpha)
-    local renderTarget = dxCreateRenderTarget(sW*(rectangleWidth /sDW), sH*(rectangleHeight /sDH), true)
-    
+local function dxDrawKeyPanel(keyPanel)
+    local keyPanel = createdKeyPanel[keyPanel]
+    local iconOffsetPosX = sW*((iconOffsetPosX) /sDW)
     dxSetRenderTarget(renderTarget, true)
         dxSetBlendMode('modulate_add')
-        Rectangle.draw(0, 0, rectangleWidth, rectangleHeight, tocolor(0, 0, 0, rectangleAlpha), true)
+        Rectangle.draw(0, 0, keyPanel.width, keyPanel.height, tocolor(0, 0, 0, keyPanel.alpha), true)
+        for _, key in pairs(keyPanel.keys) do
+            dxDrawImage(key.offsetPosX+iconOffsetPosX, (key.height-key.icon.height) /2, key.icon.width, key.icon.height, key.icon.img)
+            dxDrawText(key.text, key.offsetPosX+iconOffsetPosX+key.icon.width, 0, key.offsetPosX+key.width, key.height, tocolor(255, 255, 255, 255), sW/sDW*1.0, Font['RR_10'], 'center', 'center')
+        end
         dxSetBlendMode('blend')
     dxSetRenderTarget()
-
-    return renderTarget
 end
 
 function KeyPanel.create(posX, posY, keys, isRectangle)
@@ -60,22 +62,41 @@ function KeyPanel.create(posX, posY, keys, isRectangle)
         end
     end
 
-    local keyPanel = dxCreateKeyPanel(_keys, rectangleWidth + iconOffsetPosX, rectangleHeight, (not isRectangle) and 0 or 175)
+    local keyPanelWidth = sW*(rectangleWidth + iconOffsetPosX /sDW)
+    local keyPanelHeight = sH*(rectangleHeight /sDH)
+    local keyPanel = dxCreateRenderTarget(keyPanelWidth, keyPanelHeight, true)
 
     createdKeyPanel[keyPanel] = {
-        posX = posX,
-        posY = posY,
-        keys = _keys,
+        posX    = posX,
+        posY    = posY,
+        width   = keyPanelWidth,
+        height  = keyPanelHeight,
+        alpha   = (not isRectangle) and 0 or 175,
+        keys    = _keys,
     }
+
+    dxDrawKeyPanel(keyPanel)
 
     return keyPanel
 end
 
+function KeyPanel.destroy(keyPanel)
+    if (not createdKeyPanel[keyPanel]) then
+        return false
+    end
+    if isElement(keyPanel) then
+        destroyElement(keyPanel)
+    end
+    createdKeyPanel[keyPanel] = nil
+    return true
+end
+
 function KeyPanel.render()
-    for keyPanel in pairs(createdKeyPanel) do
-    --         for _, keyData in pairs(createdKeyPanel[keyPanel]) do
-    --             drawKey(keyData.x, keyData.y, keyData.width, keyData.height, keyData.icon, keyData.text)
-    --         end
+    for keyPanel, keyPanelData in pairs(createdKeyPanel) do
+        if isClientRestore then
+            dxDrawKeyPanel(keyPanel)
+        end
+        dxDrawImage(keyPanelData.posX, keyPanelData.posY, keyPanelData.width, keyPanelData.height, keyPanel, 0, 0, 0, tocolor(255, 255, 255, 255), false)
     end
 end
 
@@ -86,29 +107,18 @@ addEventHandler("onClientRestore", root,
     end
 )
 
--- local function drawKey(posX, posY, width, height, icon, text)
---     dxDrawImage(posX+iconOffsetPosX, posY+(height-icon.height) /2, icon.width, icon.height, icon.img)
---     dxDrawText(text, posX+iconOffsetPosX+icon.width, posY, posX+width, posY+height, tocolor(255, 255, 255, 255), sW/sDW*1.0, Font['RR_10'], 'center', 'center')
--- end
+addEventHandler('onClientElementDestroy', root, 
+    function()
+        if (source.type ~= 'texture') then
+            return
+        end
+        Rectangle.destroy(source)
+    end
+)
 
--- function KeyPanel.render()
---     for keyPanel in pairs(createdKeyPanel) do
---         for _, keyData in pairs(createdKeyPanel[keyPanel]) do
---             drawKey(keyData.x, keyData.y, keyData.width, keyData.height, keyData.icon, keyData.text)
---         end
---     end
--- end
+-- Exports
+createKeyPane = KeyPanel.create
 
--- function KeyPanel.destroy(panel)
---     if (not createdKeyPanel[panel]) then
---         return false
---     end
---     if isElement(panel) then
---         destroyElement(panel)
---     end
---     createdKeyPanel[panel] = nil
---     return true
--- end
 
 -- function KeyPanel.getSize(panel)
 --     if (not createdKeyPanel[panel]) then

@@ -31,5 +31,10 @@
 	<export type="client" function="stopCleanScreen" />
 
 	<export type="client" function="createKeyPane" />
-	<export type="client" function="createRectangle" />
+
+	<export type="client" function="guiRectangleCreate" />
+	<export type="client" function="guiRectangleGetSize" />
+	<export type="client" function="guiRectangleSetSize" />
+	<export type="client" function="guiRectangleGetPosition" />
+	<export type="client" function="guiRectangleSetPositon" />
 </meta>
