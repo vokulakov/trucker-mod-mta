@@ -51,6 +51,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaVehicleMusic',
     'tmtaVehicleTurnlights',
     'tmtaVehicleControl',
+    'hedit',
     
     'tmtaCameraView',
     'tmtaCamHack',
