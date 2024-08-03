@@ -290,12 +290,12 @@ function Map.setVisibleHelpPanel(state)
 		Map.keyPane = exports.tmtaUI:guiKeyPanelCreate(0, 0, {
 			{"keyMouseLeft", "Перемещение"},
             {"keyMouseWheel", "Масштаб"},
-            {"keySpace", "Легенда"},
+            --{"keySpace", "Легенда"},
             {"keyF11", "Закрыть"},
 		}, true)
 
         local width, height = exports.tmtaUI:guiKeyPanelGetSize(Map.keyPane)
-        exports.tmtaUI:guiKeyPanelSetPosition(Map.keyPane, sW*((sW-width-20) /sDW), sH*((sH-height-40) /sDH))
+        exports.tmtaUI:guiKeyPanelSetPosition(Map.keyPane, sW*((sW-width-10) /sDW), sH*((sH-height-40) /sDH))
 	else
 		if not isElement(Map.keyPane) then
 			return

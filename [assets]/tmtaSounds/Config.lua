@@ -31,4 +31,16 @@ Config.SOUND_LIST = {
 	['music_game_theme_3'] = "assets/music_bg/game_theme_3.mp3",
 	['int_restaurant'] = "assets/music_bg/music_restaurant.mp3",
 	['int_skinshop'] = "assets/music_bg/music_skinshop.mp3", 
+
+	-- Vehicle --
+	['veh_belt_out'] = "assets/vehicle/belt-out.mp3",
+	['veh_belt_in'] = "assets/vehicle/belt-in.mp3",
+	['veh_belt_alarm'] = "assets/vehicle/belt-alarm.wav",
+	
+	['veh_doorlock'] = "assets/vehicle/doorlock.mp3",
+	['veh_lightswitch'] = "assets/vehicle/lightswitch.mp3",
+	['veh_starter_car'] = "assets/vehicle/starter_car.mp3",
+	['veh_starter_moto'] = "assets/vehicle/starter_moto.wav",
+	['veh_turnsignal'] = "assets/vehicle/turnsignal.mp3",
+	['veh_radio_tune'] = "assets/vehicle/radio_tune.mp3",
 }

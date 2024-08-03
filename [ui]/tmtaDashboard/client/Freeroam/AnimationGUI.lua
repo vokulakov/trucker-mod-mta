@@ -5,15 +5,15 @@ local width, height
 local posX, posY
 
 function AnimationGUI.create()
-    width, height = 250, 430
-    posX, posY = 20, (sH-height) /2
+    width, height = 250, sDH-170-80
+    posX, posY = 20, 20
 
     AnimationGUI.wnd = guiCreateWindow(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), 'Анимации', false)
     AnimationGUI.wnd.sizible = false
     AnimationGUI.wnd.movable = false
     AnimationGUI.wnd.visible = false
 
-    AnimationGUI.categoryList = guiCreateGridList(0, sH*((30) /sDH), sW*((width-15) /sDW), sH*((120) /sDH), false, AnimationGUI.wnd)
+    AnimationGUI.categoryList = guiCreateGridList(0, sH*((30) /sDH), sW*((width-15) /sDW), sH*((140) /sDH), false, AnimationGUI.wnd)
     guiGridListSetSortingEnabled(AnimationGUI.categoryList, false)
     guiGridListAddColumn(AnimationGUI.categoryList, 'Категории анимаций', 0.8)
 
@@ -22,11 +22,11 @@ function AnimationGUI.create()
         guiGridListSetItemText(AnimationGUI.categoryList, row, 1, categoryName, false, false)
     end
 
-    AnimationGUI.animList = guiCreateGridList(0, sH*((120) /sDH), sW*((width-15) /sDW), sH*((height-80) /sDH), false, AnimationGUI.wnd)
+    AnimationGUI.animList = guiCreateGridList(0, sH*((140+40) /sDH), sW*((width-15) /sDW), sH*((height-140-40-85) /sDH), false, AnimationGUI.wnd)
     guiGridListSetSortingEnabled(AnimationGUI.animList, false)
     guiGridListAddColumn(AnimationGUI.animList, 'Анимации', 0.8)
 
-    AnimationGUI.btnAnimStop = guiCreateButton(0, sH*((height-70) /sDH), sW*((width-15) /sDW), sH*((30) /sDH), 'Остановить анимацию', false, AnimationGUI.wnd)
+    AnimationGUI.btnAnimStop = guiCreateButton(0, sH*((height-75) /sDH), sW*((width-15) /sDW), sH*((30) /sDH), 'Остановить анимацию', false, AnimationGUI.wnd)
     guiSetFont(AnimationGUI.btnAnimStop, Utils.fonts['RR_10'])
 
     AnimationGUI.btnClose = guiCreateButton(0, sH*((height-40) /sDH), sW*((width-15) /sDW), sH*((30) /sDH), 'Закрыть', false, AnimationGUI.wnd)
@@ -52,4 +52,7 @@ end
 
 function AnimationGUI.setVisible()
     AnimationGUI.visible = Dashboard.setWindowVisible(AnimationGUI.wnd)
+    showChat(not AnimationGUI.visible)
+    exports.tmtaUI:setPlayerComponentVisible("controlHelp", not AnimationGUI.visible)
+    exports.tmtaUI:setPlayerComponentVisible("chat", not AnimationGUI.visible)
 end

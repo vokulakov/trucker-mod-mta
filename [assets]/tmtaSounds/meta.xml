@@ -30,6 +30,18 @@
 	<file src="assets/music_bg/music_restaurant.mp3" />
 	<file src="assets/music_bg/music_skinshop.mp3" />
 
+	<!-- Vehicle -->
+	<file src="assets/vehicle/doorlock.mp3" />
+	<file src="assets/vehicle/lightswitch.mp3" />
+	<file src="assets/vehicle/turnsignal.mp3" />
+	<file src="assets/vehicle/starter_car.mp3" />
+	<file src="assets/vehicle/starter_moto.wav" />
+	<file src="assets/vehicle/radio_tune.mp3" />
+
+	<file src="assets/vehicle/belt-alarm.wav" />
+	<file src="assets/vehicle/belt-in.mp3" />
+	<file src="assets/vehicle/belt-out.mp3" />
+
 	<script type="client" cache="false" src="Config.lua" />
 	<script type="client" cache="false" src="main.lua" />
 
