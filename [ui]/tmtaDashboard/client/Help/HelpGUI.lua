@@ -25,11 +25,14 @@ function Help.create()
 
     Help.tabPanel = guiCreateTabPanel(0, sH*((50) /sDH), sW*((width) /sDW), sH*((height) /sDH), false, Help.wnd)
   
+    -- Новости
+    NewsTab.create(posX, posY, width, height, Help.tabPanel)
+
     -- Управление
-    Help.tabControls = guiCreateTab("Управление", Help.tabPanel)
+    ControlsTab.create(posX, posY, width, height, Help.tabPanel)
 
     -- Донат
-    Help.tabDonate = guiCreateTab("Донат", Help.tabPanel)
+    DonateTab.create(posX, posY, width, height, Help.tabPanel)
 
     -- Правила сервера
     RuleTab.create(posX, posY, width, height, Help.tabPanel)

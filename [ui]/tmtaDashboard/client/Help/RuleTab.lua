@@ -9,7 +9,7 @@ function RuleTab.create(posX, posY, width, height, wnd)
     RuleTab.browser = guiGetBrowser(guiCreateBrowser(sW*((10) /sDW), sH*((10) /sDH), sW*((width-40) /sDW), sH*((height-110) /sDH), true, true, false, RuleTab.tab))
     addEventHandler("onClientBrowserCreated", RuleTab.browser, 
 	    function()
-            loadBrowserURL(source, "http://mta/local/assets/public_html/rules.html")
+            loadBrowserURL(source, "http://mta/local/webview/rules.html")
 	    end
     )
 

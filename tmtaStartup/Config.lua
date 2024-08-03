@@ -88,6 +88,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'weapon_sounds',
     'dynamic_object_shader',
     'weapon_attach',
+    'pedAnimationsReplace',
 
     -- other --
     'streetlights_models',
