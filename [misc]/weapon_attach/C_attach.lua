@@ -24,7 +24,7 @@ function removeWeaponOnSwitch(prevSlot, newSlot)
 		triggerServerEvent("createWepObject", localPlayer, localPlayer, prevWeapon, 1, getSlotFromWeapon(getPedWeapon(localPlayer, prevSlot)))
 	end
 end
-addEventHandler("onClientPlayerWeaponSwitch", getRootElement(), removeWeaponOnSwitch)
+addEventHandler("onClientPlayerWeaponSwitch", root, removeWeaponOnSwitch)
 
 
 addEvent("Weapon_Attach:recheckWeapons")

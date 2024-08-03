@@ -117,8 +117,6 @@ addEventHandler("onClientResourceStart", resourceRoot,
         setPlayerHudComponentVisible("all", false)
         setPlayerHudComponentVisible("crosshair", true)
         UI.setPlayerComponentVisible("all", false) -- выключаем весь интерфейс при старте
-
-        UI.setPlayerComponentVisible("all", true)
     end
 )
 
