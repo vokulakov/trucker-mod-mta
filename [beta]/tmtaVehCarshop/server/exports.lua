@@ -1,0 +1,2 @@
+-- Exports
+updatePlayerVehiclesInfo = Garage.updatePlayerVehiclesInfo

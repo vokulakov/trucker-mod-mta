@@ -1,0 +1,33 @@
+<meta>
+    <info author="Decro" name="Numer Plate System" version="0.1.0" type="misc"/>
+    <min_mta_version client="1.5" server="1.5" />
+    <oop>true</oop>
+
+    <script src="settings.lua" type="shared"/>
+    <script src="sv_numbers.lua" type="server"/>
+    <script src="cl_numbers.lua" type="client" compile="1"/>
+
+    <file src="files/font.ttf" />
+    <file src="files/rn.ttf" />
+	<file src="files/texreplace.fx" />
+    <file src="files/ramka.png" />
+
+    <file src="number/number_c.png" />
+    <file src="number/number_ru.png" />
+    <file src="number/number_ru2.png" />
+    <file src="number/number_ru3.png" />
+    <file src="number/number_tr.png" />
+    <file src="number/number_kz.png" />
+    <file src="number/number_ua.png" />
+    <file src="number/number_by.png" />
+    <file src="number/number_arm.png" />
+    <file src="number/number_police.png" />
+    <file src="number/number_bus.png" />
+    <file src="number/number_black.png" />
+    <file src="number/number_moto.png" />
+    <file src="number/number_motop.png" />
+
+    <export type="server" function="giveTransitNumber" />
+    <export type="shared" function="getTableRegions" />
+
+</meta>

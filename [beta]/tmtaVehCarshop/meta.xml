@@ -1,0 +1,37 @@
+<meta>
+	<oop>true</oop>
+	<download_priority_group>-99</download_priority_group>
+	<include resource="tmtaCore" />
+	<include resource="tmtaVehTuning" />
+	<include resource="tmtaVehNumbers" />
+
+	<file src="assets/color.png" />
+	<file src="assets/objects/int_carshop.txd" type="client"/>
+	<file src="assets/objects/int_carshop.dff" type="client"/>
+	<file src="assets/objects/int_carshop.col" type="client"/>
+	<map src="assets/objects/maps.map" dimension="1"></map>
+	<script src="assets/objects/client_obj.lua" type="client" cache="false" />
+
+	<script src="shared.lua" type="shared" cache="false" />
+
+	<!-- CLIENT -->
+	<script src="client/Camera.lua" type="client" cache="false" />
+	<script src="client/Garage.lua" type="client" cache="false" />
+	<script src="client/VehicleShop.lua" type="client" cache="false" />
+
+
+	<!-- SERVER -->
+	<script src="server/Database.lua" type="server" />
+	<script src="server/Garage.lua" type="server" />
+	<script src="server/VehicleShop.lua" type="server" />
+
+
+	<script src="server/exports.lua" type="server" />
+	<script src="server/main.lua" type="server" />
+	<!--
+	<script src="client/client.lua" type="client" cache="false" />
+	<script src="server/server.lua" type="server" cache="false" /> -->
+	
+	<export type="server" function="updatePlayerVehiclesInfo" />
+
+</meta>
