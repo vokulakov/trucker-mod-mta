@@ -46,36 +46,6 @@ function setVisibleHelpPanel(state)
 	end
 end 
 
-function VehicleShop.exitCarDealership()
-    if not VehicleShop_Window.visible then 
-        return
-    end 
-
-    guiSetVisible(VehicleShop_Window, false)
-    setVisibleHelpPanel(false)
-    exports.tmtaHUD:moneyHide()
-    removeEventHandler("onClientRender", root, VehicleShop.drawColorPicker)
-    showCursor(false)
-    fadeCamera(false, 1.0)
-
-    setTimer(function() 
-        setElementFrozen(localPlayer, false)
-        setElementDimension(localPlayer, 0)
-        CameraManager.stop()
-        fadeCamera(true, 0.5)
-	    setCameraTarget(localPlayer, localPlayer)
-
-        if isElement(veh) then
-            destroyElement(veh)
-        end
-
-        exports.tmtaUI:setPlayerComponentVisible("all", true)
-        showChat(true)
-    end, 1000, 1)
-end
-addEvent("tmtaVehCarshop.exitCarDealership", true)
-addEventHandler("tmtaVehCarshop.exitCarDealership", root, VehicleShop.exitCarDealership)
-
 addEventHandler("onClientGUIClick", root, function()
     if not VehicleShop_Window.visible then 
         return
@@ -178,8 +148,9 @@ for i, M in ipairs(ShopTable) do
         'Автосалон',
         tocolor(252, 186, 3, 255)
     )
+end
 
-end 
+local _time = {}
 
 -- Вход в автосалон
 addEventHandler("onClientMarkerHit", resourceRoot, function(player)
@@ -206,6 +177,11 @@ addEventHandler("onClientMarkerHit", resourceRoot, function(player)
 
     setCameraMatrix(2377.3974609375, -1645.8415527344, 78.485366821289, 2376.392578125, -1645.2175292969, 78.298706054688)
     setElementDimension(player, 1)
+  
+    local timehour, timeminute = getTime()
+    _time = {h = timehour, m = timeminute, d = getMinuteDuration()}
+    setTime(12, 0)
+    setMinuteDuration(60000)
 
     guiSetVisible(VehicleShop_Window, true)
     setVisibleHelpPanel(true)
@@ -224,3 +200,85 @@ addEventHandler("onClientMarkerHit", resourceRoot, function(player)
 
     addEventHandler("onClientRender", root, VehicleShop.drawColorPicker)
 end)
+
+-- Выход из автосалона
+function VehicleShop.exitCarDealership()
+    if not VehicleShop_Window.visible then 
+        return
+    end 
+
+    guiSetVisible(VehicleShop_Window, false)
+    setVisibleHelpPanel(false)
+    exports.tmtaHUD:moneyHide()
+    removeEventHandler("onClientRender", root, VehicleShop.drawColorPicker)
+    showCursor(false)
+    fadeCamera(false, 1.0)
+
+    setTimer(function() 
+        setElementFrozen(localPlayer, false)
+        setElementDimension(localPlayer, 0)
+        CameraManager.stop()
+        fadeCamera(true, 0.5)
+	    setCameraTarget(localPlayer, localPlayer)
+
+        setTime(_time.h, _time.m)
+        setMinuteDuration(_time.d)
+        _time = nil
+
+        if isElement(veh) then
+            destroyElement(veh)
+        end
+
+        exports.tmtaUI:setPlayerComponentVisible("all", true)
+        showChat(true)
+    end, 1000, 1)
+end
+addEvent("tmtaVehCarshop.exitCarDealership", true)
+addEventHandler("tmtaVehCarshop.exitCarDealership", root, VehicleShop.exitCarDealership)
+
+
+-- НАДПИСЬ НАД ПИКАПОМ [НАЧАЛО] --
+local STREAMED_MARKER = {}
+
+local function dxDrawCustomText(text, x1, y1, x2, y2, color, scale)
+	dxDrawText(text, x1 - 1, y1, x2 - 1, y2, tocolor(0, 0, 0, 150), scale, "default-bold", "center", "center")
+	dxDrawText(text, x1 + 1, y1, x2 + 1, y2, tocolor(0, 0, 0, 150), scale, "default-bold", "center", "center")
+	dxDrawText(text, x1, y1 - 1, x2, y2 - 1, tocolor(0, 0, 0, 150), scale, "default-bold", "center", "center")
+	dxDrawText(text, x1, y1 + 1, x2, y2 + 1, tocolor(0, 0, 0, 150), scale, "default-bold", "center", "center")
+	dxDrawText(text, x1, y1, x2, y2, color, scale, "default-bold", "center", "center")
+end
+
+addEventHandler("onClientRender", root, 
+    function()
+        if not exports.tmtaUI:isPlayerComponentVisible("text3d") then
+            return
+        end
+
+        local cX, cY, cZ = getCameraMatrix()
+        for marker, _ in pairs(STREAMED_MARKER) do
+            local x, y, z = getElementPosition(marker)
+            local posX, posY = getScreenFromWorldPosition(x, y, z + 1.)
+            if posX and posY then
+                local distance = getDistanceBetweenPoints3D(cX, cY, cZ, x, y, z)
+                if distance < 65 then
+                    if isLineOfSightClear(cX, cY, cZ, x, y, z, true, true, false, true, false, false, false, marker) then
+                        dxDrawCustomText('Автосалон', posX, posY, posX, posY, tocolor(255, 255, 0), 1)
+                    end
+                end
+            end
+        end
+    end
+)
+
+addEventHandler("onClientElementStreamIn", root, function()
+	if getElementType(source) == "marker" and ShopMarkersTable[source] then
+		STREAMED_MARKER[source] = source
+	end
+end)
+
+addEventHandler("onClientElementStreamOut", root, function()
+	if getElementType(source) == "marker" and STREAMED_MARKER[source] then
+		STREAMED_MARKER[source] = nil
+	end
+end)
+-- НАДПИСЬ НАД ПИКАПОМ [КОНЕЦ] --

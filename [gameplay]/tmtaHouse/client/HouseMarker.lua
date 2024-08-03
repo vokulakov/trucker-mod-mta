@@ -17,9 +17,10 @@ addEventHandler("onClientRender", root, function()
 	if not exports.tmtaUI:isPlayerComponentVisible("text3d") then
         return
     end
+	
+	local cX, cY, cZ = getCameraMatrix()
 	for houseMarker, houseData in pairs(StreamingHouses) do
 		local x, y, z = getElementPosition(houseMarker)
-		local cX, cY, cZ = getCameraMatrix()
 		local posX, posY = getScreenFromWorldPosition(x, y, z + HOUSE_OFFSET)
 		if posX then
 			local distance = getDistanceBetweenPoints3D(cX, cY, cZ, x, y, z)

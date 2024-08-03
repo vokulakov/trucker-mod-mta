@@ -25,7 +25,7 @@ ShopTable = {
 	
 	[3] = {
 		ID = vehiclesTable,
-		PosX = -1967.8, PosY = 291.4, PosZ = 34.06,
+		PosX = -1953, PosY = 301, PosZ = 34.5,
 		vPosX = 1379.3, vPosY = -1170.19, vPosZ = 127.6,  
 		CamX = 1378.9, CamY = -1176.8, CamZ = 130.7, 
 		lookAtX = 1379.3, lookAtY = -1170.19, lookAtZ = 127.6

@@ -13,9 +13,10 @@ addEventHandler("onClientRender", root,
         if not exports.tmtaUI:isPlayerComponentVisible("text3d") then
             return
         end
+
+        local cX, cY, cZ = getCameraMatrix()
         for marker, data in pairs(Business.getStreamedAll()) do
             local x, y, z = getElementPosition(marker)
-            local cX, cY, cZ = getCameraMatrix()
             local posX, posY = getScreenFromWorldPosition(x, y, z + MARKER_OFFSET)
             if posX then
                 local distance = getDistanceBetweenPoints3D(cX, cY, cZ, x, y, z)
