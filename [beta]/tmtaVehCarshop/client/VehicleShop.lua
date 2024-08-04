@@ -3,25 +3,28 @@ VehicleShop = {}
 local sW, sH = guiGetScreenSize()
 local sDW, sDH = exports.tmtaUI:getScreenSize()
 
-VehicleShop_Window = guiCreateWindow(sW-343-10, sH-436-35, 343, 436, "Автосалон", false)
-guiSetVisible(VehicleShop_Window, false)
-guiWindowSetSizable(VehicleShop_Window , false)
-guiWindowSetMovable(VehicleShop_Window , false)
-guiSetAlpha(VehicleShop_Window, 0.8)
+local width, height = 350, sH-200
 
-carGrid = guiCreateGridList(0, 25, 324, 329, false, VehicleShop_Window)
+local RB_10 = exports.tmtaFonts:createFontGUI('RobotoBold', 10)
+
+VehicleShop.wnd = guiCreateWindow(sW*((sW-width-20) /sDW), sH*((sH-height)/2 /sDH), sW*((width) /sDW), sH*((height) /sDH), '', false)
+guiSetVisible(VehicleShop.wnd , false)
+guiWindowSetSizable(VehicleShop.wnd  , false)
+guiWindowSetMovable(VehicleShop.wnd  , false)
+guiSetAlpha(VehicleShop.wnd , 0.8)
+
+carGrid = guiCreateGridList(sW*((0) /sDW), sH*((25) /sDH), sW*((width) /sDW), sH*((height-130) /sDH), false, VehicleShop.wnd )
 guiGridListSetSortingEnabled(carGrid, false)
 guiGridListSetSelectionMode(carGrid, 0)
-carColumn = guiGridListAddColumn(carGrid, "Транспортное средство", 0.57)
-costColumn = guiGridListAddColumn(carGrid, "Стоимость", 0.35)
+carColumn = guiGridListAddColumn(carGrid, "Название", 0.65)
+costColumn = guiGridListAddColumn(carGrid, "Цена", 0.25)
 
-carButton = guiCreateButton(0, 360, 400, 35, "Оформить покупку", false, VehicleShop_Window)
-guiSetFont(carButton, "default-bold-small")
-guiSetProperty(carButton, "NormalTextColour", "FF01D51A")
+local buyButton = guiCreateButton(0, sH*((height-45-50) /sDH), sW*((width-10) /sDW), sH*(40 /sDH), 'Оформить покупку', false, VehicleShop.wnd)
+guiSetFont(buyButton, RB_10)
+guiSetProperty(buyButton, "NormalTextColour", "FF01D51A")
 
-closeButton = guiCreateButton(0, 400, 340, 25, "Выйти из автосалона", false, VehicleShop_Window)
-guiSetFont(closeButton, "default-bold-small")
-guiSetProperty(closeButton, "NormalTextColour", "FFCE070B") 
+local closeButton = guiCreateButton(0, sH*((height-45) /sDH), sW*((width-10) /sDW), sH*(35 /sDH), 'Выйти из автосалона', false, VehicleShop.wnd)
+guiSetFont(closeButton, RB_10)
 
 function setVisibleHelpPanel(state)
 	if state then
@@ -47,7 +50,7 @@ function setVisibleHelpPanel(state)
 end 
 
 addEventHandler("onClientGUIClick", root, function()
-    if not VehicleShop_Window.visible then 
+    if not VehicleShop.wnd.visible then 
         return
     end 
 
@@ -74,11 +77,9 @@ addEventHandler("onClientGUIClick", root, function()
 
             triggerServerEvent("tmtaVehCarshop.onBuyVehicle", localPlayer, carID, carCost, r1, g1, b1, r2, g2, b2)
         end
-
     elseif (source == closeButton) then
         VehicleShop.exitCarDealership()
-    end 
-
+    end
 end)
 
 local function isMouseInPosition ( x, y, width, height )
@@ -96,7 +97,6 @@ local function isMouseInPosition ( x, y, width, height )
 end
 
 local currentColor = math.random(1, #vehShopColors)
-
 function VehicleShop.drawColorPicker()
     local posX, posY = sW/2-(#vehShopColors*40)/2, 32+35
     dxDrawRectangle(posX-4, posY-4, (#vehShopColors*40), 40, tocolor(33, 33, 33, 255), false)
@@ -122,7 +122,7 @@ function VehicleShop.showVehicle(carID)
         return 
     end
     local r, g, b = vehShopColors[currentColor][1], vehShopColors[currentColor][2], vehShopColors[currentColor][3]
-    veh = createVehicle(carID, 2371.03125, -1641.1905517578, 76.9, 0.00016500883793924, -0.0091034332290292, 210)
+    veh = createVehicle(carID, 2371.03125, -1641.1905517578, 76.9, 0.00016500883793924, -0.0091034332290292, 220)
     CameraManager.start(veh)
     veh.dimension = 1
     setVehicleDamageProof(veh, true)
@@ -150,7 +150,44 @@ for i, M in ipairs(ShopTable) do
     )
 end
 
-local _time = {}
+function VehicleShop.enterCarDealership(carShopId)
+    guiGridListClear(carGrid)
+
+    for i, v in ipairs(ShopTable[i]["vehicles"]) do
+        local carName = customCarNames[ v[1] ] or getVehicleNameFromModel(v[1])
+        local carID = getVehicleModelFromNewName(carName) or getVehicleModelFromName(carName)
+        local row = guiGridListAddRow(carGrid)
+
+        if utf8.len(carName) >= 30 then
+            carName = utf8.sub(carName, 0, 30) .. '...'
+        end
+
+        guiGridListSetItemText(carGrid, row, 1, carName, false, true)
+        guiGridListSetItemData(carGrid, row, 1, carID)
+        guiGridListSetItemText(carGrid, row, 2, convertNumber(v[2])..' ₽', false, true)
+        guiGridListSetItemData(carGrid, row, 2, v[2])
+    end
+
+    setCameraMatrix(2377.3974609375, -1645.8415527344, 78.485366821289, 2376.392578125, -1645.2175292969, 78.298706054688)
+    setElementDimension(localPlayer, 1)
+    fadeCamera(true, 1)
+
+    setTime(12, 0)
+    setMinuteDuration(2147483647)
+
+    guiSetVisible(VehicleShop.wnd, true)
+    setVisibleHelpPanel(true)
+    exports.tmtaHUD:moneyShow(sDW-20, 20)
+
+    showCursor(true)
+    guiGridListSetSelectedItem(carGrid, 0, 1)
+    
+    setElementFrozen(localPlayer, true)
+    local carID = guiGridListGetItemData(carGrid, 0, 1)
+    VehicleShop.showVehicle(carID)
+
+    addEventHandler("onClientRender", root, VehicleShop.drawColorPicker)
+end
 
 -- Вход в автосалон
 addEventHandler("onClientMarkerHit", resourceRoot, function(player)
@@ -163,51 +200,26 @@ addEventHandler("onClientMarkerHit", resourceRoot, function(player)
     end 
 
     i = tonumber(getElementID(source))
-    guiGridListClear(carGrid)
-
-    for i, v in ipairs(ShopTable[i]["ID"]) do
-        local carName = customCarNames[ v[1] ] or getVehicleNameFromModel(v[1])
-        local carID = getVehicleModelFromNewName(carName) or getVehicleModelFromName(carName)
-        local row = guiGridListAddRow(carGrid)
-        guiGridListSetItemText(carGrid, row, 1, utf8.sub(carName, 0, 22) .. '...', false, true)
-        guiGridListSetItemData(carGrid, row, 1, carID)
-        guiGridListSetItemText(carGrid, row, 2, convertNumber(v[2])..' ₽', false, true)
-        guiGridListSetItemData(carGrid, row, 2, v[2])
-    end
-
-    setCameraMatrix(2377.3974609375, -1645.8415527344, 78.485366821289, 2376.392578125, -1645.2175292969, 78.298706054688)
-    setElementDimension(player, 1)
-  
-    local timehour, timeminute = getTime()
-    _time = {h = timehour, m = timeminute, d = getMinuteDuration()}
-    setTime(12, 0)
-    setMinuteDuration(60000)
-
-    guiSetVisible(VehicleShop_Window, true)
-    setVisibleHelpPanel(true)
-    exports.tmtaHUD:moneyShow(sDW-20, 20)
-
+    
+    fadeCamera(false, 1)
+    
     exports.tmtaUI:setPlayerComponentVisible("all", false)
     exports.tmtaUI:setPlayerComponentVisible("notifications", true)
 	showChat(false)
 
-    showCursor(true)
-    guiGridListSetSelectedItem(carGrid, 0, 1)
-    
-    setElementFrozen(localPlayer, true)
-    local carID = guiGridListGetItemData(carGrid, 0, 1)
-    VehicleShop.showVehicle(carID)
+    setTimer(function()
+        VehicleShop.enterCarDealership(i)
+    end, 1500, 1)
 
-    addEventHandler("onClientRender", root, VehicleShop.drawColorPicker)
 end)
 
 -- Выход из автосалона
 function VehicleShop.exitCarDealership()
-    if not VehicleShop_Window.visible then 
+    if not VehicleShop.wnd.visible then 
         return
     end 
 
-    guiSetVisible(VehicleShop_Window, false)
+    guiSetVisible(VehicleShop.wnd, false)
     setVisibleHelpPanel(false)
     exports.tmtaHUD:moneyHide()
     removeEventHandler("onClientRender", root, VehicleShop.drawColorPicker)
@@ -220,10 +232,6 @@ function VehicleShop.exitCarDealership()
         CameraManager.stop()
         fadeCamera(true, 0.5)
 	    setCameraTarget(localPlayer, localPlayer)
-
-        setTime(_time.h, _time.m)
-        setMinuteDuration(_time.d)
-        _time = nil
 
         if isElement(veh) then
             destroyElement(veh)

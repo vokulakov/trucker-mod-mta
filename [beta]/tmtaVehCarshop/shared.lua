@@ -8,7 +8,8 @@ local vehiclesTable = {
 
 ShopTable = {
 	[1] = {
-        ID = vehiclesTable,
+		name = 'Автосалон',
+        vehicles = vehiclesTable,
 		PosX = 2131.79, PosY = -1151.32, PosZ = 23.06,
 		vPosX = 1379.3, vPosY = -1170.19, vPosZ = 127.6, 
 		CamX = 1378.9, CamY = -1176.8, CamZ = 130.7, 
@@ -16,7 +17,8 @@ ShopTable = {
 	},
     
 	[2] = {
-		ID = vehiclesTable,
+		name = 'Автосалон',
+		vehicles = vehiclesTable,
 		PosX = 1948.2, PosY = 2068.4, PosZ = 10.06,
 		vPosX = 1379.3, vPosY = -1170.19, vPosZ = 127.6, 
 		CamX = 1378.9, CamY = -1176.8, CamZ = 130.7, 
@@ -24,13 +26,13 @@ ShopTable = {
 	},
 	
 	[3] = {
-		ID = vehiclesTable,
+		name = 'Автосалон',
+		vehicles = vehiclesTable,
 		PosX = -1953, PosY = 301, PosZ = 34.5,
 		vPosX = 1379.3, vPosY = -1170.19, vPosZ = 127.6,  
 		CamX = 1378.9, CamY = -1176.8, CamZ = 130.7, 
 		lookAtX = 1379.3, lookAtY = -1170.19, lookAtZ = 127.6
 	},
-    
 }
 
 vehShopColors = -- Панель цветов в салоне Цвет(R,B,G)
