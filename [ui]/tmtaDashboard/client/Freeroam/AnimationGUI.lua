@@ -1,13 +1,10 @@
 AnimationGUI = {}
 AnimationGUI.visible = false
 
-local width, height
-local posX, posY
+local width, height = 250, sDH-170-80
+local posX, posY = 20, 20
 
 function AnimationGUI.create()
-    width, height = 250, sDH-170-80
-    posX, posY = 20, 20
-
     AnimationGUI.wnd = guiCreateWindow(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), 'Анимации', false)
     AnimationGUI.wnd.sizible = false
     AnimationGUI.wnd.movable = false
@@ -27,10 +24,10 @@ function AnimationGUI.create()
     guiGridListAddColumn(AnimationGUI.animList, 'Анимации', 0.8)
 
     AnimationGUI.btnAnimStop = guiCreateButton(0, sH*((height-75) /sDH), sW*((width-15) /sDW), sH*((30) /sDH), 'Остановить анимацию', false, AnimationGUI.wnd)
-    guiSetFont(AnimationGUI.btnAnimStop, Utils.fonts['RR_10'])
+    guiSetFont(AnimationGUI.btnAnimStop, Font['RR_10'])
 
     AnimationGUI.btnClose = guiCreateButton(0, sH*((height-40) /sDH), sW*((width-15) /sDW), sH*((30) /sDH), 'Закрыть', false, AnimationGUI.wnd)
-    guiSetFont(AnimationGUI.btnClose, Utils.fonts['RR_10'])
+    guiSetFont(AnimationGUI.btnClose, Font['RR_10'])
     addEventHandler('onClientGUIClick', AnimationGUI.btnClose, AnimationGUI.setVisible, false)
 
     Dashboard.addWindow(AnimationGUI.wnd, AnimationGUI.setVisible)

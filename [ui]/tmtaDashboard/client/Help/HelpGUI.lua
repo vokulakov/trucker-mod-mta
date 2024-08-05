@@ -6,20 +6,17 @@ Help.params = {}
 Help.params['windowTitle'] = "Информация [F9]"
 Help.params['bindKey'] = 'f9'
 
-local width, height
-local posX, posY
+local width, height = 1280, 720
+local posX, posY = (sDW-width) /2, (sDH-height) /2
 
-function Help.create()
-    width, height = 1280, 720
-    posX, posY = (sDW-width) /2, (sDH-height) /2
-
+function Help.create() 
     Help.wnd = guiCreateWindow(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), Help.params['windowTitle'], false)
     Help.wnd.sizible = false
     Help.wnd.movable = false
     Help.wnd.visible = false
 
     Help.btnClose = guiCreateButton(sW*((width-35) /sDW), sH*((10+25) /sDH), sW*((25) /sDW), sH*((25) /sDH), 'Х', false, Help.wnd)
-    guiSetFont(Help.btnClose, Utils.fonts['RR_10'])
+    guiSetFont(Help.btnClose, Font['RR_10'])
     guiSetProperty(Help.btnClose, "NormalTextColour", "FFCE070B")
     addEventHandler("onClientGUIClick", Help.btnClose, Help.setVisible, false)
 

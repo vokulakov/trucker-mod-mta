@@ -18,13 +18,14 @@
     <file src="webview/news.html" />
     <file src="webview/rules.html" />
 
+    <!-- Shared -->
     <script type="shared" src="shared/include.lua" cache="false" />
     <script type="shared" src="shared/Animation.lua" cache="false" />
 
-    <script type="client" src="client/Utils.lua" cache="false" />
-  
+    <!-- Client -->
     <script type="client" src="client/Freeroam/FreeroamGUI.lua" cache="false" />
     <script type="client" src="client/Freeroam/AnimationGUI.lua" cache="false" />
+    <script type="client" src="client/Freeroam/WalkstyleGUI.lua" cache="false" />
 
     <script type="client" src="client/SettingsGUI.lua" cache="false" />
 

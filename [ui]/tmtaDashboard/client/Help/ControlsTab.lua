@@ -12,5 +12,4 @@ function ControlsTab.create(posX, posY, width, height, wnd)
             loadBrowserURL(source, "http://mta/local/webview/controls.html")
 	    end
     )
-
 end

@@ -12,5 +12,4 @@ function DonateTab.create(posX, posY, width, height, wnd)
             loadBrowserURL(source, "http://mta/local/webview/donat.html")
 	    end
     )
-
 end

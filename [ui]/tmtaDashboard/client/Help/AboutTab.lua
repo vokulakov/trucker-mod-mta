@@ -12,5 +12,4 @@ function AboutTab.create(posX, posY, width, height, wnd)
             loadBrowserURL(source, "http://mta/local/assets/public_html/about.html")
 	    end
     )
-
 end
