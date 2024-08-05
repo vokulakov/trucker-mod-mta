@@ -38,7 +38,7 @@ function Help.create()
     AboutTab.create(posX, posY, width, height, Help.tabPanel)
 
     -- Add window
-    Dashboard.addWindow(Help.wnd, Help.setVisible)
+    Dashboard.addWindow(Help.wnd)
 end
 
 function Help.setVisible()

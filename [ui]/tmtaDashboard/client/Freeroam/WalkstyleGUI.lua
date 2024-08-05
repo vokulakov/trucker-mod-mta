@@ -12,4 +12,14 @@ function WalkstyleGUI.create()
     WalkstyleGUI.wnd.sizible = false
     WalkstyleGUI.wnd.movable = false
     WalkstyleGUI.wnd.visible = false
+
+    Dashboard.addWindow(WalkstyleGUI.wnd)
+end
+
+function WalkstyleGUI.getVisible()
+    return WalkstyleGUI.visible
+end
+
+function WalkstyleGUI.setVisible()
+    WalkstyleGUI.visible = Dashboard.setWindowVisible(WalkstyleGUI.wnd)
 end

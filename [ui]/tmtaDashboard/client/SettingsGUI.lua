@@ -59,7 +59,7 @@ function Settings.create()
     -- Отключить звук покрышек
    
     -- Add window
-    Dashboard.addWindow(Settings.wnd, Settings.setVisible)
+    Dashboard.addWindow(Settings.wnd)
 end
 
 function Settings.setVisible()

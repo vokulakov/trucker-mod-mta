@@ -30,7 +30,7 @@ function AnimationGUI.create()
     guiSetFont(AnimationGUI.btnClose, Font['RR_10'])
     addEventHandler('onClientGUIClick', AnimationGUI.btnClose, AnimationGUI.setVisible, false)
 
-    Dashboard.addWindow(AnimationGUI.wnd, AnimationGUI.setVisible)
+    Dashboard.addWindow(AnimationGUI.wnd)
 end
 
 function AnimationGUI.updateAnimationList(categoryName)
