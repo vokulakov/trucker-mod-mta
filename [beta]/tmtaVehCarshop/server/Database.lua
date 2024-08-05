@@ -1,7 +1,7 @@
 Database = {}
 local dbConnection
 
-VEHICLES_TABLE_NAME = "vehicles"
+VEHICLES_TABLE_NAME = "vehicle"
 
 function Database.setup()
     dbConnection = exports.tmtaSQLite:dbGetConnection()
@@ -13,7 +13,7 @@ function Database.setup()
 
     exports.tmtaSQLite:dbTableCreate(VEHICLES_TABLE_NAME, {
         -- Номер поля
-        { name = "ID", type = "INTEGER", option = "PRIMARY KEY" },
+        { name = "vehicleId", type = "INTEGER", option = "PRIMARY KEY" },
     
         -- Аккаунт владельца
         { name = "account", type = "TEXT", option = "NOT NULL" },
