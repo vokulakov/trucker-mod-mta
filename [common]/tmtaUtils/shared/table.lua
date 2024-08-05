@@ -38,3 +38,12 @@ function tableMerge(table1, table2, overwrite)
 
     return table1
 end
+
+--- Перевернуть таблицу (поменять местами ключ со значением)
+function tableReverse(t)
+	local newt = {}
+	for idx, item in ipairs(t) do
+		newt[#t - idx + 1] = item
+	end
+	return newt
+end

@@ -31,6 +31,7 @@
 	<export type="shared" function="tableMerge"/>
 	<export type="shared" function="extendTable" />
 	<export type="shared" function="tableCopy" />
+	<export type="shared" function="tableReverse" />
 
 	<!-- Математические функции -->
 	<export type="shared" function="roundUpHundred"/>

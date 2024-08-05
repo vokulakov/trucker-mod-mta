@@ -21,7 +21,7 @@ local VEHICLE_TYPE_COMMERCIAL_LABEL = 'Коммерческая'
 local VEHICLE_TYPE_STATE_LABEL = 'Государственная'
 
 function Vehicle.setup()
-    exports.tmtaSQLite:dbTableCreate(HOUSE_TABLE_NAME, {
+    exports.tmtaSQLite:dbTableCreate(VEHICLE_TABLE_NAME, {
         {name = "model", type = "INTEGER", options = "NOT NULL"},
         {name = "vin", type = "varchar", size = 17, options = "UNIQUE NOT NULL"},
 

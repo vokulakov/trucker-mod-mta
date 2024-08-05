@@ -21,3 +21,10 @@ function UserVehicle.add(userId, model, callbackFunctionName, ...)
 		return false
 	end
 end
+
+function UserVehicle.getUserVehicles(userId, callbackFunctionName, ...)
+    if 	(type(userId) ~= "number") then
+		outputDebugString("UserVehicle.getUserVehicles: bad arguments", 1)
+        return false
+    end
+end
