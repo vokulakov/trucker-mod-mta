@@ -7,6 +7,7 @@
     <!-- Shared -->
     <script type="shared" src="shared/include.lua" cache="false" />
     <script type="shared" src="shared/Config.lua" cache="false" />
+    <script type="shared" src="shared/Vehicle.lua" cache="false" />
     <script type="shared" src="shared/Utils.lua" cache="false" />
 
     <!-- Client -->
@@ -16,5 +17,9 @@
     <script type="client" src="client/main.lua" cache="false" />
 
     <!-- Server -->
+    <script type="server" src="server/Vehicle.lua" />
+    <script type="server" src="server/UserVehicle.lua" />
+    <script type="server" src="server/Suspension.lua" />
+    <script type="server" src="server/export.lua" />
     <script type="server" src="server/main.lua" />
 </meta>

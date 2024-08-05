@@ -1,7 +1,7 @@
 addEventHandler('onResourceStart', resourceRoot,
     function()
-        --Vehicle.setup()
-        --UserVehicle.setup()
+        Vehicle.setup()
+        UserVehicle.setup()
     end
 )
 

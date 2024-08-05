@@ -6,7 +6,7 @@ local Fonts = {
 }
 
 local sW, sH = guiGetScreenSize()
-local sDW, sDH = 1600, 900
+local sDW, sDH = exports.tmtaUI:getScreenSize()
 local width, height = 250, sDH - 25
 local posX, posY = 20, (sDH-height) /2
 

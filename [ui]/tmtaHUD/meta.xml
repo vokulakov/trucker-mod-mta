@@ -4,7 +4,6 @@
 	<download_priority_group>-100</download_priority_group>
 	<include resource="tmtaModule" />
 
-    <file src="assets/images/bg_shadow.png" />
 	<file src="assets/images/bg_x2.png" />
 	<file src="assets/images/i_hp.png" />
 	<file src="assets/images/i_armor.png" />

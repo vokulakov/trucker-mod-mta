@@ -33,6 +33,11 @@ Config.IMAGE_LIST = {
     ['logo_tmta_64']		= "assets/logo/64.png",
     ['logo_tmta_86']		= "assets/logo/86.png",
 
+    -- Background
+    ['bg_shadow_line']      = "assets/ui/background/bg_shadow_line.png",
+	['bg_shadow_smoke']     = "assets/ui/background/bg_shadow_smoke.png",
+	['bg_shadow']           = "assets/ui/background/bg_shadow.png",
+
     -- Hud
     ['localPlayer']			= "assets/hud/radar/localPlayer.png",
 

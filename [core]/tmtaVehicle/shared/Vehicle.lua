@@ -24,15 +24,11 @@ end
 
 -- Краткие названия для использования в коде вместо ID
 local vehicleModels = {
-    400 = landstal,
-    401 = bravura,
-    562 = elegy,
+    [439] = vaz_2110,
 }
 
 local vehicleReadableNames = {
-    landstal = 'Landstal',
-    bravura = 'Bravura',
-    elegy = 'Elegy',
+    vaz_2110 = 'ВАЗ 2110',
 }
 
 --- Валидация модели

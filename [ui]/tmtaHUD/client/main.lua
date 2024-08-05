@@ -4,7 +4,7 @@ sW, sH = guiGetScreenSize()
 sDW, sDH = exports.tmtaUI:getScreenSize()
 
 Textures = {
-    background  = dxCreateTexture('assets/images/bg_shadow.png'),
+    background  = exports.tmtaTextures:createTexture('bg_shadow'),
     logo        = exports.tmtaTextures:createTexture('logo_tmta_86'),
     bg_x2       = dxCreateTexture('assets/images/bg_x2.png'),
     i_hp        = dxCreateTexture('assets/images/i_hp.png'),

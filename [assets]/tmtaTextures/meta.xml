@@ -32,6 +32,11 @@
 	<file src="assets/ui/keys/b_f11.png" />
 	<file src="assets/ui/keys/b_space.png" />
 
+	<!-- Background -->
+	<file src="assets/ui/background/bg_shadow_line.png" />
+	<file src="assets/ui/background/bg_shadow_smoke.png" />
+	<file src="assets/ui/background/bg_shadow.png" />
+
 	<!-- Hud -->
 	<file src="assets/hud/radar/localPlayer.png" />
 	<file src="assets/hud/radar/marker.png" />
