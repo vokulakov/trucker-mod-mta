@@ -6,10 +6,13 @@ Help.params = {}
 Help.params['windowTitle'] = "Информация [F9]"
 Help.params['bindKey'] = 'f9'
 
-local width, height = 1280, 720
-local posX, posY = (sDW-width) /2, (sDH-height) /2
+local width, height
+local posX, posY
 
 function Help.create() 
+    width, height = 1280, 720
+    posX, posY = (sDW-width) /2, (sDH-height) /2
+
     Help.wnd = guiCreateWindow(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), Help.params['windowTitle'], false)
     Help.wnd.sizible = false
     Help.wnd.movable = false
@@ -38,7 +41,7 @@ function Help.create()
     AboutTab.create(posX, posY, width, height, Help.tabPanel)
 
     -- Add window
-    Dashboard.addWindow(Help.wnd)
+    Dashboard.addWindow(Help.wnd, Help.setVisible)
 end
 
 function Help.setVisible()

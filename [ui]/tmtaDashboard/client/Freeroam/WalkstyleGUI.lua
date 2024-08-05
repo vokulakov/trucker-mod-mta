@@ -2,9 +2,12 @@ WalkstyleGUI = {}
 WalkstyleGUI.visible = false
 
 local width, height = 225, 300
-local posX, posY = (sDW-width) /2, (sDH-height) /2
+local posX, posY
 
 function WalkstyleGUI.create()
+    width, height = 225, 300
+    posX, posY = (sDW-width) /2, (sDH-height) /2
+
     WalkstyleGUI.wnd = guiCreateWindow(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), 'Выбери стиль походки', false)
     WalkstyleGUI.wnd.sizible = false
     WalkstyleGUI.wnd.movable = false
@@ -17,7 +20,7 @@ function WalkstyleGUI.create()
     guiSetFont(WalkstyleGUI.btnClose, Font['RR_10'])
     addEventHandler('onClientGUIClick', WalkstyleGUI.btnClose, WalkstyleGUI.setVisible, false)
 
-    Dashboard.addWindow(WalkstyleGUI.wnd)
+    Dashboard.addWindow(WalkstyleGUI.wnd, WalkstyleGUI.setVisible)
 end
 
 function WalkstyleGUI.getVisible()

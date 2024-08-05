@@ -6,10 +6,13 @@ Settings.params = {}
 Settings.params['windowTitle'] = "Настройки игры [F7]"
 Settings.params['bindKey'] = 'f7'
 
-local width, height = 380, 490
-local posX, posY = (sW-width) /2, (sH-height) /2
+local width, height
+local posX, posY
 
 function Settings.create()
+    width, height = 380, 490
+    posX, posY = (sW-width) /2, (sH-height) /2
+
     Settings.wnd = guiCreateWindow(posX, posY, width, height, Settings.params['windowTitle'], false)
     Settings.wnd.sizible = false
     Settings.wnd.movable = false
@@ -59,7 +62,7 @@ function Settings.create()
     -- Отключить звук покрышек
    
     -- Add window
-    Dashboard.addWindow(Settings.wnd)
+    Dashboard.addWindow(Settings.wnd, Settings.setVisible)
 end
 
 function Settings.setVisible()

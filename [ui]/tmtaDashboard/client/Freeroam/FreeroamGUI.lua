@@ -6,10 +6,13 @@ Freeroam.params = {}
 Freeroam.params['windowTitle'] = "Главное меню [F1]"
 Freeroam.params['bindKey'] = 'f1'
 
-local width, height = 250, 430
-local posX, posY = 20, ((sDH-170-40)-height) /2
+local width, height
+local posX, posY
 
 function Freeroam.create()
+    width, height = 250, 430
+    posX, posY = 20, ((sDH-170-40)-height) /2
+
     Freeroam.wnd = guiCreateWindow(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), Freeroam.params['windowTitle'], false)
     Freeroam.wnd.sizible = false
     Freeroam.wnd.movable = false

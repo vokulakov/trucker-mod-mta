@@ -1,10 +1,13 @@
 AnimationGUI = {}
 AnimationGUI.visible = false
 
-local width, height = 250, sDH-170-80
-local posX, posY = 20, 20
+local width, height
+local posX, posY
 
 function AnimationGUI.create()
+    width, height = 250, sDH-170-80
+    posX, posY = 20, 20
+
     AnimationGUI.wnd = guiCreateWindow(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), 'Анимации', false)
     AnimationGUI.wnd.sizible = false
     AnimationGUI.wnd.movable = false
@@ -30,7 +33,7 @@ function AnimationGUI.create()
     guiSetFont(AnimationGUI.btnClose, Font['RR_10'])
     addEventHandler('onClientGUIClick', AnimationGUI.btnClose, AnimationGUI.setVisible, false)
 
-    Dashboard.addWindow(AnimationGUI.wnd)
+    Dashboard.addWindow(AnimationGUI.wnd, AnimationGUI.setVisible)
 end
 
 function AnimationGUI.updateAnimationList(categoryName)

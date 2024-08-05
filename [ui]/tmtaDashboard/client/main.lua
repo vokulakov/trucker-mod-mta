@@ -13,11 +13,13 @@ Font = {
 }
 
 -- Добавить окно в стек окон dashboard
-function Dashboard.addWindow(window)
-    if not isElement(window) then
+function Dashboard.addWindow(window, visibilityFunction)
+    if (not isElement(window) or type(visibilityFunction) ~= 'function') then
+        outputDebugString('Dashboard.addWindow: bad arguments', 1)
         return false
     end
-    Dashboard.windows[window] = window.setVisible()
+
+    Dashboard.windows[window] = visibilityFunction
 end
 
 -- Установить видимость окна
