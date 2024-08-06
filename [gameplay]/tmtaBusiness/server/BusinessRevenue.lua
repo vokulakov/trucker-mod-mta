@@ -82,7 +82,7 @@ addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root,
         local currentTimestamp = getRealTime().timestamp
         for businessId, businessData in ipairs(trackedBusiness) do
             if (businessData.accrueRevenueAt and (currentTimestamp >= businessData.accrueRevenueAt)) then
-                if (currentTimestamp >= businessData.confiscateAt) then
+                if (businessData.confiscateAt and (currentTimestamp >= businessData.confiscateAt)) then
                     return Business.sell(businessId)
                 end
                 BusinessRevenue.accrue(businessId)
