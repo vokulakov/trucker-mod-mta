@@ -135,8 +135,6 @@ end
 -- fadeCamera(false, 1)
 -- fadeCamera(true, 1)
 -- setCameraTarget(localPlayer)
-local _time = {}
-
 addEventHandler("onClientGUIClick", root, function()
 	if not isElement(windowSkin) then
 		return
@@ -168,11 +166,7 @@ addEventHandler("onClientGUIClick", root, function()
 			fadeCamera(true, 1)
 			setCameraTarget(localPlayer, localPlayer)
 
-			setTime(_time.h, _time.m)
-			setMinuteDuration(_time.d)
-			_time = nil
-
-			
+			exports.tmtaTimecycle:syncPlayerGameTime()
 			exports.tmtaUI:setPlayerComponentVisible("all", true)
     		showChat(true)
 
@@ -249,12 +243,8 @@ addEventHandler('onClientResourceStart', resourceRoot, function()
     		
 			fadeCamera(false, 1)
 			setTimer(function(pickup)
-
-				local timehour, timeminute = getTime()
-				_time = {h = timehour, m = timeminute, d = getMinuteDuration()}
 				setTime(12, 0)
-				setMinuteDuration(60000)
-
+				setMinuteDuration(2147483647)
 				fadeCamera(true, 1)
 				showWindowSkin(pickup)
 			end, 1500, 1, source)

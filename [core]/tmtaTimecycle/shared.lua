@@ -14,6 +14,5 @@ addEvent('tmtaTimecycle.onClientSyncPlayerGameTime', true)
 addEventHandler('tmtaTimecycle.onClientSyncPlayerGameTime', root, 
     function(time)
         setTime(unpack(time))
-        iprint(time)
     end
 )
