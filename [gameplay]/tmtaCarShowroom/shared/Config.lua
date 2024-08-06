@@ -1,5 +1,35 @@
 Config = {}
 
 Config.showroomObjectId = 3900
---Config.showroomObjectPosition = Vector3(2372, -1642.9, 300)
-Config.showroomObjectPosition = Vector3(917.75, -1396.83, 13.22 + 10)
+Config.showroomObjectPosition = Vector3(2372, -1642.9, 300)
+Config.showroomObjectInterior = 1
+
+Config.showroomType = {
+    [1] = 'Легковые автомобили',
+    [2] = 'Мото',
+    [3] = 'Грузовые автомобили',
+}
+
+Config.showroomClass = {
+    [1] = 'Бюджетный',
+    [2] = 'Средний',
+    [3] = 'Премиальный',
+    [4] = 'Элитный',
+}
+
+Config.showroomList = {
+    -- San-Fierro
+    {
+        name = 'Автосалон',
+        type = Config.showroomType[1],
+        class = Config.showroomClass[1],
+        
+        markerPosition = Vector3(-1657.41, 1211.10, 7.25),
+        markerColor = {0, 255, 0, 100},
+
+        vehiclePosition = Vector3(0, 0, 0),
+        vehicleRotation = Vector3(0, 0, 0),
+
+        vehicleList = {},
+    },
+}

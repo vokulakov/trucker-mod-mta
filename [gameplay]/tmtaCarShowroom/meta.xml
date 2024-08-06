@@ -15,6 +15,8 @@
     <!-- Client -->
     <script type="client" src="client/Showroom.lua" cache="false" />
     <script type="client" src="client/ShowroomGUI.lua" cache="false" />
-    <script type="client" src="client/main.lua" cache="false" />
+
+    <!-- Server -->
+    <script type="server" src="server/Showroom.lua" />
 
 </meta>
