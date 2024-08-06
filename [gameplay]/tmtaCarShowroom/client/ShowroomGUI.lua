@@ -10,6 +10,16 @@ local Font = {
     RB_24 = exports.tmtaFonts:createFontGUI('RobotoBold', 24),
 }
 
+local Texture = {
+    bgShadow  = exports.tmtaTextures:createTexture('bg_shadow'),
+    bgShadowSmoke  = exports.tmtaTextures:createTexture('bg_shadow_smoke'),
+}
+
+function ShowroomGUI.drawBackground()
+    dxDrawImage(0, 0, sW, sH, Texture.bgShadowSmoke, 0, 0, 0, tocolor(255, 255, 255, 255), false)
+    dxDrawImage(0, 0, sW, sH, Texture.bgShadow, 0, 0, 0, tocolor(255, 255, 255, 255), false)
+end
+
 function ShowroomGUI.render()
     local width, height = 350, sDH-40
     ShowroomGUI.wnd = guiCreateWindow(sW*((20) /sDW), sH*((sH-height)/2 /sDH), sW*((width) /sDW), sH*((height) /sDH), '', false)
@@ -25,19 +35,19 @@ function ShowroomGUI.render()
     guiLabelSetColor(line, 105, 105, 105)
     guiSetEnabled(line, false)
 
+    ShowroomGUI.editSearch = guiCreateEdit(sW*(10/sDW), sH*(70 /sDH), sW*(width /sDW), sH*(30 /sDH), "", false, ShowroomGUI.wnd)
+    exports.tmtaGUI:setEditPlaceholder(ShowroomGUI.editSearch, 'Поиск...')
+
+    ShowroomGUI.vehicleList = guiCreateGridList(sW*(10/sDW), sH*(110 /sDH), sW*(width /sDW), sH*((height-120) /sDH), false, ShowroomGUI.wnd)
+    guiGridListSetSortingEnabled(ShowroomGUI.vehicleList, false)
+    guiGridListSetSelectionMode(ShowroomGUI.vehicleList, 0)
+
     --guiCreateLabel(sW*((20) /sDW), sH*((30) /sDH), sW*(sDW /sDW), sW*(sDH /sDW), ('_'):rep(sDW), false)
 
     ShowroomGUI.btnClose = guiCreateButton(sW*((sDW-45-20)/sDW), sH*(20/sDH), sW*(45/sDW), sH*(45/sDH), 'Х', false)
     guiSetFont(ShowroomGUI.btnClose, Font.RR_14)
     addEventHandler("onClientGUIClick", ShowroomGUI.btnClose, ShowroomGUI.hide, false)
     setElementParent(ShowroomGUI.btnClose, ShowroomGUI.wnd)
-
-    local bgShadow = exports.tmtaTextures:createStaticImage(0, 0, sW*(1920 /sDW), sH*(1080 /sDH), 'bg_shadow_smoke', false)
-    bgShadow .enabled = false
-    guiSetProperty(bgShadow , "Disabled", "True")
-    guiSetProperty(bgShadow , "AlwaysOnTop", "False")
-    guiMoveToBack(bgShadow )
-    setElementParent(bgShadow , ShowroomGUI.wnd)
 
     ShowroomGUI.keyPane = exports.tmtaUI:guiKeyPanelCreate(0, 0, {
         {"keyMouseRight", "Режим просмотра"},
@@ -54,6 +64,7 @@ function ShowroomGUI.show()
     exports.tmtaUI:setPlayerComponentVisible("notifications", true)
 	showChat(false)
 
+    addEventHandler('onClientHUDRender', root, ShowroomGUI.drawBackground)
     exports.tmtaHUD:moneyShow(sDW-100, 30)
     ShowroomGUI.render()
     showCursor(true)
@@ -64,17 +75,8 @@ function ShowroomGUI.hide()
     destroyElement(ShowroomGUI.keyPane)
     showCursor(false)
 
+    removeEventHandler('onClientHUDRender', root, ShowroomGUI.drawBackground)
     exports.tmtaHUD:moneyHide()
     exports.tmtaUI:setPlayerComponentVisible("all", true)
     showChat(true)
 end
-
-bindKey('F3', 'down', 
-    function()
-        if not isElement(ShowroomGUI.wnd) then
-            ShowroomGUI.show()
-        else
-            ShowroomGUI.hide()
-        end
-    end
-)

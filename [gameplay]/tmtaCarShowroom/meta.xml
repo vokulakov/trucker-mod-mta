@@ -3,12 +3,18 @@
     <download_priority_group>99</download_priority_group>
 	<include resource="tmtaModule" />
 
+    <!-- Assets -->
+    <file src="assets/object/interiorShowroom.txd" type="client" />
+	<file src="assets/object/interiorShowroom.dff" type="client" />
+	<file src="assets/object/interiorShowroom.col" type="client" />
+
     <!-- Shared -->
     <script type="shared" src="shared/Config.lua" cache="false" />
     <script type="shared" src="shared/include.lua" cache="false" />
 
     <!-- Client -->
+    <script type="client" src="client/Showroom.lua" cache="false" />
     <script type="client" src="client/ShowroomGUI.lua" cache="false" />
-
+    <script type="client" src="client/main.lua" cache="false" />
 
 </meta>
