@@ -1,28 +1,44 @@
 Showroom = {}
-Showroom.created = {}
+
+local _playerCurrentShowroom = nil
+local _showroomCurrentVehiclePreview = nil
 
 function Showroom.vehiclePreview()
 end
 
-function Showroom.enter()
-    exports.tmtaUI:setPlayerComponentVisible('all', false)
-    showChat(false)
-    fadeCamera(false, 1)
+function Showroom.getData(showroom)
+    local showroom = showroom or _playerCurrentShowroom
+    if (not isElement(showroom) or not ShowroomMarker.created[showroom]) then
+        return false
+    end
+    return ShowroomMarker.created[showroom]
+end
+
+function Showroom.enter(showroom)
+    if (isElement(_playerCurrentShowroom)) then
+        return
+    end
+
+    _playerCurrentShowroom = showroom
     return triggerServerEvent('tmtaCarShowroom.onPlayerEnterCarShowroom', localPlayer)
 end
 
 addEvent('tmtaCarShowroom.onPlayerEnterCarShowroom', true)
 addEventHandler('tmtaCarShowroom.onPlayerEnterCarShowroom', root, 
     function()
+        setElementFrozen(localPlayer, true)
         Showroom.objectInterior.interior = localPlayer.interior
         Showroom.objectInterior.dimension = localPlayer.dimension
     
         setTime(12, 0)
         setMinuteDuration(2147483647)
+
         ShowroomGUI.show()
     
         Showroom.bgSound = exports.tmtaSounds:playSound('int_car_showroom', true)
         setSoundVolume(Showroom.bgSound, 0.1)
+
+        --TODO: vehiclePreview
     end
 )
 
@@ -31,7 +47,7 @@ function Showroom.exit()
 end
 
 addEvent('tmtaCarShowroom.onPlayerExitCarShowroom', true)
-addEventHandler('tmtaCarShowroom.onPlayerEnterCarShowroom', root, 
+addEventHandler('tmtaCarShowroom.onPlayerExitCarShowroom', root, 
     function()
         exports.tmtaTimecycle:syncPlayerGameTime()
         ShowroomGUI.hide()
@@ -39,41 +55,9 @@ addEventHandler('tmtaCarShowroom.onPlayerEnterCarShowroom', root,
         if isElement(Showroom.bgSound) then
             stopSound(Showroom.bgSound)
         end
-    end
-)
 
-function Showroom.create(showroomData)
-    if (type(showroomData) ~= 'table') then
-        return false
-    end
-
-    local marker = createMarker(showroomData.markerPosition - Vector3(0, 0, 1), 'cylinder', 2, unpack(showroomData.markerColor))
-
-    exports.tmtaBlip:createAttachedTo(
-        marker, 
-        'blipCarshop',
-        'Автосалон',
-        tocolor(0, 255, 0, 255)
-    )
-
-    return marker
-end
-
-addEventHandler('onClientMarkerHit', root, 
-    function(player)
-        if (player.type ~= "player" or player.vehicle) then
-            return
-        end
-        if (not Showroom.created[source]) then
-            return
-        end
-
-        local verticalDistance = localPlayer.position.z - source.position.z
-        if (verticalDistance > 5 or verticalDistance < -1) then
-            return
-        end
-
-        Showroom.enter()
+        setElementFrozen(localPlayer, true)
+        _playerCurrentShowroom = nil
     end
 )
 
@@ -99,8 +83,7 @@ addEventHandler('onClientResourceStart', resourceRoot,
         Showroom.createInterior()
 
         for _, showroomData in pairs(Config.showroomList) do
-            local carShowroom = Showroom.create(showroomData)
-            Showroom.created[carShowroom] = showroomData
+            ShowroomMarker.create(showroomData)
         end
     end
 )

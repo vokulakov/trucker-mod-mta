@@ -30,6 +30,8 @@ Config.showroomList = {
         vehiclePosition = Vector3(0, 0, 0),
         vehicleRotation = Vector3(0, 0, 0),
 
-        vehicleList = {},
+        vehicleList = {
+            {},
+        },
     },
 }

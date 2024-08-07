@@ -14,6 +14,7 @@
 
     <!-- Client -->
     <script type="client" src="client/Showroom.lua" cache="false" />
+    <script type="client" src="client/ShowroomMarker.lua" cache="false" />
     <script type="client" src="client/ShowroomGUI.lua" cache="false" />
 
     <!-- Server -->
