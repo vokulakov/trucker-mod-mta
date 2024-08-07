@@ -46,8 +46,8 @@ function ShowroomGUI.render()
 
     ShowroomGUI.btnClose = guiCreateButton(sW*((sDW-45-20)/sDW), sH*(20/sDH), sW*(45/sDW), sH*(45/sDH), 'Х', false)
     guiSetFont(ShowroomGUI.btnClose, Font.RR_14)
-    addEventHandler("onClientGUIClick", ShowroomGUI.btnClose, ShowroomGUI.hide, false)
     setElementParent(ShowroomGUI.btnClose, ShowroomGUI.wnd)
+    addEventHandler("onClientGUIClick", ShowroomGUI.btnClose, Showroom.exit, false)
 
     ShowroomGUI.keyPane = exports.tmtaUI:guiKeyPanelCreate(0, 0, {
         {"keyMouseRight", "Режим просмотра"},

@@ -1,46 +1,46 @@
 Showroom = {}
 Showroom.created = {}
 
-function Showroom.createInterior()
-    local txd = engineLoadTXD('assets/object/interiorShowroom.txd', true)
-    engineImportTXD(txd, Config.showroomObjectId)
-
-    local dff = engineLoadDFF('assets/object/interiorShowroom.dff', 0)
-    engineReplaceModel(dff, Config.showroomObjectId)
-
-    local col = engineLoadCOL('assets/object/interiorShowroom.col')
-    engineReplaceCOL(col, Config.showroomObjectId)
-    
-    Showroom.objectInterior = createObject(Config.showroomObjectId, Config.showroomObjectPosition)
-    engineSetModelLODDistance(Config.showroomObjectId, 50)
-
-    Showroom.objectInterior.interior = Config.showroomObjectInterior
-    Showroom.objectInterior.dimension = 1812
-end
-
 function Showroom.vehiclePreview()
 end
 
 function Showroom.enter()
-    Showroom.objectInterior.interior = localPlayer.interior
-    Showroom.objectInterior.dimension = localPlayer.dimension
-
-    setTime(12, 0)
-    setMinuteDuration(2147483647)
-    ShowroomGUI.show()
-
-    Showroom.bgSound = exports.tmtaSounds:playSound('int_car_showroom', true)
-    setSoundVolume(Showroom.bgSound, 0.1)
+    exports.tmtaUI:setPlayerComponentVisible('all', false)
+    showChat(false)
+    fadeCamera(false, 1)
+    return triggerServerEvent('tmtaCarShowroom.onPlayerEnterCarShowroom', localPlayer)
 end
+
+addEvent('tmtaCarShowroom.onPlayerEnterCarShowroom', true)
+addEventHandler('tmtaCarShowroom.onPlayerEnterCarShowroom', root, 
+    function()
+        Showroom.objectInterior.interior = localPlayer.interior
+        Showroom.objectInterior.dimension = localPlayer.dimension
+    
+        setTime(12, 0)
+        setMinuteDuration(2147483647)
+        ShowroomGUI.show()
+    
+        Showroom.bgSound = exports.tmtaSounds:playSound('int_car_showroom', true)
+        setSoundVolume(Showroom.bgSound, 0.1)
+    end
+)
 
 function Showroom.exit()
-    exports.tmtaTimecycle:syncPlayerGameTime()
-    ShowroomGUI.hide()
-
-    if isElement(Showroom.bgSound) then
-        stopSound(Showroom.bgSound)-
-    end
+    return triggerServerEvent('tmtaCarShowroom.onPlayerExitCarShowroom', localPlayer)
 end
+
+addEvent('tmtaCarShowroom.onPlayerExitCarShowroom', true)
+addEventHandler('tmtaCarShowroom.onPlayerEnterCarShowroom', root, 
+    function()
+        exports.tmtaTimecycle:syncPlayerGameTime()
+        ShowroomGUI.hide()
+    
+        if isElement(Showroom.bgSound) then
+            stopSound(Showroom.bgSound)
+        end
+    end
+)
 
 function Showroom.create(showroomData)
     if (type(showroomData) ~= 'table') then
@@ -73,9 +73,26 @@ addEventHandler('onClientMarkerHit', root,
             return
         end
 
-        --TODO: вход в автосалон
+        Showroom.enter()
     end
 )
+
+function Showroom.createInterior()
+    local txd = engineLoadTXD('assets/object/interiorShowroom.txd', true)
+    engineImportTXD(txd, Config.showroomObjectId)
+
+    local dff = engineLoadDFF('assets/object/interiorShowroom.dff', 0)
+    engineReplaceModel(dff, Config.showroomObjectId)
+
+    local col = engineLoadCOL('assets/object/interiorShowroom.col')
+    engineReplaceCOL(col, Config.showroomObjectId)
+    
+    Showroom.objectInterior = createObject(Config.showroomObjectId, Config.showroomObjectPosition)
+    engineSetModelLODDistance(Config.showroomObjectId, 50)
+
+    Showroom.objectInterior.interior = Config.showroomObjectInterior
+    Showroom.objectInterior.dimension = 1812
+end
 
 addEventHandler('onClientResourceStart', resourceRoot,
     function()
