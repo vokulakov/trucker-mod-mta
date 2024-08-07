@@ -96,7 +96,7 @@ function ShowroomGUI.render(showroom)
     end
 end
 
-ShowroomGUI.render({})
+--ShowroomGUI.render({})
 
 function ShowroomGUI.onClientGUISelectVehicle()
     local selectedItem = guiGridListGetSelectedItem(source)
