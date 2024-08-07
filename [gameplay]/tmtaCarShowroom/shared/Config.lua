@@ -27,11 +27,11 @@ Config.showroomList = {
         markerPosition = Vector3(-1657.41, 1211.10, 7.25),
         markerColor = {255, 255, 255, 100},
 
-        vehiclePosition = Vector3(0, 0, 0),
+        vehiclePosition = Vector3(2372.35, -1642.97, 298.43),
         vehicleRotation = Vector3(0, 0, 0),
 
         vehicleList = {
-            {},
+            { model = 'vaz_2110', price = 140000 },
         },
     },
 }

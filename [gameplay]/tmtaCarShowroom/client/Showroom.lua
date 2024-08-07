@@ -3,7 +3,22 @@ Showroom = {}
 local _playerCurrentShowroom = nil
 local _showroomCurrentVehiclePreview = nil
 
-function Showroom.vehiclePreview()
+function Showroom.vehiclePreview(vehicleModel)
+    local vehicleId = tonumber(Utils.getVehicleModelFromName(vehicleModel))
+    if isElement(_showroomCurrentVehiclePreview) then
+        setElementModel(_showroomCurrentVehiclePreview, vehicleId)
+        return
+    end
+
+    local showroomData = Showroom.getData()
+
+    local vehicle = createVehicle(vehicleId, showroomData.vehiclePosition)
+    vehicle.dimension = localPlayer.dimension
+    vehicle.interior = localPlayer.interior
+
+    CameraManager.start(vehicle)
+
+    _showroomCurrentVehiclePreview = vehicle
 end
 
 function Showroom.getData(showroom)
@@ -40,13 +55,12 @@ addEventHandler('tmtaCarShowroom.onPlayerEnterCarShowroom', root,
 
         ShowroomGUI.show()
     
+        Showroom.vehiclePreview(ShowroomGUI.getSelectedVehicle())
+
         Showroom.bgSound = exports.tmtaSounds:playSound('int_car_showroom', true)
         setSoundVolume(Showroom.bgSound, 0.4)
 
         fadeCamera(true)
-        
-        --TODO: vehiclePreview
-
     end
 )
 
@@ -65,13 +79,20 @@ addEventHandler('tmtaCarShowroom.onPlayerExitCarShowroom', root,
             stopSound(Showroom.bgSound)
         end
 
+        localPlayer.position = _playerCurrentShowroom.position + Vector3(0, 0, 1)
         setElementFrozen(localPlayer, false)
-        _playerCurrentShowroom = nil
-
+        
         exports.tmtaUI:setPlayerComponentVisible("all", true)
         showChat(true)
 
+        CameraManager.stop()
         fadeCamera(true)
+
+        if isElement(_showroomCurrentVehiclePreview) then
+            destroyElement(_showroomCurrentVehiclePreview)
+        end
+
+        _playerCurrentShowroom = nil
     end
 )
 

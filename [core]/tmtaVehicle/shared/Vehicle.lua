@@ -24,7 +24,7 @@ end
 
 -- Краткие названия для использования в коде вместо ID
 local vehicleModels = {
-    [439] = vaz_2110,
+    [439] = 'vaz_2110',
 }
 
 local vehicleReadableNames = {
@@ -33,7 +33,7 @@ local vehicleReadableNames = {
 
 --- Валидация модели
 function isValidVehicleModel(model)
-	if (type(model) ~= "number") then
+	if (not model or type(model) ~= 'number') then
 		return false
 	end
 	return not not validVehicleModels[model]
@@ -41,7 +41,7 @@ end
 
 --- Получить модель по названию
 function getVehicleModelFromName(name)
-	if (not name) then
+	if (not name or type(name) ~= 'string') then
 		return false
 	end
 
@@ -64,6 +64,14 @@ function getVehicleNameFromModel(model)
         return false
     end
     return vehicleModels[model]
+end
+
+--- Получить читаемое название по модели
+function getVehicleReadableNameFromName(name)
+    if (not name or type(name) ~= 'string') then
+		return false
+	end
+    return vehicleReadableNames[name]
 end
 
 --- Получить список моделей

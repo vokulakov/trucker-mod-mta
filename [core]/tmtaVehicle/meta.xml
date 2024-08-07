@@ -22,4 +22,11 @@
     <script type="server" src="server/Suspension.lua" />
     <script type="server" src="server/export.lua" />
     <script type="server" src="server/main.lua" />
+
+    <!-- Export -->
+    <export type="shared" function="getVehicleModels" />
+    <export type="shared" function="getVehicleNameFromModel" />
+    <export type="shared" function="getVehicleModelFromName" />
+    <export type="shared" function="getVehicleReadableNameFromName" />
+    <export type="shared" function="isValidVehicleModel" />
 </meta>

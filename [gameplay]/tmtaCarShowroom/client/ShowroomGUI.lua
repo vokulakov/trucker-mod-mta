@@ -34,20 +34,45 @@ function ShowroomGUI.render(showroom)
     guiLabelSetColor(line, 105, 105, 105)
     guiSetEnabled(line, false)
 
+    --
     ShowroomGUI.editSearch = guiCreateEdit(sW*(10/sDW), sH*(70 /sDH), sW*(width /sDW), sH*(30 /sDH), "", false, ShowroomGUI.wnd)
     exports.tmtaGUI:setEditPlaceholder(ShowroomGUI.editSearch, 'Поиск...')
 
+    --
     ShowroomGUI.vehicleList = guiCreateGridList(sW*(10/sDW), sH*(110 /sDH), sW*(width /sDW), sH*((height-120) /sDH), false, ShowroomGUI.wnd)
     guiGridListSetSortingEnabled(ShowroomGUI.vehicleList, false)
     guiGridListSetSelectionMode(ShowroomGUI.vehicleList, 0)
+    guiGridListAddColumn(ShowroomGUI.vehicleList, 'Модель', 0.55)
+    guiGridListAddColumn(ShowroomGUI.vehicleList, 'Цена', 0.35)
 
     guiGridListClear(ShowroomGUI.vehicleList)
+    for _, vehicle in ipairs(showroom.vehicleList) do
+        local name = Utils.getVehicleNameFromModel(vehicle.model)
+        if name then
+            local row = guiGridListAddRow(ShowroomGUI.vehicleList)
 
+            if utf8.len(name) >= 30 then
+                name = utf8.sub(name, 0, 30) .. '...'
+            end
+
+            guiGridListSetItemText(ShowroomGUI.vehicleList, row, 1, name, false, true)
+            guiGridListSetItemData(ShowroomGUI.vehicleList, row, 1, vehicle.model)
+
+            guiGridListSetItemText(ShowroomGUI.vehicleList, row, 2, tostring(exports.tmtaUtils:formatMoney(vehicle.price))..' ₽', false, true)
+            guiGridListSetItemData(ShowroomGUI.vehicleList, row, 2, vehicle.price)
+        end
+    end
+
+    guiGridListSetSelectedItem(ShowroomGUI.vehicleList, 0, 1)
+    addEventHandler("onClientGUIClick", ShowroomGUI.vehicleList, ShowroomGUI.onClientGUISelectVehicle, false)
+
+    --
     ShowroomGUI.btnClose = guiCreateButton(sW*((sDW-45-20)/sDW), sH*(20/sDH), sW*(45/sDW), sH*(45/sDH), 'Х', false)
     guiSetFont(ShowroomGUI.btnClose, Font.RR_14)
     setElementParent(ShowroomGUI.btnClose, ShowroomGUI.wnd)
     addEventHandler("onClientGUIClick", ShowroomGUI.btnClose, Showroom.exit, false)
 
+    --
     ShowroomGUI.keyPane = exports.tmtaUI:guiKeyPanelCreate(0, 0, {
         {"keyMouseRight", "Режим просмотра"},
         {"keyMouse", "Вращать камеру"},
@@ -56,7 +81,21 @@ function ShowroomGUI.render(showroom)
 
     local width, height = exports.tmtaUI:guiKeyPanelGetSize(ShowroomGUI.keyPane)
     exports.tmtaUI:guiKeyPanelSetPosition(ShowroomGUI.keyPane, sW*((sDW-width-10) /sDW), sH*((sDH-height-40) /sDH))
+end
 
+function ShowroomGUI.onClientGUISelectVehicle()
+    local selectedItem = guiGridListGetSelectedItem(source)
+    if selectedItem == -1 then 
+        guiGridListSetSelectedItem(source, 0, 1)
+        selectedItem = guiGridListGetSelectedItem(source)
+    end
+
+    local vehicleModel = guiGridListGetItemData(source, selectedItem, 1)
+    return Showroom.vehiclePreview(vehicleModel)
+end
+
+function ShowroomGUI.getSelectedVehicle()
+    return guiGridListGetItemData(ShowroomGUI.vehicleList, 0, 1)
 end
 
 function ShowroomGUI.show()

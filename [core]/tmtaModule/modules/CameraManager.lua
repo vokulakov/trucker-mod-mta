@@ -243,3 +243,56 @@ end
 function CameraManager.isMouseLookEnabled()
 	return not not mouseLookEnabled
 end
+
+local function getCameraPresets(currentCameraPresets, targetPosition, rotationHorizontal, rotationVertical, distance, FOV, roll)
+    if (not currentCameraPresets or type(currentCameraPresets) ~= 'table') then
+        return false, 'error getCameraPresets()'
+    end
+    if (targetPosition and type(targetPosition) ~= 'userdata') then
+        return false, 'bad argument #1 `targetPosition`'
+    end
+    if (rotationHorizontal and type(rotationHorizontal) == 'number') then
+        return false, 'bad argument #2 `rotationHorizontal`'
+    end
+    if (rotationVertical and type(rotationVertical) == 'number') then
+        return false, 'bad argument #3 `rotationVertical`'
+    end
+    if (distance and type(distance) == 'number') then
+        return false, 'bad argument #4 `distance`'
+    end
+    if (FOV and type(FOV) == 'number') then
+        return false, 'bad argument #5 `FOV`'
+    end
+    if (roll and type(roll) == 'number') then
+        return false, 'bad argument #6 `roll`'
+    end
+
+    return {
+        targetPosition = targetPosition or currentCameraPresets.targetPosition,
+        rotationHorizontal = rotationHorizontal or currentCameraPresets.rotationHorizontal,
+        rotationVertical = rotationVertical or currentCameraPresets.rotationVertical,
+        distance = distance or currentCameraPresets.distance,
+        FOV = FOV or currentCameraPresets.FOV,
+        roll = roll or currentCameraPresets.roll,
+    }
+end
+
+function CameraManager.setStartingCameraPresets(targetPosition, rotationHorizontal, rotationVertical, distance, FOV, roll)
+    local result, error = getCameraPresets(cameraPresets.startingCamera, targetPosition, rotationHorizontal, rotationVertical, distance, FOV, roll)
+    if (not result or type(result) ~= 'table') then
+        outputDebugString('CameraManager.setStartingCameraPresets: '..error, 1)
+        return false
+    end
+    cameraPresets.startingCamera = result
+    return true
+end
+
+function CameraManager.setfreeLookCameraPresets(targetPosition, rotationHorizontal, rotationVertical, distance, FOV, roll)
+    local result, error = getCameraPresets(cameraPresets.freeLookCamera, targetPosition, rotationHorizontal, rotationVertical, distance, FOV, roll)
+    if (not result or type(result) ~= 'table') then
+        outputDebugString('CameraManager.setfreeLookCameraPresets: '..error, 1)
+        return false
+    end
+    cameraPresets.freeLookCamera = result
+    return true
+end
