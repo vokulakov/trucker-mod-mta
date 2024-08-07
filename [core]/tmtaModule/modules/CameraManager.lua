@@ -146,8 +146,13 @@ local function startMouseLook()
 	    moveVehicleDoors(currentVehicle, 1)
     end
 
+    CameraManager.onStartMouseLook()
+
 	bindKey("mouse_wheel_up", "down" , onMouseWheel, 1)
 	bindKey("mouse_wheel_down", "down" , onMouseWheel, -1)
+end
+
+function CameraManager.onStartMouseLook()
 end
 
 local function stopMouseLook()
@@ -162,8 +167,13 @@ local function stopMouseLook()
 	    moveVehicleDoors(currentVehicle, 0)
     end
 
+    CameraManager.onStopMouseLook()
+
 	unbindKey("mouse_wheel_up", "down" , onMouseWheel, 1)
 	unbindKey("mouse_wheel_down", "down" , onMouseWheel, -1)
+end
+
+function CameraManager.onStopMouseLook()
 end
 
 function CameraManager.setState(name, noAnimation, animationSpeed)
@@ -244,6 +254,10 @@ function CameraManager.isMouseLookEnabled()
 	return not not mouseLookEnabled
 end
 
+function CameraManager.getTargetCamera()
+    return targetCamera
+end
+
 local function getCameraPresets(currentCameraPresets, targetPosition, rotationHorizontal, rotationVertical, distance, FOV, roll)
     if (not currentCameraPresets or type(currentCameraPresets) ~= 'table') then
         return false, 'error getCameraPresets()'
@@ -251,19 +265,19 @@ local function getCameraPresets(currentCameraPresets, targetPosition, rotationHo
     if (targetPosition and type(targetPosition) ~= 'userdata') then
         return false, 'bad argument #1 `targetPosition`'
     end
-    if (rotationHorizontal and type(rotationHorizontal) == 'number') then
+    if (rotationHorizontal and type(rotationHorizontal) ~= 'number') then
         return false, 'bad argument #2 `rotationHorizontal`'
     end
-    if (rotationVertical and type(rotationVertical) == 'number') then
+    if (rotationVertical and type(rotationVertical) ~= 'number') then
         return false, 'bad argument #3 `rotationVertical`'
     end
-    if (distance and type(distance) == 'number') then
+    if (distance and type(distance) ~= 'number') then
         return false, 'bad argument #4 `distance`'
     end
-    if (FOV and type(FOV) == 'number') then
+    if (FOV and type(FOV) ~= 'number') then
         return false, 'bad argument #5 `FOV`'
     end
-    if (roll and type(roll) == 'number') then
+    if (roll and type(roll) ~= 'number') then
         return false, 'bad argument #6 `roll`'
     end
 

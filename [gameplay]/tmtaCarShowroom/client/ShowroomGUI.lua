@@ -113,6 +113,7 @@ end
 
 function ShowroomGUI.hide()
     ShowroomGUI.wnd.visible = false
+    ShowroomGUI.btnClose.visible = false
     setTimer(destroyElement, 100, 1, ShowroomGUI.wnd)
     destroyElement(ShowroomGUI.keyPane)
     showCursor(false)

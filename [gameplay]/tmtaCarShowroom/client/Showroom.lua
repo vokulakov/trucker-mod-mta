@@ -12,13 +12,14 @@ function Showroom.vehiclePreview(vehicleModel)
 
     local showroomData = Showroom.getData()
 
-    local vehicle = createVehicle(vehicleId, showroomData.vehiclePosition)
+    local vehicle = createVehicle(vehicleId, showroomData.vehiclePosition, showroomData.vehicleRotation)
+    setVehicleDamageProof(vehicle, true)
     vehicle.dimension = localPlayer.dimension
     vehicle.interior = localPlayer.interior
-
-    CameraManager.start(vehicle)
-
+    
     _showroomCurrentVehiclePreview = vehicle
+    
+    return vehicle
 end
 
 function Showroom.getData(showroom)
@@ -54,8 +55,9 @@ addEventHandler('tmtaCarShowroom.onPlayerEnterCarShowroom', root,
         setMinuteDuration(2147483647)
 
         ShowroomGUI.show()
-    
-        Showroom.vehiclePreview(ShowroomGUI.getSelectedVehicle())
+
+        local vehicle = Showroom.vehiclePreview(ShowroomGUI.getSelectedVehicle())
+        CameraManager.start(vehicle)
 
         Showroom.bgSound = exports.tmtaSounds:playSound('int_car_showroom', true)
         setSoundVolume(Showroom.bgSound, 0.4)

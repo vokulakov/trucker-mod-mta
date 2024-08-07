@@ -8,7 +8,7 @@ function Showroom.playerEnter(player)
 
     player.interior = Config.showroomObjectInterior
     player.dimension = getDimensionForPlayer(player)
-    player.position = Config.showroomObjectPosition
+    --player.position = Config.showroomObjectPosition
     
     return triggerClientEvent(player, 'tmtaCarShowroom.onPlayerEnterCarShowroom', player)
 end
