@@ -44,6 +44,7 @@ addEventHandler('tmtaCarShowroom.onPlayerEnterCarShowroom', root,
         setSoundVolume(Showroom.bgSound, 0.4)
 
         fadeCamera(true)
+        
         --TODO: vehiclePreview
 
     end

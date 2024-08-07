@@ -5,6 +5,7 @@ local Modules = {
 	'Async',
 	'Class',
 	'OOP',
+	'CameraManager',
 }
 
 local includedModules = {}
