@@ -10,7 +10,7 @@ local Font = {
 local SHOWROOM_OFFSET = 0.5
 local SHOWROOM_WIDTH = 250
 local SHOWROOM_HEIGHT = 200
-local SHOWROOM_MAX_DISTANCE = 25
+local SHOWROOM_MAX_DISTANCE = 50
 local SHOWROOM_SCALE = 5.8
 
 local function dxDrawText3D(text, x1, y1, x2, y2, color, scale, font, alignX, alignY)
@@ -32,7 +32,7 @@ addEventHandler("onClientRender", root,
         local cX, cY, cZ = getCameraMatrix()
         for showroomMarker, showroomData in pairs(streamedShowrooms) do
             local x, y, z = getElementPosition(showroomMarker)
-            local posX, posY = getScreenFromWorldPosition(x, y, z + SHOWROOM_OFFSET)
+            local posX, posY = getScreenFromWorldPosition(x, y, z)
             if posX then
                 local distance = getDistanceBetweenPoints3D(cX, cY, cZ, x, y, z)
                 if (distance < SHOWROOM_MAX_DISTANCE) then
@@ -42,6 +42,7 @@ addEventHandler("onClientRender", root,
                         local height = SHOWROOM_HEIGHT * scale
                         local nx, ny = posX - width / 2, posY - height / 2
 
+                    
                         dxDrawRectangle(nx, ny, width, height, tocolor(0, 0, 0, 255))
 
                         local offsetY = 0
@@ -77,16 +78,16 @@ function ShowroomMarker.create(showroomData)
     end
 
     local carShowroom = createMarker(showroomData.markerPosition - Vector3(0, 0, 1), 'cylinder', 2, unpack(showroomData.markerColor))
-    ShowroomMarker.streamIn(marker)
+    ShowroomMarker.streamIn(carShowroom)
 
     exports.tmtaBlip:createAttachedTo(
-        marker, 
+        carShowroom, 
         'blipCarshop',
         'Автосалон',
         tocolor(0, 255, 0, 255)
     )
 
-    ShowroomMarker.created[marker] = showroomData
+    ShowroomMarker.created[carShowroom] = showroomData
     
     return true
 end

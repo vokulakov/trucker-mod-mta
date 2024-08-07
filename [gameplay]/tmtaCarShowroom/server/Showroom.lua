@@ -2,7 +2,7 @@ Showroom = {}
 local PlayersInShowroom = {}
 
 function Showroom.playerEnter(player)
-    if (not isElement(player) or PlayersInShowroom[player]) then
+    if (not isElement(player)) then
         return
     end
 
@@ -21,16 +21,17 @@ addEventHandler('tmtaCarShowroom.onPlayerEnterCarShowroom', root,
         end 
 
         PlayersInShowroom[player] = true
-        fadeCamera(player, false, 1)
         setTimer(Showroom.playerEnter, 1100, 1, player)
     end
 )
 
 function Showroom.playerExit(player)
-    player.interior = 0
     PlayersInShowroom[player] = nil
+
+    player.dimension = 0
+    player.interior = 0
+    
     clearPlayerDimension(player)
-    fadeCamera(player, true, 1)
 
     return triggerClientEvent(player, 'tmtaCarShowroom.onPlayerExitCarShowroom', player)
 end
@@ -42,7 +43,7 @@ addEventHandler('tmtaCarShowroom.onPlayerExitCarShowroom', root,
         if (not isElement(player)) then
             return
         end
-        fadeCamera(player, false, 1)
+
         setTimer(Showroom.playerExit, 1100, 1, player)
     end
 )

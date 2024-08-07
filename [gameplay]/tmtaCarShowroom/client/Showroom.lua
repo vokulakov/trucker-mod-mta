@@ -19,7 +19,12 @@ function Showroom.enter(showroom)
         return
     end
 
+    exports.tmtaUI:setPlayerComponentVisible('all', false)
+    exports.tmtaUI:setPlayerComponentVisible('notifications', true)
+	showChat(false)
+    fadeCamera(false, 1)
     _playerCurrentShowroom = showroom
+    
     return triggerServerEvent('tmtaCarShowroom.onPlayerEnterCarShowroom', localPlayer)
 end
 
@@ -36,13 +41,17 @@ addEventHandler('tmtaCarShowroom.onPlayerEnterCarShowroom', root,
         ShowroomGUI.show()
     
         Showroom.bgSound = exports.tmtaSounds:playSound('int_car_showroom', true)
-        setSoundVolume(Showroom.bgSound, 0.1)
+        setSoundVolume(Showroom.bgSound, 0.4)
 
+        fadeCamera(true)
         --TODO: vehiclePreview
+
     end
 )
 
 function Showroom.exit()
+    ShowroomGUI.hide()
+    fadeCamera(false, 1)
     return triggerServerEvent('tmtaCarShowroom.onPlayerExitCarShowroom', localPlayer)
 end
 
@@ -50,14 +59,18 @@ addEvent('tmtaCarShowroom.onPlayerExitCarShowroom', true)
 addEventHandler('tmtaCarShowroom.onPlayerExitCarShowroom', root, 
     function()
         exports.tmtaTimecycle:syncPlayerGameTime()
-        ShowroomGUI.hide()
     
         if isElement(Showroom.bgSound) then
             stopSound(Showroom.bgSound)
         end
 
-        setElementFrozen(localPlayer, true)
+        setElementFrozen(localPlayer, false)
         _playerCurrentShowroom = nil
+
+        exports.tmtaUI:setPlayerComponentVisible("all", true)
+        showChat(true)
+
+        fadeCamera(true)
     end
 )
 
@@ -91,10 +104,5 @@ addEventHandler('onClientResourceStart', resourceRoot,
 -- Test
 bindKey('F3', 'down', 
     function()
-        if not isElement(ShowroomGUI.wnd) then
-            Showroom.enter()
-        else
-            Showroom.exit()
-        end
     end
 )

@@ -24,23 +24,8 @@ function ShowroomGUI.render(showroom)
     local width, height = 350, sDH-40
     ShowroomGUI.wnd = guiCreateWindow(sW*((20) /sDW), sH*((sH-height)/2 /sDH), sW*((width) /sDW), sH*((height) /sDH), '', false)
 
-    ShowroomGUI.btnClose = guiCreateButton(sW*((sDW-45-20)/sDW), sH*(20/sDH), sW*(45/sDW), sH*(45/sDH), 'Х', false)
-    guiSetFont(ShowroomGUI.btnClose, Font.RR_14)
-    setElementParent(ShowroomGUI.btnClose, ShowroomGUI.wnd)
-    addEventHandler("onClientGUIClick", ShowroomGUI.btnClose, Showroom.exit, false)
-
-    ShowroomGUI.keyPane = exports.tmtaUI:guiKeyPanelCreate(0, 0, {
-        {"keyMouseRight", "Режим просмотра"},
-        {"keyMouse", "Вращать камеру"},
-        {"keyMouseWheel", "Отдалить/приблизить камеру"},
-    }, true)
-
-    local width, height = exports.tmtaUI:guiKeyPanelGetSize(ShowroomGUI.keyPane)
-    exports.tmtaUI:guiKeyPanelSetPosition(ShowroomGUI.keyPane, sW*((sDW-width-10) /sDW), sH*((sDH-height-40) /sDH))
-
-    ShowroomGUI.title = guiCreateLabel(sW*((0) /sDW), sH*((20) /sDH), sW*((width) /sDW), sW*(55 /sDW), "АВТОСАЛОН", false, ShowroomGUI.wnd)
-    setElementParent(ShowroomGUI.title, ShowroomGUI.wnd)
-    guiLabelSetHorizontalAlign(ShowroomGUI.title, "center", false)
+    ShowroomGUI.title = guiCreateLabel(sW*((0) /sDW), sH*((20) /sDH), sW*((width) /sDW), sW*((55) /sDH), "АВТОСАЛОН", false, ShowroomGUI.wnd)
+    guiLabelSetHorizontalAlign(ShowroomGUI.title, 'center')
     guiSetFont(ShowroomGUI.title, Font.RB_24)
 
     local line = guiCreateLabel(0, sH*((50)/sDH), sW*(width/sDW), sH*(30/sDH), ('_'):rep(width/4), false, ShowroomGUI.wnd)
@@ -58,13 +43,23 @@ function ShowroomGUI.render(showroom)
 
     guiGridListClear(ShowroomGUI.vehicleList)
 
+    ShowroomGUI.btnClose = guiCreateButton(sW*((sDW-45-20)/sDW), sH*(20/sDH), sW*(45/sDW), sH*(45/sDH), 'Х', false)
+    guiSetFont(ShowroomGUI.btnClose, Font.RR_14)
+    setElementParent(ShowroomGUI.btnClose, ShowroomGUI.wnd)
+    addEventHandler("onClientGUIClick", ShowroomGUI.btnClose, Showroom.exit, false)
+
+    ShowroomGUI.keyPane = exports.tmtaUI:guiKeyPanelCreate(0, 0, {
+        {"keyMouseRight", "Режим просмотра"},
+        {"keyMouse", "Вращать камеру"},
+        {"keyMouseWheel", "Отдалить/приблизить камеру"},
+    }, true)
+
+    local width, height = exports.tmtaUI:guiKeyPanelGetSize(ShowroomGUI.keyPane)
+    exports.tmtaUI:guiKeyPanelSetPosition(ShowroomGUI.keyPane, sW*((sDW-width-10) /sDW), sH*((sDH-height-40) /sDH))
+
 end
 
 function ShowroomGUI.show()
-    exports.tmtaUI:setPlayerComponentVisible('all', false)
-    exports.tmtaUI:setPlayerComponentVisible('notifications', true)
-	showChat(false)
-
     addEventHandler('onClientHUDRender', root, ShowroomGUI.drawBackground)
     exports.tmtaHUD:moneyShow(sDW-100, 30)
 
@@ -78,12 +73,11 @@ function ShowroomGUI.show()
 end
 
 function ShowroomGUI.hide()
-    destroyElement(ShowroomGUI.wnd)
+    ShowroomGUI.wnd.visible = false
+    setTimer(destroyElement, 100, 1, ShowroomGUI.wnd)
     destroyElement(ShowroomGUI.keyPane)
     showCursor(false)
 
     removeEventHandler('onClientHUDRender', root, ShowroomGUI.drawBackground)
     exports.tmtaHUD:moneyHide()
-    exports.tmtaUI:setPlayerComponentVisible("all", true)
-    showChat(true)
 end
