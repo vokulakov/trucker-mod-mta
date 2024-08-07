@@ -4,9 +4,11 @@
 	<include resource="tmtaModule" />
 
     <!-- Assets -->
-    <file src="assets/object/interiorShowroom.txd" type="client" />
-	<file src="assets/object/interiorShowroom.dff" type="client" />
-	<file src="assets/object/interiorShowroom.col" type="client" />
+    <file src="assets/object/interiorShowroom.txd" />
+	<file src="assets/object/interiorShowroom.dff" />
+	<file src="assets/object/interiorShowroom.col" />
+
+    <file src="assets/image/colorPoint.png" />
 
     <!-- Shared -->
     <script type="shared" src="shared/Config.lua" cache="false" />

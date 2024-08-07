@@ -46,26 +46,28 @@ function ShowroomGUI.render(showroom)
     guiGridListAddColumn(ShowroomGUI.vehicleList, 'Цена', 0.35)
 
     guiGridListClear(ShowroomGUI.vehicleList)
-    for _, vehicle in ipairs(showroom.vehicleList) do
-        local name = Utils.getVehicleNameFromModel(vehicle.model)
-        if name then
-            local row = guiGridListAddRow(ShowroomGUI.vehicleList)
+    if (type(showroom.vehicleList) == 'table') then
+        for _, vehicle in ipairs(showroom.vehicleList) do
+            local name = Utils.getVehicleNameFromModel(vehicle.model)
+            if name then
+                local row = guiGridListAddRow(ShowroomGUI.vehicleList)
 
-            if utf8.len(name) >= 30 then
-                name = utf8.sub(name, 0, 30) .. '...'
+                if utf8.len(name) >= 30 then
+                    name = utf8.sub(name, 0, 30) .. '...'
+                end
+
+                guiGridListSetItemText(ShowroomGUI.vehicleList, row, 1, name, false, true)
+                guiGridListSetItemData(ShowroomGUI.vehicleList, row, 1, vehicle.model)
+
+                guiGridListSetItemText(ShowroomGUI.vehicleList, row, 2, tostring(exports.tmtaUtils:formatMoney(vehicle.price))..' ₽', false, true)
+                guiGridListSetItemData(ShowroomGUI.vehicleList, row, 2, vehicle.price)
             end
-
-            guiGridListSetItemText(ShowroomGUI.vehicleList, row, 1, name, false, true)
-            guiGridListSetItemData(ShowroomGUI.vehicleList, row, 1, vehicle.model)
-
-            guiGridListSetItemText(ShowroomGUI.vehicleList, row, 2, tostring(exports.tmtaUtils:formatMoney(vehicle.price))..' ₽', false, true)
-            guiGridListSetItemData(ShowroomGUI.vehicleList, row, 2, vehicle.price)
         end
+
+        guiGridListSetSelectedItem(ShowroomGUI.vehicleList, 0, 1)
+        addEventHandler("onClientGUIClick", ShowroomGUI.vehicleList, ShowroomGUI.onClientGUISelectVehicle, false)
     end
-
-    guiGridListSetSelectedItem(ShowroomGUI.vehicleList, 0, 1)
-    addEventHandler("onClientGUIClick", ShowroomGUI.vehicleList, ShowroomGUI.onClientGUISelectVehicle, false)
-
+    
     --
     ShowroomGUI.btnClose = guiCreateButton(sW*((sDW-45-20)/sDW), sH*(20/sDH), sW*(45/sDW), sH*(45/sDH), 'Х', false)
     guiSetFont(ShowroomGUI.btnClose, Font.RR_14)
@@ -79,9 +81,22 @@ function ShowroomGUI.render(showroom)
         {"keyMouseWheel", "Отдалить/приблизить камеру"},
     }, true)
 
-    local width, height = exports.tmtaUI:guiKeyPanelGetSize(ShowroomGUI.keyPane)
-    exports.tmtaUI:guiKeyPanelSetPosition(ShowroomGUI.keyPane, sW*((sDW-width-10) /sDW), sH*((sDH-height-40) /sDH))
+    local keyPanelWidth, keyPanelHeight = exports.tmtaUI:guiKeyPanelGetSize(ShowroomGUI.keyPane)
+    exports.tmtaUI:guiKeyPanelSetPosition(ShowroomGUI.keyPane, sW*((sDW-keyPanelWidth-10) /sDW), sH*((sDH-keyPanelHeight-40) /sDH))
+
+    --local offsetPosY = sDH-keyPanelHeight-40
+    --
+    -- ShowroomGUI.btnBuy = guiCreateButton(sW*((sDW-255-10) /sDW), sH*((sDH-offsetPosY-55-20) /sDH), sW*(255/sDW), sH*(55/sDH), 'Купить', false)
+    -- guiSetFont(ShowroomGUI.btnBuy, Font.RR_14)
+    -- setElementParent(ShowroomGUI.btnBuy, ShowroomGUI.wnd)
+
+    --
+    ShowroomGUI.colorPicker = exports.tmtaUI:guiRectangleCreate(sW*((sDW-200)/2 /sDW), sH*((20) /sDH), sW*(200 /sDW), sH*(64 /sDH))
+    for _, color in pairs(Config.colorList) do
+    end
 end
+
+ShowroomGUI.render({})
 
 function ShowroomGUI.onClientGUISelectVehicle()
     local selectedItem = guiGridListGetSelectedItem(source)
@@ -116,6 +131,7 @@ function ShowroomGUI.hide()
     ShowroomGUI.btnClose.visible = false
     setTimer(destroyElement, 100, 1, ShowroomGUI.wnd)
     destroyElement(ShowroomGUI.keyPane)
+    destroyElement(ShowroomGUI.colorPicker)
     showCursor(false)
 
     removeEventHandler('onClientHUDRender', root, ShowroomGUI.drawBackground)

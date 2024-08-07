@@ -4,6 +4,18 @@ Config.showroomObjectId = 3900
 Config.showroomObjectPosition = Vector3(2372, -1642.9, 300)
 Config.showroomObjectInterior = 1
 
+Config.colorList = {
+    {0, 0, 0},
+    {255, 255, 255},
+	{110, 110, 110},
+	{255, 0, 0},
+	{254, 197, 0},
+	{125, 253, 0},
+	{7, 108, 233},
+	{152, 5, 246},
+	{254, 119, 0},
+}
+
 Config.showroomType = {
     [1] = 'Легковые автомобили',
     [2] = 'Мото',

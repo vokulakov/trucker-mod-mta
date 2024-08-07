@@ -124,9 +124,3 @@ addEventHandler('onClientResourceStart', resourceRoot,
         end
     end
 )
-
--- Test
-bindKey('F3', 'down', 
-    function()
-    end
-)
