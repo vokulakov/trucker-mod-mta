@@ -25,7 +25,7 @@ Config.showroomList = {
         class = Config.showroomClass[1],
         
         markerPosition = Vector3(-1657.41, 1211.10, 7.25),
-        markerColor = {0, 255, 0, 100},
+        markerColor = {255, 255, 255, 100},
 
         vehiclePosition = Vector3(0, 0, 0),
         vehicleRotation = Vector3(0, 0, 0),

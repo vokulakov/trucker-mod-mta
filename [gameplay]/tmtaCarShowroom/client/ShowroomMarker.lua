@@ -4,10 +4,11 @@ ShowroomMarker.created = {}
 local streamedShowrooms = {}
 
 local Font = {
-    ['DX_Elowen_22'] = exports.tmtaFonts:createFontDX('Elowen', 22),
+    ['DX_Elowen_24'] = exports.tmtaFonts:createFontDX('Elowen', 24),
+    ['DX_RB_12'] = exports.tmtaFonts:createFontDX('RobotoBold', 12),
 }
 
-local SHOWROOM_OFFSET = 0.5
+local SHOWROOM_OFFSET = 1.2
 local SHOWROOM_WIDTH = 250
 local SHOWROOM_HEIGHT = 200
 local SHOWROOM_MAX_DISTANCE = 50
@@ -32,22 +33,28 @@ addEventHandler("onClientRender", root,
         local cX, cY, cZ = getCameraMatrix()
         for showroomMarker, showroomData in pairs(streamedShowrooms) do
             local x, y, z = getElementPosition(showroomMarker)
-            local posX, posY = getScreenFromWorldPosition(x, y, z)
+            local posX, posY = getScreenFromWorldPosition(x, y, z + SHOWROOM_OFFSET)
             if posX then
                 local distance = getDistanceBetweenPoints3D(cX, cY, cZ, x, y, z)
                 if (distance < SHOWROOM_MAX_DISTANCE) then
-                    if isLineOfSightClear(cX, cY, cZ, x, y, z, true, true, false, true, false, false, false, showroomMarker) then
-                        local scale = 1 / distance * SHOWROOM_SCALE
-                        local width = SHOWROOM_WIDTH * scale
-                        local height = SHOWROOM_HEIGHT * scale
-                        local nx, ny = posX - width / 2, posY - height / 2
-
-                    
-                        dxDrawRectangle(nx, ny, width, height, tocolor(0, 0, 0, 255))
-
-                        local offsetY = 0
-                        dxDrawText3D(showroomData.name, nx, ny + offsetY*scale, nx + width, ny + height, tocolor(255, 255, 255, 255), scale, Font.DX_Elowen_22, 'center', 'top')
-                    end
+                    local scale = 1 / distance * SHOWROOM_SCALE
+                    local width = SHOWROOM_WIDTH * scale
+                    local height = SHOWROOM_HEIGHT * scale
+                    local nx, ny = posX - width / 2, posY - height / 2
+                
+                    local offsetY = 0
+                    dxDrawText3D('#f2ab12'..showroomData.name, nx, ny + offsetY*scale, nx + width, ny + height, tocolor(255, 255, 255, 255), scale, Font.DX_Elowen_24, 'center', 'top')
+                
+                    -- Класс имущества
+					offsetY = offsetY + 45
+                    local showroomClassStr = string.format('Класс: #f2ab12%s', utf8.lower(showroomData.class))
+					dxDrawText3D(showroomClassStr, nx, ny + offsetY*scale, nx + width, ny + height, tocolor(255, 255, 255, 255), scale, Font.DX_RB_12, 'center', 'top')
+                
+                    -- Ассортимент
+                    offsetY = offsetY + 25
+                    local showroomTypeStr = string.format('Ассортимент: #f2ab12%s', utf8.lower(showroomData.type))
+                    dxDrawText3D(showroomTypeStr, nx, ny + offsetY*scale, nx + width, ny + height, tocolor(255, 255, 255, 255), scale, Font.DX_RB_12, 'center', 'top')
+                
                 end
             end
         end
