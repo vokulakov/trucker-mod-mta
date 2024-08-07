@@ -18,7 +18,7 @@ function Showroom.createInterior()
     Showroom.objectInterior.dimension = 1812
 end
 
-function Showroom.vehicle()
+function Showroom.vehiclePreview()
 end
 
 function Showroom.enter()
@@ -28,11 +28,18 @@ function Showroom.enter()
     setTime(12, 0)
     setMinuteDuration(2147483647)
     ShowroomGUI.show()
+
+    Showroom.bgSound = exports.tmtaSounds:playSound('int_car_showroom', true)
+    setSoundVolume(Showroom.bgSound, 0.1)
 end
 
 function Showroom.exit()
     exports.tmtaTimecycle:syncPlayerGameTime()
     ShowroomGUI.hide()
+
+    if isElement(Showroom.bgSound) then
+        stopSound(Showroom.bgSound)
+    end
 end
 
 function Showroom.create(showroomData)

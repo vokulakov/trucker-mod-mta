@@ -25,12 +25,15 @@ Config.SOUND_LIST = {
 	['box_down'] = "assets/systems/box_down.mp3",
 	['box_up'] = "assets/systems/box_up.mp3",
 
-	-- Background music --
-	['music_game_theme_1'] = "assets/music_bg/game_theme_1.mp3",
-	['music_game_theme_2'] = "assets/music_bg/game_theme_2.mp3",
-	['music_game_theme_3'] = "assets/music_bg/game_theme_3.mp3",
-	['int_restaurant'] = "assets/music_bg/music_restaurant.mp3",
-	['int_skinshop'] = "assets/music_bg/music_skinshop.mp3", 
+	-- Music --
+	['music_game_theme_1'] = "assets/music/game_theme_1.mp3",
+	['music_game_theme_2'] = "assets/music/game_theme_2.mp3",
+	['music_game_theme_3'] = "assets/music/game_theme_3.mp3",
+
+	-- Ambient --
+	['int_car_showroom'] = "assets/ambient/bg_music_car_showroom.mp3",
+	['int_restaurant'] = "assets/ambient/bg_music_restaurant.mp3",
+	['int_skinshop'] = "assets/ambient/bg_music_skinshop.mp3", 
 
 	-- Vehicle --
 	['veh_belt_out'] = "assets/vehicle/belt-out.mp3",

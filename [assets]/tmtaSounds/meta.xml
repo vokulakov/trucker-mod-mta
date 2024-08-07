@@ -23,12 +23,15 @@
 	<file src="assets/systems/box_down.mp3" />
 	<file src="assets/systems/box_up.mp3" />
 
-	<!-- Background music -->
-	<file src="assets/music_bg/game_theme_1.mp3" />
-	<file src="assets/music_bg/game_theme_2.mp3" />
-	<file src="assets/music_bg/game_theme_3.mp3" />
-	<file src="assets/music_bg/music_restaurant.mp3" />
-	<file src="assets/music_bg/music_skinshop.mp3" />
+	<!-- Music -->
+	<file src="assets/music/game_theme_1.mp3" />
+	<file src="assets/music/game_theme_2.mp3" />
+	<file src="assets/music/game_theme_3.mp3" />
+
+	<!-- Ambient -->
+	<file src="assets/ambient/bg_music_car_showroom.mp3" />
+	<file src="assets/ambient/bg_music_restaurant.mp3" />
+	<file src="assets/ambient/bg_music_skinshop.mp3" />
 
 	<!-- Vehicle -->
 	<file src="assets/vehicle/doorlock.mp3" />

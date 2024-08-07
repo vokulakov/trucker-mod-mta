@@ -1,6 +1,10 @@
 local Modules = {
-    'callBack',
 	'Animation',
+	'CallBack',
+	'Dimension',
+	'Async',
+	'Class',
+	'OOP',
 }
 
 local includedModules = {}
@@ -18,7 +22,7 @@ local function readFile(path)
 end
 
 for _, moduleName in pairs(Modules) do
-	includedModules[moduleName] = readFile(string.format('modules/%s.module', moduleName))
+	includedModules[moduleName] = readFile(string.format('modules/%s.lua', moduleName))
 end
 
 function include(moduleName)

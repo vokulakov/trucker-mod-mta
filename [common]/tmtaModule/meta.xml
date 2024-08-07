@@ -2,8 +2,12 @@
     <download_priority_group>999999</download_priority_group>
     <oop>true</oop>
 
-	<file src="modules/Animation.module"/>
-    <file src="modules/callBack.module"/>
+	<file src="modules/Animation.lua"/>
+    <file src="modules/Dimension.lua"/>
+    <file src="modules/CallBack.lua"/>
+    <file src="modules/Async.lua"/>
+    <file src="modules/Class.lua"/>
+    <file src="modules/OOP.lua"/>
 
     <script type="shared" src="main.lua" cache="false" />
     <export function="include" type="shared" />
