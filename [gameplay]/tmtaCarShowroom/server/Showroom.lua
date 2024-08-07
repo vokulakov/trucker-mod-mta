@@ -16,5 +16,5 @@ end
 function Showroom.playerExit(player)
     player.interior = 0
     PlayersInShowroom[player] = nil
-   clearPlayerDimension(player)
+    clearPlayerDimension(player)
 end

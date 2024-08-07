@@ -38,7 +38,7 @@ function Showroom.exit()
     ShowroomGUI.hide()
 
     if isElement(Showroom.bgSound) then
-        stopSound(Showroom.bgSound)
+        stopSound(Showroom.bgSound)-
     end
 end
 
