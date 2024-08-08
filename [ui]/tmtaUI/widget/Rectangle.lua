@@ -138,3 +138,5 @@ guiRectangleGetSize = Rectangle.getSize
 guiRectangleSetSize = Rectangle.setSize
 guiRectangleGetPosition = Rectangle.getPosition
 guiRectangleSetPositon = Rectangle.setPosition
+
+dxDrawRectangle = Rectangle.draw

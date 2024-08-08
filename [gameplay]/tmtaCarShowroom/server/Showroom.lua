@@ -48,3 +48,4 @@ addEventHandler('tmtaCarShowroom.onPlayerExitCarShowroom', root,
         setTimer(Showroom.playerExit, 1100, 1, player)
     end
 )
+

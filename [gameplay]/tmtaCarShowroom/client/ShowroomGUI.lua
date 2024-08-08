@@ -1,5 +1,7 @@
 ShowroomGUI = {}
 
+ShowroomGUI._currentColorPick = nil
+
 local sW, sH = guiGetScreenSize()
 local sDW, sDH = exports.tmtaUI:getScreenSize()
 
@@ -12,7 +14,8 @@ local Font = {
 
 local Texture = {
     bgShadow  = exports.tmtaTextures:createTexture('bg_shadow'),
-    bgShadowSmoke  = exports.tmtaTextures:createTexture('bg_shadow_smoke'),
+    bgShadowSmoke = exports.tmtaTextures:createTexture('bg_shadow_smoke'),
+    colorPoint = dxCreateTexture('assets/image/colorPoint.png')
 }
 
 function ShowroomGUI.drawBackground()
@@ -91,12 +94,49 @@ function ShowroomGUI.render(showroom)
     -- setElementParent(ShowroomGUI.btnBuy, ShowroomGUI.wnd)
 
     --
-    ShowroomGUI.colorPicker = exports.tmtaUI:guiRectangleCreate(sW*((sDW-200)/2 /sDW), sH*((20) /sDH), sW*(200 /sDW), sH*(64 /sDH))
-    for _, color in pairs(Config.colorList) do
+end
+
+local function isMouseInPosition(x, y, width, height)
+	if (not isCursorShowing()) then
+		return false
+	end
+
+	local sx, sy = guiGetScreenSize()
+	local cx, cy = getCursorPosition()
+	local cx, cy = (cx * sx), (cy * sy)
+
+    return not not ((cx >= x and cx <= x + width) and (cy >= y and cy <= y + height))
+end
+
+function ShowroomGUI.dxDrawColorPicker()
+    local width = #Config.colorList*40
+    local height = 40
+    local posX = (sW-width) /2
+    local posY = 32 + 35
+
+    exports.tmtaUI:dxDrawRectangle(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), tocolor(0, 0, 0, 175), true)
+    for colorId, color in pairs(Config.colorList) do
+        local color = tocolor(color[1], color[2], color[3], 175)
+        local colorPointPosX, colorPointPosY, colorPointWidth, colorPointHeight = sW*((posX) /sDW), sH*((posY) /sDH), sW*((32) /sDW), sH*((32) /sDH)
+        if (isMouseInPosition(colorPointPosX, colorPointPosY, colorPointWidth, colorPointHeight) or ShowroomGUI._currentColorPick == colorId) then
+            color = tocolor(color[1], color[2], color[3], 255)
+            if getKeyState('mouse1') then
+                ShowroomGUI._currentColorPick = colorId
+                triggerEvent('tmtaCarShowroom.onClientColorPick', localPlayer, color[1], color[2], color[3])
+            end
+        end
+        dxDrawImage(colorPointPosX, colorPointPosY, colorPointWidth, colorPointHeight, Texture.colorPoint, 0, 0, 0, color, false)
+        posX = posX + 40
     end
 end
 
---ShowroomGUI.render({})
+function ShowroomGUI.getColorFromColorPicker()
+    if not ShowroomGUI._currentColorPick then
+        return false
+    end
+    local color = Config.colorList[tonumber(ShowroomGUI._currentColorPick)]
+    return color[1], color[2], color[3]
+end
 
 function ShowroomGUI.onClientGUISelectVehicle()
     local selectedItem = guiGridListGetSelectedItem(source)
@@ -115,6 +155,10 @@ end
 
 function ShowroomGUI.show()
     addEventHandler('onClientHUDRender', root, ShowroomGUI.drawBackground)
+
+    ShowroomGUI._currentColorPick = math.random(1, #Config.colorList)
+    addEventHandler('onClientHUDRender', root, ShowroomGUI.dxDrawColorPicker)
+
     exports.tmtaHUD:moneyShow(sDW-100, 30)
 
     local showroom = Showroom.getData()
@@ -135,5 +179,7 @@ function ShowroomGUI.hide()
     showCursor(false)
 
     removeEventHandler('onClientHUDRender', root, ShowroomGUI.drawBackground)
+    removeEventHandler('onClientHUDRender', root, ShowroomGUI.dxDrawColorPicker)
+
     exports.tmtaHUD:moneyHide()
 end

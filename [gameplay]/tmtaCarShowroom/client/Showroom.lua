@@ -13,6 +13,8 @@ function Showroom.vehiclePreview(vehicleModel)
     local showroomData = Showroom.getData()
 
     local vehicle = createVehicle(vehicleId, showroomData.vehiclePosition, showroomData.vehicleRotation)
+    Showroom.setVehiclePreviewColor(ShowroomGUI.getColorFromColorPicker())
+
     setVehicleDamageProof(vehicle, true)
     vehicle.dimension = localPlayer.dimension
     vehicle.interior = localPlayer.interior
@@ -21,6 +23,14 @@ function Showroom.vehiclePreview(vehicleModel)
     
     return vehicle
 end
+
+function Showroom.setVehiclePreviewColor(r, g, b)
+    if (not isElement(_showroomCurrentVehiclePreview) or r < 0 or r > 255 or g < 0 or g > 255 or b < 0 or b > 255) then
+        return false
+    end
+    return setVehicleColor(_showroomCurrentVehiclePreview, r, g, b, r, g, b)
+end
+addEventHandler('tmtaCarShowroom.onClientColorPick', root, Showroom.setVehiclePreviewColor)
 
 function Showroom.getData(showroom)
     local showroom = showroom or _playerCurrentShowroom
