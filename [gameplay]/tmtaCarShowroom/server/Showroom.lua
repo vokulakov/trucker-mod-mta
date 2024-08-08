@@ -49,3 +49,27 @@ addEventHandler('tmtaCarShowroom.onPlayerExitCarShowroom', root,
     end
 )
 
+function Showroom.playerBuyVehicle(player, model, price, colorR1, colorG1, colorB1, colorR2, colorG2, colorB2)
+    if (not isElement(player) or type(model) ~= 'string' or type(price) ~= 'number') then
+        outputDebugString('Showroom.playerBuyVehicle: bad arguments', 1)
+        return false
+    end
+
+    local vehicleId = tonumber(Utils.getVehicleModelFromName(model))
+
+    return true
+end
+
+addEvent('tmtaCarShowroom.onPlayerBuyVehicle', true)
+addEventHandler('tmtaCarShowroom.onPlayerBuyVehicle', root,
+    function(model, price, colorR1, colorG1, colorB1, colorR2, colorG2, colorB2)
+        local player = source
+        if (not isElement(player) or type(model) ~= 'string' or type(price) ~= 'number') then
+            return
+        end
+
+        local success, errorMessage = Showroom.playerBuyVehicle(player, model, price, colorR1, colorG1, colorB1, colorR2, colorG2, colorB2)
+        if (not success and errorMessage) then
+        end
+    end
+)

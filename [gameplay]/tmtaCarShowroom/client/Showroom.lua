@@ -3,8 +3,16 @@ Showroom = {}
 local _playerCurrentShowroom = nil
 local _showroomCurrentVehiclePreview = nil
 
-function Showroom.vehiclePreview(vehicleModel)
-    local vehicleId = tonumber(Utils.getVehicleModelFromName(vehicleModel))
+function Showroom.getData(showroom)
+    local showroom = showroom or _playerCurrentShowroom
+    if (not isElement(showroom) or not ShowroomMarker.created[showroom]) then
+        return false
+    end
+    return ShowroomMarker.created[showroom]
+end
+
+function Showroom.vehiclePreview(model)
+    local vehicleId = tonumber(Utils.getVehicleModelFromName(model))
     if isElement(_showroomCurrentVehiclePreview) then
         setElementModel(_showroomCurrentVehiclePreview, vehicleId)
         return
@@ -32,12 +40,9 @@ function Showroom.setVehiclePreviewColor(r, g, b)
 end
 addEventHandler('tmtaCarShowroom.onClientColorPick', root, Showroom.setVehiclePreviewColor)
 
-function Showroom.getData(showroom)
-    local showroom = showroom or _playerCurrentShowroom
-    if (not isElement(showroom) or not ShowroomMarker.created[showroom]) then
-        return false
-    end
-    return ShowroomMarker.created[showroom]
+function Showroom.buyVehicle(vehicle)
+    local r1, g1, b1, r2, g2, b2 = getVehicleColor(_showroomCurrentVehiclePreview, true)
+    return triggerServerEvent('tmtaCarShowroom.onPlayerBuyVehicle', localPlayer, vehicle.model, vehicle.price, r1, g1, b1, r2, g2, b2)
 end
 
 function Showroom.enter(showroom)
@@ -66,7 +71,8 @@ addEventHandler('tmtaCarShowroom.onPlayerEnterCarShowroom', root,
 
         ShowroomGUI.show()
 
-        local vehicle = Showroom.vehiclePreview(ShowroomGUI.getSelectedVehicle())
+        local selectedVehicle = ShowroomGUI.getSelectedVehicle()
+        local vehicle = Showroom.vehiclePreview(selectedVehicle.model)
         CameraManager.start(vehicle)
 
         Showroom.bgSound = exports.tmtaSounds:playSound('int_car_showroom', true)

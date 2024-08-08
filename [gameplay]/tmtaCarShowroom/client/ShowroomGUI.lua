@@ -60,7 +60,7 @@ function ShowroomGUI.render(showroom)
                 end
 
                 guiGridListSetItemText(ShowroomGUI.vehicleList, row, 1, name, false, true)
-                guiGridListSetItemData(ShowroomGUI.vehicleList, row, 1, vehicle.model)
+                guiGridListSetItemData(ShowroomGUI.vehicleList, row, 1, vehicle)
 
                 guiGridListSetItemText(ShowroomGUI.vehicleList, row, 2, tostring(exports.tmtaUtils:formatMoney(vehicle.price))..' ₽', false, true)
                 guiGridListSetItemData(ShowroomGUI.vehicleList, row, 2, vehicle.price)
@@ -87,13 +87,11 @@ function ShowroomGUI.render(showroom)
     local keyPanelWidth, keyPanelHeight = exports.tmtaUI:guiKeyPanelGetSize(ShowroomGUI.keyPane)
     exports.tmtaUI:guiKeyPanelSetPosition(ShowroomGUI.keyPane, sW*((sDW-keyPanelWidth-10) /sDW), sH*((sDH-keyPanelHeight-40) /sDH))
 
-    --local offsetPosY = sDH-keyPanelHeight-40
-    --
-    -- ShowroomGUI.btnBuy = guiCreateButton(sW*((sDW-255-10) /sDW), sH*((sDH-offsetPosY-55-20) /sDH), sW*(255/sDW), sH*(55/sDH), 'Купить', false)
-    -- guiSetFont(ShowroomGUI.btnBuy, Font.RR_14)
-    -- setElementParent(ShowroomGUI.btnBuy, ShowroomGUI.wnd)
-
-    --
+    local offsetPosY = sDH-keyPanelHeight-40
+    ShowroomGUI.btnBuy = guiCreateButton(sW*((sDW-255-10) /sDW), sH*((sDH-offsetPosY-55-20) /sDH), sW*(255/sDW), sH*(55/sDH), 'Купить', false)
+    guiSetFont(ShowroomGUI.btnBuy, Font.RR_14)
+    setElementParent(ShowroomGUI.btnBuy, ShowroomGUI.wnd)
+    addEventHandler('onClientGUIClick', ShowroomGUI.btnBuy, )
 end
 
 local function isMouseInPosition(x, y, width, height)
@@ -138,19 +136,38 @@ function ShowroomGUI.getColorFromColorPicker()
     return color[1], color[2], color[3]
 end
 
-function ShowroomGUI.onClientGUISelectVehicle()
-    local selectedItem = guiGridListGetSelectedItem(source)
-    if selectedItem == -1 then 
-        guiGridListSetSelectedItem(source, 0, 1)
-        selectedItem = guiGridListGetSelectedItem(source)
+function ShowroomGUI.getSelectedVehicle()
+    local selectedItem = guiGridListGetSelectedItem(ShowroomGUI.vehicleList)
+    if selectedItem == -1 then
+        guiGridListSetSelectedItem(ShowroomGUI.vehicleList, 0, 1)
+        selectedItem = guiGridListGetSelectedItem(ShowroomGUI.vehicleList)
     end
 
-    local vehicleModel = guiGridListGetItemData(source, selectedItem, 1)
-    return Showroom.vehiclePreview(vehicleModel)
+    return guiGridListGetItemData(ShowroomGUI.vehicleList, selectedItem, 1)
 end
 
-function ShowroomGUI.getSelectedVehicle()
-    return guiGridListGetItemData(ShowroomGUI.vehicleList, 0, 1)
+function ShowroomGUI.onClientGUISelectVehicle()
+    local vehicle = ShowroomGUI.getSelectedVehicle()
+    return Showroom.vehiclePreview(vehicle.model)
+end
+
+function ShowroomGUI.onClientGUIClickBuy()
+    ShowroomGUI.wnd.visible = false
+    exports.tmtaUI:setPlayerBlurScreen(true)
+    local vehicle = ShowroomGUI.getSelectedVehicle()
+    local message = string.format("Вы хотите приобрести '%s' за %s ₽ ?", Utils.getVehicleNameFromModel(vehicle.model), tostring(exports.tmtaUtils:formatMoney(vehicle.price)))
+    local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onShowroomConfirmWindowBuy', 'onShowroomConfirmWindowCancel', 'onShowroomConfirmWindowCancel')
+    exports.tmtaGUI:setBtnOkLabel(confirmWindow, 'Купить')
+end
+
+function onShowroomConfirmWindowCancel()
+    exports.tmtaUI:setPlayerBlurScreen(false)
+    ShowroomGUI.wnd.visible = true
+end
+
+function onShowroomConfirmWindowBuy()
+    exports.tmtaUI:setPlayerBlurScreen(false)
+    return Showroom.buyVehicle(ShowroomGUI.getSelectedVehicle())
 end
 
 function ShowroomGUI.show()
