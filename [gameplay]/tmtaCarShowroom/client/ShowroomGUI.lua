@@ -88,11 +88,11 @@ function ShowroomGUI.render(showroom)
     exports.tmtaUI:guiKeyPanelSetPosition(ShowroomGUI.keyPane, sW*((sDW-keyPanelWidth-10) /sDW), sH*((sDH-keyPanelHeight-40) /sDH))
 
     --
-    local offsetPosY = sDH-keyPanelHeight-40
-    ShowroomGUI.btnBuy = guiCreateButton(sW*((sDW-255-10) /sDW), sH*((sDH-offsetPosY-55-20) /sDH), sW*(255/sDW), sH*(55/sDH), 'Купить', false)
-    guiSetFont(ShowroomGUI.btnBuy, Font.RR_14)
-    setElementParent(ShowroomGUI.btnBuy, ShowroomGUI.wnd)
-    addEventHandler('onClientGUIClick', ShowroomGUI.btnBuy, ShowroomGUI.onClientGUIClickBuy, false)
+    -- local offsetPosY = sDH-keyPanelHeight-40
+    -- ShowroomGUI.btnBuy = guiCreateButton(sW*((sDW-255-10) /sDW), sH*((sDH-offsetPosY-55-20) /sDH), sW*(255/sDW), sH*(55/sDH), 'Купить', false)
+    -- guiSetFont(ShowroomGUI.btnBuy, Font.RR_14)
+    -- setElementParent(ShowroomGUI.btnBuy, ShowroomGUI.wnd)
+    -- addEventHandler('onClientGUIClick', ShowroomGUI.btnBuy, ShowroomGUI.onClientGUIClickBuy, false)
 end
 
 local function isMouseInPosition(x, y, width, height)
@@ -113,18 +113,18 @@ function ShowroomGUI.dxDrawColorPicker()
     local posX = (sW-width) /2
     local posY = 32 + 35
 
-    exports.tmtaUI:dxDrawRectangle(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), tocolor(0, 0, 0, 175), true)
+    exports.tmtaUI:dxDrawRectangle(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), tocolor(0, 0, 0, 125), true)
     for colorId, color in pairs(Config.colorList) do
-        local color = tocolor(color[1], color[2], color[3], 175)
-        local colorPointPosX, colorPointPosY, colorPointWidth, colorPointHeight = sW*((posX) /sDW), sH*((posY) /sDH), sW*((32) /sDW), sH*((32) /sDH)
+        local _color = tocolor(color[1], color[2], color[3], 175)
+        local colorPointPosX, colorPointPosY, colorPointWidth, colorPointHeight = sW*((posX+4) /sDW), sH*((posY+4) /sDH), sW*((32) /sDW), sH*((32) /sDH)
         if (isMouseInPosition(colorPointPosX, colorPointPosY, colorPointWidth, colorPointHeight) or ShowroomGUI._currentColorPick == colorId) then
-            color = tocolor(color[1], color[2], color[3], 255)
+            _color = tocolor(color[1], color[2], color[3], 255)
             if getKeyState('mouse1') then
                 ShowroomGUI._currentColorPick = colorId
                 triggerEvent('tmtaCarShowroom.onClientColorPick', localPlayer, color[1], color[2], color[3])
             end
         end
-        dxDrawImage(colorPointPosX, colorPointPosY, colorPointWidth, colorPointHeight, Texture.colorPoint, 0, 0, 0, color, false)
+        dxDrawImage(colorPointPosX, colorPointPosY, colorPointWidth, colorPointHeight, Texture.colorPoint, 0, 0, 0, _color, false)
         posX = posX + 40
     end
 end
@@ -193,7 +193,6 @@ function ShowroomGUI.hide()
     ShowroomGUI.btnClose.visible = false
     setTimer(destroyElement, 100, 1, ShowroomGUI.wnd)
     destroyElement(ShowroomGUI.keyPane)
-    destroyElement(ShowroomGUI.colorPicker)
     showCursor(false)
 
     removeEventHandler('onClientHUDRender', root, ShowroomGUI.drawBackground)
