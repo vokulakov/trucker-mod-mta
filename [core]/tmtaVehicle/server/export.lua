@@ -1,11 +1,8 @@
-function spawnVehicle(...)
-end
-
 function addPlayerVehicle(player, model)
-	if not isElement(player) then
+	if (not isElement(player) or type(model) ~= 'string') then
 		return false
 	end
 
-	local result = UserVehicle.add(player:getData("userId"), model)
+	local result = UserVehicle.addPlayerVehicle(player)
 	return result
 end

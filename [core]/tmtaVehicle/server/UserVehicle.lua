@@ -10,16 +10,19 @@ function UserVehicle.setup()
         {name = "ownedStartDate", type = "INTEGER", options = "DEFAULT 0"},
         {name = "ownedEndDate", type = "INTEGER", options = "DEFAULT 0"},
     },
-        "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE CASCADE,\n"..
-        "FOREIGN KEY (vehicleId)\n\tREFERENCES vehicle (vehicleId)\n\tON DELETE CASCADE")
+        "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL,\n"..
+        "FOREIGN KEY (vehicleId)\n\tREFERENCES vehicle (vehicleId)\n\tON DELETE SET NULL")
 end
 
-function UserVehicle.add(userId, model, callbackFunctionName, ...)
-    if 	(type(userId) ~= "number" or type(model) ~= "number") then
+function UserVehicle.add(userId, vehicleId, callbackFunctionName, ...)
+    if 	(type(userId) ~= "number" or type(vehicleId) ~= "number") then
 		executeCallback(callbackFunctionName, false)
-		outputDebugString("UserVehicle.add: Invalid vehicle model", 1)
+		outputDebugString("UserVehicle.add: bad arguments", 1)
 		return false
 	end
+
+
+    --TODO: обращение к бд
 end
 
 function UserVehicle.getUserVehicles(userId, callbackFunctionName, ...)
@@ -27,4 +30,7 @@ function UserVehicle.getUserVehicles(userId, callbackFunctionName, ...)
 		outputDebugString("UserVehicle.getUserVehicles: bad arguments", 1)
         return false
     end
+end
+
+function UserVehicle.addPlayerVehicle(player, model)
 end

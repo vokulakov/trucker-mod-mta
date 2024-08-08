@@ -46,16 +46,55 @@ function Vehicle.setup()
         {name = "tuning", type = "TEXT"},
         {name = "stickers", type = "TEXT"},
 
+        {name = "numberPlateId", type = "INTEGER"},
+
         {name = "type", type = "INTEGER", options = "DEFAULT 0 NOT NULL"},
         {name = "status", type = "INTEGER", options = "DEFAULT 0 NOT NULL"},
         {name = "isDoorsLocked", type = "INTEGER", options = "DEFAULT 0 NOT NULL"},
-    })
+    }, "FOREIGN KEY (numberPlateId)\n\tREFERENCES numberPlate (numberPlateId)\n\tON DELETE SET NULL")
+end
+
+function vehicleTypeLabels()
+    return {
+        VEHICLE_TYPE_PRIVATE = VEHICLE_TYPE_PRIVATE_LABEL,
+        VEHICLE_TYPE_RENT = VEHICLE_TYPE_RENT_LABEL,
+        VEHICLE_TYPE_COMMERCIAL = VEHICLE_TYPE_COMMERCIAL_LABEL,
+        VEHICLE_TYPE_STATE = VEHICLE_TYPE_STATE_LABEL,
+    }
 end
 
 local function generateVehicleIdentificationNumber()
+    local realTime = tostring(getRealTime().timestamp):sub(-2)
+	local tick = tostring(getTickCount()):sub(-3)
+	return string.format("VIN%02d%.2X%02d", math.random(1, 9), tonumber(realTime..tick), math.random(1, 99))
 end
 
-function Vehicle.add(model, callbackFunctionName, ...)
+function Vehicle.add(vehicleModel, vehicleType, vehicleTuning, callbackFunctionName, ...)
+    if 	(type(vehicleModel) ~= "number" or type(vehicleType) ~= 'number' or not vehicleTypeLabels()[vehicleType]) then
+		executeCallback(callbackFunctionName, false)
+		outputDebugString("Vehicle.add: bad arguments", 1)
+		return false
+	end
+
+    if not isValidVehicleModel(vehicleModel) then
+        executeCallback(callbackFunctionName, false)
+        outputDebugString("Vehicle.add: Invalid vehicle model", 1)
+        return false
+    end
+    
+    local vehicleData = {
+        model = vehicleModel,
+        vin = generateVehicleIdentificationNumber(),
+        type = vehicleType,
+        tuning = vehicleTuning,
+    }
+
+    local success = exports.tmtaSQLite:dbTableInsert(VEHICLE_TABLE_NAME, vehicleData, callbackFunctionName, ...)
+    if not success then
+        return false
+    end
+
+    return exports.tmtaSQLite:dbQuery('SELECT * FROM `vehicle` ORDER BY `vehicleId` DESC LIMIT 1', callbackFunctionName, ...)
 end
 
 function Vehicle.remove(vehicleId, callbackFunctionName, ...)

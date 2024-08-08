@@ -70,8 +70,8 @@ function Business.add(posX, posY, posZ, type, price, revenue, callbackFunctionNa
     }
 
     local success = exports.tmtaSQLite:dbTableInsert(BUSINESS_TABLE_NAME, businessData, callbackFunctionName, ...)
-    if success then
-        exports.tmtaLogger:log("business", "Added business")
+    if not success then
+        return false
     end
 
     return exports.tmtaSQLite:dbQuery('SELECT * FROM `business` ORDER BY `businessId` DESC LIMIT 1', callbackFunctionName, ...)

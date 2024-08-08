@@ -2,7 +2,7 @@ VehicleTuning = {}
 
 VehicleTuning.defaultTuningTable = {
     -- Цвета
-    BodyColor 		        = {212, 0, 40},		-- Цвет кузова
+    BodyColor 		        = {255, 255, 255},	-- Цвет кузова
     BodyColorAdditional     = false,            -- Цвет кузова (дополнительный)
     BodyPaintType           = 0,                -- Тип покраски
     BodyTexture 	        = false,			-- Текстура кузова

@@ -87,6 +87,7 @@ function ShowroomGUI.render(showroom)
     local keyPanelWidth, keyPanelHeight = exports.tmtaUI:guiKeyPanelGetSize(ShowroomGUI.keyPane)
     exports.tmtaUI:guiKeyPanelSetPosition(ShowroomGUI.keyPane, sW*((sDW-keyPanelWidth-10) /sDW), sH*((sDH-keyPanelHeight-40) /sDH))
 
+    --
     local offsetPosY = sDH-keyPanelHeight-40
     ShowroomGUI.btnBuy = guiCreateButton(sW*((sDW-255-10) /sDW), sH*((sDH-offsetPosY-55-20) /sDH), sW*(255/sDW), sH*(55/sDH), 'Купить', false)
     guiSetFont(ShowroomGUI.btnBuy, Font.RR_14)

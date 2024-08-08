@@ -29,4 +29,7 @@
     <export type="shared" function="getVehicleModelFromName" />
     <export type="shared" function="getVehicleReadableNameFromName" />
     <export type="shared" function="isValidVehicleModel" />
+
+    <export type="server" function="addPlayerVehicle" />
+    <export type="server" function="updatePlayerVehiclesCount" />
 </meta>
