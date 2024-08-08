@@ -91,7 +91,7 @@ function ShowroomGUI.render(showroom)
     ShowroomGUI.btnBuy = guiCreateButton(sW*((sDW-255-10) /sDW), sH*((sDH-offsetPosY-55-20) /sDH), sW*(255/sDW), sH*(55/sDH), 'Купить', false)
     guiSetFont(ShowroomGUI.btnBuy, Font.RR_14)
     setElementParent(ShowroomGUI.btnBuy, ShowroomGUI.wnd)
-    addEventHandler('onClientGUIClick', ShowroomGUI.btnBuy, )
+    addEventHandler('onClientGUIClick', ShowroomGUI.btnBuy, ShowroomGUI.onClientGUIClickBuy, false)
 end
 
 local function isMouseInPosition(x, y, width, height)
