@@ -80,5 +80,5 @@ function VehicleTuning.updateVehicleTuning(vehicleId, tuning)
 			update.tuning = tuningJSON
 		end		
 	end
-	return UserVehicles.updateVehicle(vehicleId, update)
+	return UserVehicle.updateVehicle(vehicleId, update)
 end

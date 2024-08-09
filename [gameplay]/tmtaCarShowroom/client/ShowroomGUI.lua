@@ -200,3 +200,11 @@ function ShowroomGUI.hide()
 
     exports.tmtaHUD:moneyHide()
 end
+
+function ShowroomGUI.showNotice(typeNotice, typeMessage)
+	local posX, posY = sW*((sDW-400)/2 /sDW), sH*((sDH-150) /sDH)
+	local width = sW*(400 /sDW)
+	exports.tmtaGUI:createNotice(posX, posY, width, typeNotice, typeMessage, true)
+end
+addEvent("tmtaCarShowroom.showNotice", true)
+addEventHandler("tmtaCarShowroom.showNotice", root, ShowroomGUI.showNotice)

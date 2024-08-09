@@ -1,10 +1,6 @@
 local MIN_SUSPENSION_DEFAULT = 0.04
 local MAX_SUSPENSION_DEFAULT = 0.21
 
-local overrideSuspension = {
-	vaz_2110 = {0.02, 0.2},
-}
-
 function updateVehicleSuspension(vehicle)
 	if not isElement(vehicle) then
 		return false
@@ -16,9 +12,9 @@ function updateVehicleSuspension(vehicle)
 		local minSuspension = MIN_SUSPENSION_DEFAULT
 		local maxSuspension = MAX_SUSPENSION_DEFAULT
 		local vehicleName = getVehicleNameFromModel(vehicle.model)
-		if vehicleName and overrideSuspension[vehicleName] then
-			minSuspension = overrideSuspension[vehicleName][1]
-			maxSuspension = overrideSuspension[vehicleName][2]
+		if vehicleName and Config.overrideSuspension[vehicleName] then
+			minSuspension = Config.overrideSuspension[vehicleName][1]
+			maxSuspension = Config.overrideSuspension[vehicleName][2]
 		end
 		value = -minSuspension - value * (maxSuspension - minSuspension)
 	end

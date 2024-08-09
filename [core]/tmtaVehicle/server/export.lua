@@ -1,8 +1,10 @@
-function addPlayerVehicle(player, model)
+function addPlayerVehicle(player, model, fields)
 	if (not isElement(player) or type(model) ~= 'string') then
 		return false
 	end
 
-	local result = UserVehicle.addPlayerVehicle(player)
-	return result
+	return UserVehicle.addPlayerVehicle(player, model, fields)
+end
+
+function updatePlayerVehiclesCount(player)
 end

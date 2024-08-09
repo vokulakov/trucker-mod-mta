@@ -8,7 +8,6 @@
     <script type="shared" src="shared/include.lua" cache="false" />
     <script type="shared" src="shared/Config.lua" cache="false" />
     <script type="shared" src="shared/Vehicle.lua" cache="false" />
-    <script type="shared" src="shared/Utils.lua" cache="false" />
 
     <!-- Client -->
     <script type="client" src="client/SpeedLimit.lua" cache="false" />

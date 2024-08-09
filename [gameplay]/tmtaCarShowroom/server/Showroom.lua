@@ -49,15 +49,26 @@ addEventHandler('tmtaCarShowroom.onPlayerExitCarShowroom', root,
     end
 )
 
-function Showroom.playerBuyVehicle(player, model, price, colorR1, colorG1, colorB1, colorR2, colorG2, colorB2)
-    if (not isElement(player) or type(model) ~= 'string' or type(price) ~= 'number') then
+function Showroom.playerBuyVehicle(player, model, price, level, colorR1, colorG1, colorB1, colorR2, colorG2, colorB2)
+    if (not isElement(player) or type(model) ~= 'string' or type(price) ~= 'number' or type(level) ~= 'number') then
         outputDebugString('Showroom.playerBuyVehicle: bad arguments', 1)
         return false
     end
 
     local vehicleId = tonumber(Utils.getVehicleModelFromName(model))
+    local vehicleName = Utils.getVehicleNameFromModel(model)
 
-    --TODO: exports.tmtaVehicle:
+    if (exports.tmtaExperience:getPlayerLvl(player) < level) then
+        local errorMessage = string.format('Для покупки %s требуется %d+ уровень', vehicleName, level)
+        return false, errorMessage
+    end
+
+    if (exports.tmtaMoney:getPlayerMoney(player) < price) then
+        local errorMessage = string.format('Недостаточно средств для покупки %s', vehicleName)
+        return false, errorMessage
+    end
+
+    --TODO: exports.tmtaVehicle:addPlayerVehicle()
     
     return true
 end
@@ -66,12 +77,32 @@ addEvent('tmtaCarShowroom.onPlayerBuyVehicle', true)
 addEventHandler('tmtaCarShowroom.onPlayerBuyVehicle', root,
     function(model, price, colorR1, colorG1, colorB1, colorR2, colorG2, colorB2)
         local player = source
-        if (not isElement(player) or type(model) ~= 'string' or type(price) ~= 'number') then
+        if (not isElement(player)) then
             return
         end
 
-        local success, errorMessage = Showroom.playerBuyVehicle(player, model, price, colorR1, colorG1, colorB1, colorR2, colorG2, colorB2)
+        local success, errorMessage = Showroom.playerBuyVehicle(player, model, price, 0, colorR1, colorG1, colorB1, colorR2, colorG2, colorB2)
         if (not success and errorMessage) then
+            --TODO: вынести showNotice в один общий ресурс через shared
+            triggerClientEvent(player, 'tmtaCarShowroom.showNotice', resourceRoot, 'warning', errorMessage)
         end
     end
 )
+
+function dbPlayerBuyVehicle(result, params)
+    if (not params or not isElement(params.player)) then
+        return false
+    end
+
+    local player = params.player
+    local price = params.price
+    local vehicleName = params.vehicleName
+
+    local success = not not result
+    if success then
+        exports.tmtaMoney:takePlayerMoney(player, tonumber(price))
+        triggerClientEvent(player, 'tmtaCarShowroom.showNotice', resourceRoot, 'success', string.format('Поздравляем с покупкой %s!', vehicleName))
+    end
+
+    return success
+end
