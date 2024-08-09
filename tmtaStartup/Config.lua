@@ -27,6 +27,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     -- common --
     'tmtaExperience',
     'tmtaMoney',
+    'tmtaShared',
 
     -- core --
     'tmtaCore',
