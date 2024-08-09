@@ -83,7 +83,6 @@ addEventHandler('tmtaCarShowroom.onPlayerBuyVehicle', root,
 
         local success, errorMessage = Showroom.playerBuyVehicle(player, model, price, 0, colorR1, colorG1, colorB1, colorR2, colorG2, colorB2)
         if (not success and errorMessage) then
-            --TODO: вынести showNotice в один общий ресурс через shared
             triggerClientEvent(player, 'tmtaCarShowroom.showNotice', resourceRoot, 'warning', errorMessage)
         end
     end
