@@ -28,6 +28,7 @@ function UserVehicle.add(userId, vehicleId, isOwner, callbackFunctionName, ...)
         userId = userId,
         vehicleId = vehicleId,
         isOwner = isOwner,
+        ownedStartDate = getRealTime().timestamp,
      }, callbackFunctionName, ...)
 end
 

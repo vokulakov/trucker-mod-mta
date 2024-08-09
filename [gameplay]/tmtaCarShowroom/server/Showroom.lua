@@ -57,6 +57,8 @@ function Showroom.playerBuyVehicle(player, model, price, colorR1, colorG1, color
 
     local vehicleId = tonumber(Utils.getVehicleModelFromName(model))
 
+    --TODO: exports.tmtaVehicle:
+    
     return true
 end
 

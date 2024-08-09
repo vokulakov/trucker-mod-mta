@@ -42,6 +42,7 @@ function Vehicle.setup()
         {name = "partsWear", type = "TEXT"}, -- feature: износ деталей
         {name = "wheelsState", type = "TEXT"}, -- feature: состояние колес
 
+        {name = "colors", type = "TEXT"},
         {name = "handling", type = "TEXT"},
         {name = "tuning", type = "TEXT"},
         {name = "stickers", type = "TEXT"},
