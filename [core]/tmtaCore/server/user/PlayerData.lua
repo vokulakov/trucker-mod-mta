@@ -14,6 +14,8 @@ local loadData = {
 	'hunger',
 	"armor",
 	"mileage",
+
+	"garageSlot",
     
 	"exp",
 	"lvl",
