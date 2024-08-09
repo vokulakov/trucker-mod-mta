@@ -19,6 +19,7 @@
     <!-- Server -->
     <script type="server" src="server/Vehicle.lua" />
     <script type="server" src="server/UserVehicle.lua" />
+    <script type="server" src="server/VehicleSpawn.lua" />
     <script type="server" src="server/Suspension.lua" />
     <script type="server" src="server/export.lua" />
     <script type="server" src="server/main.lua" />

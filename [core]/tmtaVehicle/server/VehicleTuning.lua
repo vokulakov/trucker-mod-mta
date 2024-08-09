@@ -43,8 +43,42 @@ VehicleTuning.defaultTuningTable = {
     Components              = false,
 }
 
-function VehicleTuning.applyToVehicle(vehicle, tuningJSON, stickersJSON)
+function VehicleTuning.applyToVehicle(vehicle, tuningJSON)
     if (not isElement(vehicle)) then
 		return false
 	end
+
+    pcall(function ()
+		local tuningTable
+		if type(tuningJSON) == "string" then
+			tuningTable = fromJSON(tuningJSON)
+		end
+		if not tuningTable then
+			tuningTable = {}
+		end
+		-- Выставление полей по-умолчанию
+		for k, v in pairs(VehicleTuning.defaultTuningTable) do
+			if not tuningTable[k] then
+				tuningTable[k] = v
+			end
+		end
+		-- Перенос тюнинга в дату
+		for k, v in pairs(tuningTable) do
+			vehicle:setData(k, v)
+		end
+	end)
+end
+
+function VehicleTuning.updateVehicleTuning(vehicleId, tuning)
+	if not vehicleId then
+		return false
+	end
+	local update = {}
+	if tuning then
+		local tuningJSON = toJSON(tuning)
+		if tuningJSON then
+			update.tuning = tuningJSON
+		end		
+	end
+	return UserVehicles.updateVehicle(vehicleId, update)
 end
