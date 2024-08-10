@@ -22,6 +22,12 @@ function updatePlayerLots(player, houseData)
     player:setData("garageSlot", currentGarageSlots + houseData.parkingSpaces)
 end
 
+addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root, 
+    function()
+        local currentTimestamp = getRealTime().timestamp
+    end
+)
+
 -- Окно создания дома
 addCommandHandler("createhouse", function(player)
     if not hasObjectPermissionTo(player, "command.createhouse", false) then

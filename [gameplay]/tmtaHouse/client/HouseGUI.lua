@@ -7,7 +7,6 @@ local width, height = 400, 280
 local posX, posY = (sDW-width) /2, (sDH-height) /2
 
 function HouseGUI.render(houseData)
-
     local isSell = (not houseData.owner) and true or false
     houseData.owner = houseData.owner or 'государство'
     local height = isSell and height+40 or height
