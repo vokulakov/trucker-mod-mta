@@ -277,7 +277,7 @@ function DatabaseTable.exists(tableName)
 end
 
 --- Изменение таблицы
-function DatabaseTable.alter(tableName, options, callbackFunctionName, ...)
+function DatabaseTable.alter(tableName, options)
 	if type(tableName) ~= "string" then
 		outputDebugString("ERROR: DatabaseTable.alter: bad arguments")
 		return false
@@ -296,12 +296,43 @@ function DatabaseTable.alter(tableName, options, callbackFunctionName, ...)
 		tableName
 	)
 
-	local queryString = connection:prepareString([[SELECT count(*) 
-		FROM information_schema.TABLES 
-		WHERE (TABLE_SCHEMA = ?) AND (TABLE_NAME = ?)
-	]], DatabaseConfig.dbName, tableName)
+	return connection:exec(queryString)
+end
 
-	return retrieveQueryResults(connection, queryString, sourceResourceRoot, callbackFunctionName, ...)
+--- Вставить столбец в таблицу
+function DatabaseTable.addColumn(tableName, columnName, columnType, columnOptions)
+	if (type(tableName) ~= 'string' or type(columnName) ~= 'string' or type(columnType) ~= 'string') then
+		outputDebugString("ERROR: DatabaseTable.addColumn: bad arguments", 1)
+		return false
+	end
+    
+    local connection = Database.getConnection()
+	if not isElement(connection) then
+		outputDebugString("WARNING: Database.connect: no database connection", 1)
+		return false
+	end
+
+	if (type(columnOptions) ~= "string") then
+		columnOptions = ""
+	end
+
+	return connection:exec(connection:prepareString("ALTER TABLE `??` ADD COLUMN `??` ?? ??;", tableName, columnName, columnType, columnOptions))
+end
+
+--- Удалить столбец из таблицы
+function DatabaseTable.dropColumn(tableName, columnName)
+	if (type(tableName) ~= 'string' or type(columnName) ~= 'string') then
+		outputDebugString("ERROR: DatabaseTable.dropColumn: bad arguments", 1)
+		return false
+	end
+
+	local connection = Database.getConnection()
+	if not isElement(connection) then
+		outputDebugString("WARNING: Database.connect: no database connection", 1)
+		return false
+	end
+
+	return connection:exec(connection:prepareString("ALTER TABLE `??` DROP COLUMN `??`;", tableName, columnName))
 end
 
 -- Прямой запрос
@@ -328,5 +359,8 @@ dbTableInsert = DatabaseTable.insert
 dbTableUpdate = DatabaseTable.update
 dbTableDelete = DatabaseTable.delete
 dbTableAlter  = DatabaseTable.alter
+
+dbTableAddColumn = DatabaseTable.addColumn
+dbTableDropColumn = DatabaseTable.dropColumn
 
 dbQuery = DatabaseTable.query
