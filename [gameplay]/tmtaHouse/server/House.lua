@@ -5,23 +5,25 @@ local HOUSE_TABLE_NAME = 'house'
 
 function House.setup()
     exports.tmtaSQLite:dbTableCreate(HOUSE_TABLE_NAME, {
-        { name = "userId", type = 'INTEGER' },
-        { name = "position", type = "TEXT" },
-        { name = "interiorId", type = "INTEGER", options = "NOT NULL" },
-        { name = "price", type = "INTEGER", options = "NOT NULL" },
-        { name = "propertyTax", type = "INTEGER", options = "NOT NULL DEFAULT 0" },
-        { name = "communalPayment", type = "INTEGER", options = "NOT NULL DEFAULT 0" },
-        { name = "doorLock", type = "INTEGER", options = "DEFAULT 0" }, -- открыт или закрыт
-        { name = "doorCode", type = "VARCHAR", size = 6 }, -- код от двери
-        { name = "parkingSpaces", type = "INTEGER", options = "NOT NULL DEFAULT 0" }, -- парковочные места
-        { name = "inventory", type = "TEXT" }, -- feature: инвентарь (шкаф)
-        { name = "wardrobe", type = "TEXT" }, -- feature: гардероб
-        { name = "furniture", type = "TEXT" }, -- feature: мебель
-        { name = "mining", type = "TEXT" }, -- feature: майнинг
-        { name = "upgrades", type = "TEXT" }, -- улучшения
-        { name = "safe", type = "INTEGER", options = "NOT NULL DEFAULT 0" }, -- сейф
-        { name = "safeCode", type = "VARCHAR", size = 4 }, -- код от сейфа
-        { name = "editorId", type = "INTEGER" }, -- пользователь обновивший дом
+        { name = 'userId', type = 'INTEGER' },
+        { name = 'position', type = 'TEXT' },
+        { name = 'interiorId', type = 'INTEGER', options = 'NOT NULL' },
+        { name = 'price', type = 'INTEGER', options = 'NOT NULL' },
+        { name = 'propertyTax', type = 'INTEGER', options = 'NOT NULL DEFAULT 0' },
+        { name = 'communalPayment', type = 'INTEGER', options = 'NOT NULL DEFAULT 0' },
+        { name = 'doorStatus', type = 'INTEGER', options = 'DEFAULT 0' }, -- открыт или закрыт
+        { name = 'doorCode', type = 'VARCHAR', size = 6 }, -- код от двери
+        { name = 'parkingSpaces', type = 'INTEGER', options = 'NOT NULL DEFAULT 0' }, -- парковочные места
+        { name = 'inventory', type = "TEXT" }, -- feature: инвентарь (шкаф)
+        { name = 'wardrobe', type = "TEXT" }, -- feature: гардероб
+        { name = 'furniture', type = "TEXT" }, -- feature: мебель
+        { name = 'mining', type = "TEXT" }, -- feature: майнинг
+        { name = 'upgrades', type = "TEXT" }, -- feature: улучшения
+        { name = 'safe', type = 'INTEGER', options = 'NOT NULL DEFAULT 0' }, -- сейф
+        { name = 'safeCode', type = 'VARCHAR', size = 4 }, -- код от сейфа
+        { name = 'editorId', type = 'INTEGER' }, -- пользователь обновивший дом
+        { name = 'taxAt', type = 'INTEGER' }, -- время начисления прибыли (в timestamp)
+        { name = 'confiscateAt', type = 'INTEGER' }, -- время конфискации в пользу государства (в timestamp)
     },  
         "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL,\n"..
         "FOREIGN KEY (editorId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL")
