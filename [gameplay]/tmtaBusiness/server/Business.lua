@@ -131,7 +131,6 @@ function Business.update(businessId, fields, callbackFunctionName, ...)
     end
 
     local success = exports.tmtaSQLite:dbTableUpdate(BUSINESS_TABLE_NAME, fields, {businessId = businessId}, callbackFunctionName, ...)
-
     if not success then
 		executeCallback(callbackFunctionName, false)
 	end
@@ -323,6 +322,8 @@ function dbUpdateBusiness(result, params)
         end
     
         createdBusiness[businessId].businessMarker:setData('businessData', businessData)
+        BusinessRevenue.stopTracking(businessId)
+        BusinessRevenue.startTracking(businessData)
     end
 
     return success
