@@ -8,7 +8,8 @@ local width, height = 350, 220
 local _businessData = nil
 
 function BusinessGUI.renderInfoBusinessWindow()
-    local height = height + 40
+    local isSell = (not _businessData.owner) and true or false
+    local height = isSell and height + 40 or height
 
     BusinessGUI.wnd = guiCreateWindow(sW*(0/sDW), sH*(0/sDH), sW*(width/sDW), sH*(height/sDH), "", false)
     exports.tmtaGUI:windowCentralize(BusinessGUI.wnd)
@@ -78,10 +79,12 @@ function BusinessGUI.renderInfoBusinessWindow()
     BusinessGUI.lblBusinessPrice.enabled = false
 
     -- Кнопки
-    local btnBuy = guiCreateButton(sW*(0/sDW), sH*((height-50)/sDH), sW*(width/sDW), sH*(40/sDH), "Купить", false, BusinessGUI.wnd)
-    guiSetFont(btnBuy, Utils.fonts.RR_10)
-    guiSetProperty(btnBuy, "NormalTextColour", "FF01D51A")
-    addEventHandler("onClientGUIClick", btnBuy, BusinessGUI.onPlayerBuyBusiness, false)
+    if isSell then
+        local btnBuy = guiCreateButton(sW*(0/sDW), sH*((height-50)/sDH), sW*(width/sDW), sH*(40/sDH), "Купить", false, BusinessGUI.wnd)
+        guiSetFont(btnBuy, Utils.fonts.RR_10)
+        guiSetProperty(btnBuy, "NormalTextColour", "FF01D51A")
+        addEventHandler("onClientGUIClick", btnBuy, BusinessGUI.onPlayerBuyBusiness, false)
+    end
 end
 
 function BusinessGUI.renderManagerBusinessWindow()
@@ -221,14 +224,10 @@ function BusinessGUI.updateLabelAccrueRevenueAt()
 end
 
 function BusinessGUI.openWindow(businessData)
-    if type(businessData) ~= 'table' then
+    if (type(businessData) ~= 'table' or isElement(BusinessGUI.wnd)) then
         return
     end
     _businessData = businessData
-
-    if isElement(BusinessGUI.wnd) then 
-        return
-    end
 
     if (_businessData.owner) then
         if (_businessData.owner ~= localPlayer:getData('nickname')) then
@@ -247,6 +246,10 @@ function BusinessGUI.openWindow(businessData)
 end
 
 function BusinessGUI.closeWindow()
+    if not isElement(BusinessGUI.wnd) then
+        return
+    end
+
     BusinessGUI.wnd.visible = false
     setTimer(destroyElement, 100, 1, BusinessGUI.wnd)
     removeEventHandler("onClientHUDRender", root, BusinessGUI.updateLabelAccrueRevenueAt)
@@ -282,13 +285,13 @@ function BusinessGUI.onPlayerSellBusiness()
     BusinessGUI.wnd.visible = false
 
     local price = tonumber(_businessData.price - (_businessData.price * Config.SELL_COMMISSION/100))
-    local message = string.format("Вы собираетесь продать бизнес\n'%s' государству за %s ₽ ?", _businessData.name, exports.tmtaUtils:formatMoney(price))
+    local message = string.format("Вы действительно хотите продать бизнес\n'%s' государству за %s ₽ ?", _businessData.name, exports.tmtaUtils:formatMoney(price))
     local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onConfirmWindowSell', 'onConfirmWindowCancel', 'onConfirmWindowClose')
     exports.tmtaGUI:setBtnOkLabel(confirmWindow, 'Продать')
 end
 
 function onConfirmWindowClose()
-    BusinessGUI.closeWindow()
+    return BusinessGUI.closeWindow()
 end
 
 function onConfirmWindowCancel()

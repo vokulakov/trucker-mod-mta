@@ -5,7 +5,7 @@ local sW, sH = guiGetScreenSize()
 local MARKER_OFFSET = 1.5
 local MARKER_WIDTH = 250
 local MARKER_HEIGHT = 200
-local MARKER_MAX_DISTANCE = 25
+local MARKER_MAX_DISTANCE = 40
 local MARKER_SCALE = 5.8
 
 addEventHandler("onClientRender", root, 
@@ -21,7 +21,7 @@ addEventHandler("onClientRender", root,
             if posX then
                 local distance = getDistanceBetweenPoints3D(cX, cY, cZ, x, y, z)
                 if distance < MARKER_MAX_DISTANCE then
-                    if isLineOfSightClear(cX, cY, cZ, x, y, z, true, true, false, true, false, false, false, marker) then
+                    if isLineOfSightClear(cX, cY, cZ, x, y, z, true, true, false, true, false, true, false, marker) then
                         local scale = 1 / distance * MARKER_SCALE
                         local width = MARKER_WIDTH * scale
                         local height = MARKER_HEIGHT * scale
@@ -109,7 +109,22 @@ addEventHandler("onClientMarkerHit", resourceRoot,
             return
         end
 
-        local businessData = BusinessMarker.getData(marker)
-        BusinessGUI.openWindow(businessData)
+        if marker:getData('isBusinessMarker') then
+            local businessData = BusinessMarker.getData(marker)
+            BusinessGUI.openWindow(businessData)
+		end
     end
+)
+
+addEventHandler("onClientMarkerLeave", resourceRoot, 
+    function(player, matchingDimension)
+        local marker = source
+		if (getElementType(player) ~= "player" or player ~= localPlayer or not matchingDimension) then 
+            return 
+        end
+
+		if marker:getData('isBusinessMarker') then
+			BusinessGUI.closeWindow()
+		end
+	end
 )

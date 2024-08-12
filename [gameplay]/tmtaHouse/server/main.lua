@@ -22,6 +22,12 @@ function updatePlayerLots(player, houseData)
     player:setData("garageSlot", currentGarageSlots + houseData.parkingSpaces)
 end
 
+addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root, 
+    function()
+        local currentTimestamp = getRealTime().timestamp
+    end
+)
+
 -- Окно создания дома
 addCommandHandler("createhouse", function(player)
     if not hasObjectPermissionTo(player, "command.createhouse", false) then
@@ -44,6 +50,6 @@ addCommandHandler("delcurhouse", function(player, cmd, houseId)
         return
     end
     
-    local message = string.format("Дом #%d удален!", houseId)
+    local message = string.format("Дом №%d удален!", houseId)
     triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'success', message)
 end, true, false)

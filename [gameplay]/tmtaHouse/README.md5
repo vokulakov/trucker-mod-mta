@@ -1,21 +1,3 @@
-dbTable:
-	
-	- цена (price)
-	- количество парковочных мест (parkingSpaces)
-	- гардероб (wardrobe)
-	- инвентарь (inventory)
-	- сейф (safe)
-	- мебель (furniture)
-	- майнинг (mining)
-	- апгрейды (upgrades)
-	- замок (lock)
-	- арендатор (tenant)
-	- владелец (userId)
-	
-	- Создан в (createdAt)
-	- Обновлен в (updateAt)
-	
------------------
 TODO:: onServerDayCycle
 Налог считается: стоимость имущества, количество слотов, количество дней продлевания
 
