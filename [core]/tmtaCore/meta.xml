@@ -35,4 +35,5 @@
     <export type="server" function="getPlayerByUserId" />
     <export type="server" function="getUserDataById" />
     <export type="server" function="updateUserDataById" />
+    <export type="server" function="giveUserMoney" />
 </meta>

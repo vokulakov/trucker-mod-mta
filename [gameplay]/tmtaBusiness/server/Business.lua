@@ -347,8 +347,6 @@ function Business.sell(businessId)
     local price = tonumber(businessData.price - (businessData.price * Config.SELL_COMMISSION/100))
     local balance = tonumber(businessData.balance - (businessData.balance * Config.WITHDRAWAL_FEE/100))
 
-    --TODO: снимать неоплаченный налог
-
     return Business.update(businessId, {
         userId = 'NULL',
         balance = 0,
@@ -387,8 +385,9 @@ function dbSellBusiness(result, params)
 
     result = not not result
     if result then
-        local userId = businessData.userId
         local money = tonumber(price+balance)
+
+        --TODO: снимать неоплаченный налог
 
         local player = exports.tmtaCore:getPlayerByUserId(userId)
         if (isElement(player)) then
@@ -396,9 +395,7 @@ function dbSellBusiness(result, params)
             local message = string.format('Вы продали бизнес.\nНа ваш счет зачислено %s ₽', exports.tmtaUtils:formatMoney(money))
             triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'success', message)
         else
-            local userDataResult = exports.tmtaCore:getUserDataById(userId, {'money'})
-            local userMoney = tonumber(userDataResult[1].money)
-            exports.tmtaCore:updateUserDataById(userId, {money = tonumber(userMoney + money)})
+            exports.tmtaCore:giveUserMoney(userId, tonumber(money))
         end
 
         Business.updateMarker(businessId)

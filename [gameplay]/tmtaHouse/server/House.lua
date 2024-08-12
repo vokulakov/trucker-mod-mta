@@ -1,5 +1,5 @@
 House = {}
-local houseMarkers = {}
+local createdHouses = {}
 
 local HOUSE_TABLE_NAME = 'house'
 
@@ -27,6 +27,11 @@ function House.setup()
     },  
         "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL,\n"..
         "FOREIGN KEY (editorId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL")
+end
+
+--- Получить временную метку начисления налога
+function House.getTaxDate()
+    return tonumber(exports.tmtaUtils:getTimestamp(_, _, getRealTime().monthday + Config.TAX_DAY))
 end
 
 -- Получить данные дома
@@ -220,7 +225,7 @@ function House.create(houseData)
     houseMarker:setData('isHouseMarker', true)
     houseMarker:setData('houseData', houseData)
 
-    houseMarkers[houseId] = {
+    createdHouses[houseId] = {
         data = houseData,
 
         houseMarker = houseMarker,
@@ -238,19 +243,19 @@ end
 
 -- Удалить дом
 function House.destroy(houseId)
-    if type(houseId) ~= "number" or not houseMarkers[houseId] then
+    if type(houseId) ~= "number" or not createdHouses[houseId] then
         outputDebugString("House.destroy: bad arguments", 1)
         return false
     end
 
-    destroyElement(houseMarkers[houseId].houseMarker)
-    destroyElement(houseMarkers[houseId].housePickup)
-    destroyElement(houseMarkers[houseId].exitMarker)
-    destroyElement(houseMarkers[houseId].exitPickup)
-    --destroyElement(houseMarkers[houseId].managementMarker)
-    --destroyElement(houseMarkers[houseId].managementPickup)
+    destroyElement(createdHouses[houseId].houseMarker)
+    destroyElement(createdHouses[houseId].housePickup)
+    destroyElement(createdHouses[houseId].exitMarker)
+    destroyElement(createdHouses[houseId].exitPickup)
+    --destroyElement(createdHouses[houseId].managementMarker)
+    --destroyElement(createdHouses[houseId].managementPickup)
 
-    houseMarkers[houseId] = nil
+    createdHouses[houseId] = nil
 
     return true
 end
@@ -264,12 +269,12 @@ addEventHandler("tmtaHouse.onPlayerHouseEnter", resourceRoot,
             return
         end
         --TODO:: проверка на открыт/закрыт замок дома
-        if not houseMarkers[houseId] then
+        if not createdHouses[houseId] then
             triggerClientEvent(player, "tmtaHouse.onClientPlayerHouseEnter", resourceRoot, false)
             return
         end
 
-        local houseData = houseMarkers[houseId].data
+        local houseData = createdHouses[houseId].data
         local interiorData = Interiors.get(tonumber(houseData.interiorId))
        
         fadeCamera(player, false, 0.5)
@@ -295,12 +300,12 @@ addEventHandler("tmtaHouse.onPlayerHouseExit", resourceRoot,
             return
         end
 
-        if not houseMarkers[houseId] then
+        if not createdHouses[houseId] then
             triggerClientEvent(player, "tmtaHouse.onClientPlayerHouseExit", resourceRoot, false)
             return
         end
 
-        local houseData = houseMarkers[houseId].data
+        local houseData = createdHouses[houseId].data
         fadeCamera(player, false, 0.5)
         setTimer(
             function()
@@ -313,54 +318,57 @@ addEventHandler("tmtaHouse.onPlayerHouseExit", resourceRoot,
     end
 )
 
+function House.buy(player, houseId)
+    if (not isElement(player) or type(houseId) ~= 'number') then
+        return false
+    end
+
+    local houseData = createdHouses[houseId].data
+    if (houseData.userId) then
+        outputDebugString("House.buy: error buying house", 1)
+        exports.tmtaLogger:log(
+            "houses",
+            string.format("Error buying house (%d). Business owner user %d", houseId, houseData.userId)
+        )
+        return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Ошибка покупки бизнеса. Обратитесь к Администратору!')
+    end
+
+    local userId = player:getData("userId")
+    local playerHouses = House.getHousesPlayer(userId)
+    if #playerHouses >= Config.PLAYER_MAX_HOUSES then
+        local errorMessage = string.format('Вы можете одновремено владеть только %d домами', Config.PLAYER_MAX_HOUSES)
+        return false, errorMessage
+    end
+
+    local playerMoney = exports.tmtaMoney:getPlayerMoney(player)
+    if playerMoney < houseData.price then
+        return false, 'Недостаточно средств для покупки дома'
+    end
+
+    return House.update(houseId, {
+        userId = userId,
+        taxAt = House.getTaxDate(),
+    }, "dbBuyHouse", {
+        player = player, 
+        userId = userId, 
+        houseId = houseId, 
+        housePrice = houseData.price,
+        parkingSpaces = houseData.parkingSpaces,
+    })
+end
+
 addEvent("tmtaHouse.onPlayerBuyHouse", true)
 addEventHandler("tmtaHouse.onPlayerBuyHouse", resourceRoot,
     function(houseId)
         local player = client
-        if type(houseId) ~= "number" or not isElement(player) then
+        if (type(houseId) ~= "number" or not isElement(player) or not createdHouses[houseId]) then
             return
         end
 
-        if not houseMarkers[houseId] then
-            return
+        local success, errorMessage = House.buy(player, houseId)
+        if (not success and errorMessage) then
+            triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'warning', errorMessage)
         end
-
-        local userId = player:getData("userId")
-
-        local playerHouses = House.getHousesPlayer(userId)
-        if #playerHouses >= Config.PLAYER_MAX_HOUSES then
-            local message = string.format('Вы можете одновремено владеть только %d домами', Config.PLAYER_MAX_HOUSES)
-            triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'warning', message)
-            return
-        end
-        
-        local houseData = houseMarkers[houseId].data
-        local playerMoney = exports.tmtaMoney:getPlayerMoney(player)
-        
-        if playerMoney < houseData.price then
-            triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'error', 'Недостаточно средств для покупки дома')
-            return
-        end
-
-        if houseData.userId then
-            outputDebugString("tmtaHouse.onPlayerBuyHouse: error buying house", 1)
-            exports.tmtaLogger:log(
-                "houses",
-                string.format("Error buying house (%d). House owner user %d", houseId, houseData.userId)
-            )
-            return
-        end
-
-        updatePlayerLots(player, houseData)
-
-        return House.update(houseId, {userId = userId}, "dbBuyHouse", 
-            {
-                player = player, 
-                userId = userId, 
-                houseId = houseId, 
-                housePrice = houseData.price
-            }
-        )
     end
 )
 
@@ -368,19 +376,93 @@ function dbBuyHouse(result, params)
     if not params or not isElement(params.player) then
         return false
     end
+
     local player = params.player
-    local houseId = params.houseId
-    local housePrice = params.housePrice
-    result = not not result
-    if result then
-        exports.tmtaMoney:takePlayerMoney(player, tonumber(housePrice))
+    local houseId = tonumber(params.houseId)
+    local housePrice = tonumber(params.housePrice)
+    local parkingSpaces = tonumber(params.parkingSpaces)
+
+    local success = not not result
+    if success then
+        exports.tmtaMoney:takePlayerMoney(player, housePrice)
         triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'success', 'Поздравляем с покупкой дома!')
+
         House.destroy(houseId)
         local houseData = House.get(houseId)
         if houseData[1] then
             House.create(houseData[1])
         end
+
+        --TODO: обновить количество слотов в гараже
     end
 
-    return result
+    return success
+end
+
+function House.sell(houseId)
+    if (type(houseId) ~= "number") then
+        return false
+    end
+
+    local houseData = House.get(houseId)
+    houseData = houseData[1]
+    if (not houseData.userId) then
+        outputDebugString("House.sell: error selling house", 1)
+        exports.tmtaLogger:log("houses", string.format("Error selling  house (%d).", houseId))
+        return false
+    end
+
+    local price = tonumber(houseData.price - (houseData.price * Config.SELL_COMMISSION/100))
+
+    return House.update(houseId, {
+        userId = 'NULL',
+        taxAt = 'NULL',
+        confiscateAt = 'NULL',
+        doorStatus = 0,
+        doorCode = '',
+    }, 'dbSellHouse', {
+        houseId = houseId,
+        userId = houseData.userId,
+        price = price,
+        houseData = houseData,
+    })
+end
+
+addEvent("tmtaHouse.onPlayerSellHouse", true)
+addEventHandler("tmtaHouse.onPlayerSellBusiness", resourceRoot,
+    function(houseId)
+        local player = client
+        if (not isElement(player) or type(houseId) ~= "number" or not createdHouses[houseId]) then
+            return
+        end
+        House.sell(houseId)
+    end
+)
+
+function dbSellHouse(result, params)
+    if (not params) then
+        return false
+    end
+
+    local houseId = tonumber(params.houseId)
+    local userId = tonumber(params.userId)
+    local price = tonumber(params.price)
+    local houseData = params.houseData
+
+    local success = not not result
+    if success then
+
+        local player = exports.tmtaCore:getPlayerByUserId(userId)
+        if (isElement(player)) then
+            exports.tmtaMoney:givePlayerMoney(player, price)
+            local message = string.format('Вы продали дом.\nНа ваш счет зачислено %s ₽', exports.tmtaUtils:formatMoney(price))
+            triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'success', message)
+        else
+            exports.tmtaCore:giveUserMoney(userId, tonumber(price))
+        end
+
+        exports.tmtaLogger:log('houses', string.format("User id=%d sell house id=%d for %d", userId, houseId, price))
+    end
+
+    return success
 end

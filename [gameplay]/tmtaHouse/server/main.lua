@@ -50,6 +50,6 @@ addCommandHandler("delcurhouse", function(player, cmd, houseId)
         return
     end
     
-    local message = string.format("Дом #%d удален!", houseId)
+    local message = string.format("Дом №%d удален!", houseId)
     triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'success', message)
 end, true, false)

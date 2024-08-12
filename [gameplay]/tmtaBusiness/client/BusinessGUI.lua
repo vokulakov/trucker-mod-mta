@@ -282,7 +282,7 @@ function BusinessGUI.onPlayerSellBusiness()
     BusinessGUI.wnd.visible = false
 
     local price = tonumber(_businessData.price - (_businessData.price * Config.SELL_COMMISSION/100))
-    local message = string.format("Вы собираетесь продать бизнес\n'%s' государству за %s ₽ ?", _businessData.name, exports.tmtaUtils:formatMoney(price))
+    local message = string.format("Вы действительно хотите продать бизнес\n'%s' государству за %s ₽ ?", _businessData.name, exports.tmtaUtils:formatMoney(price))
     local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onConfirmWindowSell', 'onConfirmWindowCancel', 'onConfirmWindowClose')
     exports.tmtaGUI:setBtnOkLabel(confirmWindow, 'Продать')
 end
