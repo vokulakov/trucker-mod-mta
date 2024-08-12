@@ -10,7 +10,7 @@ local Textures = {
 local HOUSE_OFFSET = 1.2
 local HOUSE_WIDTH = 250
 local HOUSE_HEIGHT = 200
-local HOUSE_MAX_DISTANCE = 25
+local HOUSE_MAX_DISTANCE = 40
 local HOUSE_SCALE = 5.8
 
 addEventHandler("onClientRender", root, 
@@ -26,12 +26,12 @@ addEventHandler("onClientRender", root,
 			if posX then
 				local distance = getDistanceBetweenPoints3D(cX, cY, cZ, x, y, z)
 				if distance < HOUSE_MAX_DISTANCE then
-					if isLineOfSightClear(cX, cY, cZ, x, y, z, true, true, false, true, false, false, false, houseMarker) then
+					if isLineOfSightClear(cX, cY, cZ, x, y, z, true, true, false, true, false, true, false, houseMarker) then
 						local scale = 1 / distance * HOUSE_SCALE
 						local width = HOUSE_WIDTH * scale
 						local height = HOUSE_HEIGHT * scale
 						local nx, ny = posX - width / 2, posY - height / 2
-
+		
 						--dxDrawRectangle(nx, ny, width, height, tocolor(0, 0, 0, 255))
 
 						local offsetY = 0
@@ -68,7 +68,7 @@ addEventHandler("onClientRender", root,
 							
 							-- Цена
 							local titleStr = 'Цена:'
-							local priceStr = houseData.price
+							local priceStr = houseData.formattedPrice
 							
 							local textTittleWidth = dxGetTextWidth(titleStr, 1, Utils.fonts.DX_RB_12) -- ширина текста
 							local textTittleWidth, textTitleHeight = dxGetTextSize(titleStr, textTittleWidth, 1, Utils.fonts.DX_RB_12, true)
@@ -106,7 +106,7 @@ function HouseMarker.onStreamIn(houseMarker)
 			return
 		end
 		houseData.houseId = tostring(houseData.houseId)
-		houseData.price = tostring(exports.tmtaUtils:formatMoney(houseData.price))
+		houseData.formattedPrice = tostring(exports.tmtaUtils:formatMoney(houseData.price))
 		
 		local blipColor = houseData.owner and tocolor(0, 153, 255, 255) or tocolor(0, 255, 0, 255)
 		HouseBlip.add(houseMarker, houseData.houseId, blipColor)
@@ -165,7 +165,7 @@ addEventHandler("onClientMarkerHit", resourceRoot,
         if marker:getData('isHouseMarker') then
             local houseData = marker:getData('houseData')
 		    houseData.houseId = tostring(houseData.houseId)
-		    houseData.price = tostring(exports.tmtaUtils:formatMoney(houseData.price))
+		    houseData.formattedPrice = tostring(exports.tmtaUtils:formatMoney(houseData.price))
             HouseGUI.openWindow(houseData)
         elseif marker:getData('isHouseExitMarker') then
             local houseId = marker:getData('houseId')
@@ -173,6 +173,18 @@ addEventHandler("onClientMarkerHit", resourceRoot,
         end
 
     end
+)
+
+addEventHandler("onClientMarkerLeave", resourceRoot, 
+    function(player, matchingDimension)
+        local marker = source
+		if (getElementType(player) ~= "player" or player ~= localPlayer or not matchingDimension) then 
+            return 
+        end
+		if marker:getData('isHouseMarker') then
+			HouseGUI.closeWindow()
+		end
+	end
 )
 
 function HouseMarker.init()

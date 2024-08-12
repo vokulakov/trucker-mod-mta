@@ -3,23 +3,28 @@ HouseGUI = {}
 local sW, sH = Utils.sW, Utils.sH
 local sDW, sDH = Utils.sDW, Utils.sDH
 
-local width, height = 400, 280
+local width, height = 350, 220
 local posX, posY = (sDW-width) /2, (sDH-height) /2
 
 local _houseData = nil
 
-function HouseGUI.render()
+function HouseGUI.renderInfoHouseWindow()
     local isSell = (not _houseData.owner) and true or false
+    local height = isSell and height + 40 or height
+
     _houseData.owner = _houseData.owner or 'государство'
-    local height = isSell and height+40 or height
 
     HouseGUI.wnd = guiCreateWindow(sW*(posX/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(height/sDH), "", false)
     exports.tmtaGUI:windowCentralize(HouseGUI.wnd)
     guiWindowSetSizable(HouseGUI.wnd, false)
     guiWindowSetMovable(HouseGUI.wnd, false)
     HouseGUI.wnd.alpha = 0.8
-    
-    --
+
+    HouseGUI.btnClose = guiCreateButton(sW*((width-35)/sDW), sH*(25/sDH), sW*(25/sDW), sH*(25/sDH), 'Х', false, HouseGUI.wnd)
+    guiSetFont(HouseGUI.btnClose, Utils.fonts.RR_10)
+    guiSetProperty(HouseGUI.btnClose, "NormalTextColour", "FFCE070B")
+
+    addEventHandler("onClientGUIClick", HouseGUI.btnClose, HouseGUI.closeWindow, false)
     HouseGUI.lblHome = guiCreateLabel(0, sH*(35/sDH), sW*(width/sDW), 30, "Информация о доме", false, HouseGUI.wnd)
     guiLabelSetHorizontalAlign(HouseGUI.lblHome, "center", false)
     guiSetFont(HouseGUI.lblHome, Utils.fonts.RB_11)
@@ -32,7 +37,7 @@ function HouseGUI.render()
     HouseGUI.lblHomeNumber.enabled = false
 
     local offsetX = guiLabelGetTextExtent(HouseGUI.lblHomeNumber)+5
-    HouseGUI.lblHomeNumber = guiCreateLabel(15+offsetX, sH*(80/sDH), sW*(width/sDW), 30, _houseData.number, false, HouseGUI.wnd)
+    HouseGUI.lblHomeNumber = guiCreateLabel(15+offsetX, sH*(80/sDH), sW*(width/sDW), 30, _houseData.houseId, false, HouseGUI.wnd)
     guiLabelSetHorizontalAlign(HouseGUI.lblHomeNumber, "left", false)
     guiSetFont(HouseGUI.lblHomeNumber, Utils.fonts.RB_11)
     guiLabelSetColor(HouseGUI.lblHomeNumber, 242, 171, 18)
@@ -76,6 +81,19 @@ function HouseGUI.render()
     guiSetFont(HouseGUI.lblHomeSpaces, Utils.fonts.RB_11)
     guiLabelSetColor(HouseGUI.lblHomeSpaces, 242, 171, 18)
     HouseGUI.lblHomeSpaces.enabled = false
+
+    HouseGUI.btnEnter = guiCreateButton(sW*(0/sDW), sH*((height-50)/sDH), sW*((width+40)/2/sDW), sH*(40/sDH), "Войти в дом", false, HouseGUI.wnd)
+    guiSetFont(HouseGUI.btnEnter, Utils.fonts.RR_10)
+    addEventHandler("onClientGUIClick", HouseGUI.btnEnter, 
+        function()
+            House.enter(tonumber(_houseData.houseId))
+        end, false
+    )
+end
+
+--[[
+function HouseGUI.render()
+    
     --
     HouseGUI.lblHomePrice = guiCreateLabel(15, sH*(180/sDH), sW*(width/sDW), 30, "Цена:", false, HouseGUI.wnd)
     guiLabelSetHorizontalAlign(HouseGUI.lblHomeSpaces, "left", false)
@@ -86,7 +104,7 @@ function HouseGUI.render()
     HouseGUI.iconMoney = exports.tmtaTextures:createStaticImage(15+offsetX, sH*((180)/sDH), sW*(32 /sDW), sH*(28 /sDH), 'i_money', false, HouseGUI.wnd)
     HouseGUI.iconMoney.enabled = false
 
-    HouseGUI.lblHomePrice = guiCreateLabel(15+offsetX+32+5, sH*((180+5)/sDH), sW*(width/sDW), 30, _houseData.price, false, HouseGUI.wnd)
+    HouseGUI.lblHomePrice = guiCreateLabel(15+offsetX+32+5, sH*((180+5)/sDH), sW*(width/sDW), 30, _houseData.formattedPrice, false, HouseGUI.wnd)
     guiLabelSetHorizontalAlign(HouseGUI.lblHomePrice, "left", false)
     guiSetFont(HouseGUI.lblHomePrice, Utils.fonts.RB_11)
     guiLabelSetColor(HouseGUI.lblHomePrice, 242, 171, 18)
@@ -117,11 +135,12 @@ function HouseGUI.render()
     guiSetFont(HouseGUI.btnClose, Utils.fonts.RR_10)
     addEventHandler("onClientGUIClick", HouseGUI.btnClose, HouseGUI.closeWindow, false)
 end
+]]
 
 function HouseGUI.onPlayerBuyHouse()
     HouseGUI.wnd.visible = false
 
-    local message = string.format("Вы хотите приобрести дом №'%s' за %s ₽ ?", _houseData.houseId, exports.tmtaUtils:formatMoney(_houseData.price))
+    local message = string.format("Вы хотите приобрести дом №%s за %s ₽ ?", _houseData.houseId, exports.tmtaUtils:formatMoney(_houseData.price))
     local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onHouseConfirmWindowBuy', 'onHouseConfirmWindowCancel', 'onHouseConfirmWindowClose')
     exports.tmtaGUI:setBtnOkLabel(confirmWindow, 'Купить')
 end
@@ -130,18 +149,26 @@ function HouseGUI.onPlayerSellHouse()
     HouseGUI.wnd.visible = false
 
     local price = tonumber(_houseData.price - (_houseData.price * Config.SELL_COMMISSION/100))
-    local message = string.format("Вы действительно хотите продать дом №'%s' государству за %s ₽ ?", _houseData.houseId, exports.tmtaUtils:formatMoney(price))
+    local message = string.format("Вы действительно хотите продать дом №%s государству за %s ₽ ?", _houseData.houseId, exports.tmtaUtils:formatMoney(price))
     local confirmWindow = exports.tmtaGUI:createConfirm(message, 'onHouseConfirmWindowSell', 'onHouseConfirmWindowCancel', 'onHouseConfirmWindowClose')
     exports.tmtaGUI:setBtnOkLabel(confirmWindow, 'Продать')
 end
 
 function HouseGUI.openWindow(houseData)
-    if type(houseData) ~= 'table' or isElement(HouseGUI.wnd) then
+    if (type(houseData) ~= 'table' or isElement(HouseGUI.wnd)) then
         return
     end
     _houseData = houseData
 
-    HouseGUI.render()
+
+    if (_houseData.owner) then
+        if (_houseData.owner ~= localPlayer:getData('nickname')) then
+            return
+        end
+    else
+        HouseGUI.renderInfoHouseWindow()
+    end
+
     showCursor(true)
     showChat(false)
     exports.tmtaUI:setPlayerBlurScreen(true)
@@ -149,6 +176,10 @@ function HouseGUI.openWindow(houseData)
 end
 
 function HouseGUI.closeWindow()
+    if (not isElement(HouseGUI.wnd)) then
+        return
+    end
+
     HouseGUI.wnd.visible = false
     setTimer(destroyElement, 100, 1, HouseGUI.wnd)
     showCursor(false)

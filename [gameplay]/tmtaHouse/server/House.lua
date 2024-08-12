@@ -27,6 +27,10 @@ function House.setup()
     },  
         "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL,\n"..
         "FOREIGN KEY (editorId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL")
+
+    --exports.tmtaSQLite:dbTableAddColumn(HOUSE_TABLE_NAME, 'taxAt', 'INTEGER')
+    --exports.tmtaSQLite:dbTableAddColumn(HOUSE_TABLE_NAME, 'confiscateAt', 'INTEGER')
+    --exports.tmtaSQLite:dbTableAlter(HOUSE_TABLE_NAME, 'RENAME COLUMN doorLock TO doorStatus;')
 end
 
 --- Получить временную метку начисления налога
@@ -424,12 +428,11 @@ function House.sell(houseId)
         houseId = houseId,
         userId = houseData.userId,
         price = price,
-        houseData = houseData,
     })
 end
 
 addEvent("tmtaHouse.onPlayerSellHouse", true)
-addEventHandler("tmtaHouse.onPlayerSellBusiness", resourceRoot,
+addEventHandler("tmtaHouse.onPlayerSellHouse", resourceRoot,
     function(houseId)
         local player = client
         if (not isElement(player) or type(houseId) ~= "number" or not createdHouses[houseId]) then
@@ -447,7 +450,6 @@ function dbSellHouse(result, params)
     local houseId = tonumber(params.houseId)
     local userId = tonumber(params.userId)
     local price = tonumber(params.price)
-    local houseData = params.houseData
 
     local success = not not result
     if success then
@@ -459,6 +461,12 @@ function dbSellHouse(result, params)
             triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'success', message)
         else
             exports.tmtaCore:giveUserMoney(userId, tonumber(price))
+        end
+
+        House.destroy(houseId)
+        local houseData = House.get(houseId)
+        if houseData[1] then
+            House.create(houseData[1])
         end
 
         exports.tmtaLogger:log('houses', string.format("User id=%d sell house id=%d for %d", userId, houseId, price))
