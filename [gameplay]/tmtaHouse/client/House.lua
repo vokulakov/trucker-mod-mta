@@ -28,8 +28,14 @@ function House.buy(houseId)
     if type(houseId) ~= "number" then
         return false
     end
-    HouseGUI.closeWindow()
     triggerServerEvent("tmtaHouse.onPlayerBuyHouse", resourceRoot, houseId)
+end
+
+function House.sell(houseId)
+    if type(houseId) ~= "number" then
+        return false
+    end
+    triggerServerEvent("tmtaHouse.onPlayerSellHouse", resourceRoot, houseId)
 end
 
 -- Events

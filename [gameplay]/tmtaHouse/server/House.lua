@@ -66,8 +66,8 @@ function House.add(posX, posY, posZ, interiorId, price, parkingSpaces, callbackF
     }
 
     local success = exports.tmtaSQLite:dbTableInsert(HOUSE_TABLE_NAME, houseData, callbackFunctionName, ...)
-    if success then
-        exports.tmtaLogger:log("houses", "Added house")
+    if not success then
+        return false
     end
 
     return exports.tmtaSQLite:dbQuery('SELECT * FROM `house` ORDER BY `houseId` DESC LIMIT 1', callbackFunctionName, ...)

@@ -35,7 +35,7 @@ addEventHandler("onClientRender", root,
 						--dxDrawRectangle(nx, ny, width, height, tocolor(0, 0, 0, 255))
 
 						local offsetY = 0
-						dxDrawText3D('Дом #f2ab12#'..houseData.number, nx, ny + offsetY*scale, nx + width, ny + height, tocolor(255, 255, 255, 255), scale, Utils.fonts.DX_RR_14, 'center', 'top')
+						dxDrawText3D('Дом #f2ab12№'..houseData.houseId, nx, ny + offsetY*scale, nx + width, ny + height, tocolor(255, 255, 255, 255), scale, Utils.fonts.DX_RR_14, 'center', 'top')
 
 						-- Статус
 						local status = 'Свободен'
@@ -105,11 +105,11 @@ function HouseMarker.onStreamIn(houseMarker)
 		if not houseData then
 			return
 		end
-		houseData.number = tostring(houseData.houseId)
+		houseData.houseId = tostring(houseData.houseId)
 		houseData.price = tostring(exports.tmtaUtils:formatMoney(houseData.price))
 		
 		local blipColor = houseData.owner and tocolor(0, 153, 255, 255) or tocolor(0, 255, 0, 255)
-		HouseBlip.add(houseMarker, houseData.number, blipColor)
+		HouseBlip.add(houseMarker, houseData.houseId, blipColor)
 
 		StreamingHouses[houseMarker] = houseData
 	end
@@ -164,7 +164,7 @@ addEventHandler("onClientMarkerHit", resourceRoot,
         -- Вход в дом
         if marker:getData('isHouseMarker') then
             local houseData = marker:getData('houseData')
-		    houseData.number = tostring(houseData.houseId)
+		    houseData.houseId = tostring(houseData.houseId)
 		    houseData.price = tostring(exports.tmtaUtils:formatMoney(houseData.price))
             HouseGUI.openWindow(houseData)
         elseif marker:getData('isHouseExitMarker') then

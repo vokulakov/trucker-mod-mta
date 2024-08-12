@@ -288,7 +288,7 @@ function BusinessGUI.onPlayerSellBusiness()
 end
 
 function onConfirmWindowClose()
-    BusinessGUI.closeWindow()
+    return BusinessGUI.closeWindow()
 end
 
 function onConfirmWindowCancel()
