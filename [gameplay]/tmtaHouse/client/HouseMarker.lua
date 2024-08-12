@@ -7,7 +7,7 @@ local Textures = {
 	moneyIcon = exports.tmtaTextures:createTexture('i_money'),
 }
 
-local HOUSE_OFFSET = 1.2
+local HOUSE_DEFAULT_OFFSET = 1.2
 local HOUSE_WIDTH = 250
 local HOUSE_HEIGHT = 200
 local HOUSE_MAX_DISTANCE = 40
@@ -22,6 +22,7 @@ addEventHandler("onClientRender", root,
 		local cX, cY, cZ = getCameraMatrix()
 		for houseMarker, houseData in pairs(StreamingHouses) do
 			local x, y, z = getElementPosition(houseMarker)
+			local HOUSE_OFFSET = houseData.owner and HOUSE_DEFAULT_OFFSET or 1.5
 			local posX, posY = getScreenFromWorldPosition(x, y, z + HOUSE_OFFSET)
 			if posX then
 				local distance = getDistanceBetweenPoints3D(cX, cY, cZ, x, y, z)
@@ -60,8 +61,6 @@ addEventHandler("onClientRender", root,
 
 						-- Парковочные места
 						if (not houseData.owner) then
-							HOUSE_OFFSET = 1.5
-
 							local parkingSpacesStr = 'Парковочных мест: #f2ab12'..houseData.parkingSpaces
 							offsetY = offsetY + 25
 							dxDrawText3D(parkingSpacesStr, nx, ny + offsetY*scale, nx + width, ny + height, tocolor(255, 255, 255, 255), scale, Utils.fonts.DX_RB_12, 'center', 'top')

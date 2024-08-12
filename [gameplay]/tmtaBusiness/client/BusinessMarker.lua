@@ -2,7 +2,7 @@ BusinessMarker = {}
 
 local sW, sH = guiGetScreenSize()
 
-local MARKER_OFFSET = 1.5
+local MARKER_DEFAULT_OFFSET = 1.2
 local MARKER_WIDTH = 250
 local MARKER_HEIGHT = 200
 local MARKER_MAX_DISTANCE = 40
@@ -17,6 +17,7 @@ addEventHandler("onClientRender", root,
         local cX, cY, cZ = getCameraMatrix()
         for marker, data in pairs(Business.getStreamedAll()) do
             local x, y, z = getElementPosition(marker)
+            local MARKER_OFFSET = data.owner and MARKER_DEFAULT_OFFSET or 1.5
             local posX, posY = getScreenFromWorldPosition(x, y, z + MARKER_OFFSET)
             if posX then
                 local distance = getDistanceBetweenPoints3D(cX, cY, cZ, x, y, z)

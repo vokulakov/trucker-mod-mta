@@ -465,6 +465,7 @@ function dbTakeMoneyFromBusiness(result, params)
     local player = params.player
     local businessId = params.businessId
     local balance = params.balance
+    local userId = params.userId
 
     result = not not result
     if result then
@@ -476,7 +477,7 @@ function dbTakeMoneyFromBusiness(result, params)
 
         Business.updateMarker(businessId)
 
-        exports.tmtaLogger:log("business", string.format("User id=%d take %d from business id=%d", businessData.userId, money, businessId))
+        exports.tmtaLogger:log("business", string.format("User id=%d take %d from business id=%d", userId, money, businessId))
     end
 
     return result
