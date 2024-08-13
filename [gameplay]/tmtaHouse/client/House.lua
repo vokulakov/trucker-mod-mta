@@ -35,8 +35,8 @@ function House.sell(houseId)
     triggerServerEvent("tmtaHouse.onPlayerSellHouse", resourceRoot, houseId)
 end
 
-function House.changeDoorStatus()
-    if type(houseId) ~= "number" then
+function House.changeDoorStatus(houseId)
+    if (type(houseId) ~= "number") then
         return false
     end
     triggerServerEvent("tmtaHouse.onPlayerChangeDoorStatus", resourceRoot, houseId)
@@ -46,11 +46,9 @@ end
 addEvent("tmtaHouse.onClientPlayerHouseEnter", true)
 addEventHandler("tmtaHouse.onClientPlayerHouseEnter", resourceRoot,
     function(success)
-        if (success) then
-            showChat(true)
-            exports.tmtaUI:setPlayerComponentVisible("all", true)
-            exports.tmtaUI:setPlayerComponentVisible("map", false)
-        end
+        showChat(true)
+        exports.tmtaUI:setPlayerComponentVisible("all", true)
+        exports.tmtaUI:setPlayerComponentVisible("map", false)
     end
 )
 

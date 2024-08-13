@@ -2,13 +2,21 @@ addEventHandler("onResourceStart", resourceRoot,
     function()
         House.setup()
 
-        local houses = House.getList()
-        for _, houseData in pairs(houses) do
+        for _, houseData in pairs(House.getList()) do
             House.create(houseData)
         end
 
     end
 )
+
+setTimer(function()
+    for houseId in ipairs(House.getCreatedHouses()) do
+        House.save(houseId)
+    end
+
+    outputDebugString("[tmtaHouse] Autosave completed!")
+    exports.tmtaLogger:log("houses", "Autosave completed!")
+end, Config.AUTOSAVE_INTERVAL * 60 * 1000, 0)
 
 -- Функция на обновление парковочных мест игрока
 --TODO: при продаже снимать количество парковочных мест

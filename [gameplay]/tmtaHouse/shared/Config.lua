@@ -1,5 +1,7 @@
 Config = {}
 
+Config.AUTOSAVE_INTERVAL = 10 -- время автосохранения в минутах
+
 -- Const
 Config.SELL_COMMISSION = 25 -- комиссия за продажу дома государству 
 Config.PLAYER_MAX_HOUSES = 1 -- максимальное количество домов у игрока

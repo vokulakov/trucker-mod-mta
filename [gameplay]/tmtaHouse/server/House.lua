@@ -33,6 +33,15 @@ function House.setup()
     --exports.tmtaSQLite:dbTableAlter(HOUSE_TABLE_NAME, 'RENAME COLUMN doorLock TO doorStatus;')
 end
 
+-- Дата сохранения
+local dataFields = {
+    'doorStatus',
+}
+
+function House.getCreatedHouses()
+    return createdHouses
+end
+
 --- Получить временную метку начисления налога
 function House.getTaxDate()
     return tonumber(exports.tmtaUtils:getTimestamp(_, _, getRealTime().monthday + Config.TAX_DAY))
@@ -119,7 +128,7 @@ function House.remove(player, houseId, callbackFunctionName, ...)
         return false
     end
 
-    local success = exports.tmtaSQLite:dbTableDelete(HOUSE_TABLE_NAME, { houseId = houseId }, callbackFunctionName, ...)
+    local success = exports.tmtaSQLite:dbTableDelete(HOUSE_TABLE_NAME, {houseId = houseId}, callbackFunctionName, ...)
 	if not success then
 		executeCallback(callbackFunctionName, false)
 	end
@@ -145,7 +154,7 @@ function House.update(houseId, fields, callbackFunctionName, ...)
         fields = {}
     end
 
-    local success = exports.tmtaSQLite:dbTableUpdate(HOUSE_TABLE_NAME, fields, { houseId = houseId }, callbackFunctionName, ...)
+    local success = exports.tmtaSQLite:dbTableUpdate(HOUSE_TABLE_NAME, fields, {houseId = houseId}, callbackFunctionName, ...)
 
     if not success then
 		executeCallback(callbackFunctionName, false)
@@ -162,13 +171,14 @@ function dbUpdateHouse(result, params)
     local success = not not result
     if (success) then
         local houseId = params.houseId
-
         local houseData = House.get(houseId)
-        if houseData[1] then
+        houseData = houseData[1]
+        if houseData then
             local result = exports.tmtaCore:getUserDataById(tonumber(houseData.userId), {'nickname'})
             houseData.owner = result[1].nickname
 
             createdHouses[houseId].houseMarker:setData('houseData', houseData)
+            createdHouses[houseId].data = houseData
         end
     end
 
@@ -182,7 +192,7 @@ function House.getHousesPlayer(userId, callbackFunctionName, ...)
         executeCallback(callbackFunctionName, false)
         return false
     end
-    return exports.tmtaSQLite:dbTableSelect(HOUSE_TABLE_NAME, {}, { userId = userId }, callbackFunctionName, ...)
+    return exports.tmtaSQLite:dbTableSelect(HOUSE_TABLE_NAME, {}, {userId = userId}, callbackFunctionName, ...)
 end
 
 -- Создать дом
@@ -247,6 +257,8 @@ function House.create(houseData)
     --managementPickup.interior = interiorData.interior
     --managementPickup.dimension = houseData.dimension
 
+    houseData.doorStatus = exports.tmtaUtils:tobool(houseData.doorStatus)
+
     houseMarker:setData('isHouseMarker', true)
     houseMarker:setData('houseData', houseData)
 
@@ -290,16 +302,16 @@ addEventHandler("tmtaHouse.onPlayerHouseEnter", resourceRoot,
     function(houseId)
         local player = client
         if type(houseId) ~= "number" or not isElement(player) then
-            return
+            return triggerClientEvent(player, "tmtaHouse.onClientPlayerHouseEnter", resourceRoot, false)
         end
         
         if not createdHouses[houseId] then
-            return
+            return triggerClientEvent(player, "tmtaHouse.onClientPlayerHouseEnter", resourceRoot, false)
         end
 
-        if (House.isDoorLocked(houseId) and House.getOwnerUserId(houseId) ~= player:getData('userId')) then
+        if (House.isDoorLocked(houseId) and not House.isPlayerOwned(player, houseId)) then
             triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'info', 'Дом закрыт')
-            return
+            return triggerClientEvent(player, "tmtaHouse.onClientPlayerHouseEnter", resourceRoot, false)
         end 
 
         local houseData = createdHouses[houseId].data
@@ -462,7 +474,7 @@ addEventHandler("tmtaHouse.onPlayerSellHouse", resourceRoot,
         end
 
         local houseData = createdHouses[houseId].data
-        if (not houseData.userId or House.getOwnerUserId(houseId) ~= player:getData('userId')) then
+        if (not houseData.userId or not House.isPlayerOwned(player, houseId)) then
             return
         end
 
@@ -513,7 +525,11 @@ function House.changeDoorStatus(houseId)
         return false
     end
 
-    return House.update(houseId, {doorStatus = (not houseData.doorStatus) and 1 or 0}, 'dbUpdateHouse', {houseId = houseData.houseId})
+    houseData.doorStatus = (not House.isDoorLocked(houseId)) and 1 or 0
+    createdHouses[houseId].houseMarker:setData('houseData', houseData)
+    createdHouses[houseId].data = houseData
+
+    return true
 end
 
 function House.isDoorLocked(houseId)
@@ -526,7 +542,7 @@ function House.isDoorLocked(houseId)
         return
     end
 
-    return createdHouses[houseId].data.isDoorLocked
+    return exports.tmtaUtils:tobool(createdHouses[houseId].data.doorStatus)
 end
 
 addEvent('tmtaHouse.onPlayerChangeDoorStatus', true)
@@ -536,17 +552,16 @@ addEventHandler('tmtaHouse.onPlayerChangeDoorStatus', resourceRoot,
         if (not isElement(player) or type(houseId) ~= "number" or not createdHouses[houseId]) then
             return
         end
-
+       
         local houseData = createdHouses[houseId].data
         if (not houseData.userId or houseData.userId ~= player:getData('userId')) then
             return
         end
 
         if (House.changeDoorStatus(houseId)) then
-            local currentDoorStatus = House.isDoorLocked(houseId)
-            triggerClientEvent(player, 'tmtaHouse.onClientPlayerChangeDoorStatus', resourceRoot, currentDoorStatus)
-
-            triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'info', (currentDoorStatus) and 'Двери дома закрыты!' or 'Двери дома открыты')
+            local doorStatus = House.isDoorLocked(houseId)
+            triggerClientEvent(player, 'tmtaHouse.onClientPlayerChangeDoorStatus', resourceRoot, doorStatus)
+            triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'info', (doorStatus) and 'Двери дома закрыты!' or 'Двери дома открыты!')
         end
     end
 )
@@ -561,5 +576,36 @@ function House.getOwnerUserId(houseId)
         return
     end
 
-    return createdHouses[houseId].userId
+    return houseData.userId
+end
+
+function House.isPlayerOwned(player, houseId)
+    if (not isElement(player) or type(houseId) ~= "number") then
+        return
+    end
+    return House.getOwnerUserId(houseId) == player:getData('userId')
+end
+
+function House.save(houseId)
+    if (type(houseId) ~= "number") then
+        return false
+    end
+
+    local house = createdHouses[houseId]
+    if (not house or type(house.data) ~= 'table') then
+        return false
+    end
+
+    local fields = {}
+    for _, name in ipairs(dataFields) do
+        if house.data[name] then
+		    fields[name] = house.data[name]
+        end
+	end
+
+    if (#fields == 0) then
+        return false
+    end
+
+    return House.update(houseId, fields)
 end

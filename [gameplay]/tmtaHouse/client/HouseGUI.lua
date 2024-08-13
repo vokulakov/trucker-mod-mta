@@ -118,7 +118,7 @@ function HouseGUI.renderInfoHouseWindow()
 end
 
 function HouseGUI.renderManagerHouseWindow()
-    local height = height + 170
+    local height = height + 190
 
     HouseGUI.wnd = guiCreateWindow(sW*(posX/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(height/sDH), "", false)
     exports.tmtaGUI:windowCentralize(HouseGUI.wnd)
@@ -227,12 +227,16 @@ function HouseGUI.renderManagerHouseWindow()
     --guiSetProperty(HouseGUI.btnSell, "NormalTextColour", "FFCE070B")
     addEventHandler("onClientGUIClick", HouseGUI.btnSell, HouseGUI.onPlayerSellHouse, false)
 
-    offsetPosY = offsetPosY + 25
+    offsetPosY = offsetPosY + 45
 
     HouseGUI.btnChangeDoorStatus = guiCreateButton(sW*(0/sDW), sH*((offsetPosY)/sDH), sW*(width/sDW), sH*(40/sDH), '', false, HouseGUI.wnd)
     guiSetFont(HouseGUI.btnChangeDoorStatus, Utils.fonts.RR_10)
     HouseGUI.updateDoorStatus(_houseData.doorStatus)
-    addEventHandler("onClientGUIClick", HouseGUI.btnChangeDoorStatus, House.changeDoorState, false, tonumber(_houseData.houseId))
+    addEventHandler("onClientGUIClick", HouseGUI.btnChangeDoorStatus, 
+        function()
+            House.changeDoorStatus(tonumber(_houseData.houseId))
+        end, false
+    )
 
     --
     local line = guiCreateLabel(0, sH*((height-80)/sDH), sW*(width/sDW), sH*(30/sDH), ('_'):rep(width/4), false, HouseGUI.wnd)
@@ -243,7 +247,11 @@ function HouseGUI.renderManagerHouseWindow()
     
     HouseGUI.btnEnter = guiCreateButton(sW*(0/sDW), sH*((height-50)/sDH), sW*(width/sDW), sH*(40/sDH), "Войти в дом", false, HouseGUI.wnd)
     guiSetFont(HouseGUI.btnEnter, Utils.fonts.RR_10)
-    addEventHandler("onClientGUIClick", HouseGUI.btnEnter, House.enter, false, tonumber(_houseData.houseId))
+    addEventHandler("onClientGUIClick", HouseGUI.btnEnter, 
+        function()
+            House.enter(tonumber(_houseData.houseId)) 
+        end, false
+    )
 end
 
 function HouseGUI.updateDoorStatus(currentDoorStatus)
