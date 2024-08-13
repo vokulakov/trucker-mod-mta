@@ -224,8 +224,15 @@ function HouseGUI.renderManagerHouseWindow()
     offsetPosY = offsetPosY + 25
     HouseGUI.btnSell = guiCreateButton(sW*(0/sDW), sH*((offsetPosY)/sDH), sW*(width/sDW), sH*(40/sDH), 'Продать дом', false, HouseGUI.wnd)
     guiSetFont(HouseGUI.btnSell, Utils.fonts.RB_10)
-    guiSetProperty(HouseGUI.btnSell, "NormalTextColour", "FFCE070B")
+    --guiSetProperty(HouseGUI.btnSell, "NormalTextColour", "FFCE070B")
     addEventHandler("onClientGUIClick", HouseGUI.btnSell, HouseGUI.onPlayerSellHouse, false)
+
+    offsetPosY = offsetPosY + 25
+
+    HouseGUI.btnChangeDoorStatus = guiCreateButton(sW*(0/sDW), sH*((offsetPosY)/sDH), sW*(width/sDW), sH*(40/sDH), '', false, HouseGUI.wnd)
+    guiSetFont(HouseGUI.btnChangeDoorStatus, Utils.fonts.RR_10)
+    HouseGUI.updateDoorStatus(_houseData.doorStatus)
+    addEventHandler("onClientGUIClick", HouseGUI.btnChangeDoorStatus, House.changeDoorState, false, tonumber(_houseData.houseId))
 
     --
     local line = guiCreateLabel(0, sH*((height-80)/sDH), sW*(width/sDW), sH*(30/sDH), ('_'):rep(width/4), false, HouseGUI.wnd)
@@ -236,12 +243,15 @@ function HouseGUI.renderManagerHouseWindow()
     
     HouseGUI.btnEnter = guiCreateButton(sW*(0/sDW), sH*((height-50)/sDH), sW*(width/sDW), sH*(40/sDH), "Войти в дом", false, HouseGUI.wnd)
     guiSetFont(HouseGUI.btnEnter, Utils.fonts.RR_10)
-    addEventHandler("onClientGUIClick", HouseGUI.btnEnter, 
-        function()
-            House.enter(tonumber(_houseData.houseId))
-        end, false
-    )
+    addEventHandler("onClientGUIClick", HouseGUI.btnEnter, House.enter, false, tonumber(_houseData.houseId))
 end
+
+function HouseGUI.updateDoorStatus(currentDoorStatus)
+    HouseGUI.btnChangeDoorStatus.text = currentDoorStatus and 'Открыть дверь' or 'Закрыть дверь'
+    guiSetProperty(HouseGUI.btnChangeDoorStatus, "NormalTextColour", currentDoorStatus and "FF01D51A" or "FFCE070B")
+end
+addEvent('tmtaHouse.onClientPlayerChangeDoorStatus', true)
+addEventHandler('tmtaHouse.onClientPlayerChangeDoorStatus', resourceRoot, HouseGUI.updateDoorStatus)
 
 function HouseGUI.onPlayerBuyHouse()
     HouseGUI.wnd.visible = false

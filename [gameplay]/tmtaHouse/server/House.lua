@@ -154,6 +154,27 @@ function House.update(houseId, fields, callbackFunctionName, ...)
     return success
 end
 
+function dbUpdateHouse(result, params)
+    if (not params) then
+        return false
+    end
+    
+    local success = not not result
+    if (success) then
+        local houseId = params.houseId
+
+        local houseData = House.get(houseId)
+        if houseData[1] then
+            local result = exports.tmtaCore:getUserDataById(tonumber(houseData.userId), {'nickname'})
+            houseData.owner = result[1].nickname
+
+            createdHouses[houseId].houseMarker:setData('houseData', houseData)
+        end
+    end
+
+    return success
+end
+
 -- Получить список всех домов игрока
 function House.getHousesPlayer(userId, callbackFunctionName, ...)
     if type(userId) ~= "number" then
@@ -269,14 +290,17 @@ addEventHandler("tmtaHouse.onPlayerHouseEnter", resourceRoot,
     function(houseId)
         local player = client
         if type(houseId) ~= "number" or not isElement(player) then
-            triggerClientEvent(player, "tmtaHouse.onClientPlayerHouseEnter", resourceRoot, false)
             return
         end
-        --TODO:: проверка на открыт/закрыт замок дома
+        
         if not createdHouses[houseId] then
-            triggerClientEvent(player, "tmtaHouse.onClientPlayerHouseEnter", resourceRoot, false)
             return
         end
+
+        if (House.isDoorLocked(houseId) and House.getOwnerUserId(houseId) ~= player:getData('userId')) then
+            triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'info', 'Дом закрыт')
+            return
+        end 
 
         local houseData = createdHouses[houseId].data
         local interiorData = Interiors.get(tonumber(houseData.interiorId))
@@ -291,7 +315,6 @@ addEventHandler("tmtaHouse.onPlayerHouseEnter", resourceRoot,
                 fadeCamera(player, true, 0.5)
                 triggerClientEvent(player, "tmtaHouse.onClientPlayerHouseEnter", resourceRoot, true)
             end, 1000, 1)
-        
     end
 )
 
@@ -408,8 +431,7 @@ function House.sell(houseId)
         return false
     end
 
-    local houseData = House.get(houseId)
-    houseData = houseData[1]
+    local houseData = createdHouses[houseId].data
     if (not houseData.userId) then
         outputDebugString("House.sell: error selling house", 1)
         exports.tmtaLogger:log("houses", string.format("Error selling  house (%d).", houseId))
@@ -438,6 +460,12 @@ addEventHandler("tmtaHouse.onPlayerSellHouse", resourceRoot,
         if (not isElement(player) or type(houseId) ~= "number" or not createdHouses[houseId]) then
             return
         end
+
+        local houseData = createdHouses[houseId].data
+        if (not houseData.userId or House.getOwnerUserId(houseId) ~= player:getData('userId')) then
+            return
+        end
+
         House.sell(houseId)
     end
 )
@@ -457,7 +485,7 @@ function dbSellHouse(result, params)
         local player = exports.tmtaCore:getPlayerByUserId(userId)
         if (isElement(player)) then
             exports.tmtaMoney:givePlayerMoney(player, price)
-            local message = string.format('Вы продали дом.\nНа ваш счет зачислено %s ₽', exports.tmtaUtils:formatMoney(price))
+            local message = string.format('Ваш дом №%d продан.\nНа ваш счет зачислено %s ₽', houseId, exports.tmtaUtils:formatMoney(price))
             triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'success', message)
         else
             exports.tmtaCore:giveUserMoney(userId, tonumber(price))
@@ -473,4 +501,65 @@ function dbSellHouse(result, params)
     end
 
     return success
+end
+
+function House.changeDoorStatus(houseId)
+    if (type(houseId) ~= "number") then
+        return false
+    end
+
+    local houseData = createdHouses[houseId].data
+    if (not houseData) then
+        return false
+    end
+
+    return House.update(houseId, {doorStatus = (not houseData.doorStatus) and 1 or 0}, 'dbUpdateHouse', {houseId = houseData.houseId})
+end
+
+function House.isDoorLocked(houseId)
+    if (type(houseId) ~= "number") then
+        return
+    end
+
+    local houseData = createdHouses[houseId].data
+    if (not houseData) then
+        return
+    end
+
+    return createdHouses[houseId].data.isDoorLocked
+end
+
+addEvent('tmtaHouse.onPlayerChangeDoorStatus', true)
+addEventHandler('tmtaHouse.onPlayerChangeDoorStatus', resourceRoot,
+    function(houseId)
+        local player = client
+        if (not isElement(player) or type(houseId) ~= "number" or not createdHouses[houseId]) then
+            return
+        end
+
+        local houseData = createdHouses[houseId].data
+        if (not houseData.userId or houseData.userId ~= player:getData('userId')) then
+            return
+        end
+
+        if (House.changeDoorStatus(houseId)) then
+            local currentDoorStatus = House.isDoorLocked(houseId)
+            triggerClientEvent(player, 'tmtaHouse.onClientPlayerChangeDoorStatus', resourceRoot, currentDoorStatus)
+
+            triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'info', (currentDoorStatus) and 'Двери дома закрыты!' or 'Двери дома открыты')
+        end
+    end
+)
+
+function House.getOwnerUserId(houseId)
+    if (type(houseId) ~= "number") then
+        return
+    end
+
+    local houseData = createdHouses[houseId].data
+    if (not houseData) then
+        return
+    end
+
+    return createdHouses[houseId].userId
 end
