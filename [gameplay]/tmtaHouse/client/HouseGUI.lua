@@ -3,7 +3,7 @@ HouseGUI = {}
 local sW, sH = Utils.sW, Utils.sH
 local sDW, sDH = Utils.sDW, Utils.sDH
 
-local width, height = 350, 240
+local width, height = 400, 240
 local posX, posY = (sDW-width) /2, (sDH-height) /2
 
 local _houseData = nil
@@ -118,7 +118,7 @@ function HouseGUI.renderInfoHouseWindow()
 end
 
 function HouseGUI.renderManagerHouseWindow()
-    local height = height + 190
+    local height = height + 290
 
     HouseGUI.wnd = guiCreateWindow(sW*(posX/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(height/sDH), "", false)
     exports.tmtaGUI:windowCentralize(HouseGUI.wnd)
@@ -195,7 +195,7 @@ function HouseGUI.renderManagerHouseWindow()
 
     --
     offsetPosY = offsetPosY + 25
-    HouseGUI.lblHomePrice = guiCreateLabel(15, sH*((offsetPosY) /sDH), sW*(width/sDW), 30, "Гос. цена:", false, HouseGUI.wnd)
+    HouseGUI.lblHomePrice = guiCreateLabel(15, sH*((offsetPosY) /sDH), sW*(width/sDW), 30, "Цена:", false, HouseGUI.wnd)
     guiLabelSetHorizontalAlign(HouseGUI.lblHomeSpaces, "left", false)
     guiSetFont(HouseGUI.lblHomePrice, Utils.fonts.RR_11)
     HouseGUI.lblHomePrice.enabled = false
@@ -205,7 +205,46 @@ function HouseGUI.renderManagerHouseWindow()
     guiSetFont(HouseGUI.lblHomePrice, Utils.fonts.RB_11)
     guiLabelSetColor(HouseGUI.lblHomePrice, 242, 171, 18)
     HouseGUI.lblHomePrice.enabled = false
-    
+
+    --
+    offsetPosY = offsetPosY + 35
+    local line = guiCreateLabel(0, sH*((offsetPosY)/sDH), sW*(width/sDW), sH*(30/sDH), ('_'):rep(width/4), false, HouseGUI.wnd)
+    guiLabelSetHorizontalAlign(line, "center")
+    guiSetFont(line, "default-bold-small")
+    guiLabelSetColor(line, 105, 105, 105)
+    guiSetEnabled(line, false)
+
+    offsetPosY = offsetPosY + 25
+    HouseGUI.lblHome = guiCreateLabel(0, sH*((offsetPosY)/sDH), sW*(width/sDW), 30, "НАЛОГ НА ИМУЩЕСТВО", false, HouseGUI.wnd)
+    guiLabelSetHorizontalAlign(HouseGUI.lblHome, "center", false)
+    guiSetFont(HouseGUI.lblHome, Utils.fonts.RB_11)
+    guiLabelSetColor(HouseGUI.lblHome, 242, 171, 18)
+    HouseGUI.lblHome.enabled = false
+
+    offsetPosY = offsetPosY + 35
+    HouseGUI.lblHomeTax = guiCreateLabel(15, sH*((offsetPosY) /sDH), sW*(width/sDW), 30, "Размер налога:", false, HouseGUI.wnd)
+    guiLabelSetHorizontalAlign(HouseGUI.lblHomeTax, "left", false)
+    guiSetFont(HouseGUI.lblHomeTax, Utils.fonts.RR_11)
+    HouseGUI.lblHomeTax.enabled = false
+
+    local offsetX = guiLabelGetTextExtent(HouseGUI.lblHomeTax)+10
+    HouseGUI.lblHomeTax = Utils.guiCreateMoneyLabel(15+offsetX, sH*((offsetPosY) /sDH), _houseData.formattedPropertyTax, HouseGUI.wnd)
+    guiSetFont(HouseGUI.lblHomeTax, Utils.fonts.RB_11)
+    guiLabelSetColor(HouseGUI.lblHomeTax, 242, 171, 18)
+    HouseGUI.lblHomeTax.enabled = false
+
+    offsetPosY = offsetPosY + 30
+    HouseGUI.lblHomeTaxAt = guiCreateLabel(15, sH*(offsetPosY/sDH), sW*(width/sDW), 30, "До начисления налога:", false, HouseGUI.wnd)
+    guiLabelSetHorizontalAlign(HouseGUI.lblHomeTaxAt, "left", false)
+    guiSetFont(HouseGUI.lblHomeTaxAt, Utils.fonts.RR_11)
+    HouseGUI.lblHomeTaxAt.enabled = false
+
+    local offsetX = guiLabelGetTextExtent(HouseGUI.lblHomeTaxAt)+5
+    HouseGUI.lblHomeTaxAt = guiCreateLabel(sW*((15+offsetX)/sDW), sH*(offsetPosY/sDH), sW*(width/sDW), sH*(30/sDH), "", false, HouseGUI.wnd)
+    guiSetFont(HouseGUI.lblHomeTaxAt, Utils.fonts.RB_11)
+    guiLabelSetColor(HouseGUI.lblHomeTaxAt, 242, 171, 18)
+    HouseGUI.lblHomeTaxAt.enabled = false
+
     --
     offsetPosY = offsetPosY + 35
     local line = guiCreateLabel(0, sH*((offsetPosY)/sDH), sW*(width/sDW), sH*(30/sDH), ('_'):rep(width/4), false, HouseGUI.wnd)
@@ -221,16 +260,13 @@ function HouseGUI.renderManagerHouseWindow()
     guiLabelSetColor(lblHouse, 242, 171, 18)
     lblHouse.enabled = false
 
-    offsetPosY = offsetPosY + 25
-    HouseGUI.btnSell = guiCreateButton(sW*(0/sDW), sH*((offsetPosY)/sDH), sW*(width/sDW), sH*(40/sDH), 'Продать дом', false, HouseGUI.wnd)
+    offsetPosY = offsetPosY + 35
+    HouseGUI.btnSell = guiCreateButton(sW*(0/sDW), sH*((offsetPosY)/sDH), sW*((width/2-15)/sDW), sH*(40/sDH), 'Продать дом', false, HouseGUI.wnd)
     guiSetFont(HouseGUI.btnSell, Utils.fonts.RB_10)
-    --guiSetProperty(HouseGUI.btnSell, "NormalTextColour", "FFCE070B")
     addEventHandler("onClientGUIClick", HouseGUI.btnSell, HouseGUI.onPlayerSellHouse, false)
 
-    offsetPosY = offsetPosY + 45
-
-    HouseGUI.btnChangeDoorStatus = guiCreateButton(sW*(0/sDW), sH*((offsetPosY)/sDH), sW*(width/sDW), sH*(40/sDH), '', false, HouseGUI.wnd)
-    guiSetFont(HouseGUI.btnChangeDoorStatus, Utils.fonts.RR_10)
+    HouseGUI.btnChangeDoorStatus = guiCreateButton(sW*((width/2+5) /sDW), sH*((offsetPosY)/sDH), sW*((width/2-10)/sDW), sH*(40/sDH), '', false, HouseGUI.wnd)
+    guiSetFont(HouseGUI.btnChangeDoorStatus, Utils.fonts.RB_10)
     HouseGUI.updateDoorStatus(_houseData.doorStatus)
     addEventHandler("onClientGUIClick", HouseGUI.btnChangeDoorStatus, 
         function()
@@ -252,6 +288,17 @@ function HouseGUI.renderManagerHouseWindow()
             House.enter(tonumber(_houseData.houseId)) 
         end, false
     )
+end
+
+function HouseGUI.updateLabelTaxAt()
+    if (not isElement(HouseGUI.lblHomeTaxAt)) then
+        return
+    end
+
+    local formattedTime = exports.tmtaUtils:secondAsTimeFormat(tonumber(_houseData.taxAt - getRealTime().timestamp))
+    HouseGUI.lblHomeTaxAt.text = (formattedTime ~= nil) 
+        and string.format("%dд. %02dч. %02dмин. %02dсек.", formattedTime.d, formattedTime.h, formattedTime.i, formattedTime.s) 
+        or "ожидание информации"
 end
 
 function HouseGUI.updateDoorStatus(currentDoorStatus)
@@ -289,6 +336,7 @@ function HouseGUI.openWindow(houseData)
             return
         end
         HouseGUI.renderManagerHouseWindow()
+        addEventHandler("onClientHUDRender", root, HouseGUI.updateLabelTaxAt)
     else
         HouseGUI.renderInfoHouseWindow()
     end
@@ -305,6 +353,7 @@ function HouseGUI.closeWindow()
     end
 
     HouseGUI.wnd.visible = false
+    removeEventHandler("onClientHUDRender", root, HouseGUI.updateLabelTaxAt)
     setTimer(destroyElement, 100, 1, HouseGUI.wnd)
     showCursor(false)
     showChat(true)

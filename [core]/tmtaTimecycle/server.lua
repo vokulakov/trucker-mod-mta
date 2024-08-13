@@ -3,6 +3,7 @@ RealTime = {}
 addEvent("tmtaServerTimecycle.onServerTimeUpdate", true) -- обновление серверного времени
 addEvent("tmtaServerTimecycle.onServerHourPassed", true) -- на сервере прошел час
 addEvent("tmtaServerTimecycle.onServerMinutePassed", true) -- на сервере прошла минута
+addEvent("tmtaServerTimecycle.onWeekdayChange", true) -- на сервере прошла смена дня
 
 -- Задача: каждый час вызывать событие
 function RealTime.get()
@@ -14,6 +15,9 @@ function RealTime.get()
     elseif (RealTime.currentMinute ~= time.minute) then
         RealTime.currentMinute = time.minute
         triggerEvent("tmtaServerTimecycle.onServerMinutePassed", root)
+    elseif (RealTime.currentWeekday ~= time.weekday) then
+        RealTime.currentWeekday = time.weekday
+        triggerEvent("tmtaServerTimecycle.onWeekdayChange", root)
     end
 end
 
@@ -50,6 +54,8 @@ addEventHandler("onResourceStart", resourceRoot,
     function()
         RealTime.currentHour = getRealTime().hour
         RealTime.currentMinute = getRealTime().minute
+        RealTime.currentWeekday = getRealTime().weekday
+
         outputDebugString('Серверное время '..string.format("%02d:%02d:%02d", getRealTime().hour, getRealTime().minute, getRealTime().second))
         setTimer(RealTime.get, 1000, 0)
 

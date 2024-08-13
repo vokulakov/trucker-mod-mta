@@ -39,6 +39,8 @@ function House.setup()
         else
             errorCount = errorCount + 1
         end
+
+        House.updatePropertyTax(house)
     end
 
     outputDebugString('Система домов загружена')
@@ -93,6 +95,7 @@ function House.add(posX, posY, posZ, interiorId, price, parkingSpaces, callbackF
         position = tostring(toJSON({x = posX, y = posY, z = posZ})),
         interiorId = interiorId,
         price = price,
+        propertyTax = price * Config.PROPERTY_TAX/100,
         parkingSpaces = parkingSpaces,
     }
 
@@ -522,6 +525,9 @@ function dbSellHouse(result, params)
             House.create(houseData[1])
         end
 
+        --TODO: при продаже снимать количество парковочных мест в гараже
+        --TODO: при продаже дома предупреждать игрока о том, что у него есть тачки и их необходимо продать
+
         exports.tmtaLogger:log('houses', string.format("User id=%d sell house id=%d for %d", userId, houseId, price))
     end
 
@@ -621,4 +627,14 @@ function House.save(houseId)
     end
 
     return House.update(houseId, fields)
+end
+
+function House.updatePropertyTax(house)
+    if type(house) ~= 'table' then
+        return false
+    end
+    
+    return House.update(house.houseId, {
+        propertyTax = tonumber(house.price) * Config.PROPERTY_TAX/100
+    })
 end

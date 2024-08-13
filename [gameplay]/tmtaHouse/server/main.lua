@@ -13,25 +13,12 @@ setTimer(function()
     exports.tmtaLogger:log("houses", "Autosave completed!")
 end, Config.AUTOSAVE_INTERVAL * 60 * 1000, 0)
 
--- Функция на обновление парковочных мест игрока
---TODO: при продаже снимать количество парковочных мест
---TODO: при продаже дома предупреждать игрока о том, что у него есть тачки и их необходимо продать
-function updatePlayerLots(player, houseData)
-    if not isElement(player) then
-        return
-    end
-
-    local currentGarageSlots = player:getData("garageSlot") or 0
-    player:setData("garageSlot", currentGarageSlots + houseData.parkingSpaces)
-end
-
 addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root, 
     function()
         local currentTimestamp = getRealTime().timestamp
     end
 )
 
--- Окно создания дома
 addCommandHandler("createhouse", function(player)
     if not hasObjectPermissionTo(player, "command.createhouse", false) then
         return false

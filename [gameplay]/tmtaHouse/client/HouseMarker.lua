@@ -165,6 +165,7 @@ addEventHandler("onClientMarkerHit", resourceRoot,
             local houseData = marker:getData('houseData')
 		    houseData.houseId = tostring(houseData.houseId)
 		    houseData.formattedPrice = tostring(exports.tmtaUtils:formatMoney(houseData.price))
+			houseData.formattedPropertyTax = tostring(exports.tmtaUtils:formatMoney(houseData.propertyTax))
             HouseGUI.openWindow(houseData)
         elseif marker:getData('isHouseExitMarker') then
             local houseId = marker:getData('houseId')
