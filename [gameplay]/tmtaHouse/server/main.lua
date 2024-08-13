@@ -1,11 +1,6 @@
 addEventHandler("onResourceStart", resourceRoot,
     function()
         House.setup()
-
-        for _, houseData in pairs(House.getList()) do
-            House.create(houseData)
-        end
-
     end
 )
 

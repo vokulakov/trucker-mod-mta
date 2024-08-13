@@ -31,6 +31,19 @@ function House.setup()
     --exports.tmtaSQLite:dbTableAddColumn(HOUSE_TABLE_NAME, 'taxAt', 'INTEGER')
     --exports.tmtaSQLite:dbTableAddColumn(HOUSE_TABLE_NAME, 'confiscateAt', 'INTEGER')
     --exports.tmtaSQLite:dbTableAlter(HOUSE_TABLE_NAME, 'RENAME COLUMN doorLock TO doorStatus;')
+
+    local successCount, errorCount = 0, 0
+    for _, house in pairs(House.getAll()) do
+        if (House.create(house)) then
+            successCount = successCount + 1
+        else
+            errorCount = errorCount + 1
+        end
+    end
+
+    outputDebugString('Система домов загружена')
+    outputDebugString('Успешно создано: '..successCount)
+    outputDebugString('Не удалось создать: '..errorCount)
 end
 
 -- Дата сохранения
@@ -59,7 +72,7 @@ function House.get(houseId, fields, callbackFunctionName, ...)
 end
 
 -- Получить список всех домов
-function House.getList()
+function House.getAll()
     return exports.tmtaSQLite:dbTableSelect(HOUSE_TABLE_NAME)
 end
 
