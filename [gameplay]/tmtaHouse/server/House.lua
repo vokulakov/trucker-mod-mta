@@ -562,6 +562,7 @@ function House.chargeTax(houseId)
     createdHouses[houseId].data = houseData
 
     --TODO: отправка в систему налоговой службы
+    exports.tmtaRevenueService:addUserPropertyTax(houseData.userId, houseData.propertyTax)
 
     return House.update(houseId, {
         taxAt = houseData.taxAt,

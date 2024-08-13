@@ -13,3 +13,10 @@ function isPlayerBusinessEntity(player)
 
     return exports.tmtaUtils:tobool(result[1].isBusinessEntity)
 end
+
+function addUserPropertyTax(userId, taxAmount)
+    if (type(userId) ~= "number" or type(taxAmount) ~= "number") then
+        return false
+    end
+    return RevenueService.addUserPropertyTax(userId, taxAmount)
+end
