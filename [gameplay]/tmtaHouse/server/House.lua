@@ -51,6 +51,8 @@ end
 -- Дата сохранения
 local dataFields = {
     'doorStatus',
+    'taxAt',
+    'confiscateAt',
 }
 
 function House.getCreatedHouses()
@@ -58,8 +60,13 @@ function House.getCreatedHouses()
 end
 
 --- Получить временную метку начисления налога
-function House.getTaxDate()
+local function getTaxDate()
     return tonumber(exports.tmtaUtils:getTimestamp(_, _, getRealTime().monthday + Config.TAX_DAY))
+end
+
+--- Получить временную метку конфискации имущества
+local function getConfiscateDate()
+    return tonumber(exports.tmtaUtils:getTimestamp(_, _, getRealTime().monthday + Config.TAX_PAYMENT_PERIOD))
 end
 
 -- Получить данные дома
@@ -402,7 +409,7 @@ function House.buy(player, houseId)
 
     return House.update(houseId, {
         userId = userId,
-        taxAt = House.getTaxDate(),
+        taxAt = getTaxDate(),
     }, "dbBuyHouse", {
         player = player, 
         userId = userId, 
@@ -527,11 +534,39 @@ function dbSellHouse(result, params)
 
         --TODO: при продаже снимать количество парковочных мест в гараже
         --TODO: при продаже дома предупреждать игрока о том, что у него есть тачки и их необходимо продать
+        --TODO: снимать неоплаченный налог
 
         exports.tmtaLogger:log('houses', string.format("User id=%d sell house id=%d for %d", userId, houseId, price))
     end
 
     return success
+end
+
+function House.chargeTax(houseId)
+    if (type(houseId) ~= "number") then
+        return false
+    end
+
+    local houseData = createdHouses[houseId].data
+    if (not houseData) then
+        return false
+    end
+
+    if (not houseData.confiscateAt) then
+        houseData.confiscateAt = getConfiscateDate()
+    end
+
+    houseData.taxAt = getTaxDate()
+
+    createdHouses[houseId].houseMarker:setData('houseData', houseData)
+    createdHouses[houseId].data = houseData
+
+    --TODO: отправка в систему налоговой службы
+
+    return House.update(houseId, {
+        taxAt = houseData.taxAt,
+        confiscateAt = houseData.confiscateAt,
+    })
 end
 
 function House.changeDoorStatus(houseId)
@@ -580,7 +615,7 @@ addEventHandler('tmtaHouse.onPlayerChangeDoorStatus', resourceRoot,
         if (House.changeDoorStatus(houseId)) then
             local doorStatus = House.isDoorLocked(houseId)
             triggerClientEvent(player, 'tmtaHouse.onClientPlayerChangeDoorStatus', resourceRoot, doorStatus)
-            triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'info', (doorStatus) and 'Двери дома закрыты!' or 'Двери дома открыты!')
+            triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'info', (doorStatus) and 'Дверь дома закрыта!' or 'Дверь дома открыта!')
         end
     end
 )

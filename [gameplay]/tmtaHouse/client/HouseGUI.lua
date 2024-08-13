@@ -118,7 +118,7 @@ function HouseGUI.renderInfoHouseWindow()
 end
 
 function HouseGUI.renderManagerHouseWindow()
-    local height = height + 290
+    local height = height + 310
 
     HouseGUI.wnd = guiCreateWindow(sW*(posX/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(height/sDH), "", false)
     exports.tmtaGUI:windowCentralize(HouseGUI.wnd)
@@ -245,6 +245,18 @@ function HouseGUI.renderManagerHouseWindow()
     guiLabelSetColor(HouseGUI.lblHomeTaxAt, 242, 171, 18)
     HouseGUI.lblHomeTaxAt.enabled = false
 
+    offsetPosY = offsetPosY + 30
+    HouseGUI.lblHomeConfiscateAt = guiCreateLabel(15, sH*(offsetPosY/sDH), sW*(width/sDW), 30, "Конфискация через:", false, HouseGUI.wnd)
+    guiLabelSetHorizontalAlign(HouseGUI.lblHomeConfiscateAt, "left", false)
+    guiSetFont(HouseGUI.lblHomeConfiscateAt, Utils.fonts.RR_11)
+    HouseGUI.lblHomeConfiscateAt.enabled = false
+
+    local offsetX = guiLabelGetTextExtent(HouseGUI.lblHomeConfiscateAt)+5
+    HouseGUI.lblHomeConfiscateAt = guiCreateLabel(sW*((15+offsetX)/sDW), sH*(offsetPosY/sDH), sW*(width/sDW), sH*(30/sDH), "", false, HouseGUI.wnd)
+    guiSetFont(HouseGUI.lblHomeConfiscateAt, Utils.fonts.RB_11)
+    guiLabelSetColor(HouseGUI.lblHomeConfiscateAt, 242, 171, 18)
+    HouseGUI.lblHomeConfiscateAt.enabled = false
+
     --
     offsetPosY = offsetPosY + 35
     local line = guiCreateLabel(0, sH*((offsetPosY)/sDH), sW*(width/sDW), sH*(30/sDH), ('_'):rep(width/4), false, HouseGUI.wnd)
@@ -290,8 +302,8 @@ function HouseGUI.renderManagerHouseWindow()
     )
 end
 
-function HouseGUI.updateLabelTaxAt()
-    if (not isElement(HouseGUI.lblHomeTaxAt)) then
+function HouseGUI.updateLabelTaxInfo()
+    if (not isElement(HouseGUI.lblHomeTaxAt) or not isElement(HouseGUI.lblHomeConfiscateAt)) then
         return
     end
 
@@ -299,6 +311,14 @@ function HouseGUI.updateLabelTaxAt()
     HouseGUI.lblHomeTaxAt.text = (formattedTime ~= nil) 
         and string.format("%dд. %02dч. %02dмин. %02dсек.", formattedTime.d, formattedTime.h, formattedTime.i, formattedTime.s) 
         or "ожидание информации"
+
+    HouseGUI.lblHomeConfiscateAt.text = '—'
+    if (_houseData.confiscateAt and type(_houseData.confiscateAt) == 'number') then
+        local formattedTime = exports.tmtaUtils:secondAsTimeFormat(tonumber(_houseData.confiscateAt - getRealTime().timestamp))
+        HouseGUI.lblHomeConfiscateAt.text = (formattedTime ~= nil) 
+            and string.format("%dд. %02dч. %02dмин. %02dсек.", formattedTime.d, formattedTime.h, formattedTime.i, formattedTime.s)
+            or "ожидание информации"
+    end
 end
 
 function HouseGUI.updateDoorStatus(currentDoorStatus)
@@ -336,7 +356,7 @@ function HouseGUI.openWindow(houseData)
             return
         end
         HouseGUI.renderManagerHouseWindow()
-        addEventHandler("onClientHUDRender", root, HouseGUI.updateLabelTaxAt)
+        addEventHandler("onClientHUDRender", root, HouseGUI.updateLabelTaxInfo)
     else
         HouseGUI.renderInfoHouseWindow()
     end
@@ -353,7 +373,7 @@ function HouseGUI.closeWindow()
     end
 
     HouseGUI.wnd.visible = false
-    removeEventHandler("onClientHUDRender", root, HouseGUI.updateLabelTaxAt)
+    removeEventHandler("onClientHUDRender", root, HouseGUI.updateLabelTaxInfo)
     setTimer(destroyElement, 100, 1, HouseGUI.wnd)
     showCursor(false)
     showChat(true)

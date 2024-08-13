@@ -175,18 +175,6 @@ addEventHandler("onClientMarkerHit", resourceRoot,
     end
 )
 
-addEventHandler("onClientMarkerLeave", resourceRoot, 
-    function(player, matchingDimension)
-        local marker = source
-		if (getElementType(player) ~= "player" or player ~= localPlayer or not matchingDimension) then 
-            return 
-        end
-		if marker:getData('isHouseMarker') then
-			HouseGUI.closeWindow()
-		end
-	end
-)
-
 function HouseMarker.init()
 	for _, houseMarker in pairs(getElementsByType('marker', resourceRoot)) do
 		HouseMarker.onStreamIn(houseMarker)

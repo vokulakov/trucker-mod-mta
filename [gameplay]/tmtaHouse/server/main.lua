@@ -4,21 +4,6 @@ addEventHandler("onResourceStart", resourceRoot,
     end
 )
 
-setTimer(function()
-    for houseId in ipairs(House.getCreatedHouses()) do
-        House.save(houseId)
-    end
-
-    outputDebugString("[tmtaHouse] Autosave completed!")
-    exports.tmtaLogger:log("houses", "Autosave completed!")
-end, Config.AUTOSAVE_INTERVAL * 60 * 1000, 0)
-
-addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root, 
-    function()
-        local currentTimestamp = getRealTime().timestamp
-    end
-)
-
 addCommandHandler("createhouse", function(player)
     if not hasObjectPermissionTo(player, "command.createhouse", false) then
         return false
@@ -43,3 +28,28 @@ addCommandHandler("delcurhouse", function(player, cmd, houseId)
     local message = string.format("Дом №%d удален!", houseId)
     triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'success', message)
 end, true, false)
+
+setTimer(function()
+    for houseId in ipairs(House.getCreatedHouses()) do
+        House.save(houseId)
+    end
+
+    outputDebugString("[tmtaHouse] Autosave completed!")
+    exports.tmtaLogger:log("houses", "Autosave completed!")
+end, Config.AUTOSAVE_INTERVAL * 60 * 1000, 0)
+
+addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root, 
+    function()
+        local currentTimestamp = getRealTime().timestamp
+        for houseId, house in ipairs(House.getCreatedHouses()) do
+            local houseData = house.data
+            if House.getOwnerUserId(houseId) then
+                if (houseData.confiscateAt and (currentTimestamp >= houseData.confiscateAt)) then
+                    House.sell(houseId)
+                elseif (houseData.taxAt and (currentTimestamp >= houseData.taxAt)) then
+                    House.chargeTax(houseId)
+                end
+            end
+        end
+    end
+)

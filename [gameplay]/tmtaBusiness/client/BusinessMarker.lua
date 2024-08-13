@@ -116,16 +116,3 @@ addEventHandler("onClientMarkerHit", resourceRoot,
 		end
     end
 )
-
-addEventHandler("onClientMarkerLeave", resourceRoot, 
-    function(player, matchingDimension)
-        local marker = source
-		if (getElementType(player) ~= "player" or player ~= localPlayer or not matchingDimension) then 
-            return 
-        end
-
-		if marker:getData('isBusinessMarker') then
-			BusinessGUI.closeWindow()
-		end
-	end
-)
