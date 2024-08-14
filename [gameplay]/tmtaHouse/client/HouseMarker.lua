@@ -144,10 +144,10 @@ addEventHandler("onClientElementDataChange", root,
 	end
 )
 
-addEventHandler("onClientMarkerHit", resourceRoot, 
+addEventHandler('onClientMarkerHit', resourceRoot, 
     function(player, matchingDimension)
         local marker = source
-        if getElementType(player) ~= "player" or player ~= localPlayer or isPedInVehicle(player) then 
+        if (getElementType(player) ~= "player" or player ~= localPlayer or isPedInVehicle(player)) then 
             return 
         end
 
@@ -173,6 +173,19 @@ addEventHandler("onClientMarkerHit", resourceRoot,
         end
 
     end
+)
+
+addEventHandler('onClientMarkerLeave', resourceRoot,
+	function(player, matchingDimension)
+		local marker = source
+		if (getElementType(player) ~= "player" or player ~= localPlayer or not matchingDimension) then
+			return
+		end
+
+		if marker:getData('isHouseMarker') then
+			HouseGUI.closeWindow()
+		end
+	end
 )
 
 function HouseMarker.init()
