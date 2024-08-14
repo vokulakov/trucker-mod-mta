@@ -155,7 +155,7 @@ addEventHandler('tmtaRevenueService.onPlayerRegisterBusinessEntity', root,
         end
 
         exports.tmtaMoney:takePlayerMoney(player, tonumber(Config.BUSINESS_ENTITY_PRICE))
-        RevenueService.getPlayerData(player)
+        player:setData('isBusinessEntity', true)
 
         local message = 'Поздравляем! Теперь Вы можете заниматься предпринимательской\nдеятельностью.'
         triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'success', message)

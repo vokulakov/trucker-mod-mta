@@ -136,7 +136,7 @@ function GUI.renderTemplate(window)
     --
     if (not localPlayer:getData('isBusinessEntity')) then
         posY = posY + 25
-        GUI.lblInfo = guiCreateLabel(sW*((0)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "СВЕДЕНИЯ О\nПРЕДПРИНИМАТЕЛЬСКОЙ ДЕЯТЕЛЬНОСТИ", false, window)
+        GUI.lblInfo = guiCreateLabel(sW*((0)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(50/sDH), "СВЕДЕНИЯ О\nПРЕДПРИНИМАТЕЛЬСКОЙ ДЕЯТЕЛЬНОСТИ", false, window)
         guiLabelSetHorizontalAlign(GUI.lblInfo, "center", false)
         guiSetFont(GUI.lblInfo, Fonts.RB_11)
         guiLabelSetColor(GUI.lblInfo, 242, 171, 18)
