@@ -241,6 +241,7 @@ function BusinessGUI.openWindow(businessData)
 
     showCursor(true)
     showChat(false)
+    toggleAllControls(false)
     exports.tmtaUI:setPlayerBlurScreen(true)
     exports.tmtaUI:setPlayerComponentVisible("all", false)
 end
@@ -255,6 +256,7 @@ function BusinessGUI.closeWindow()
     removeEventHandler("onClientHUDRender", root, BusinessGUI.updateLabelAccrueRevenueAt)
     showCursor(false)
     showChat(true)
+    toggleAllControls(true)
     exports.tmtaUI:setPlayerBlurScreen(false)
     exports.tmtaUI:setPlayerComponentVisible("all", true)
 end

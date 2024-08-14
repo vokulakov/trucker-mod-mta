@@ -159,7 +159,7 @@ addEventHandler("onClientMarkerHit", resourceRoot,
         if not matchingDimension then
             return
         end
-    
+		
         -- Вход в дом
         if marker:getData('isHouseMarker') then
             local houseData = marker:getData('houseData')

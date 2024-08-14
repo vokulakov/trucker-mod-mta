@@ -363,6 +363,7 @@ function HouseGUI.openWindow(houseData)
 
     showCursor(true)
     showChat(false)
+    toggleAllControls(false)
     exports.tmtaUI:setPlayerBlurScreen(true)
     exports.tmtaUI:setPlayerComponentVisible("all", false)
 end
@@ -377,6 +378,7 @@ function HouseGUI.closeWindow()
     setTimer(destroyElement, 100, 1, HouseGUI.wnd)
     showCursor(false)
     showChat(true)
+    toggleAllControls(true)
     exports.tmtaUI:setPlayerBlurScreen(false)
     exports.tmtaUI:setPlayerComponentVisible("all", true)
 end
