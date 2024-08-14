@@ -53,3 +53,20 @@ addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root,
         end
     end
 )
+
+addEventHandler('tmtaRevenueService.onPlayerPaidTax', root,
+    function()
+        local player = source
+        if (not isElement(player) or not exports.tmtaRevenueService:isPlayerHasPropertyTaxDebt(player)) then
+            return
+        end
+
+        for _, house in pairs(House.getPlayerHouses(player)) do
+            if (type(house) == 'table') then
+                if (house.confiscateAt and type(house.confiscateAt) == 'number') then
+                    House.update(house.houseId, {confiscateAt = 'NULL'})
+                end
+            end
+        end
+    end
+)

@@ -208,14 +208,21 @@ function dbUpdateHouse(result, params)
     return success
 end
 
--- Получить список всех домов игрока
-function House.getHousesPlayer(userId, callbackFunctionName, ...)
+function House.getUserHouses(userId, callbackFunctionName, ...)
     if type(userId) ~= "number" then
         outputDebugString("House.getHousesPlayer: bad arguments", 1)
         executeCallback(callbackFunctionName, false)
         return false
     end
     return exports.tmtaSQLite:dbTableSelect(HOUSE_TABLE_NAME, {}, {userId = userId}, callbackFunctionName, ...)
+end
+
+
+function House.getPlayerHouses(player, callbackFunctionName, ...)
+    if not isElement(player) then
+        return false
+    end
+    return House.getUserHouses(player:getData("userId"), callbackFunctionName, ...)
 end
 
 -- Создать дом
@@ -396,10 +403,14 @@ function House.buy(player, houseId)
     end
 
     local userId = player:getData("userId")
-    local playerHouses = House.getHousesPlayer(userId)
+    local playerHouses = House.getUserHouses(userId)
     if #playerHouses >= Config.PLAYER_MAX_HOUSES then
         local errorMessage = string.format('Вы можете одновремено владеть только %d домами', Config.PLAYER_MAX_HOUSES)
         return false, errorMessage
+    end
+
+    if (exports.tmtaRevenueService:isPlayerHasPropertyTaxDebt(player)) then
+        return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Вы не можете купить дом, имея задолженности по налогу на имущество!')
     end
 
     local playerMoney = exports.tmtaMoney:getPlayerMoney(player)
@@ -534,7 +545,6 @@ function dbSellHouse(result, params)
 
         --TODO: при продаже снимать количество парковочных мест в гараже
         --TODO: при продаже дома предупреждать игрока о том, что у него есть тачки и их необходимо продать
-        --TODO: снимать неоплаченный налог
 
         exports.tmtaLogger:log('houses', string.format("User id=%d sell house id=%d for %d", userId, houseId, price))
     end
@@ -561,7 +571,6 @@ function House.chargeTax(houseId)
     createdHouses[houseId].houseMarker:setData('houseData', houseData)
     createdHouses[houseId].data = houseData
 
-    --TODO: отправка в систему налоговой службы
     exports.tmtaRevenueService:addUserPropertyTax(houseData.userId, houseData.propertyTax)
 
     return House.update(houseId, {

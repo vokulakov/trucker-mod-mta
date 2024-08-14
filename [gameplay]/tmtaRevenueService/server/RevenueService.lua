@@ -183,7 +183,7 @@ function RevenueService.addUserPropertyTax(userId, taxAmount)
         if (isElement(player)) then
             player:setData('propertyTaxPayable', propertyTaxPayable)
             player:setData('taxAmount', player:getData('taxAmount') + taxAmount)
-            local message = string.format('Вам начислен налог на имущество в размере %s ₽. Оплатите его в ближайшем отделение налоговой службы.', taxAmount)
+            local message = string.format('Вам начислен налог на имущество в размере %s ₽. Оплатите его в ближайшем отделение налоговой службы.', houseId, exports.tmtaUtils:formatMoney(taxAmount))
             triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'info', message)
 
             exports.tmtaLogger:log("revenueService", string.format('The user %s is charged a tax of %d', tostring(userId), tonumber(taxAmount)))
@@ -198,9 +198,19 @@ function RevenueService.userPayTax(userId, taxType, taxAmount)
         return false
     end
 
+    local fields = {}
     if (taxType == 'all') then
+        fields = {
+            'propertyTaxPayable' = 0,
+            'incomeTaxPayable' = 0,
+            'vehicleTaxPayable' = 0,
+        }
     end
  
+    if (#fields == 0) then
+        return false
+    end
+
     return not not RevenueService.update(userId, fields)
 end
 
@@ -214,7 +224,7 @@ addEventHandler('tmtaRevenueService.onPlayerPayTax', root,
 
         if (not taxType and not taxAmount) then
             taxType = 'all'
-            taxAmount = player:getData('taxAmount')
+            taxAmount = tonumber(player:getData('taxAmount'))
         end
 
         if (taxAmount <= 0) then
@@ -231,8 +241,12 @@ addEventHandler('tmtaRevenueService.onPlayerPayTax', root,
             triggerClientEvent(player, 'tmtaRevenueService.onPlayerPaidTax', resourceRoot, taxType, taxAmount)
             triggerEvent('tmtaRevenueService.onPlayerPaidTax', player, taxType, taxAmount)
 
+            exports.tmtaMoney:takePlayerMoney(player, tonumber(taxAmount))
             RevenueService.getPlayerData(player)
 
+            local message = string.format('Вы заплатили налоги на %s ₽', exports.tmtaUtils:formatMoney(taxAmount))
+            triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'success', message)
+            
             triggerClientEvent(player, 'tmtaRevenueService.updateRevenueServiceGUI', resourceRoot)
         end
     end
