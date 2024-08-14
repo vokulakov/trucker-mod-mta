@@ -159,6 +159,7 @@ addEventHandler('tmtaRevenueService.onPlayerRegisterBusinessEntity', root,
 
         local message = 'Поздравляем! Теперь Вы можете заниматься предпринимательской\nдеятельностью.'
         triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'success', message)
+        triggerClientEvent(player, 'tmtaRevenueService.updateRevenueServiceGUI', resourceRoot)
     end
 )
 
@@ -185,3 +186,26 @@ function RevenueService.addUserPropertyTax(userId, taxAmount)
 
     return success
 end
+
+addEvent('tmtaRevenueService.onPlayerPayTax', true)
+addEventHandler('tmtaRevenueService.onPlayerPayTax', root, 
+    function(taxType, taxAmount)
+        local player = client
+        if not isElement(player) then
+            return
+        end
+
+        if (not taxType and not taxAmount) then
+            taxAmount = player:getData('taxAmount')
+            if (taxAmount > 0) then
+                if (exports.tmtaMoney:getPlayerMoney(player) < taxAmount) then
+                    local message = 'У вас недостаточно средств для оплаты налога'
+                    triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'error', message)
+                    return
+                end
+            end
+        end
+
+        triggerClientEvent(player, 'tmtaRevenueService.updateRevenueServiceGUI', resourceRoot)
+    end
+)

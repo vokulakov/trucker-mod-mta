@@ -6,8 +6,8 @@ local sDW, sDH = exports.tmtaUI:getScreenSize()
 local width, height = 350, 0
 
 local Fonts = {
-    ['RR_8'] = exports.tmtaFonts:createFontGUI('RobotoRegular', 8),
     ['RR_10'] = exports.tmtaFonts:createFontGUI('RobotoRegular', 10),
+    ['RR_11'] = exports.tmtaFonts:createFontGUI('RobotoRegular', 11),
     ['RB_10'] = exports.tmtaFonts:createFontGUI('RobotoBold', 10),
     ['RB_11'] = exports.tmtaFonts:createFontGUI('RobotoBold', 11),
 }
@@ -37,26 +37,26 @@ function GUI.renderTemplate(window)
     posY = posY + 20
     GUI.lblInfo = guiCreateLabel(sW*((0)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "ЕДИНЫЙ НАЛОГОВЫЙ СЧЕТ", false, window)
     guiLabelSetHorizontalAlign(GUI.lblInfo, "center", false)
-    guiSetFont(GUI.lblInfo, Fonts.RB_10)
+    guiSetFont(GUI.lblInfo, Fonts.RB_11)
     guiLabelSetColor(GUI.lblInfo, 242, 171, 18)
     GUI.lblInfo.enabled = false
  
     -- 
     posY = posY + 30
     GUI.lblIndividualNumber = guiCreateLabel(sW*((15)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "Ваш ИНН:", false, window)
-    guiSetFont(GUI.lblIndividualNumber, Fonts.RB_10)
+    guiSetFont(GUI.lblIndividualNumber, Fonts.RR_11)
     GUI.lblIndividualNumber.enabled = false
 
     local offsetX = guiLabelGetTextExtent(GUI.lblIndividualNumber)+5
     GUI.lblIndividualNumber = guiCreateLabel(sW*((15+offsetX)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "", false, window)
-    guiSetFont(GUI.lblIndividualNumber, Fonts.RR_10)
+    guiSetFont(GUI.lblIndividualNumber, Fonts.RB_11)
     guiLabelSetColor(GUI.lblIndividualNumber, 242, 171, 18)
     GUI.lblIndividualNumber.enabled = false
 
     --
     posY = posY + 25
     GUI.lblPropertyTax = guiCreateLabel(sW*((15)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "Налог на имущество:", false, window)
-    guiSetFont(GUI.lblPropertyTax, Fonts.RB_10)
+    guiSetFont(GUI.lblPropertyTax, Fonts.RR_11)
     GUI.lblPropertyTax.enabled = false
 
     local offsetX = guiLabelGetTextExtent(GUI.lblPropertyTax)+10
@@ -68,7 +68,7 @@ function GUI.renderTemplate(window)
     --
     posY = posY + 25
     GUI.lblVehicleTax = guiCreateLabel(sW*((15)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "Транспортный налог:", false, window)
-    guiSetFont(GUI.lblVehicleTax, Fonts.RB_10)
+    guiSetFont(GUI.lblVehicleTax, Fonts.RR_11)
     GUI.lblVehicleTax.enabled = false
 
     local offsetX = guiLabelGetTextExtent(GUI.lblVehicleTax)+10
@@ -81,7 +81,7 @@ function GUI.renderTemplate(window)
         posY = posY + 25
         GUI.lblIncomeTax = guiCreateLabel(sW*((15)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "Подоходный налог:", false, window)
         guiLabelSetHorizontalAlign(GUI.lblIncomeTax, "left", false)
-        guiSetFont(GUI.lblIncomeTax, Fonts.RB_10)
+        guiSetFont(GUI.lblIncomeTax, Fonts.RR_11)
         GUI.lblIncomeTax.enabled = false
 
         local offsetX = guiLabelGetTextExtent(GUI.lblIncomeTax)+10
@@ -118,10 +118,10 @@ function GUI.renderTemplate(window)
         GUI.iconMoney.enabled = false
 
         posY = posY + 30
-        GUI.btnPayTax = guiCreateButton(sH*((width-width/2)/2/sDH), sH*((posY)/sDH), sW*((width/2)/sDW), sH*(30/sDH), 'Оплатить сейчас', false, window)
-        guiSetFont(GUI.btnPayTax, Fonts['RB_10'])
+        GUI.btnPayTax = guiCreateButton(sH*((width-width/2)/2/sDH), sH*((posY)/sDH), sW*((width/2)/sDW), sH*(30/sDH), 'Оплатить', false, window)
+        guiSetFont(GUI.btnPayTax, Fonts.RR_10)
         guiSetProperty(GUI.btnPayTax, "NormalTextColour", "FF01D51A")
-        addEventHandler("onClientGUIClick", GUI.btnPayTax, function() end, false)
+        addEventHandler("onClientGUIClick", GUI.btnPayTax, GUI.onClickPayTax, false)
     else
         GUI.lblTax.text = "У Вас нет неоплаченных\nналогов и задолженности"
     end
@@ -138,7 +138,7 @@ function GUI.renderTemplate(window)
         posY = posY + 25
         GUI.lblInfo = guiCreateLabel(sW*((0)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "СВЕДЕНИЯ О\nПРЕДПРИНИМАТЕЛЬСКОЙ ДЕЯТЕЛЬНОСТИ", false, window)
         guiLabelSetHorizontalAlign(GUI.lblInfo, "center", false)
-        guiSetFont(GUI.lblInfo, Fonts.RB_10)
+        guiSetFont(GUI.lblInfo, Fonts.RB_11)
         guiLabelSetColor(GUI.lblInfo, 242, 171, 18)
         GUI.lblInfo.enabled = false
     
@@ -151,7 +151,7 @@ function GUI.renderTemplate(window)
         posY = posY + 55
         GUI.lblBusinessEntityPrice = guiCreateLabel(sW*((0)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(50/sDH), "Стоимость регистрации:", false, window)
         guiLabelSetHorizontalAlign(GUI.lblBusinessEntityPrice, "center", true)
-        guiSetFont(GUI.lblBusinessEntityPrice, Fonts.RB_10)
+        guiSetFont(GUI.lblBusinessEntityPrice, Fonts.RR_11)
         GUI.lblBusinessEntityPrice.enabled = false
 
         posY = posY + 25
@@ -163,9 +163,9 @@ function GUI.renderTemplate(window)
 
         posY = posY + 30
         GUI.btnRegBusinessEntity = guiCreateButton(0, sH*((posY)/sDH), sW*(width/sDW), sH*(40/sDH), "Зарегистрироваться", false, window)
-        guiSetFont(GUI.btnRegBusinessEntity, Fonts.RB_10)
+        guiSetFont(GUI.btnRegBusinessEntity, Fonts.RR_10)
         guiSetProperty(GUI.btnRegBusinessEntity, "NormalTextColour", "FF01D51A")
-        addEventHandler("onClientGUIClick", GUI.btnRegBusinessEntity, RevenueService.registerBusinessEntity, false)
+        addEventHandler("onClientGUIClick", GUI.btnRegBusinessEntity, GUI.onClickRegisterBusinessEntity, false)
 
         posY = posY + 40
         local line = guiCreateLabel(0, sH*((posY)/sDH), sW*(width/sDW), sH*(30/sDH), ('_'):rep(width/4), false, window)
@@ -177,7 +177,7 @@ function GUI.renderTemplate(window)
     
     posY = posY + 25
     GUI.btnClose = guiCreateButton(0, sH*((posY)/sDH), sW*(width/sDW), sH*(40/sDH), 'Выйти', false, window)
-    guiSetFont(GUI.btnClose, Fonts.RB_10)
+    guiSetFont(GUI.btnClose, Fonts.RR_10)
     addEventHandler("onClientGUIClick", GUI.btnClose, GUI.closeWindow, false)
     posY = posY + 50
 
@@ -275,10 +275,27 @@ function GUI.closeWindow()
     exports.tmtaUI:setPlayerComponentVisible("all", true)
 end
 
-local function showNotice(typeNotice, typeMessage)
-	local posX, posY = sW*((sDW-400)/2 /sDW), sH*((sDH-150) /sDH)
-	local width = sW*(400 /sDW)
-	exports.tmtaGUI:createNotice(posX, posY, width, typeNotice, typeMessage, true)
+function GUI.onClickPayTax()
+    return RevenueService.payTax()
 end
+
+function GUI.onClickRegisterBusinessEntity()
+    return RevenueService.registerBusinessEntity()
+end
+
 addEvent("tmtaRevenueService.showNotice", true)
-addEventHandler("tmtaRevenueService.showNotice", root, showNotice)
+addEventHandler("tmtaRevenueService.showNotice", resourceRoot, 
+    function(typeNotice, typeMessage)
+        local posX, posY = sW*((sDW-400)/2 /sDW), sH*((sDH-150) /sDH)
+        local width = sW*(400 /sDW)
+        exports.tmtaGUI:createNotice(posX, posY, width, typeNotice, typeMessage, true)
+    end
+)
+
+addEvent('tmtaRevenueService.updateRevenueServiceGUI', true)
+addEventHandler('tmtaRevenueService.updateRevenueServiceGUI', resourceRoot, 
+    function()
+        GUI.closeWindow()
+        GUI.openWindow()
+    end
+)
