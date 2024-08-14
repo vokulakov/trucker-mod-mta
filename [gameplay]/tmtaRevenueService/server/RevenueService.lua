@@ -13,6 +13,8 @@ function RevenueService.setup()
     }, "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL")
 end
 
+addEvent('tmtaRevenueService.onPlayerPaidTax', true)
+
 --- Генерация индивидуального номера налогоплательщика
 local function generateIndividualTaxNumber()
     local code = string.format("%02d", math.random(1, 9))
@@ -160,6 +162,8 @@ addEventHandler('tmtaRevenueService.onPlayerRegisterBusinessEntity', root,
         local message = 'Поздравляем! Теперь Вы можете заниматься предпринимательской\nдеятельностью.'
         triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'success', message)
         triggerClientEvent(player, 'tmtaRevenueService.updateRevenueServiceGUI', resourceRoot)
+
+        exports.tmtaLogger:log("revenueService", string.format("Register user %s as business entity", tostring(player:getData('userId'))))
     end
 )
 
@@ -181,10 +185,23 @@ function RevenueService.addUserPropertyTax(userId, taxAmount)
             player:setData('taxAmount', player:getData('taxAmount') + taxAmount)
             local message = string.format('Вам начислен налог на имущество в размере %s ₽. Оплатите его в ближайшем отделение налоговой службы.', taxAmount)
             triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'info', message)
+
+            exports.tmtaLogger:log("revenueService", string.format('The user %s is charged a tax of %d', tostring(userId), tonumber(taxAmount)))
         end
     end
 
     return success
+end
+
+function RevenueService.userPayTax(userId, taxType, taxAmount)
+    if (type(userId) ~= 'number' or type(taxAmount) ~= 'number') then
+        return false
+    end
+
+    if (taxType == 'all') then
+    end
+ 
+    return not not RevenueService.update(userId, fields)
 end
 
 addEvent('tmtaRevenueService.onPlayerPayTax', true)
@@ -196,16 +213,27 @@ addEventHandler('tmtaRevenueService.onPlayerPayTax', root,
         end
 
         if (not taxType and not taxAmount) then
+            taxType = 'all'
             taxAmount = player:getData('taxAmount')
-            if (taxAmount > 0) then
-                if (exports.tmtaMoney:getPlayerMoney(player) < taxAmount) then
-                    local message = 'У вас недостаточно средств для оплаты налога'
-                    triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'error', message)
-                    return
-                end
-            end
         end
 
-        triggerClientEvent(player, 'tmtaRevenueService.updateRevenueServiceGUI', resourceRoot)
+        if (taxAmount <= 0) then
+            return
+        end
+
+        if (exports.tmtaMoney:getPlayerMoney(player) < taxAmount) then
+            local message = 'У вас недостаточно средств для оплаты налога'
+            triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'error', message)
+            return
+        end
+
+        if (RevenueService.userPayTax(player:getData('userId'), taxType, taxAmount)) then
+            triggerClientEvent(player, 'tmtaRevenueService.onPlayerPaidTax', resourceRoot, taxType, taxAmount)
+            triggerEvent('tmtaRevenueService.onPlayerPaidTax', player, taxType, taxAmount)
+
+            RevenueService.getPlayerData(player)
+
+            triggerClientEvent(player, 'tmtaRevenueService.updateRevenueServiceGUI', resourceRoot)
+        end
     end
 )
