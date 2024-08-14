@@ -196,12 +196,9 @@ function dbUpdateHouse(result, params)
         local houseId = params.houseId
         local houseData = House.get(houseId)
         houseData = houseData[1]
-        if houseData then
-            local result = exports.tmtaCore:getUserDataById(tonumber(houseData.userId), {'nickname'})
-            houseData.owner = result[1].nickname
-
-            createdHouses[houseId].houseMarker:setData('houseData', houseData)
-            createdHouses[houseId].data = houseData
+        if (houseData and createdHouses[houseId]) then
+            createdHouses[houseId].data = exports.tmtaUtils:tableMerge(createdHouses[houseId].data, houseData)
+            createdHouses[houseId].houseMarker:setData('houseData', createdHouses[houseId].data)
         end
     end
 

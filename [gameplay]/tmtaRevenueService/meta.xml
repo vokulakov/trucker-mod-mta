@@ -14,5 +14,6 @@
     <!-- Exports -->
 	<export type="server" function="isPlayerBusinessEntity" />
     <export type="server" function="isPlayerHasPropertyTaxDebt" />
+    <export type="server" function="isUserHasPropertyTaxDebt" />
     <export type="server" function="addUserPropertyTax" />
 </meta>

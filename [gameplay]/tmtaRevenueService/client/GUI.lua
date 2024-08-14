@@ -295,7 +295,7 @@ addEventHandler("tmtaRevenueService.showNotice", resourceRoot,
 addEvent('tmtaRevenueService.updateRevenueServiceGUI', true)
 addEventHandler('tmtaRevenueService.updateRevenueServiceGUI', resourceRoot, 
     function()
-        GUI.closeWindow()
-        GUI.openWindow()
+        GUI.updatePlayerStats()
+        GUI.renderTaxAmount()
     end
 )

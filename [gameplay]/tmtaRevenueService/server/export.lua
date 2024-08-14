@@ -27,7 +27,20 @@ function isPlayerHasPropertyTaxDebt(player)
     if not isElement(player) then
         return false
     end
-    return not tonumber(player:getData('propertyTaxPayable')) == 0
+    return not (tonumber(player:getData('propertyTaxPayable')) == 0)
+end
+
+function isUserHasPropertyTaxDebt(userId)
+    if type(userId) ~= 'number' then
+        return false
+    end
+
+    local result = RevenueService.getUserDataById(userId, {'propertyTaxPayable'})
+    if (type(result) ~= "table" or #result == 0) then
+        return false
+    end
+
+    return not (tonumber(result[1].propertyTaxPayable) == 0)
 end
 
 function userPayPropertyTax(userId)

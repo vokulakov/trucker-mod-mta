@@ -13,8 +13,6 @@ function RevenueService.setup()
     }, "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL")
 end
 
-addEvent('tmtaRevenueService.onPlayerPaidTax', true)
-
 --- Генерация индивидуального номера налогоплательщика
 local function generateIndividualTaxNumber()
     local code = string.format("%02d", math.random(1, 9))
@@ -183,7 +181,7 @@ function RevenueService.addUserPropertyTax(userId, taxAmount)
         if (isElement(player)) then
             player:setData('propertyTaxPayable', propertyTaxPayable)
             player:setData('taxAmount', player:getData('taxAmount') + taxAmount)
-            local message = string.format('Вам начислен налог на имущество в размере %s ₽. Оплатите его в ближайшем отделение налоговой службы.', houseId, exports.tmtaUtils:formatMoney(taxAmount))
+            local message = string.format('Вам начислен налог на имущество\nв размере %s ₽. Оплатите его в ближайшем отделение налоговой службы.', exports.tmtaUtils:formatMoney(taxAmount))
             triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'info', message)
 
             exports.tmtaLogger:log("revenueService", string.format('The user %s is charged a tax of %d', tostring(userId), tonumber(taxAmount)))
@@ -201,17 +199,42 @@ function RevenueService.userPayTax(userId, taxType, taxAmount)
     local fields = {}
     if (taxType == 'all') then
         fields = {
-            'propertyTaxPayable' = 0,
-            'incomeTaxPayable' = 0,
-            'vehicleTaxPayable' = 0,
+            propertyTaxPayable = 0,
+            incomeTaxPayable = 0,
+            vehicleTaxPayable = 0,
         }
     end
- 
-    if (#fields == 0) then
+    
+    if not next(fields) then
         return false
     end
 
-    return not not RevenueService.update(userId, fields)
+    return not not RevenueService.update(userId, fields, 'dbRevenueServiceOnUserPaidTax', {userId = userId})
+end
+
+function dbRevenueServiceOnUserPaidTax(result, params)
+    if (not params) then
+        return false
+    end
+
+    local userId = params.userId
+	local success = not not result
+    if (not success) then
+        return false
+    end
+
+    local player = exports.tmtaCore:getPlayerByUserId(userId)
+    if isElement(player) then
+        RevenueService.getPlayerData(player)
+
+        triggerClientEvent(player, 'tmtaRevenueService.updateRevenueServiceGUI', resourceRoot)
+        triggerClientEvent(player, 'tmtaRevenueService.onPlayerPaidTax', root)
+        triggerEvent('tmtaRevenueService.onPlayerPaidTax', root)
+    end
+
+    triggerEvent('tmtaRevenueService.onUserPaidTax', root, userId)
+
+    return success
 end
 
 addEvent('tmtaRevenueService.onPlayerPayTax', true)
@@ -238,16 +261,10 @@ addEventHandler('tmtaRevenueService.onPlayerPayTax', root,
         end
 
         if (RevenueService.userPayTax(player:getData('userId'), taxType, taxAmount)) then
-            triggerClientEvent(player, 'tmtaRevenueService.onPlayerPaidTax', resourceRoot, taxType, taxAmount)
-            triggerEvent('tmtaRevenueService.onPlayerPaidTax', player, taxType, taxAmount)
-
             exports.tmtaMoney:takePlayerMoney(player, tonumber(taxAmount))
-            RevenueService.getPlayerData(player)
 
             local message = string.format('Вы заплатили налоги на %s ₽', exports.tmtaUtils:formatMoney(taxAmount))
             triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'success', message)
-            
-            triggerClientEvent(player, 'tmtaRevenueService.updateRevenueServiceGUI', resourceRoot)
         end
     end
 )
