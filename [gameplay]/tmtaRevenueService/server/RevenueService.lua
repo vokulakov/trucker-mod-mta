@@ -209,7 +209,7 @@ function RevenueService.userPayTax(userId, taxType, taxAmount)
         return false
     end
 
-    return not not RevenueService.update(userId, fields, 'dbRevenueServiceOnUserPaidTax', {userId = userId, paidTaxes = fields})
+    return not not RevenueService.update(userId, fields, 'dbRevenueServiceOnUserPaidTax', {userId = userId, paidTaxes = fields, taxType = taxType, taxAmount = taxAmount})
 end
 
 function dbRevenueServiceOnUserPaidTax(result, params)
@@ -224,6 +224,8 @@ function dbRevenueServiceOnUserPaidTax(result, params)
 
     local userId = params.userId
     local paidTaxes = params.paidTaxes
+    local taxType = params.taxType
+    local taxAmount = params.taxAmount
 
     local player = exports.tmtaCore:getPlayerByUserId(userId)
     if isElement(player) then
@@ -254,6 +256,8 @@ function dbRevenueServiceOnUserPaidTax(result, params)
     end
 
     triggerEvent('tmtaRevenueService.onUserPaidTax', root, userId)
+
+    exports.tmtaLogger:log('revenueService', string.format('User %s paid tax (%s) on the amount of %d', tostring(userId), taxType, tonumber(taxAmount)))
 
     return success
 end
