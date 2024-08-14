@@ -197,8 +197,12 @@ function dbUpdateHouse(result, params)
         local houseData = House.get(houseId)
         houseData = houseData[1]
         if (houseData and createdHouses[houseId]) then
+            iprint(houseData.confiscateAt)
+        
             createdHouses[houseId].data = exports.tmtaUtils:tableMerge(createdHouses[houseId].data, houseData)
             createdHouses[houseId].houseMarker:setData('houseData', createdHouses[houseId].data)
+            
+            iprint(createdHouses[houseId].data.confiscateAt)
         end
     end
 

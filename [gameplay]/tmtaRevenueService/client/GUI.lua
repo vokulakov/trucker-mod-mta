@@ -297,6 +297,8 @@ addEventHandler("tmtaRevenueService.showNotice", resourceRoot,
 addEvent('tmtaRevenueService.updateRevenueServiceGUI', true)
 addEventHandler('tmtaRevenueService.updateRevenueServiceGUI', resourceRoot, 
     function()
+        destroyElement(GUI.wnd)
+        GUI.render()
         GUI.updatePlayerStats()
         GUI.renderTaxAmount()
     end

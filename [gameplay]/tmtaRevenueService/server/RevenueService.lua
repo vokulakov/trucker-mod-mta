@@ -209,7 +209,7 @@ function RevenueService.userPayTax(userId, taxType, taxAmount)
         return false
     end
 
-    return not not RevenueService.update(userId, fields, 'dbRevenueServiceOnUserPaidTax', {userId = userId})
+    return not not RevenueService.update(userId, fields, 'dbRevenueServiceOnUserPaidTax', {userId = userId, paidTaxes = fields})
 end
 
 function dbRevenueServiceOnUserPaidTax(result, params)
@@ -217,15 +217,36 @@ function dbRevenueServiceOnUserPaidTax(result, params)
         return false
     end
 
-    local userId = params.userId
 	local success = not not result
     if (not success) then
         return false
     end
 
+    local userId = params.userId
+    local paidTaxes = params.paidTaxes
+
     local player = exports.tmtaCore:getPlayerByUserId(userId)
     if isElement(player) then
-        RevenueService.getPlayerData(player)
+
+        local propertyTaxPayable = player:getData('propertyTaxPayable') or 0
+        if paidTaxes.propertyTaxPayable then
+            propertyTaxPayable = tonumber(paidTaxes.propertyTaxPayable)
+            player:setData('propertyTaxPayable', propertyTaxPayable)
+        end
+
+        local incomeTaxPayable = player:getData('incomeTaxPayable') or 0
+        if paidTaxes.incomeTaxPayable then
+            incomeTaxPayable = tonumber(paidTaxes.incomeTaxPayable)
+            player:setData('incomeTaxPayable', incomeTaxPayable)
+        end
+
+        local vehicleTaxPayable = player:getData('vehicleTaxPayable') or 0
+        if paidTaxes.vehicleTaxPayable then
+            vehicleTaxPayable = tonumber(paidTaxes.vehicleTaxPayable)
+            player:setData('vehicleTaxPayable', vehicleTaxPayable)
+        end
+
+        player:setData('taxAmount', propertyTaxPayable+incomeTaxPayable+vehicleTaxPayable)
 
         triggerClientEvent(player, 'tmtaRevenueService.updateRevenueServiceGUI', resourceRoot)
         triggerClientEvent(player, 'tmtaRevenueService.onPlayerPaidTax', root)
