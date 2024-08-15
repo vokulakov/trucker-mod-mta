@@ -1,5 +1,6 @@
 <meta>
     <oop>true</oop>
+    <download_priority_group>-99</download_priority_group>
     <script type="shared" src="shared/Config.lua" cache="false" />
 	<script type="shared" src="shared/include.lua" cache="false" />
 	

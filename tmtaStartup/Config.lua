@@ -71,6 +71,8 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaHouse',
     'tmtaBusiness',
     'tmtaRevenueService',
+    'tmtaCarShowroom',
+    'tmtaGarage',
 
     -- graphics --
     'tmtaReplacingTextures',

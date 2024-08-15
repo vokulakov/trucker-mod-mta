@@ -1,6 +1,6 @@
 <meta>
     <oop>true</oop>
-    <download_priority_group>99</download_priority_group>
+    <download_priority_group>-99</download_priority_group>
 	<include resource="tmtaModule" />
 
     <!-- Assets -->
