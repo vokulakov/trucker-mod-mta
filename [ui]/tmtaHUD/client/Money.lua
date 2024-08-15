@@ -14,7 +14,7 @@ local countMoneyColor = {255, 0, 0} -- цвет для счетчика дене
 local countMoneyAmount = 0 -- количество денег для счетчика денег
 local countMoneySign = "+" -- знак для счетчика денег
 
-local moneyChangeTimer = 2000 -- время изменения денег (дефолтное)
+local moneyChangeTimer = 1500 -- время изменения денег (дефолтное)
 local timeToChangeStart = 1000 -- через сколько мс начать изменять деньги
 local moneyChangeTimeStart = 0 -- когда началось изменение денег
 

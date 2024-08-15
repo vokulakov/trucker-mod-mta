@@ -1,15 +1,14 @@
 Config = {}
 
+Config.AUTOSAVE_INTERVAL = 10 -- время автосохранения в минутах
+
 -- Const
-Config.SELL_COMMISSION = 0.5 -- комиссия за продажу дома государству 
+Config.SELL_COMMISSION = 25 -- комиссия за продажу дома государству 
 Config.PLAYER_MAX_HOUSES = 1 -- максимальное количество домов у игрока
-Config.PROPERTY_TAX = 0.13 -- налог на имущество
+Config.PROPERTY_TAX = 1 -- налог на недвижимость (в %)
 
--- communal payments
-
-Config.upgrades = {
-}
-
+Config.TAX_DAY = 7 -- день налога с момента покупки дома
+Config.TAX_PAYMENT_PERIOD = 30 -- сколько дней дается на оплату налога
 
 -- Количество парковочнх мест взависимости от стоимости дома
 -- Максимум 10 парковочных мест

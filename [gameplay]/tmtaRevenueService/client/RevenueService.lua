@@ -73,6 +73,9 @@ addEventHandler("onClientElementStreamOut", root,
 )
 
 function RevenueService.registerBusinessEntity()
-    GUI.closeWindow()
-    triggerServerEvent('tmtaRevenueService.onPlayerRegisterBusinessEntity', resourceRoot)
+    return triggerServerEvent('tmtaRevenueService.onPlayerRegisterBusinessEntity', resourceRoot)
+end
+
+function RevenueService.payTax(taxType, taxAmount)
+    return triggerServerEvent('tmtaRevenueService.onPlayerPayTax', resourceRoot, taxType, taxAmount)
 end

@@ -28,6 +28,19 @@ function dxDrawText3D(text, x1, y1, x2, y2, color, scale, font, alignX, alignY)
 	dxDrawText(text, x1, y1, x2, y2, color, scale, font, alignX, alignY, _, _, _, true)
 end
 
+function Utils.guiCreateMoneyLabel(posX, posY, money, window)
+    centerAlign = centerAlign or false
+
+    local iconMoney = exports.tmtaTextures:createStaticImage(posX, posY-Utils.sH*((0) /Utils.sDH), Utils.sW*((32/1.4) /Utils.sDW), Utils.sH*((28/1.4) /Utils.sDH), 'i_money', false, window)
+    iconMoney.enabled = false
+
+	local windowWidth, windowHeight = guiGetSize(window, false)
+    local label = guiCreateLabel(posX+Utils.sW*((10+32/1.4) /Utils.sDW), posY, Utils.sW*(windowWidth/Utils.sDW), Utils.sH*(30/Utils.sDH), money, false, window)
+    label:setData("icon", iconMoney)
+
+    return label
+end
+
 function Utils.showNotice(typeNotice, typeMessage)
 	local posX, posY = Utils.sW*((Utils.sDW-400)/2 /Utils.sDW), Utils.sH*((Utils.sDH-150) /Utils.sDH)
 	local width = Utils.sW*(400 /Utils.sDW)

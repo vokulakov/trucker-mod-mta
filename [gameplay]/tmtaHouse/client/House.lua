@@ -1,6 +1,5 @@
 House = {}
 
--- Вход в дом
 function House.enter(houseId)
     if type(houseId) ~= "number" then
         return false
@@ -12,7 +11,6 @@ function House.enter(houseId)
     exports.tmtaUI:setPlayerComponentVisible("all", false)
 end
 
--- Выход из дома
 function House.exit(houseId)
     if type(houseId) ~= "number" then
         return false
@@ -23,20 +21,31 @@ function House.exit(houseId)
     exports.tmtaUI:setPlayerComponentVisible("all", false)
 end
 
--- Покупка дома
 function House.buy(houseId)
     if type(houseId) ~= "number" then
         return false
     end
-    HouseGUI.closeWindow()
     triggerServerEvent("tmtaHouse.onPlayerBuyHouse", resourceRoot, houseId)
+end
+
+function House.sell(houseId)
+    if type(houseId) ~= "number" then
+        return false
+    end
+    triggerServerEvent("tmtaHouse.onPlayerSellHouse", resourceRoot, houseId)
+end
+
+function House.changeDoorStatus(houseId)
+    if (type(houseId) ~= "number") then
+        return false
+    end
+    triggerServerEvent("tmtaHouse.onPlayerChangeDoorStatus", resourceRoot, houseId)
 end
 
 -- Events
 addEvent("tmtaHouse.onClientPlayerHouseEnter", true)
-addEventHandler("tmtaHouse.onClientPlayerHouseEnter", root,
+addEventHandler("tmtaHouse.onClientPlayerHouseEnter", resourceRoot,
     function(success)
-
         showChat(true)
         exports.tmtaUI:setPlayerComponentVisible("all", true)
         exports.tmtaUI:setPlayerComponentVisible("map", false)
@@ -44,7 +53,7 @@ addEventHandler("tmtaHouse.onClientPlayerHouseEnter", root,
 )
 
 addEvent("tmtaHouse.onClientPlayerHouseExit", true)
-addEventHandler("tmtaHouse.onClientPlayerHouseExit", root,
+addEventHandler("tmtaHouse.onClientPlayerHouseExit", resourceRoot,
     function(success)
 
         showChat(true)
@@ -53,7 +62,7 @@ addEventHandler("tmtaHouse.onClientPlayerHouseExit", root,
 )
 
 addEvent("tmtaHouse.addHouseResponse", true)
-addEventHandler("tmtaHouse.addHouseResponse", root,
+addEventHandler("tmtaHouse.addHouseResponse", resourceRoot,
     function(success)
         local typeNotice, typeMessage = 'error', 'Ошибка создания дома'
         if success then

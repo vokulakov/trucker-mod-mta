@@ -12,10 +12,15 @@
 	<export type="server" function="dbGetConnection" />
 
     <export type="server" function="dbTableCreate" />
+
     <export type="server" function="dbTableSelect" />
     <export type="server" function="dbTableInsert" />
     <export type="server" function="dbTableUpdate" />
     <export type="server" function="dbTableDelete" />
+
     <export type="server" function="dbTableAlter" />
+    <export type="server" function="dbTableAddColumn" />
+    <export type="server" function="dbTableDropColumn" />
+
     <export type="server" function="dbQuery" />
 </meta>

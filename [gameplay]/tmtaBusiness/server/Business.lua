@@ -34,6 +34,20 @@ function Business.setup()
     outputDebugString('Не удалось создать: '..errorCount)
 end
 
+--- Получить временную метку начисления дохода
+local function getDateAccrueRevenue()
+    return tonumber(exports.tmtaUtils:getTimestamp(_, _, getRealTime().monthday + Config.ACCRUE_REVENUE_DAY))
+end
+
+-- Получить временную метку конфискации бизнеса
+local function getDateConfiscate()
+    return tonumber(exports.tmtaUtils:getTimestamp(_, _, getRealTime().monthday + Config.TAX_PAYMENT_PERIOD))
+end
+
+function Business.getCreatedBusiness()
+    return createdBusiness
+end
+
 function Business.getAll()
     return exports.tmtaSQLite:dbTableSelect(BUSINESS_TABLE_NAME)
 end
@@ -131,7 +145,6 @@ function Business.update(businessId, fields, callbackFunctionName, ...)
     end
 
     local success = exports.tmtaSQLite:dbTableUpdate(BUSINESS_TABLE_NAME, fields, {businessId = businessId}, callbackFunctionName, ...)
-
     if not success then
 		executeCallback(callbackFunctionName, false)
 	end
@@ -139,14 +152,38 @@ function Business.update(businessId, fields, callbackFunctionName, ...)
     return success
 end
 
--- Получить список всех бизнесов игрока
-function Business.getPlayerBusiness(userId, callbackFunctionName, ...)
+function dbUpdateBusiness(result, params)
+    if (not params) then
+        return false
+    end
+    
+    local success = not not result
+    if (success) then
+        local businessId = params.businessId
+        local businessData = Business.get(businessId)
+        businessData = businessData[1]
+        if (businessData and createdBusiness[businessId]) then
+            Business.updateMarker(businessId, businessData)
+        end
+    end
+
+    return success
+end
+
+function Business.getUserBusiness(userId, callbackFunctionName, ...)
     if type(userId) ~= "number" then
         outputDebugString("Business.getPlayerBusiness: bad arguments", 1)
         executeCallback(callbackFunctionName, false)
         return false
     end
     return exports.tmtaSQLite:dbTableSelect(BUSINESS_TABLE_NAME, {}, { userId = userId }, callbackFunctionName, ...)
+end
+
+function Business.getPlayerBusiness(userId, callbackFunctionName, ...)
+    if not isElement(player) then
+        return false
+    end
+    return Business.getUserBusiness(player:getData("userId"), callbackFunctionName, ...)
 end
 
 function Business.createMarker(businessData)
@@ -176,20 +213,45 @@ function Business.createMarker(businessData)
     createdBusiness[businessId] = {
         businessMarker = businessMarker,
         businessPickup = businessPickup,
+        businessData = businessData,
     }
-
-    BusinessRevenue.startTracking(businessData)
 
     return true
 end
 
-function Business.updateMarker(businessId)
+function Business.updateMarker(businessId, businessData)
     if (type(businessId) ~= "number" or not createdBusiness[businessId]) then
         outputDebugString("Business.updateMarker: bad arguments", 1)
         return false
     end
 
-    return Business.get(businessId, {}, 'dbUpdateBusiness', {businessId = businessId})
+    if (businessData and type(businessData) == 'table') then
+        return executeCallback('dbUpdateBusinessMarker', true, {businessData = businessData})
+    end
+
+    return Business.get(businessId, {}, 'dbUpdateBusinessMarker', {businessId = businessId})
+end
+
+function dbUpdateBusinessMarker(result, params)
+    if (not params) then
+        return false
+    end
+    
+    local success = not not result
+    if (success) then
+        local businessId = params.businessId
+        local businessData = result[1]
+
+        if businessData.userId then
+            local result = exports.tmtaCore:getUserDataById(tonumber(businessData.userId), {'nickname'})
+            businessData.owner = result[1].nickname
+        end
+    
+        createdBusiness[businessId].businessMarker:setData('businessData', businessData)
+        createdBusiness[businessId].businessData = businessData
+    end
+
+    return success
 end
 
 function Business.destroyMarker(businessId)
@@ -198,7 +260,6 @@ function Business.destroyMarker(businessId)
         return false
     end
 
-    BusinessRevenue.stopTracking(businessId)
     destroyElement(createdBusiness[businessId].businessMarker)
     destroyElement(createdBusiness[businessId].businessPickup)
     createdBusiness[businessId] = nil
@@ -222,8 +283,7 @@ function Business.buy(player, businessId)
         return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Ошибка покупки бизнеса. Обратитесь к Администратору!')
     end
 
-    local userId = player:getData("userId")
-    local playerBusiness = Business.getPlayerBusiness(userId)
+    local playerBusiness = Business.getPlayerBusiness(player)
     if (#playerBusiness >= Config.PLAYER_MAX_BUSINESS) then
         local errorMessage = string.format('Вы можете одновремено владеть только %d бизнесом', Config.PLAYER_MAX_BUSINESS)
         return false, errorMessage
@@ -245,14 +305,20 @@ function Business.buy(player, businessId)
         return false, errorMessage
     end
     
+    if (exports.tmtaRevenueService:isPlayerHasTaxDebt(player)) then
+        return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Вы не можете купить бизнес, имея задолженности перед налоговой службой!')
+    end
+
     if (exports.tmtaMoney:getPlayerMoney(player) < businessData.price) then
         local errorMessage = 'Недостаточно средств для покупки бизнеса'
         return false, errorMessage
     end
 
+    local userId = player:getData("userId")
+
     local businnesData = {
         userId = userId, 
-        accrueRevenueAt = BusinessRevenue.getDateAccrueRevenue(),
+        accrueRevenueAt = getDateAccrueRevenue(),
     }
 
     return Business.update(businessId, businnesData, "dbBuyBusiness", {
@@ -307,27 +373,6 @@ function dbBuyBusiness(result, params)
     return result
 end
 
-function dbUpdateBusiness(result, params)
-    if (not params) then
-        return false
-    end
-    
-    local success = not not result
-    if (success) then
-        local businessId = params.businessId
-        local businessData = result[1]
-
-        if businessData.userId then
-            local result = exports.tmtaCore:getUserDataById(tonumber(businessData.userId), {'nickname'})
-            businessData.owner = result[1].nickname
-        end
-    
-        createdBusiness[businessId].businessMarker:setData('businessData', businessData)
-    end
-
-    return success
-end
-
 function Business.sell(businessId)
     if (type(businessId) ~= "number") then
         return false
@@ -346,8 +391,6 @@ function Business.sell(businessId)
 
     local price = tonumber(businessData.price - (businessData.price * Config.SELL_COMMISSION/100))
     local balance = tonumber(businessData.balance - (businessData.balance * Config.WITHDRAWAL_FEE/100))
-
-    --TODO: снимать неоплаченный налог
 
     return Business.update(businessId, {
         userId = 'NULL',
@@ -370,6 +413,11 @@ addEventHandler("tmtaBusiness.onPlayerSellBusiness", resourceRoot,
         if (not isElement(player) or type(businessId) ~= "number" or not createdBusiness[businessId]) then
             return
         end
+
+        if not Business.isPlayerOwned(player, businessId) then
+            return
+        end
+
         Business.sell(businessId)
     end
 )
@@ -387,7 +435,6 @@ function dbSellBusiness(result, params)
 
     result = not not result
     if result then
-        local userId = businessData.userId
         local money = tonumber(price+balance)
 
         local player = exports.tmtaCore:getPlayerByUserId(userId)
@@ -396,9 +443,7 @@ function dbSellBusiness(result, params)
             local message = string.format('Вы продали бизнес.\nНа ваш счет зачислено %s ₽', exports.tmtaUtils:formatMoney(money))
             triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'success', message)
         else
-            local userDataResult = exports.tmtaCore:getUserDataById(userId, {'money'})
-            local userMoney = tonumber(userDataResult[1].money)
-            exports.tmtaCore:updateUserDataById(userId, {money = tonumber(userMoney + money)})
+            exports.tmtaCore:giveUserMoney(userId, tonumber(money))
         end
 
         Business.updateMarker(businessId)
@@ -445,11 +490,11 @@ addEvent("tmtaBusiness.onPlayerTakeMoneyFromBusiness", true)
 addEventHandler("tmtaBusiness.onPlayerTakeMoneyFromBusiness", resourceRoot,
     function(businessId)
         local player = client
-        if (not isElement(player) or type(businessId) ~= "number") then
+        if (not isElement(player) or type(businessId) ~= "number" or not createdBusiness[businessId]) then
             return
         end
 
-        if (not createdBusiness[businessId]) then
+        if not Business.isPlayerOwned(player, businessId) then
             return
         end
 
@@ -468,6 +513,7 @@ function dbTakeMoneyFromBusiness(result, params)
     local player = params.player
     local businessId = params.businessId
     local balance = params.balance
+    local userId = params.userId
 
     result = not not result
     if result then
@@ -479,10 +525,62 @@ function dbTakeMoneyFromBusiness(result, params)
 
         Business.updateMarker(businessId)
 
-        exports.tmtaLogger:log("business", string.format("User id=%d take %d from business id=%d", businessData.userId, money, businessId))
+        exports.tmtaLogger:log("business", string.format("User id=%d take %d from business id=%d", userId, money, businessId))
     end
 
     return result
+end
+
+function Business.getOwnerUserId(businessId)
+    if (type(businessId) ~= "number") then
+        return
+    end
+
+    local businessData = createdBusiness[businessId].businessData
+    if (not businessData) then
+        return
+    end
+
+    return businessData.userId
+end
+
+function Business.isPlayerOwned(player, businessId)
+    if (not isElement(player) or type(businessId) ~= "number") then
+        return
+    end
+    return (Business.getOwnerUserId(businessId) == player:getData('userId'))
+end
+
+function Business.accrueRevenue(businessId)
+    if (type(businessId) ~= "number" or not createdBusiness[businessId]) then
+        return false
+    end
+    
+    local businessData = createdBusiness[businessId].businessData
+    if (type(businessData) ~= 'table' or #businessData == 0) then
+        outputDebugString("BusinessRevenue.accrue: error accrure businessId = "..businessId, 1)
+        return false
+    end
+
+    local currentBalance = tonumber(businessData.balance + businessData.revenue)
+    businessData.balance = currentBalance
+
+    businessData.accrueRevenueAt = getDateAccrueRevenue()
+
+    if (not businessData.confiscateAt) then
+        businessData.confiscateAt = getDateConfiscate()
+    end
+
+    createdBusiness[businessId].businessMarker:setData('businessData', businessData)
+    createdBusiness[businessId].businessData = businessData
+
+    exports.tmtaRevenueService:addUserIncomeTax(houseData.userId, tonumber(businessData.price) * Config.Config.REVENUE_TAX/100)
+
+    return Business.update(businessId, {
+        balance = currentBalance,
+        accrueRevenueAt = businessData.accrueRevenueAt,
+        confiscateAt = businessData.confiscateAt,
+    })
 end
 
 -- function Business.sellToPlayer(player, businessId)

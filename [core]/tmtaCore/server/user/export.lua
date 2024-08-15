@@ -15,3 +15,20 @@ end
 function updateUserDataById(userId, fields)
 	return User.update(userId, fields)
 end
+
+--- Выдать пользователю игровую валюту
+-- @tparam number userId
+-- @tparam number amount
+-- @treturn bool
+function giveUserMoney(userId, amount)
+	if (type(userId) ~= 'number' or type(amount) ~= 'number') then 
+		return false
+	end
+
+	amount = math.ceil(math.abs(amount))
+
+	local userDataResult = User.getById(userId, {'money'})
+	local userMoney = tonumber(userDataResult[1].money)
+
+	return User.update(userId, {money = tonumber(userMoney + money)})
+end

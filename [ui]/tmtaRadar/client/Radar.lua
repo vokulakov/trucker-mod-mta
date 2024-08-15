@@ -103,15 +103,6 @@ addEventHandler('onClientHUDRender', root,
         --     scale = scale - math.min(MAX_SPEED_SCALE, speed * 1)
         -- end
 
-        -- Север
-        local direction = math.rad(-camera.rotation.z + 180)
-        local blipX, blipY = radarCenterX + math.sin(direction) * radarRadius, radarCenterY + math.cos(direction) * radarRadius
-        local blipX = math.max(0, math.min(blipX, radarWidth))
-        local blipY = math.max(0, math.min(blipY, radarHeight))
-        local blipSize = 28
-
-        dxDrawImage(radarPosX + blipX - blipSize/2, radarPosY + blipY - blipSize/2, blipSize, blipSize, Textures.north, 0, 0, 0, tocolor(255, 255, 255, 255), true)
-
         -- Рамка
         dxDrawRectangle(sW*((posX) /sDW), sH*((posY) /sDH), sW*((width) /sDW), sH*((height) /sDH), tocolor(0, 0, 0, 155))
 
@@ -137,6 +128,15 @@ addEventHandler('onClientHUDRender', root,
         -- Урон по игроку
         local animData = getEasingValue(getAnimData('hiteffect'), 'InOutQuad')
         dxDrawImage(radarPosX, radarPosY, radarWidth, radarHeight, Textures.damage, 0, 0, 0, tocolor(186, 58, 58, playerDamageLost*animData))
+
+        -- Север
+        local direction = math.rad(-camera.rotation.z + 180)
+        local blipX, blipY = radarCenterX + math.sin(direction) * radarRadius, radarCenterY + math.cos(direction) * radarRadius
+        local blipX = math.max(0, math.min(blipX, radarWidth))
+        local blipY = math.max(0, math.min(blipY, radarHeight))
+        local blipSize = 28
+
+        dxDrawImage(radarPosX + blipX - blipSize/2, radarPosY + blipY - blipSize/2, blipSize, blipSize, Textures.north, 0, 0, 0, tocolor(255, 255, 255, 255))
     end
 )
 

@@ -20,6 +20,5 @@
 
     <!-- Server -->
     <script type="server" src="server/Business.lua" />
-    <script type="server" src="server/BusinessRevenue.lua" />
     <script type="server" src="server/main.lua" />
 </meta>
