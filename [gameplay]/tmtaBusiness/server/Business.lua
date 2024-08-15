@@ -244,6 +244,10 @@ function Business.buy(player, businessId)
         return false, errorMessage
     end
     
+    if (exports.tmtaRevenueService:isPlayerHasTaxDebt(player)) then
+        return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Вы не можете купить бизнес, имея задолженности перед налоговой службой!')
+    end
+
     if (exports.tmtaMoney:getPlayerMoney(player) < businessData.price) then
         local errorMessage = 'Недостаточно средств для покупки бизнеса'
         return false, errorMessage

@@ -13,10 +13,13 @@
 
     <!-- Exports -->
 	<export type="server" function="isPlayerBusinessEntity" />
+
     <export type="server" function="isPlayerHasPropertyTaxDebt" />
     <export type="server" function="isUserHasPropertyTaxDebt" />
     <export type="server" function="isPlayerHasIncomeTaxDebt" />
     <export type="server" function="isUserHasIncomeTaxDebt" />
+    <export type="server" function="isPlayerHasTaxDebt" />
+
     <export type="server" function="addUserPropertyTax" />
     <export type="server" function="addUserIncomeTax" />
 </meta>

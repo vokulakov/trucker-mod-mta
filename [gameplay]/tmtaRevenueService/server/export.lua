@@ -59,6 +59,15 @@ function isPlayerHasIncomeTaxDebt(player)
     return not (tonumber(player:getData('incomeTaxPayable')) == 0)
 end
 
+--- Есть ли у игрока задолженности по налогам
+function isPlayerHasTaxDebt(player)
+    if not isElement(player) then
+        return false
+    end
+
+    return (isUserHasPropertyTaxDebt(userId) or isPlayerHasIncomeTaxDebt(player))
+end
+
 --- Есть ли у пользователя задолженность по подоходному налогу
 function isUserHasIncomeTaxDebt(userId)
     if type(userId) ~= 'number' then
