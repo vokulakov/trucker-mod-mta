@@ -42,8 +42,8 @@ addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root,
     function()
         local currentTimestamp = getRealTime().timestamp
         for houseId, house in ipairs(House.getCreatedHouses()) do
-            local houseData = house.data
             if House.getOwnerUserId(houseId) then
+                local houseData = house.data
                 if (houseData.confiscateAt and (currentTimestamp >= houseData.confiscateAt)) then
                     House.sell(houseId)
                 elseif (houseData.taxAt and (currentTimestamp >= houseData.taxAt)) then
