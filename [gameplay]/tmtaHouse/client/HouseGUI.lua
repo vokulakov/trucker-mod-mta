@@ -215,7 +215,7 @@ function HouseGUI.renderManagerHouseWindow()
     guiSetEnabled(line, false)
 
     offsetPosY = offsetPosY + 25
-    HouseGUI.lblHome = guiCreateLabel(0, sH*((offsetPosY)/sDH), sW*(width/sDW), 30, "НАЛОГ НА ИМУЩЕСТВО", false, HouseGUI.wnd)
+    HouseGUI.lblHome = guiCreateLabel(0, sH*((offsetPosY)/sDH), sW*(width/sDW), 30, "НАЛОГ НА НЕДВИЖИМОСТЬ", false, HouseGUI.wnd)
     guiLabelSetHorizontalAlign(HouseGUI.lblHome, "center", false)
     guiSetFont(HouseGUI.lblHome, Utils.fonts.RB_11)
     guiLabelSetColor(HouseGUI.lblHome, 242, 171, 18)

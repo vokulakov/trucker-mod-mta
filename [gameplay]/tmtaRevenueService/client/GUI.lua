@@ -55,7 +55,7 @@ function GUI.renderTemplate(window)
 
     --
     posY = posY + 25
-    GUI.lblPropertyTax = guiCreateLabel(sW*((15)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "Налог на имущество:", false, window)
+    GUI.lblPropertyTax = guiCreateLabel(sW*((15)/sDW), sH*(posY/sDH), sW*(width/sDW), sH*(30/sDH), "Налог на недвижимость:", false, window)
     guiSetFont(GUI.lblPropertyTax, Fonts.RR_11)
     GUI.lblPropertyTax.enabled = false
 

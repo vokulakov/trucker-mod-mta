@@ -21,7 +21,7 @@ function addUserPropertyTax(userId, taxAmount)
     return RevenueService.addUserPropertyTax(userId, taxAmount)
 end
 
---- Есть ли у игрока задолженность по налогу на имущество
+--- Есть ли у игрока задолженность по налогу на недвижимость
 -- @param player
 function isPlayerHasPropertyTaxDebt(player)
     if not isElement(player) then

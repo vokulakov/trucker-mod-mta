@@ -7,7 +7,7 @@ function RevenueService.setup()
         {name = 'userId', type = 'INTEGER', options = 'NOT NULL UNIQUE'},
         {name = 'individualNumber', type = 'VARCHAR', size = '12', options = 'NOT NULL UNIQUE'},
         {name = 'isBusinessEntity', type = 'INTEGER', options = 'DEFAULT 0'}, -- флаг юридической регистрации
-        {name = 'propertyTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате налог на имущество
+        {name = 'propertyTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате налог на недвижимость
         {name = 'incomeTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате подоходный налог
         {name = 'vehicleTaxPayable', type = 'INTEGER', options = 'DEFAULT 0'}, -- подлежащий уплате транспортный налог
     }, "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE SET NULL")
@@ -181,7 +181,7 @@ function RevenueService.addUserPropertyTax(userId, taxAmount)
         if (isElement(player)) then
             player:setData('propertyTaxPayable', propertyTaxPayable)
             player:setData('taxAmount', player:getData('taxAmount') + taxAmount)
-            local message = string.format('Вам начислен налог на имущество\nв размере %s ₽. Оплатите его в ближайшем отделение налоговой службы.', exports.tmtaUtils:formatMoney(taxAmount))
+            local message = string.format('Вам начислен налог на недвижимость\nв размере %s ₽. Оплатите его в ближайшем отделение налоговой службы.', exports.tmtaUtils:formatMoney(taxAmount))
             triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'info', message)
 
             exports.tmtaLogger:log("revenueService", string.format('The user %s is charged a tax of %d', tostring(userId), tonumber(taxAmount)))

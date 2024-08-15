@@ -407,7 +407,7 @@ function House.buy(player, houseId)
     end
 
     if (exports.tmtaRevenueService:isPlayerHasPropertyTaxDebt(player)) then
-        return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Вы не можете купить дом, имея задолженности по налогу на имущество!')
+        return triggerClientEvent(player, 'tmtaBusiness.showNotice', resourceRoot, 'error', 'Вы не можете купить дом, имея задолженности по налогу на недвижимость!')
     end
 
     local playerMoney = exports.tmtaMoney:getPlayerMoney(player)
