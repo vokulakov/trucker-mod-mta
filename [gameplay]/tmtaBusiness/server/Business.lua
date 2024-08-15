@@ -175,6 +175,7 @@ function Business.createMarker(businessData)
     createdBusiness[businessId] = {
         businessMarker = businessMarker,
         businessPickup = businessPickup,
+        businessData = businessData,
     }
 
     BusinessRevenue.startTracking(businessData)
@@ -326,6 +327,8 @@ function dbUpdateBusiness(result, params)
         end
     
         createdBusiness[businessId].businessMarker:setData('businessData', businessData)
+        createdBusiness[businessId].businessData = businessData
+
         BusinessRevenue.stopTracking(businessId)
         BusinessRevenue.startTracking(businessData)
     end
@@ -373,6 +376,11 @@ addEventHandler("tmtaBusiness.onPlayerSellBusiness", resourceRoot,
         if (not isElement(player) or type(businessId) ~= "number" or not createdBusiness[businessId]) then
             return
         end
+
+        if not Business.isPlayerOwned(player, businessId) then
+            return
+        end
+
         Business.sell(businessId)
     end
 )
@@ -445,11 +453,11 @@ addEvent("tmtaBusiness.onPlayerTakeMoneyFromBusiness", true)
 addEventHandler("tmtaBusiness.onPlayerTakeMoneyFromBusiness", resourceRoot,
     function(businessId)
         local player = client
-        if (not isElement(player) or type(businessId) ~= "number") then
+        if (not isElement(player) or type(businessId) ~= "number" or not createdBusiness[businessId]) then
             return
         end
 
-        if (not createdBusiness[businessId]) then
+        if not Business.isPlayerOwned(player, businessId) then
             return
         end
 
@@ -484,6 +492,26 @@ function dbTakeMoneyFromBusiness(result, params)
     end
 
     return result
+end
+
+function Business.getOwnerUserId(businessId)
+    if (type(businessId) ~= "number") then
+        return
+    end
+
+    local businessData = createdBusiness[businessId].businessData
+    if (not businessData) then
+        return
+    end
+
+    return businessData.userId
+end
+
+function Business.isPlayerOwned(player, businessId)
+    if (not isElement(player) or type(businessId) ~= "number") then
+        return
+    end
+    return (Business.getOwnerUserId(businessId) == player:getData('userId'))
 end
 
 -- function Business.sellToPlayer(player, businessId)

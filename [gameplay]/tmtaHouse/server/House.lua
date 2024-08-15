@@ -644,7 +644,7 @@ function House.isPlayerOwned(player, houseId)
     if (not isElement(player) or type(houseId) ~= "number") then
         return
     end
-    return House.getOwnerUserId(houseId) == player:getData('userId')
+    return (House.getOwnerUserId(houseId) == player:getData('userId'))
 end
 
 function House.save(houseId)
