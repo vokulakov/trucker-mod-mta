@@ -52,30 +52,24 @@ function BusinessRevenue.accrue(businessId)
     local currentBalance = tonumber(businessData.balance + businessData.revenue)
     businessData.balance = currentBalance
 
+    businessData.accrueRevenueAt = BusinessRevenue.getDateAccrueRevenue()
+
+    if (not businessData.confiscateAt) then
+        businessData.confiscateAt = BusinessRevenue.getDateConfiscate()
+    end
+
+    --createdHouses[houseId].houseMarker:setData('houseData', houseData)
+    --createdHouses[houseId].data = houseData
+
+    exports.tmtaRevenueService:addUserIncomeTax(houseData.userId, tonumber(businessData.price) * Config.Config.REVENUE_TAX/100)
+
     return Business.update(businessId, {
         balance = currentBalance,
-        accrueRevenueAt = BusinessRevenue.getDateAccrueRevenue(),
-        confiscateAt = BusinessRevenue.getDateConfiscate(),
-    }, "dbAccrueRevenueBusiness", {
-        businessId = businessId,
+        accrueRevenueAt = businessData.accrueRevenueAt,
+        confiscateAt = businessData.confiscateAt,
     })
 end
 
-function dbAccrueRevenueBusiness(result, params)
-    if (not params) then
-        return false
-    end
-    local businessId = params.businessId
-
-    result = not not result
-    if result then
-        --local businessData = Business.get(businessId)
-        --businessData = businessData[1]
-        --TODO: начислить налог
-    end
-
-    return result
-end
 
 addEventHandler("tmtaServerTimecycle.onServerMinutePassed", root, 
     function()
