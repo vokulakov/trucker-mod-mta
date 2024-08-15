@@ -388,8 +388,6 @@ function dbSellBusiness(result, params)
     if result then
         local money = tonumber(price+balance)
 
-        --TODO: снимать неоплаченный налог
-
         local player = exports.tmtaCore:getPlayerByUserId(userId)
         if (isElement(player)) then
             exports.tmtaMoney:givePlayerMoney(player, money)

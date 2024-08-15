@@ -165,26 +165,57 @@ addEventHandler('tmtaRevenueService.onPlayerRegisterBusinessEntity', root,
     end
 )
 
-function RevenueService.addUserPropertyTax(userId, taxAmount)
-    if (type(userId) ~= "number" or type(taxAmount) ~= "number") then
+function RevenueService.addUserTax(userId, taxType, taxAmount)
+    if (type(userId) ~= 'number' or type(taxType) ~= 'string' or type(taxAmount) ~= 'number') then
         return false
     end
     taxAmount = math.ceil(math.abs(taxAmount))
 
-    local result = RevenueService.getUserDataById(userId, {'propertyTaxPayable'})
-    propertyTaxPayable = (type(result) ~= "table" or #result == 0) and 0 or tonumber(result[1].propertyTaxPayable)
-    propertyTaxPayable = propertyTaxPayable + taxAmount
-
-    local success = not not RevenueService.update(userId, {propertyTaxPayable = propertyTaxPayable})
+    local result = RevenueService.getUserDataById(userId, {taxType})
+    taxPayable = (type(result) ~= 'table' or #result == 0) and 0 or tonumber(result[1][taxType])
+    taxPayable = taxPayable + taxAmount
+    
+    local success = not not RevenueService.update(userId, {taxType = taxPayable})
     if (success) then
         local player = exports.tmtaCore:getPlayerByUserId(userId)
         if (isElement(player)) then
-            player:setData('propertyTaxPayable', propertyTaxPayable)
+            player:setData(taxType, taxPayable)
             player:setData('taxAmount', player:getData('taxAmount') + taxAmount)
+            exports.tmtaLogger:log("revenueService", string.format('The user %s is charged a tax of %d', tostring(userId), tonumber(taxAmount)))
+        end
+    end
+
+    return success
+end
+
+function RevenueService.addUserPropertyTax(userId, taxAmount)
+    if (type(userId) ~= 'number' or type(taxAmount) ~= 'number') then
+        return false
+    end
+
+    local success = RevenueService.addUserTax(userId, 'propertyTaxPayable', taxAmount)
+    if (success) then
+        local player = exports.tmtaCore:getPlayerByUserId(userId)
+        if (isElement(player)) then
             local message = string.format('Вам начислен налог на недвижимость\nв размере %s ₽. Оплатите его в ближайшем отделение налоговой службы.', exports.tmtaUtils:formatMoney(taxAmount))
             triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'info', message)
+        end
+    end
 
-            exports.tmtaLogger:log("revenueService", string.format('The user %s is charged a tax of %d', tostring(userId), tonumber(taxAmount)))
+    return success
+end
+
+function RevenueService.addUserIncomeTax(userId, taxAmount)
+    if (type(userId) ~= 'number' or type(taxAmount) ~= 'number') then
+        return false
+    end
+
+    local success = RevenueService.addUserTax(userId, 'incomeTaxPayable', taxAmount)
+    if (success) then
+        local player = exports.tmtaCore:getPlayerByUserId(userId)
+        if (isElement(player)) then
+            local message = string.format('Вам начислен подоходный налог\nв размере %s ₽. Оплатите его в ближайшем отделение налоговой службы.', exports.tmtaUtils:formatMoney(taxAmount))
+            triggerClientEvent(player, 'tmtaRevenueService.showNotice', resourceRoot, 'info', message)
         end
     end
 
