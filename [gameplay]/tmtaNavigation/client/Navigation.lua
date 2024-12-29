@@ -94,6 +94,8 @@ function Navigation.createPointWithMarker(element, title)
 
     return true
 end
+addEvent('tmtaNavigation.createPointWithMarker', true)
+addEventHandler('tmtaNavigation.createPointWithMarker', root, Navigation.createPointWithMarker)
 
 addEventHandler('onClientMarkerHit', root,
     function(element)

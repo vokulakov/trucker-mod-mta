@@ -1,0 +1,12 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>-99</download_priority_group>
+
+    <file src="assets/skin.dff" />
+	<file src="assets/skin.txd" />
+
+    <script type="shared" src="shared/include.lua" cache="false" />
+    <script type="shared" src="shared/shared.lua" cache="false" />
+    <script type="client" src="client/client.lua" cache="false" />
+    <script type="server" src="server/server.lua" />
+</meta>

@@ -1,23 +1,9 @@
 <meta>
     <oop>true</oop>
+	<download_priority_group>-999</download_priority_group>
     <include resource="tmtaModule" />
 
-    <!-- Webview -->
-    <file src="webview/assets/images/about_cover.png" />
-    <file src="webview/assets/images/donat_banner.png" />
-    <file src="webview/assets/css/styles.css" />
-    <file src="webview/assets/fontawesome/css/all.min.css" />
-    <file src="webview/assets/fontawesome/webfonts/fa-brands-400.ttf" />
-    <file src="webview/assets/fontawesome/webfonts/fa-regular-400.ttf" />
-    <file src="webview/assets/fontawesome/webfonts/fa-solid-900.ttf" />
-    <file src="webview/assets/fontawesome/webfonts/fa-v4compatibility.ttf" />
-    <file src="webview/assets/js/jquery-3.7.0.min.js" />
-    <file src="webview/assets/js/menu.js" />
-    <file src="webview/assets/js/news.js" />
-    <file src="webview/controls.html" />
-    <file src="webview/donat.html" />
-    <file src="webview/news.html" />
-    <file src="webview/rules.html" />
+    <file src="assets/donat_banner.png" />
 
     <!-- Shared -->
     <script type="shared" src="shared/include.lua" cache="false" />
@@ -34,9 +20,6 @@
     <script type="client" src="client/SettingsGUI.lua" cache="false" />
 
     <script type="client" src="client/Help/HelpGUI.lua" cache="false" />
-    <script type="client" src="client/Help/RuleTab.lua" cache="false" />
-    <script type="client" src="client/Help/AboutTab.lua" cache="false" />
-    <script type="client" src="client/Help/NewsTab.lua" cache="false" />
     <script type="client" src="client/Help/ControlsTab.lua" cache="false" />
     <script type="client" src="client/Help/DonateTab.lua" cache="false" />
 

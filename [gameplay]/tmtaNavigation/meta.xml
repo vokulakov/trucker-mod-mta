@@ -13,4 +13,5 @@
     <export type="client" function="getWindowVisible" />
     
     <export type="shared" function="setPoint" />
+    <export type="shared" function="setPointWithMarker" />
 </meta>

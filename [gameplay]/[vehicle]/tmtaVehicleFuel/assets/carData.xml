@@ -12,11 +12,96 @@
 	<data id="0" fuel="55" type="{1, 2, 3}" />  <!-- Default -->
 
 	<!-- Trucks -->
-	<data id="605" fuel="46" type="{ 1 }" /> <!-- ИЖ 2715 -->
-	<data id="543" fuel="50" type="{ 1 }" /> <!-- ИЖ 2717 -->
-	<data id="528" fuel="64" type="{ 1 }" /> <!-- ИЖ 2717 -->
+	<data id="605" fuel="46" type="{ 1 }" /> <!-- izh_2715 -->
+	<data id="543" fuel="50" type="{ 1 }" /> <!-- izh_2717-->
+	<data id="528" fuel="64" type="{ 1 }" /> <!-- izh_oda_2717 -->
 
-	<data id="515" fuel="800" type="{ 4 }" />
-	<data id="403" fuel="1140" type="{ 4 }" />
-	<data id="514" fuel="1200" type="{ 4 }" />
+	<data id="414" fuel="70" type="{ 1 }" /> <!-- gazel_3302 -->
+	<data id="478" fuel="55" type="{ 1 }" /> <!-- raf_2203 -->
+	<data id="455" fuel="105" type="{ 1 }" /> <!-- gaz_3307 -->
+	<data id="499" fuel="105" type="{ 4 }" /> <!-- gazon_next -->
+	<data id="609" fuel="80" type="{ 2 }" /> <!-- vw_transporter -->
+	<data id="482" fuel="75" type="{ 4 }" /> <!-- mercedes_benz_sprinter -->
+	<data id="544" fuel="700" type="{ 4 }" /> <!-- iveco_stralis_500 -->
+	<data id="578" fuel="620" type="{ 4 }" /> <!-- volvo_fh12 -->
+	<data id="433" fuel="700" type="{ 4 }" /> <!-- scania_r700 -->
+	<data id="573" fuel="350" type="{ 4 }" /> <!-- kamaz_54115 -->
+
+	<data id="403" fuel="1140" type="{ 4 }" /> <!-- freightliner_columbia -->
+	<data id="514" fuel="1200" type="{ 4 }" /> <!-- volvo_fh460 -->
+	<data id="515" fuel="800" type="{ 4 }" /> <!-- kamaz_54901 -->
+
+	<!-- Cars -->
+	<data id="412" fuel="46" type="{ 2 }" /> <!-- alfa_romeo_giulia -->
+	<data id="474" fuel="85" type="{ 3 }" /> <!-- audi_q8rs -->
+	<data id="565" fuel="80" type="{ 3 }" /> <!-- audi_r8 -->
+	<data id="559" fuel="58" type="{ 2 }" /> <!-- audi_rs5 -->
+	<data id="458" fuel="73" type="{ 3 }" /> <!-- audi_rs6_avant_c8 -->
+	<data id="547" fuel="90" type="{ 2 }" /> <!-- audi_s8 -->
+	<data id="535" fuel="70" type="{ 2 }" /> <!-- bantley_continental_gt -->
+	<data id="489" fuel="85" type="{ 3 }" /> <!-- bentley_bentayga -->
+	<data id="477" fuel="90" type="{ 1 }" /> <!-- bmw_850_ci -->
+	<data id="534" fuel="55" type="{ 2 }" /> <!-- bmw_e30 -->
+	<data id="507" fuel="80" type="{ 2 }" /> <!-- bmw_e34 -->
+	<data id="540" fuel="85" type="{ 2 }" /> <!-- bmw_e38 -->
+	<data id="429" fuel="63" type="{ 2 }" /> <!-- bmw_m3_e46 -->
+	<data id="529" fuel="59" type="{ 3 }" /> <!-- bmw_m3_touring_g81 -->
+	<data id="602" fuel="60" type="{ 3 }" /> <!-- bmw_m4_g82 -->
+	<data id="600" fuel="70" type="{ 2 }" /> <!-- bmw_m5_e60 -->
+	<data id="419" fuel="80" type="{ 3 }" /> <!-- bmw_m5_f10 -->
+	<data id="585" fuel="60" type="{ 3 }" /> <!-- bmw_m5_f90 -->
+	<data id="410" fuel="68" type="{ 3 }" /> <!-- bmw_m8_competition -->
+	<data id="550" fuel="90" type="{ 2 }" /> <!-- bmw_m760li -->
+	<data id="566" fuel="93" type="{ 2 }" /> <!-- bmw_x5_e53 -->
+	<data id="516" fuel="83" type="{ 3 }" /> <!-- bmw_x5m_f85 -->
+	<data id="401" fuel="100" type="{ 2 }" /> <!-- bmw_x6m -->
+	<data id="415" fuel="100" type="{ 2 }" /> <!-- bugatti_chiron -->
+	<data id="502" fuel="100" type="{ 3 }" /> <!-- bugatti_divo -->
+	<data id="575" fuel="72" type="{ 2 }" /> <!-- chevrolet_camaro_zl1 -->
+	<data id="542" fuel="75" type="{ 3 }" /> <!-- dodge_challenger_srt -->
+	<data id="500" fuel="98" type="{ 3 }" /> <!-- dodge_ram_trx -->
+	<data id="541" fuel="92" type="{ 2 }" /> <!-- ferrari_488 -->
+	<data id="494" fuel="68" type="{ 2 }" /> <!-- ferrari_sf90 -->
+	<data id="576" fuel="55" type="{ 1 }" /> <!-- gaz_volga_24 -->
+	<data id="517" fuel="60" type="{ 2 }" /> <!-- kia_k5 -->
+	<data id="436" fuel="70" type="{ 1 }" /> <!-- kia_rio -->
+	<data id="506" fuel="75" type="{ 3 }" /> <!-- koenigsegg_gemera -->
+	<data id="405" fuel="43" type="{ 2 }" /> <!-- lada_priora_2170 -->
+	<data id="561" fuel="55" type="{ 2 }" /> <!-- lada_vesta -->
+	<data id="451" fuel="90" type="{ 3 }" /> <!-- lamborghini_aventador_lp700 -->
+	<data id="418" fuel="85" type="{ 3 }" /> <!-- lamborghini_urus -->
+	<data id="558" fuel="64" type="{ 2 }" /> <!-- lexus_isf -->
+	<data id="422" fuel="80" type="{ 2 }" /> <!-- mb_cls63_w218 -->
+	<data id="426" fuel="66" type="{ 2 }" /> <!-- mb_e63_w212 -->
+	<data id="546" fuel="100" type="{ 3 }" /> <!-- mb_e63s_w213 -->
+	<data id="551" fuel="65" type="{ 2 }" /> <!-- mb_e63s_w223 -->
+	<data id="442" fuel="73" type="{ 3 }" /> <!-- mb_gt63s -->
+	<data id="409" fuel="80" type="{ 3 }" /> <!-- mb_maybach_s650_x222 -->
+	<data id="439" fuel="90" type="{ 1 }" /> <!-- mb_w124 -->
+	<data id="400" fuel="96" type="{ 2 }" /> <!-- mb_g63_amg -->
+	<data id="492" fuel="100" type="{ 2 }" /> <!-- mb_w140 -->
+	<data id="411" fuel="120" type="{ 3 }" /> <!-- mclaren_p1 -->
+	<data id="526" fuel="100" type="{ 2 }" /> <!-- mitsubishi_lancer_x -->
+	<data id="555" fuel="72" type="{ 2 }" /> <!-- nissan_370z -->
+	<data id="589" fuel="65" type="{ 2 }" /> <!-- nissan_gtr_r34 -->
+	<data id="503" fuel="74" type="{ 3 }" /> <!-- nissan_gtr_r35 -->
+	<data id="562" fuel="65" type="{ 2 }" /> <!-- nissan_silvia_s15 -->
+	<data id="603" fuel="64" type="{ 3 }" /> <!-- porsche_911_carrera_s -->
+	<data id="402" fuel="80" type="{ 3 }" /> <!-- porsche_panamera_turbo_s -->
+	<data id="579" fuel="106" type="{ 2 }" /> <!-- range_rover_sva -->
+	<data id="466" fuel="110" type="{ 3 }" /> <!-- rolls_royce_phantom -->
+	<data id="508" fuel="83" type="{ 3 }" /> <!-- rolls_royce_wraith -->
+	<data id="536" fuel="50" type="{ 2 }" /> <!-- skoda_octavia_vrs -->
+	<data id="475" fuel="60" type="{ 2 }" /> <!-- subaru_impreza_wrx -->
+	<data id="420" fuel="60" type="{ 2 }" /> <!-- toyota_camry_v70 -->
+	<data id="496" fuel="50" type="{ 3 }" /> <!-- toyota_gt86 -->
+	<data id="421" fuel="93" type="{ 2 }" /> <!-- toyota_lc_200 -->
+	<data id="491" fuel="70" type="{ 1 }" /> <!-- toyota_mark2 -->
+	<data id="587" fuel="50" type="{ 3 }" /> <!-- toyota_supra_a90 -->
+	<data id="527" fuel="39" type="{ 1 }" /> <!-- vaz_2101 -->
+	<data id="467" fuel="30" type="{ 1 }" /> <!-- vaz_2107 -->
+	<data id="567" fuel="43" type="{ 1 }" /> <!-- vaz_2109 -->
+	<data id="533" fuel="43" type="{ 1 }" /> <!-- vaz_2110 -->
+	<data id="545" fuel="70" type="{ 1 }" /> <!-- volkswagen_golf_mk1 -->
+	<data id="549" fuel="70" type="{ 1 }" /> <!-- volkswagen_passat_b3 -->
 </car>

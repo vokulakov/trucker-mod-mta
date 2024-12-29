@@ -32,7 +32,7 @@ function ShowroomGUI.drawBackground()
 end
 
 function ShowroomGUI.render()
-    local width, height = 300, sDH-40
+    local width, height = 380, sDH-40
     ShowroomGUI.wnd = guiCreateWindow(sW*((20) /sDW), sH*((sH-height)/2 /sDH), sW*((width) /sDW), sH*((height) /sDH), '', false)
 
     ShowroomGUI.title = guiCreateLabel(sW*((0) /sDW), sH*((20) /sDH), sW*((width) /sDW), sH*((55) /sDH), "АВТОСАЛОН", false, ShowroomGUI.wnd)
@@ -54,8 +54,8 @@ function ShowroomGUI.render()
     ShowroomGUI.vehicleList = guiCreateGridList(sW*(10/sDW), sH*(110 /sDH), sW*(width /sDW), sH*((height-120) /sDH), false, ShowroomGUI.wnd)
     guiGridListSetSortingEnabled(ShowroomGUI.vehicleList, false)
     guiGridListSetSelectionMode(ShowroomGUI.vehicleList, 0)
-    guiGridListAddColumn(ShowroomGUI.vehicleList, 'Модель', 0.55)
-    guiGridListAddColumn(ShowroomGUI.vehicleList, 'Цена', 0.35)
+    guiGridListAddColumn(ShowroomGUI.vehicleList, 'Модель', 0.65)
+    guiGridListAddColumn(ShowroomGUI.vehicleList, 'Цена', 0.3)
     ShowroomGUI.renderVehicleList()
     addEventHandler('onClientGUIClick', ShowroomGUI.vehicleList, ShowroomGUI.onClientGUISelectVehicle, false)
 
@@ -141,8 +141,8 @@ function ShowroomGUI.renderVehicleList(searchText)
                 if (pregFind(string.lower(name), string.lower(searchText))) then
                     local row = guiGridListAddRow(ShowroomGUI.vehicleList)
 
-                    if utf8.len(name) >= 30 then
-                        name = utf8.sub(name, 0, 30) .. '...'
+                    if (utf8.len(name) > 35) then
+                        name = utf8.sub(name, 0, 35) .. '...'
                     end
 
                     guiGridListSetItemText(ShowroomGUI.vehicleList, row, 1, name, false, true)

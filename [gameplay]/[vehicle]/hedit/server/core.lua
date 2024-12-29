@@ -89,3 +89,11 @@ addCommandHandler('hedit',
         triggerClientEvent(player, 'hedit.toggleEditor', resourceRoot)
     end
 )
+
+addEventHandler("onPlayerLogin", root, 
+    function(player)
+        if exports.tmtaUtils:isPlayerAdmin(source) then
+            bindKey(source, 'b', 'down', 'hedit')
+        end
+    end
+)

@@ -9,7 +9,7 @@ sDW, sDH = exports.tmtaUI:getScreenSize()
 Font = {
     ['RR_8'] = exports.tmtaFonts:createFontGUI('RobotoRegular', 8),
     ['RR_10'] = exports.tmtaFonts:createFontGUI('RobotoRegular', 10),
-    --['RB_10'] = exports.tmtaFonts:createFontGUI('RobotoBold', 10),
+    ['RB_10'] = exports.tmtaFonts:createFontGUI('RobotoBold', 10),
 }
 
 -- Добавить окно в стек окон dashboard

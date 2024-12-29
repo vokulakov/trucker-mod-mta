@@ -3,8 +3,6 @@
 *.json
 *.lnk
 
-*assets]/tmtaWheelModels
-*assets]/tmtaSkinModels
-*assets]/tmtaVehicleModels
-*assets]/tmtaModels
-*beta]/
+\[assets]/tmtaWheelModels
+\[assets]/tmtaSkinModels
+\[beta]/

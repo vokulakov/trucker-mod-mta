@@ -25,20 +25,11 @@ function HelpGUI.create()
 
     HelpGUI.tabPanel = guiCreateTabPanel(0, sH*((50) /sDH), sW*((width) /sDW), sH*((height) /sDH), false, HelpGUI.wnd)
   
-    -- Новости
-    --NewsTab.create(posX, posY, width, height, HelpGUI.tabPanel)
-
     -- Управление
-    --HelpGUI.controlTab = ControlsTab.create(posX, posY, width, height, HelpGUI.tabPanel)
+    HelpGUI.controlTab = ControlsTab.create(posX, posY, width, height, HelpGUI.tabPanel)
 
-    -- Донат
-    --HelpGUI.donateTab = DonateTab.create(posX, posY, width, height, HelpGUI.tabPanel)
-
-    -- Правила сервера
-    --RuleTab.create(posX, posY, width, height, HelpGUI.tabPanel)
-
-    -- О проекте
-    --AboutTab.create(posX, posY, width, height, HelpGUI.tabPanel)
+    --Донат
+    HelpGUI.donateTab = DonateTab.create(posX, posY, width, height, HelpGUI.tabPanel)
 
     -- Add window
     Dashboard.addWindow(HelpGUI.wnd, HelpGUI.setVisible, HelpGUI.getVisible)

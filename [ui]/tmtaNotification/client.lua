@@ -21,14 +21,14 @@ function getResponsiveMultipler()
 end
 
 local fonts = {
-
 	[1] = dxCreateFont("files/fonts/GTWalsheimProBold.ttf", 13);
     [2] = dxCreateFont("files/fonts/GTWalsheimProLight.ttf", 10);
     [3] = dxCreateFont("files/fonts/GTWalsheimProBold.ttf", 14);
     [4] = dxCreateFont("files/fonts/GTWalsheimProRegular.ttf", 10);
     [5] = dxCreateFont("files/fonts/GTWalsheimProMedium.ttf", 11);
-
 }
+
+local shadowTexture = dxCreateTexture('files/images/shadow.png')
 
 alertTypes = {
 	info = {"Informação", "files/images/shadow.png", {255, 255, 255}, "files/sounds/bulle.wav"},
@@ -103,7 +103,10 @@ addEventHandler("onClientRender", getRootElement(),
 				infobox.state = false
 			end
 		end
-		dxDrawImage(0, 0, screenX, screenY, "files/images/shadow.png", 0, 0, 0, tocolor(255, 255, 255, 255*alpha), false)
+		
+		if isElement(shadowTexture) then
+			dxDrawImage(0, 0, screenX, screenY, shadowTexture, 0, 0, 0, tocolor(255, 255, 255, 255*alpha), false)
+		end
 
 		-- ** töltő csík
 		local progress = (tickCount - infobox.moveDownTick) / (infobox.moveUpTick - infobox.moveDownTick)

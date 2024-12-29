@@ -1,5 +1,0 @@
-<meta>
-	<oop>true</oop>
-	<script src="client_pos.lua" type="client" cache="false"/>
-	<script src="client_tp.lua" type="client" cache="false"/>
-</meta>
