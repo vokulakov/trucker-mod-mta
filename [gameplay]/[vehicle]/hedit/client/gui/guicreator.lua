@@ -44,7 +44,7 @@ function startBuilding ( )
     
     forceVehicleChange ( )
     
-    --bindKey ( getUserConfig ( "usedKey" ), "down", toggleEditor )
+    -- bindKey ( getUserConfig ( "usedKey" ), "down", toggleEditor )
     --addCommandHandler ( getUserConfig ( "usedCommand" ), toggleEditor )
     
     return true
@@ -104,9 +104,11 @@ function buildMainWindow()
             if not isElement(heditGUI.window) then 
                 return
             end 
-            setVisible(false)
+            toggleEditor()
             if isTuningGarage then
                 exports.tmtaVehicleTuning:setWindowVisible(true)
+            else
+                showCursor(false)
             end
         end, false)
 
@@ -116,7 +118,7 @@ function buildMainWindow()
                 if not isElement(heditGUI.window) then 
                     return
                 end 
-                setVisible(false)
+                toggleEditor()
             end, false)
     end
 

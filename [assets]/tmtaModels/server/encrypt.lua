@@ -81,6 +81,18 @@ addCommandHandler("encmod",
         file:close()
 
         saveFile("client/paths.lua", "ModelPaths = "..pprint.pformat(paths))
+
+        -- Meta
+        local _metaData = ""
+        local _filenames = {}
+        for _, data in pairs(paths) do
+            if not _filenames[data.filename] then
+                _metaData = _metaData .. string.format('\n<file src="data/%s" />', data.filename)
+                _filenames[data.filename] = true
+            end
+        end
+        saveFile("client/metaTemplate.xml", _metaData)
+
         outputDebugString("Encrypt done")
     end
 )

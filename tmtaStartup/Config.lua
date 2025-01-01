@@ -42,6 +42,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaChat',
     'tmtaTrailer',
     'tmtaTruck',
+    'tmtaTradeMC',
 
     -- gameplay --
     'defaultstats',
@@ -98,6 +99,8 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
 
     'tmtaJobLoader',
 
+    'tmtaUserBonus',
+
     -- graphics --
     'tmtaReplacingTextures',
     'tmtaShaderMarker',
@@ -106,6 +109,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
 
     'winter_mod',
     'winter_snow',
+    'winter_spawn',
 
     -- misc --
     'lights',

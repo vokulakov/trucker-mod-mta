@@ -3,7 +3,7 @@ local streamedElements = {}
 local WIDTH = 250
 local HEIGHT = 200
 local SCALE = 5.8
-local MAX_DISTANCE = 50
+local MAX_DISTANCE = 80
 
 local FONT = exports.tmtaFonts:createFontDX('RobotoBold', 24)
 

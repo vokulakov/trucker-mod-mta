@@ -1,0 +1,12 @@
+<meta>
+	<oop>true</oop>
+	<file src='assets/2025.col' />
+	<file src='assets/2025.dff' />
+	<file src='assets/2025.txd' />
+	<file src='assets/christmas_tree.col' />
+	<file src='assets/christmas_tree.dff' />
+	<file src='assets/christmas_tree.txd' />
+	
+	<script type='client' src='client.lua' cache='false' />
+	<script type='server' src='server.lua' />
+</meta>

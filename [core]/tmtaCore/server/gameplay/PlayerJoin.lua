@@ -19,6 +19,10 @@ local function handlePlayerFirstSpawn(player)
 	player:setData("position", tostring(toJSON(location.position)))
     player:setData("rotation", tostring(toJSON(location.rotation)))
 
+    -- Ближайшая база дальнобойщика
+    _currentPoint = exports.tmtaUtils:getNearestElementByType(player, 'blip', _, 'icon', 'blipTrucker')
+    exports.tmtaNavigation:setPointWithMarker(_currentPoint, 'Начните карьеру дальнобойщика', player)
+
 	PlayerSpawn.spawn(player)
 end
 
@@ -26,7 +30,8 @@ local function sendWelcomeMessage(player)
     exports.tmtaChat:clearChat()
     exports.tmtaChat:sendGlobalMessage("#00b9ff► Приветствуем на #ffffffTRUCKER × MTA", nil, player)
     exports.tmtaChat:sendGlobalMessage("#00b9ff► Наша официальная страница #ffffffvk.com/truckermta #00b9ffприсоединяйся!", nil, player)
-    exports.tmtaChat:sendGlobalMessage("#d43422► Администрация проекта желает вам приятной игры!", nil, player)
+    exports.tmtaChat:sendGlobalMessage("#00b9ff► Поддержать проект #fffffftruckermta.ru", nil, player)
+	exports.tmtaChat:sendGlobalMessage("#d43422► Администрация проекта желает вам приятной игры!", nil, player)
 end
 
 addEventHandler(resourceName..".login", root, 

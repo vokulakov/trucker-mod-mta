@@ -37,4 +37,5 @@
     <export type="server" function="updateUserDataById" />
     <export type="server" function="giveUserMoney" />
     <export type="server" function="userExists" />
+    <export type="server" function="getUserDataByLogin" />
 </meta>

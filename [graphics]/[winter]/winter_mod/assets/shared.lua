@@ -245,7 +245,7 @@ TEXTURES_SNOW = {
 		'ws_football_lines2', 'ws_grvl_desgrassblend', 'ws_oldpainted', 'ws_patchygravel', 
 		'ws_rooftarmac2', 'ws_rotten_concrete1', 'ws_slatetiles', 'ws_sub_pen_conc3', 
 		'ws_trainstationwin2', 'ws_whiteplaster_top', 'concretedust2_256128', 'desmudtrail', 'dirttracksgrass256',
-		'des_dirt1_grass', 'vegasdirtyroad3_256', 'desmudtrail2'
+		'des_dirt1_grass', 'vegasdirtyroad3_256', 'desmudtrail2', 'bow_abpave_gen',
 	},
 
 	['assets/img/snow/cw2_mountrock.png'] = { 'cw2_mountrock' },

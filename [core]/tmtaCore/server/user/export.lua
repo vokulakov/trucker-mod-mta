@@ -31,3 +31,17 @@ function giveUserMoney(userId, amount)
 
 	return User.update(userId, {money = tonumber(userMoney + amount)})
 end
+
+--- Получить данные пользователя по логину
+function getUserDataByLogin(login, fields)
+	if (not login or type(login) ~= "string") then
+        return false
+    end
+
+	local userData = User.getByLogin(login, fields)
+    if (type(userData) ~= 'table' or #userData == 0) then
+        return false
+    end
+
+	return userData[1]
+end

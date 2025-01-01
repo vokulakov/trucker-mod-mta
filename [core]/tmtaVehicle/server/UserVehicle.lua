@@ -5,6 +5,7 @@ USER_VEHICLE_TABLE_NAME = 'userVehicle'
 function UserVehicle.setup()
     exports.tmtaSQLite:dbTableCreate(USER_VEHICLE_TABLE_NAME, {
         {name = "model", type = "INTEGER", options = "NOT NULL"},
+        {name = "modelName", type = "TEXT", options = "NOT NULL"},
         {name = "vin", type = "varchar", size = 17, options = "UNIQUE NOT NULL"},
 
         {name = "price", type = "INTEGER", options = "DEFAULT 0 NOT NULL"}, -- государственная цена транспорта 
@@ -30,6 +31,8 @@ function UserVehicle.setup()
     },
         "FOREIGN KEY (userId)\n\tREFERENCES user (userId)\n\tON DELETE CASCADE,\n"..
         "FOREIGN KEY (licensePlateId)\n\tREFERENCES licensePlate (licensePlateId)\n\tON DELETE SET NULL")
+
+    --exports.tmtaSQLite:dbTableAddColumn(USER_VEHICLE_TABLE_NAME, 'modelName', 'TEXT')
 end
 
 local function generateVehicleIdentificationNumber()
@@ -62,6 +65,7 @@ function UserVehicle.add(userId, model, fields, callbackFunctionName, ...)
     fields.model = model
     fields.vin = generateVehicleIdentificationNumber()
     fields.userId = userId
+    fields.modelName = getVehicleNameFromModel(model)
 
     local success = exports.tmtaSQLite:dbTableInsert(USER_VEHICLE_TABLE_NAME, fields)
     success = not not success
