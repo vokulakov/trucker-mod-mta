@@ -8,7 +8,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaModule',
     'tmtaUtils',
     'tmtaSQLite',
-    -- --'tmtaBackup',
+    'tmtaBackup',
 
     'tmtaBlip',
     
@@ -23,10 +23,11 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaSounds',
     'tmtaTextures',
     'tmtaShaders',
-    'tmtaModels',
     'tmtaWheelModels',
     'tmtaSkinModels',
-
+	'tmtaObjectModels',
+	'tmtaVehicleModels',
+	
     -- common --
     'tmtaExperience',
     'tmtaMoney',
