@@ -163,6 +163,8 @@ function Vehicle.destroy(vehicle)
 		destroyElement(colsphere)
 	end
 
+	saveVehicle(vehicle, true)
+	
 	for dataName in pairs(getAllElementData(vehicle)) do
 		vehicle:removeData(dataName)
     end
@@ -173,7 +175,6 @@ function Vehicle.destroy(vehicle)
 		end
 	end
 	
-	saveVehicle(vehicle, true)
 	_createdVehicle[vehicle] = nil
 
 	return destroyElement(vehicle)
