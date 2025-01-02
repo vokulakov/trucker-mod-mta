@@ -8,7 +8,7 @@ Config.WITHDRAWAL_FEE = 5 -- комиссия за снятие денег с б
 
 Config.ACCRUE_REVENUE_DAY = 7 -- день получения дохода/налога с момента покупки бизнеса
 
-Config.REVENUE_TAX = 15 -- налог на прибыль (в %)
+Config.REVENUE_TAX = 23 -- налог на прибыль (в %)
 Config.TAX_PAYMENT_PERIOD = 3 -- сколько дней дается на оплату налога
 
 Config.PICKUP_ID = 1274 -- ID пикапа
