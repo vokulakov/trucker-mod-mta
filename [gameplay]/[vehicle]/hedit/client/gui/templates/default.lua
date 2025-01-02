@@ -7,7 +7,7 @@ template.window = {
     size = { 374, 513 },
     centered = true,
     sizable = false,
-    movable = true,
+    movable = false,
     
     {
         type = "gridlist",

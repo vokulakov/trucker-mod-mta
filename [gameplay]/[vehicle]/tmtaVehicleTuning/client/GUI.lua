@@ -111,4 +111,3 @@ end)
 
 -- Exports
 setWindowVisible = UI.setWindowVisible
-isWindowVisible = function() return isElement(GUI.wnd) end

@@ -24,5 +24,5 @@
     <!-- Exports -->
     <export type="shared" function="getComponents" />
     <export type="client" function="setWindowVisible" />
-    <export type="client" function="isWindowVisible" />
+    <export type="client" function="isPlayerOnTuning" />
 </meta>

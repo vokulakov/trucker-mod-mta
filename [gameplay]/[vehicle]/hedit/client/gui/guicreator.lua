@@ -81,7 +81,7 @@ function buildMainWindow()
     end
     
     guiWindowSetSizable(heditGUI.window, wnd.sizable or false)
-    guiWindowSetMovable(heditGUI.window, wnd.movable or false)
+    guiWindowSetMovable(heditGUI.window, wnd.movable)
     
     guiElements[heditGUI.window] = { "window", "window", "none", 1, wnd.events }
     
@@ -105,7 +105,7 @@ function buildMainWindow()
             end 
             toggleEditor()
             
-            if exports.tmtaVehicleTuning:isWindowVisible() then
+            if exports.tmtaVehicleTuning:isPlayerOnTuning() then
                 exports.tmtaVehicleTuning:setWindowVisible(true)
             else
                 showCursor(false)

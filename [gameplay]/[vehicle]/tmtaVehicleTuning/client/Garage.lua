@@ -1,9 +1,9 @@
 Garage = {}
 
-local isPlayerOnTuning = false 
+local _isPlayerOnTuning = false 
 
 function Garage.playerEnter()
-    if isPlayerOnTuning then 
+    if _isPlayerOnTuning then 
         return
     end 
 
@@ -25,7 +25,7 @@ function Garage.playerEnter()
             fadeCamera(true, 1)
         end, 1000, 1)
     
-    isPlayerOnTuning = true
+        _isPlayerOnTuning = true
 
     --[[
     setTimer(function ()
@@ -39,7 +39,7 @@ addEvent("tmtaVehTuning.onPlayerEnterGarage", true)
 addEventHandler("tmtaVehTuning.onPlayerEnterGarage", root,  Garage.playerEnter)
 
 function Garage.playerExit()
-    if not isPlayerOnTuning then 
+    if not _isPlayerOnTuning then 
         return
     end 
 
@@ -89,7 +89,7 @@ function Garage.playerExit()
     exports.tmtaUI:setPlayerComponentVisible("all", true)
 	showChat(true)
 
-    isPlayerOnTuning = false
+    _isPlayerOnTuning = false
     toggleAllControls(true, true, true)
     fadeCamera(true, 1)
 end
@@ -102,3 +102,8 @@ addCommandHandler('tun', function()
     triggerServerEvent("tmtaVehTuning.onPlayerExitGarage", localPlayer)
 end)
 ]]
+
+-- exports
+isPlayerOnTuning = function ()
+    return _isPlayerOnTuning or false
+end
