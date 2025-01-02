@@ -73,7 +73,6 @@ end
 
 
 function buildMainWindow()
-    local isTuningGarage = exports.tmtaVehicleTuning:isWindowVisible() or false
     local wnd = template.window
     heditGUI.window = guiCreateElement ( wnd.type, wnd.pos[1], wnd.pos[2], wnd.size[1], wnd.size[2], getText ( "windowHeader" ), wnd.alpha, wnd.hovercolor )
     
@@ -82,7 +81,7 @@ function buildMainWindow()
     end
     
     guiWindowSetSizable(heditGUI.window, wnd.sizable or false)
-    guiWindowSetMovable(heditGUI.window, isTuningGarage and false or wnd.movable)
+    guiWindowSetMovable(heditGUI.window, wnd.movable or false)
     
     guiElements[heditGUI.window] = { "window", "window", "none", 1, wnd.events }
     
@@ -105,22 +104,21 @@ function buildMainWindow()
                 return
             end 
             toggleEditor()
-            if isTuningGarage then
+            
+            if exports.tmtaVehicleTuning:isWindowVisible() then
                 exports.tmtaVehicleTuning:setWindowVisible(true)
             else
                 showCursor(false)
             end
         end, false)
 
-    if isTuningGarage then
-        addEventHandler('tmtaVehTuning.onPlayerExitGarage', root,
-            function()
-                if not isElement(heditGUI.window) then 
-                    return
-                end 
-                toggleEditor()
-            end, false)
-    end
+    addEventHandler('tmtaVehTuning.onPlayerExitGarage', root,
+        function()
+            if not isElement(heditGUI.window) then 
+                return
+            end 
+            toggleEditor()
+        end, false)
 
     return heditGUI.window
 end
