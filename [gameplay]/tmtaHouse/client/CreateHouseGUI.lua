@@ -213,11 +213,10 @@ function CreateHouseGUI.onPriceChanged()
     if not price then
         return
     end
-    local parkingSpaces = 0
+    local parkingSpaces = 1
     for _, data in pairs(Config.parkingSpacesDependingOnprice) do
-        if price <= tonumber(data.minPrice) then
+        if (price >= tonumber(data.minPrice)) then
             parkingSpaces = data.parkingSpaces
-            break
         end
     end
     if parkingSpaces == 0 then
