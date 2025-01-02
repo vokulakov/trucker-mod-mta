@@ -77,14 +77,5 @@ addEventHandler("tmtaUI.onSetPlayerComponentVisible", root,
     end
 )
 
-addEventHandler("onClientResourceStart", resourceRoot,
-    function()
-        PlayerGUI.create()
-        SettingsGUI.create()
-        HelpGUI.create()
-        Dashboard.visible = true
-    end
-)
-
 -- Events
 addEvent("tmtaDashboard.onChangeVisible", true)

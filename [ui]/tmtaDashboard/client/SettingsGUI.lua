@@ -95,6 +95,9 @@ end
 
 bindKey(SettingsGUI.params['bindKey'], 'down',
     function()
+        if not isElement(SettingsGUI.wnd) then
+            SettingsGUI.create()
+        end
         if not Dashboard.getVisible() then
             return
         end

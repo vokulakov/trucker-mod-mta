@@ -106,6 +106,9 @@ end
 
 bindKey(PlayerGUI.params['bindKey'], 'down',
     function()
+        if not isElement(PlayerGUI.wnd) then
+            PlayerGUI.create()
+        end
         if not Dashboard.getVisible() then
             return
         end

@@ -58,6 +58,9 @@ end
 
 bindKey(HelpGUI.params['bindKey'], 'down',
     function()
+        if not isElement(HelpGUI.wnd) then
+            HelpGUI.create()
+        end
         if not Dashboard.getVisible() then
             return
         end
