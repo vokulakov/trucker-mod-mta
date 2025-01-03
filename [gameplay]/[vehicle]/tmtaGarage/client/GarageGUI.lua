@@ -114,7 +114,7 @@ function GarageGUI.updateVehicleList(playerVehicles)
                     numberPlate = exports.tmtaVehicleLicensePlate:formatLicensePlateToString(vehicle.numberPlateType, vehicle.numberPlate)
                 end
     
-                guiGridListSetItemText(GarageGUI.vehicleList, row, 1, utf8.len(name) >= 22 and utf8.sub(name, 0, 22) .. '...' or name, false, true)
+                guiGridListSetItemText(GarageGUI.vehicleList, row, 1, utf8.len(name) > 23 and utf8.sub(name, 0, 23) .. '...' or name, false, true)
                 guiGridListSetItemData(GarageGUI.vehicleList, row, 1, {
                     userVehicleId = vehicle.userVehicleId,
                     model = vehicle.model,
