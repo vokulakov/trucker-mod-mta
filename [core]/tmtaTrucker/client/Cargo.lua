@@ -765,7 +765,6 @@ addEvent('tmtaTrucker.onOrderAccept', true)
 addEventHandler('tmtaTrucker.onOrderAccept', resourceRoot,
     function(orderId)
         Cargo.removeOrderFromList(orderId)
-        iprint('onOrderAccept: '..orderId)
     end
 )
 
@@ -773,7 +772,6 @@ addEvent('tmtaTrucker.onOrderCanceled', true)
 addEventHandler('tmtaTrucker.onOrderCanceled', resourceRoot,
     function(orderId)
         Cargo.addOrderToList(orderId)
-        iprint('onOrderCanceled: '..orderId)
     end
 )
 
@@ -781,7 +779,6 @@ addEvent('tmtaTrucker.onOrderComplete', true)
 addEventHandler('tmtaTrucker.onOrderComplete', resourceRoot,
     function(orderId)
         Cargo.removeOrderFromList(orderId)
-        iprint('onOrderComplete: '..orderId)
     end
 )
 
