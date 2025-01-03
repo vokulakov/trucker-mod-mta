@@ -43,7 +43,7 @@ function Greenzone.onPlayerZone(player)
             toggleControl(player, control, false)
         end
     end
-    playSoundFrontEnd(player, 12)
+  
     player:setData("inGreenZone", true)
 end
 
@@ -94,7 +94,7 @@ function Greenzone.onElementLeave(element)
         end
 
         element:removeData("inGreenZone")
-        playSoundFrontEnd(element, 20)
+      
         Players[element] = nil
 
     elseif element.type == "vehicle" then 
