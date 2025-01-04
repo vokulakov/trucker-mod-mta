@@ -897,7 +897,7 @@ addEventHandler('tmtaTrucker.onPlayerOrderAccept', resourceRoot,
         Cargo.closeWindow()
         local order = Cargo.getOrderDataById(orderId)
         local point = Cargo.createTargetMarker(order.loadingPoint.position.x, order.loadingPoint.position.y, order.loadingPoint.position.z)
-        exports.tmtaNavigation:setPoint(point, string.format("Точка загрузки (%s)", order.loadingPoint.name))
+        exports.tmtaNavigation:setPoint(point, string.format("Точка загрузки\n(%s - %s)", order.loadingPoint.name, loadingPoint.location.city))
         addEventHandler("onClientMarkerHit", point, Cargo.onTruckLoadMarkerHit)
     end
 )
@@ -952,7 +952,7 @@ addEventHandler('tmtaTrucker.onAddCargoToTruck', resourceRoot,
         end
 
         local point = Cargo.createTargetMarker(deliveryPoint.position.x, deliveryPoint.position.y, deliveryPoint.position.z)
-        exports.tmtaNavigation:setPoint(point, string.format("Точка разгрузки (%s)", deliveryPoint.name))
+        exports.tmtaNavigation:setPoint(point, string.format("Точка разгрузки\n(%s - %s)", order.loadingPoint.name, loadingPoint.location.city))
         addEventHandler("onClientMarkerHit", point, Cargo.onTruckUnloadMarkerHit)
 
         Utils.showNotice("Отправляйтесь на разгрузку. Координаты уже в #FFA07Aнавигаторе #FFFFFF(нажмите #FFA07A'F11'#FFFFFF)")

@@ -1,9 +1,9 @@
 Config = {}
 
-Config.DRIVER_REVENUE_PER_M         = 1.078      -- коэффицент дохода за М пути
-Config.DRIVER_REVENUE_PER_WEIGHT    = 0.186      -- коэффицент дохода за КГ груза
-Config.DRIVER_EXP_PER_M             = 0.005     -- коэффицент опыта за М пути
-Config.DRIVER_EXP_PER_WEIGHT        = 0.000126  -- коэффицент опыта за КГ грузами
+Config.DRIVER_REVENUE_PER_M         = 1.058      -- коэффицент дохода за М пути
+Config.DRIVER_REVENUE_PER_WEIGHT    = 0.136      -- коэффицент дохода за КГ груза
+Config.DRIVER_EXP_PER_M             = 0.004     -- коэффицент опыта за М пути
+Config.DRIVER_EXP_PER_WEIGHT        = 0.000121  -- коэффицент опыта за КГ грузами
 
 Config.RENT_TIME = 60 -- время аренды ТС в минутах
 Config.ORDER_LIST_UPDATE_TIME = 60 -- время обновления списка заказов

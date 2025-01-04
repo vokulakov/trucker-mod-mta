@@ -2,7 +2,7 @@ Case = {}
 
 local playerCases = {}
 
-local MIN_MONEY_LIMIT = 100000 -- сколько минимум должно быть денег, чтобы появился кейс
+local MIN_MONEY_LIMIT = 1000000 -- сколько минимум должно быть денег, чтобы появился кейс
 
 function Case.createToPlayer(player)
 	if playerCases[player] then
