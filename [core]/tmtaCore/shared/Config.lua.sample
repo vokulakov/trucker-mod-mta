@@ -9,7 +9,7 @@ Config.SERVER = {
 	SERVER_COMMUNITY = "vk.com/truckermta", -- паблик сервера
     SITE = "truckermta.ru", -- сайт сервера
 
-	SERVER_PASSWORD = "" -- пароль
+	SERVER_PASSWORD = "", -- пароль
 }
 
 Config.AUTOSAVE_INTERVAL = 5 -- время автосохранения в минутах

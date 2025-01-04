@@ -17,17 +17,6 @@ addEventHandler('onResourceStop', resourceRoot,
     end
 )
 
-addEventHandler('tmtaCore.register', root,
-    function(success)
-        local player = source
-        if (not success or not isElement(player)) then
-            return
-        end
-
-        Trucker.getPlayerStatistic(player)
-    end
-)
-
 addEventHandler('tmtaCore.login', root, 
     function(success)
         local player = source

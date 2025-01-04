@@ -31,18 +31,6 @@ addEventHandler("onResourceStart", resourceRoot,
     end
 )
 
-addEventHandler('tmtaCore.register', root,
-    function(success)
-        local player = source
-        if (not success or not isElement(player)) then
-            return
-        end
-
-        local userId = player:getData('userId')
-        RevenueService.add(userId, "callbackGetUserData", {player = player})
-    end
-)
-
 addEventHandler('tmtaCore.login', root, 
     function(success)
         local player = source

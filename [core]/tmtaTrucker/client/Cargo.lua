@@ -9,7 +9,7 @@ local _targetMarker
 local _targetBlip
 local _reloadTimer, _durationTimer
 
-local width, height = 1024, 768
+local width, height = 1024, 680
 
 function Cargo.renderWindow()
     GUI.wnd = guiCreateWindow(sW*(0/sDW), sH*(0/sDH), sW*(width/sDW), sH*(height/sDH), "Меню дальнобойщика [F10]", false)
@@ -765,7 +765,6 @@ addEvent('tmtaTrucker.onOrderAccept', true)
 addEventHandler('tmtaTrucker.onOrderAccept', resourceRoot,
     function(orderId)
         Cargo.removeOrderFromList(orderId)
-        iprint('onOrderAccept: '..orderId)
     end
 )
 
@@ -773,7 +772,6 @@ addEvent('tmtaTrucker.onOrderCanceled', true)
 addEventHandler('tmtaTrucker.onOrderCanceled', resourceRoot,
     function(orderId)
         Cargo.addOrderToList(orderId)
-        iprint('onOrderCanceled: '..orderId)
     end
 )
 
@@ -781,7 +779,6 @@ addEvent('tmtaTrucker.onOrderComplete', true)
 addEventHandler('tmtaTrucker.onOrderComplete', resourceRoot,
     function(orderId)
         Cargo.removeOrderFromList(orderId)
-        iprint('onOrderComplete: '..orderId)
     end
 )
 

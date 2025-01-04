@@ -162,7 +162,7 @@ function TruckRental.onClientGUIClickBtnRent()
         return
     end
 
-    if (truck.level > exports.tmtaExperience:getPlayerLvl()) then
+    if (truck.level > exports.tmtaExperience:getPlayerLvl() and not exports.tmtaCore:isTestServer()) then
         return Utils.showNotice("Вашего опыта не хватает для аренды #FFA07A"..truck.name)
     elseif (exports.tmtaMoney:getPlayerMoney() < tonumber(truck.price)) then
         return Utils.showNotice("У вас нехватает денежных средств для аренды #FFA07A"..truck.name)
