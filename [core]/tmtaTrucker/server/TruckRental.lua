@@ -63,7 +63,7 @@ addEventHandler("tmtaTrucker.onPlayerStartTruckRent", resourceRoot,
             return 
         end
         
-        if (truckData.level > exports.tmtaExperience:getPlayerLvl(player)) then
+        if (truckData.level > exports.tmtaExperience:getPlayerLvl(player) and not exports.tmtaCore:isTestServer()) then
             return Utils.showNotice("Вашего опыта не хватает для аренды #FFA07A"..truckData.name, player)
         elseif (exports.tmtaMoney:getPlayerMoney(player) < tonumber(truckData.price)) then
             return Utils.showNotice("У вас нехватает денежных средств для аренды #FFA07A"..truckData.name, player)
