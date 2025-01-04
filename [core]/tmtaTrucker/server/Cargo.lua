@@ -480,7 +480,8 @@ addEventHandler('tmtaTrucker.onTruckUnloadMarkerHit', resourceRoot,
             return
         end 
 
-        setTimerPaused(orderTimer, true)
+		--TODO: не работает в текущей версии сервера
+        --setTimerPaused(orderTimer, true)
     end
 )
 
