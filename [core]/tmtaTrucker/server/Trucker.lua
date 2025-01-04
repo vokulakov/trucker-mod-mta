@@ -68,6 +68,10 @@ function Trucker.getPlayerStatistic(player)
     end
 
     local userId = player:getData('userId')
+	if not userId then
+		return false
+	end
+		
     return Trucker.getUserDataById(userId, {}, 'dbTruckerGetUserData', {player = player})
 end
 
