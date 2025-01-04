@@ -16,7 +16,7 @@ addEventHandler("onClientMarkerHit", root, function(player)
     end 
 
     local owner = player.vehicle:getData("owner")
-    if not owner or owner ~= player then
+    if (not owner or owner ~= player and not exports.tmtaCore:isTestServer()) then
         exports.tmtaNotification:showInfobox( 
             "info", 
             "Внимание!", 
@@ -24,7 +24,7 @@ addEventHandler("onClientMarkerHit", root, function(player)
             _, 
             {240, 146, 115}
         )
-        return
+        return 
     end
 
     exports.tmtaUI:setPlayerComponentVisible("all", false)
