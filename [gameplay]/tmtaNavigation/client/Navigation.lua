@@ -49,7 +49,7 @@ addEventHandler('onClientRender', root,
                     local posY = 90
                     if data.title then
                         dxDrawText3D('#f2ab12'..data.title, sx-10/zoom+1, sy-posY/zoom+1, sx+1, sy+1, tocolor(255, 255, 255, 255), 1, FONT.DX_RB_10, 'center', 'top')
-                        posY = posY - 20
+                        posY = posY - 40
                     end
 
                     local distance = tostring(exports.tmtaUtils:comma_value(math.floor(distance))) .. " м"
