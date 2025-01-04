@@ -8,6 +8,7 @@
     <script type="shared" src="shared/Config.lua" cache="false" />
     <script type="shared" src="shared/UserCheck.lua" cache="false" />
     <script type="shared" src="shared/include.lua" cache="false" />
+    <script type="shared" src="shared/exports.lua" />
 
     <!-- Client -->
     <script type="client" src="client/gameplay/PlayerAFK.lua" cache="false" />
@@ -38,4 +39,6 @@
     <export type="server" function="giveUserMoney" />
     <export type="server" function="userExists" />
     <export type="server" function="getUserDataByLogin" />
+
+    <export type="shared" function="isTestServer" />
 </meta>

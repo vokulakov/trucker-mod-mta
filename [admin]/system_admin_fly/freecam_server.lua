@@ -5,31 +5,33 @@ end
 local isDebug = false
 
 function setAdminMode (player)
-    if (isObjectInACLGroup("user." ..getAccountName(getPlayerAccount(player)), aclGetGroup("Admin"))) then
-        local veh = getPedOccupiedVehicle (player)
-		if isDebug == false then
-			if not veh then
-				local x,y,z = getElementPosition(player)
-				setPlayerFreecamEnabled(player, x, y, z)
-				setElementAlpha(player, 0)
-				setElementFrozen(player, true)
-			else
-				local x,y,z = getElementPosition(veh)
-				setPlayerFreecamEnabled(veh, x, y, z)
-				setElementFrozen(veh, true)
-			end
-	    else
-			if not veh then
-				setPlayerFreecamDisabled(player)
-				setElementAlpha(player, 255)
-				setElementFrozen(player, false)
-			else
-				setPlayerFreecamDisabled(veh)
-				setElementFrozen(veh, false)
-			end
-	    end
-	    isDebug = not isDebug
+	if (not exports.tmtaUtils:isPlayerAdmin(player) or not exports.tmtaCore:isTestServer()) then
+		return false
 	end
+	
+	local veh = getPedOccupiedVehicle (player)
+	if isDebug == false then
+		if not veh then
+			local x,y,z = getElementPosition(player)
+			setPlayerFreecamEnabled(player, x, y, z)
+			setElementAlpha(player, 0)
+			setElementFrozen(player, true)
+		else
+			local x,y,z = getElementPosition(veh)
+			setPlayerFreecamEnabled(veh, x, y, z)
+			setElementFrozen(veh, true)
+		end
+	else
+		if not veh then
+			setPlayerFreecamDisabled(player)
+			setElementAlpha(player, 255)
+			setElementFrozen(player, false)
+		else
+			setPlayerFreecamDisabled(veh)
+			setElementFrozen(veh, false)
+		end
+	end
+	isDebug = not isDebug
 end
 
 addEventHandler ("onPlayerJoin",root,function()

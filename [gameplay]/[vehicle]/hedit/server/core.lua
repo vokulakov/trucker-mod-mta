@@ -82,8 +82,7 @@ end
 
 addCommandHandler('hedit', 
     function(player)
-        if not exports.tmtaUtils:isPlayerAdmin(player) then
-            outputDebugString('No access permission', 1)
+        if (not exports.tmtaUtils:isPlayerAdmin(player) or not exports.tmtaCore:isTestServer()) then
             return false
         end
         triggerClientEvent(player, 'hedit.toggleEditor', resourceRoot)
@@ -91,9 +90,10 @@ addCommandHandler('hedit',
 )
 
 addEventHandler("onPlayerLogin", root, 
-    function(player)
-        if exports.tmtaUtils:isPlayerAdmin(source) then
-            bindKey(source, 'b', 'down', 'hedit')
+    function()
+        if (not exports.tmtaUtils:isPlayerAdmin(source) or not exports.tmtaCore:isTestServer()) then
+            return false
         end
+        bindKey(source, 'b', 'down', 'hedit')
     end
 )
