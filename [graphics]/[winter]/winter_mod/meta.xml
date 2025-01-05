@@ -329,9 +329,6 @@
 	<file src='assets/img/others/plantertop_law.png' />
 	<file src='assets/img/others/ws_concretenew_step.png' />
 	
-	<!-- SHARED -->
-	<script src="assets/shared.lua" type="shared" cache="false"/>
-	
 	<!-- ICE -->
 	<file src="map/ice" />
 	<script src="map/client.lua" type="client" cache="false"/>
