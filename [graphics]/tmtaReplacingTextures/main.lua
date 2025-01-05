@@ -49,16 +49,29 @@ local textures = {
 
 }
 
-addEventHandler("onClientResourceStart", resourceRoot, function()
-	for i = 1, #textures do
-		local shader = exports.tmtaShaders:createShader('texreplace')
-		dxSetShaderValue(shader, "TEXTURE_REMAP", dxCreateTexture(textures[i][1]))
-		if type(textures[i][2]) == 'table' then
-			for _, textureName in pairs(textures[i][2]) do
-				engineApplyShaderToWorldTexture(shader, textureName)
+addEventHandler("onClientResourceStart", resourceRoot, 
+	function()
+		for i = 1, #textures do
+			local shader = exports.tmtaShaders:createShader('texreplace')
+			dxSetShaderValue(shader, "TEXTURE_REMAP", dxCreateTexture(textures[i][1]))
+			if type(textures[i][2]) == 'table' then
+				for _, textureName in pairs(textures[i][2]) do
+					engineApplyShaderToWorldTexture(shader, textureName)
+				end
+			else
+				engineApplyShaderToWorldTexture(shader, textures[i][2])
 			end
-		else
-			engineApplyShaderToWorldTexture(shader, textures[i][2])
 		end
 	end
-end)
+)
+
+addEventHandler('onClientResourceStop', resourceRoot,
+	function()
+		for _, texture in ipairs(getElementsByType('texture', resourceRoot)) do
+			destroyElement(texture)
+		end
+		for _, shader in ipairs(getElementsByType('shader', resourceRoot)) do
+			destroyElement(shader)
+		end
+	end
+)
