@@ -26,7 +26,7 @@ end
 
 function Trucker.addUserData(userId, callbackFunctionName, ...)
     if type(userId) ~= "number" then
-		executeCallback(_G[callbackFunctionName], false)
+		--executeCallback(_G[callbackFunctionName], false)
 		outputDebugString("Trucker.addUser: bad arguments", 1)
 		return false
 	end
@@ -36,7 +36,7 @@ function Trucker.addUserData(userId, callbackFunctionName, ...)
     })
 
     if not success then
-		executeCallback(_G[callbackFunctionName], false)
+		--executeCallback(_G[callbackFunctionName], false)
         outputDebugString("Trucker.addUserData: failed to add", 1)
         return false
 	end
@@ -46,7 +46,7 @@ end
 
 function Trucker.updateUserData(userId, fields, callbackFunctionName, ...)
     if (type(userId) ~= "number" or type(fields) ~= "table") then
-        executeCallback(_G[callbackFunctionName], false)
+        --executeCallback(_G[callbackFunctionName], false)
         return false
     end
     return exports.tmtaSQLite:dbTableUpdate(TRUCKER_TABLE_NAME, fields, {userId = userId}, callbackFunctionName, ...)
@@ -54,7 +54,7 @@ end
 
 function Trucker.getUserDataById(userId, fields, callbackFunctionName, ...)
     if (type(userId) ~= "number" or type(fields) ~= "table") then
-		executeCallback(_G[callbackFunctionName], false)
+		--executeCallback(_G[callbackFunctionName], false)
 		outputDebugString("Trucker.getUserDataById: bad arguments", 1)
 		return false
 	end
@@ -89,6 +89,10 @@ function dbTruckerGetUserData(result, params)
 
     if (type(result) ~= 'table' or #result == 0) then
         local userId = player:getData('userId')
+		if not userId then
+			return false
+		end
+	
         return Trucker.addUserData(userId, "dbTruckerGetUserData", {player = player})
     end
 
