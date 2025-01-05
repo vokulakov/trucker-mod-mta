@@ -1,4 +1,5 @@
 Winter = {}
+local createdShader = {}
 
 local isWinterVisible = false
 
@@ -556,6 +557,8 @@ function Winter.start()
         for _, textureName in pairs(textureNames) do
             engineApplyShaderToWorldTexture(shader, textureName)
         end
+		
+		createdShader[shader] = textureNames
     end
 
     isWinterVisible = true
@@ -568,13 +571,19 @@ function Winter.stop()
 		return false
 	end
 
+	for shader, textures in pairs(createdShader) do
+	    for _, textureName in pairs(textures) do
+            engineRemoveShaderFromWorldTexture(shader, textureName)
+        end
+		destroyElement(shader)
+		createdShader[shader] = nil
+	end
+	
     for _, texture in ipairs(getElementsByType('texture', resourceRoot)) do
         destroyElement(texture)
     end
-    for _, shader in ipairs(getElementsByType('shader', resourceRoot)) do
-        destroyElement(shader)
-    end
-    
+	
+	createdShader = {}
     isWinterVisible = false
 
     return true
