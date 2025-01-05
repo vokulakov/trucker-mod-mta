@@ -1,8 +1,6 @@
 <meta>
+	<oop>true</oop>
 	
-	<!-- SHADERS -->
-	<file src="assets/shaders/shader.fx" />	
-
 	<!-- TEXTURES -->
 	<file src="assets/img/ice.png" />
 	
