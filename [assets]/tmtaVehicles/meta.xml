@@ -1,0 +1,16 @@
+<meta>
+    <oop>true</oop>
+    <download_priority_group>999</download_priority_group>
+    <min_mta_version client="1.6.0-9.22505.0" server="1.6.0-9.22505.0"></min_mta_version>
+
+    <script type="client" src="main.lua" cache="false" />
+    
+    <!-- Auto-detected mod files -->
+    <file src="assets/**/*.txd"/>
+    <file src="assets/**/*.dff"/>
+
+    <!-- ACL permissions that this resource requires -->
+    <aclrequest>
+        <right name="general.ModifyOtherObjects" access="true" />
+    </aclrequest>
+</meta>
