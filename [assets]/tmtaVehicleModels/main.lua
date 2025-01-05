@@ -163,7 +163,7 @@ local function onClientReplaceModelsHandler()
     end
 end
 
-local function proccessBatch()
+local function processBatch()
 	local loadedCounter = 0
 	for model, filePath in pairs(modsToLoad) do
 		replaceModel(filePath, model)
