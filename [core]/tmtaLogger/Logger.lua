@@ -40,12 +40,13 @@ local function formatLogMessage(message)
 	local time = getRealTime()
 	return string.format("[%s-%s-%s %s:%s:%s] %s\n",
 		tostring(1900 + time.year),
-		formatTimeNumber(time.month),
+		formatTimeNumber(time.month + 1),
 		formatTimeNumber(time.monthday),
 		formatTimeNumber(time.hour),
 		formatTimeNumber(time.minute),
 		formatTimeNumber(time.second),
-		tostring(message))
+		tostring(message)
+	)
 end
 
 local function appendLogMessage(logName, message)

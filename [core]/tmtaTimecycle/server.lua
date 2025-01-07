@@ -3,6 +3,7 @@ RealTime = {}
 function RealTime.get()
     local time = getRealTime()
     if (RealTime.currentWeekday ~= time.weekday) then
+        RealTime.currentWeekday = time.weekday
         triggerEvent("tmtaServerTimecycle.onWeekdayChange", root)
         triggerClientEvent(root, "tmtaServerTimecycle.onWeekdayChange", root)
     elseif (RealTime.currentHour ~= time.hour) then
