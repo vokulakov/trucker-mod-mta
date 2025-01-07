@@ -40,7 +40,7 @@ end
 -- Получить список точек (маркеров)
 local _cacheObjectPointList = {}
 function Cargo.getObjectTypePointList(objectTypeList)
-    if type(objectTypeList) ~= 'table' then
+    if (type(objectTypeList) ~= 'table') then
         return false
     end
 
@@ -57,7 +57,9 @@ function Cargo.getObjectTypePointList(objectTypeList)
             end
             _cacheObjectPointList[objectType] = objectPointList
         else
-            objectPointList = _cacheObjectPointList[objectType]
+            for _, objectData in pairs(_cacheObjectPointList[objectType]) do
+				table.insert(objectPointList, objectData)
+			end
         end
     end
 
@@ -67,7 +69,7 @@ end
 -- Получить список складов
 local _cacheWarehousePointList = {}
 function Cargo.getWarehousePointList(warehouseList)
-    if type(warehouseList) ~= 'table' then
+    if (type(warehouseList) ~= 'table') then
         return false
     end
 
@@ -88,7 +90,9 @@ function Cargo.getWarehousePointList(warehouseList)
                 _cacheWarehousePointList[warehouseId] = warehousePointList
             end
         else
-            warehousePointList = _cacheWarehousePointList[warehouseId]
+		    for _, warehouseData in pairs(_cacheWarehousePointList[warehouseId]) do
+				table.insert(warehousePointList, warehouseData)
+			end
         end
     end
 
