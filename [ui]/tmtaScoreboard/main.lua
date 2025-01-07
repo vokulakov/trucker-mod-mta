@@ -52,8 +52,8 @@ local Columns = {
 		size = 0.25, 	
 		get = function(player)
 			local name = player.name:gsub("#%x%x%x%x%x%x", "")
-			if utf8.len(name) > 12 then
-				return utf8.sub(name, 0, 12) .. '...'
+			if (utf8.len(name) > 18) then
+				return utf8.sub(name, 0, 18) .. '...'
 			else
 				return name
 			end
