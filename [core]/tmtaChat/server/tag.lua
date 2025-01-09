@@ -15,7 +15,7 @@ function getPlayerTag(player)
 
 	for group, tag in pairs(Tags) do
 		if isObjectInACLGroup("user." .. getAccountName(Account), aclGetGroup(group)) then
-			return '#6495ED[ '..tag..' #6495ED]'
+			return '#FFFFFF['..tag..'#FFFFFF]'
 		end
 	end
 

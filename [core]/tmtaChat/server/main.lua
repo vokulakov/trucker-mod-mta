@@ -50,7 +50,6 @@ local function onMessage(player, ...)
 	local message = message:gsub("#%x%x%x%x%x%x", "")
 	local sender = string.format("%s %s", getPlayerTag(player), player.name:gsub("#%x%x%x%x%x%x", ""))
 
-	
 	sendGlobalMessage(message, sender)
 
 	exports.tmtaLogger:log("chat", 
@@ -120,4 +119,24 @@ addEventHandler("onPlayerLogout", root,
 		--triggerClientEvent(source, 'operNotification.addNotification', source, "Неизвестная команда", 2, true)
 		cancelEvent() 
 	end
+)
+
+addEventHandler('tmtaCore.login', root, 
+    function(success)
+        local player = source
+        if (not success or not isElement(player)) then
+            return
+        end
+		
+		local playerName = string.format("%s %s", getPlayerTag(player), player.name:gsub("#%x%x%x%x%x%x", ""))
+		sendGlobalMessage(string.format("* %s #FFFFFFподтянулся к игре", playerName))
+    end
+)
+
+addEventHandler('onPlayerQuit', root, 
+    function(quitType)
+		local player = source
+		local playerName = string.format("%s %s", getPlayerTag(player), player.name:gsub("#%x%x%x%x%x%x", ""))
+		sendGlobalMessage(string.format("* %s #FFFFFFсплавился из игры #FF0000[Причина: %s]", playerName, quitType))
+    end
 )
