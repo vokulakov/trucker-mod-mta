@@ -99,9 +99,14 @@ addEventHandler('tmtaNavigation.createPointWithMarker', root, Navigation.createP
 
 addEventHandler('onClientMarkerHit', root,
     function(element)
+        if (player.type ~= "player" or player ~= localPlayer) then
+            return
+        end 
+
         if not createdMarkers[source] then
             return
         end
+        
         Navigation.destroyPoint(createdMarkers[source])
     end
 )

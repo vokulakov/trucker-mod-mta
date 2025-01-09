@@ -110,7 +110,11 @@ end
 
 addEventHandler('onClientMarkerHit', resourceRoot, 
     function(player)
-        if (not LicensePlateMarker.created[source] or player.type ~= 'player' or not player.vehicle or player.vehicle.controller ~= player) then
+        if (player.type ~= "player" or player ~= localPlayer) then
+            return
+        end 
+
+        if (not LicensePlateMarker.created[source] or not player.vehicle or player.vehicle.controller ~= player) then
             return
         end 
     
