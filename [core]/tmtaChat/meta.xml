@@ -15,6 +15,7 @@
     <script type="client" src="client/main.lua" cache="false" />
 
     <script type="server" src="server/main.lua" />
+    <script type="server" src="server/tag.lua" />
 
     <!-- Exports -->
     <export type="server" function="sendGlobalMessage" />
