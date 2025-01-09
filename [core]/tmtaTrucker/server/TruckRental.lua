@@ -70,9 +70,9 @@ addEventHandler("tmtaTrucker.onPlayerStartTruckRent", resourceRoot,
         end
 
         local spawn = getTruckSpawn(baseId)
-        if not spawn then
-            return Utils.showNotice("К сожалению нет свободных парковочных мест. #FFA07AПопробуйте позже.", player)
-        end
+        -- if not spawn then
+            -- return Utils.showNotice("К сожалению нет свободных парковочных мест. #FFA07AПопробуйте позже.", player)
+        -- end
 
         local truck = exports.tmtaTruck:spawnTruck(truckData.model, spawn.position, spawn.rotation)
         if not isElement(truck) then 
