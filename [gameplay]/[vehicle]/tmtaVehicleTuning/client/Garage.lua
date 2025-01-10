@@ -87,7 +87,12 @@ function Garage.playerExit()
     --triggerServerEvent("tmtaServerTimecycle.onGameTimeRequest", localPlayer)
 
     exports.tmtaUI:setPlayerComponentVisible("all", true)
-	showChat(true)
+    showChat(true)
+    
+    --TODO: костыль
+    if (isCursorShowing()) then
+        showCursor(false)
+    end
 
     _isPlayerOnTuning = false
     toggleAllControls(true, true, true)
