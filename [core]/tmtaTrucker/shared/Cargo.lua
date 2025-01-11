@@ -80,6 +80,9 @@ Cargo.list['Канцтовары'] = {
         { name = 'Ручки', weight = 16500 },
         { name = 'Бумага', weight = 21000 },
         { name = 'Карандаши', weight = 13000 },
+		{ name = 'Фото-бумага', weight = 17000 },
+		{ name = 'Ежедневники', weight = 12000 },
+		{ name = 'Настенные календари', weight = 12500 },
     },
     truck = { 499, 573, 433, 605, 543, 528, 478, 609, 482, },
     trailer = TEMPLATE_TRAILER_DEFAULT,
@@ -148,10 +151,31 @@ Cargo.list['Электроника'] = {
     warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
 }
 
+-- Cargo.list['Продукты'] = {
+	-- order = {},
+	-- truck = {},
+	-- trailer = TEMPLATE_TRAILER_ISOTHERMAL,
+	-- warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
+	-- deliveryPoint = { 'shop', 'restaurant', },
+-- }
+
+-- Cargo.list['Полуфабрикаты'] = {
+	-- order = {
+		-- { name = 'Котлеты', weight = 18000 },
+		-- { name = "Фарш из говядины", weight = 19000 },
+	-- },
+	-- truck = TEMPLTAE_TRUCK_REFRIGERATOR,
+	-- trailer = TEMPLATE_TRAILER_REFRIGERATOR,
+	-- warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
+	-- deliveryPoint = { 'shop', 'restaurant', },
+-- }
+
+
+
 --[[
 Cargo.list['Нефтепродукты'] = {
     order = {
-        ---{ name = 'Мазут', weight = 17000 },
+        --{ name = 'Мазут', weight = 17000 },
         --{ name = 'Солидол', weight = 17000 },
         --{ name = 'Керосин', weight = 17000 },
         --{ name = 'Битум', weight = 19000 },
@@ -166,13 +190,11 @@ Cargo.list['Нефтепродукты'] = {
 
 Cargo.list['Мясная продукция'] = {
     order = {
-        { name = "Прошутто", weight = 16000 },
+        { name = "Бекон", weight = 16000 },
         { name = "Вареная колбаса 'Свиная'", weight = 16000 },
         { name = "Свинина тушеная", weight = 16000 },
         { name = "Вареная колбаса 'Молочная'", weight = 16000 },
-        { name = "Вареная колбаса 'Докторская'", weight = 16000 },
         { name = "Грудинка 'Ароматная'", weight = 16000 },
-        { name = "Грудинка 'Восточная'", weight = 16000 },
         { name = "Рулет из грудинки свиной", weight = 16000 },
         { name = "Бекон варено-копченый", weight = 16000 },
     },
@@ -185,7 +207,7 @@ Cargo.list['Мясная продукция'] = {
 
 Cargo.list['Полуфабрикаты'] = {
     order = {
-        { name = "Котлеты 'Домашние'", weight = 18000 },
+       
         { name = "Шницель 'Свиной'", weight = 18000 },
         { name = "Голубцы 'Ленивые'", weight = 18000 },
         { name = "Фрикадельки", weight = 18000 },
@@ -200,7 +222,7 @@ Cargo.list['Полуфабрикаты'] = {
         { name = "Шашлык в маринаде", weight = 18000 },
         { name = "Фарш 'Домашний'", weight = 18000 },
         { name = "Фарш 'Свиной'", weight = 18000 },
-        { name = "Фарш 'Аппетитный'", weight = 18000 },
+        
     },
     truck = { 440, 605, 528, 543, 433, },
     trailer = { 435, 591, 450, },
@@ -301,18 +323,6 @@ Cargo.list['Рыба и морепродукты'] = {
         { name = 'Консервы печень трески по-мурмански', weight = 18000 },
         { name = 'Консервы печень трески (натуральная)', weight = 18000 },
         { name = 'Консервы печень и икра минтая (натуральная)', weight = 18000 },
-    },
-    truck = { 440, 605, 528, 543, 433, },
-    trailer = { 435, 591, 450, },
-    loadingPoint = { 'port', },
-    warehousePoint = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, },
-    deliveryPoint = { 'shop', },
-}
-
-Cargo.list['Прочее'] = {
-    order = {
-        { name = 'Одежда из Европы', weight = 18000 },
-        { name = 'Товары с AliExpress', weight = 18000 },
     },
     truck = { 440, 605, 528, 543, 433, },
     trailer = { 435, 591, 450, },
