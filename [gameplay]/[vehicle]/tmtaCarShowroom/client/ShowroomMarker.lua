@@ -113,7 +113,7 @@ end
 
 addEventHandler('onClientMarkerHit', root, 
     function(player)
-        if (player.type ~= "player" or player.vehicle) then
+        if (player.type ~= "player" or player ~= localPlayer or player.vehicle) then
             return
         end
         if (not ShowroomMarker.created[source]) then

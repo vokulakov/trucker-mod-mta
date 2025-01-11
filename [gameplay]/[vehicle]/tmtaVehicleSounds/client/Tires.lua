@@ -165,9 +165,9 @@ addEventHandler("onClientElementDataChange", root, function(data, _, new_sound_d
     if not sound then 
         return 
     end
-    if new_sound_data then
-        sound.targetSound.speed = new_sound_data.targetSpeed
-        sound.targetSound.volume = new_sound_data.targetVolume
+    if (new_sound_data and isElement(sound.targetSound)) then
+        sound.targetSound.speed = tonumber(new_sound_data.targetSpeed)
+        sound.targetSound.volume = tonumber(new_sound_data.targetVolume)
     end
 end)
 

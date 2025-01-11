@@ -105,10 +105,10 @@ function buildMainWindow()
             end 
             toggleEditor()
             
+			showCursor(false)
+					
             if exports.tmtaVehicleTuning:isPlayerOnTuning() then
                 exports.tmtaVehicleTuning:setWindowVisible(true)
-            else
-                showCursor(false)
             end
         end, false)
 

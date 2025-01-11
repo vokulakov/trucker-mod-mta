@@ -4,7 +4,11 @@ PlayerCurrentGarageMarker = nil
 addEvent('onClientVehicleSetColor', true)
 
 addEventHandler("onClientMarkerHit", root, function(player)
-    if player.type ~= "player" or not player.vehicle or player.vehicle.controller ~= player or not PaintGarageMarkers[source] then
+    if (player.type ~= "player" or player ~= localPlayer) then
+        return
+    end 
+
+    if (not player.vehicle or player.vehicle.controller ~= player or not PaintGarageMarkers[source]) then
         return
     end 
 
