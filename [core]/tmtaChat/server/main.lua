@@ -43,12 +43,9 @@ local function onMessage(player, ...)
 	end
 	]]
 
-	--TODO: тоже переработать иначе реагирует на всякие слова
-	--message = WordsFilter.filter(message)
-	
 	-- Глобальное сообщение
-	local message = message:gsub("#%x%x%x%x%x%x", "")
 	local sender = string.format("%s %s", getPlayerTag(player), player.name:gsub("#%x%x%x%x%x%x", ""))
+	message = message:gsub("#%x%x%x%x%x%x", "")
 
 	sendGlobalMessage(message, sender)
 

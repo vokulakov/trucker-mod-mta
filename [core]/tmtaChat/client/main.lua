@@ -15,6 +15,10 @@ local function outputMessageOnChatBox(message, r, g, b, sender)
     end
     
     sender = (sender) and string.format("%s: ", sender) or ""
+	
+	--TODO: тоже переработать иначе реагирует на всякие слова
+	message = WordsFilter.filter(message)
+	
     message = string.format("#FFFFFF[%s] ", timestamp)..sender..string.format("%s%s", messageColor, message)
     
     outputChatBox(message, 255, 255, 255, true)

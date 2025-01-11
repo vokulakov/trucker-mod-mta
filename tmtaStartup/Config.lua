@@ -10,6 +10,8 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaSQLite',
     'tmtaBackup',
 
+    'tmtaTimecycle',
+	
     'tmtaBlip',
     
     -- admin --
@@ -37,7 +39,6 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     -- core --
     'tmtaCore',
     'tmtaLogger',
-    'tmtaTimecycle',
     'tmtaTrucker',
     'tmtaVehicle',
     'tmtaChat',
