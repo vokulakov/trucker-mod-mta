@@ -388,6 +388,10 @@ end
 addEvent('tmtaTrucker.requestPlayerOrderAccept', true)
 addEventHandler('tmtaTrucker.requestPlayerOrderAccept', resourceRoot,
     function(player, truck, orderId, orderDeliveryTime)
+        if (not client or client ~= player or source ~= resourceRoot) then
+            return detectedEventLog(client)
+        end
+
         if (not isElement(player) or not isElement(truck)) then
             return
         end
@@ -424,8 +428,12 @@ addEventHandler('tmtaTrucker.requestPlayerOrderAccept', resourceRoot,
 )
 
 addEvent('tmtaTrucker.requestAddCargoToTruck', true)
-addEventHandler('tmtaTrucker.requestAddCargoToTruck', root,
+addEventHandler('tmtaTrucker.requestAddCargoToTruck', resourceRoot,
     function(player, truck, orderId)
+        if (not client or client ~= player or source ~= resourceRoot) then
+            return detectedEventLog(client)
+        end
+
         local order = Utils.getOrderById(orderId)
         if (not isElement(player) or not isElement(truck) or not order) then
             return triggerClientEvent(player, 'tmtaTrucker.onAddCargoToTruck', resourceRoot, false)
@@ -521,8 +529,12 @@ function Cargo.removeOrderFromTruck(truck)
 end
 
 addEvent('tmtaTrucker.onPlayerOrderComplete', true)
-addEventHandler('tmtaTrucker.onPlayerOrderComplete', root,
+addEventHandler('tmtaTrucker.onPlayerOrderComplete', resourceRoot,
     function(player, truck, orderId)
+        if (not client or client ~= player or source ~= resourceRoot) then
+            return detectedEventLog(client)
+        end
+
         local order = Utils.getOrderById(orderId)
         if (not isElement(player) or not isElement(truck) or not order) then
             return triggerClientEvent(player, 'tmtaTrucker.onPlayerOrderComplete', resourceRoot, false)
@@ -618,6 +630,10 @@ addEventHandler('tmtaTrucker.onPlayerOrderComplete', root,
 )
 
 function Cargo.onPlayerOrderCancel(player, orderId)
+    if (not client or client ~= player or source ~= resourceRoot) then
+        return detectedEventLog(client)
+    end
+
     if (not isElement(player)) then
         return
     end
@@ -656,3 +672,20 @@ function Cargo.onPlayerOrderCancel(player, orderId)
 end
 addEvent('tmtaTrucker.requestPlayerOrderCanceled', true)
 addEventHandler('tmtaTrucker.requestPlayerOrderCanceled', resourceRoot, Cargo.onPlayerOrderCancel)
+
+function detectedEventLog(clientElement)
+    local logClient = inspect(clientElement)
+	local logSerial = getPlayerSerial(clientElement) or "N/A"
+	local logSource = inspect(sourceElement)
+	local logText = 
+		"*\n"..
+		"Detected event abnormality:\n"..
+		"Client: "..logClient.."\n"..
+		"Client serial: "..logSerial.."\n"..
+		"Source: "..logSource.."\n"..
+		"Event: "..serverEvent.."\n"..
+		"Reason: "..failReason.."\n"..
+		"*"
+
+    outputDebugString(logText, 4, 255, 127, 0)
+end
