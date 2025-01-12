@@ -9,6 +9,7 @@
 
     <!-- Acl -->
     <aclrequest>
+        <right name="function.setServerConfigSetting" access="true" />
         <right name="function.kickPlayer" access="true" />
         <right name="function.banPlayer" access="true" />
     </aclrequest>
