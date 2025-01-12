@@ -159,18 +159,19 @@ Cargo.list['Электроника'] = {
 	-- deliveryPoint = { 'shop', 'restaurant', },
 -- }
 
--- Cargo.list['Полуфабрикаты'] = {
-	-- order = {
-		-- { name = 'Котлеты', weight = 18000 },
-		-- { name = "Фарш из говядины", weight = 19000 },
-	-- },
-	-- truck = TEMPLTAE_TRUCK_REFRIGERATOR,
-	-- trailer = TEMPLATE_TRAILER_REFRIGERATOR,
-	-- warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
-	-- deliveryPoint = { 'shop', 'restaurant', },
--- }
-
-
+Cargo.list['Полуфабрикаты'] = {
+	order = {
+		{ name = 'Котлеты', weight = 18000 },
+		{ name = "Фарш из говядины", weight = 19000 },
+        { name = "Шашлык из свинины", weight = 13000 },
+        { name = "Шашлык в маринаде", weight = 14000 },
+	},
+	truck = TEMPLTAE_TRUCK_REFRIGERATOR,
+	trailer = TEMPLATE_TRAILER_REFRIGERATOR,
+	warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
+    loadingPoint = { 'port', },
+	deliveryPoint = { 'shop', 'restaurant', },
+}
 
 --[[
 Cargo.list['Нефтепродукты'] = {
@@ -218,8 +219,7 @@ Cargo.list['Полуфабрикаты'] = {
         { name = "Пельмени с бульоном", weight = 18000 },
         { name = "Купаты 'Шашлычные'", weight = 18000 },
         { name = "Колбаски 'Белорусские'", weight = 18000 },
-        { name = "Шашлык из свинины", weight = 18000 },
-        { name = "Шашлык в маринаде", weight = 18000 },
+     
         { name = "Фарш 'Домашний'", weight = 18000 },
         { name = "Фарш 'Свиной'", weight = 18000 },
         
