@@ -635,10 +635,6 @@ addEventHandler('tmtaTrucker.onPlayerOrderComplete', resourceRoot,
 )
 
 function Cargo.onPlayerOrderCancel(player, orderId)
-    if (not client or client ~= player or source ~= resourceRoot) then
-        return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.requestPlayerOrderCanceled')
-    end
-
     if (not isElement(player)) then
         return
     end
@@ -675,8 +671,17 @@ function Cargo.onPlayerOrderCancel(player, orderId)
 
     Cargo.removeOrderFromTruck(truck)
 end
+
 addEvent('tmtaTrucker.requestPlayerOrderCanceled', true)
-addEventHandler('tmtaTrucker.requestPlayerOrderCanceled', resourceRoot, Cargo.onPlayerOrderCancel)
+addEventHandler('tmtaTrucker.requestPlayerOrderCanceled', resourceRoot, 
+    function(player, orderId)
+        if (not client or client ~= player or source ~= resourceRoot) then
+            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.requestPlayerOrderCanceled')
+        end
+
+        Cargo.onPlayerOrderCancel(player, orderId)
+    end
+)
 
 --TODO: вынести в античит (tmtaAntiCheat)
 local protectedData = {

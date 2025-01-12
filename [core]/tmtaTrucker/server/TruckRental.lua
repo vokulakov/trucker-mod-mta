@@ -58,6 +58,10 @@ end
 addEvent("tmtaTrucker.onPlayerStartTruckRent", true)
 addEventHandler("tmtaTrucker.onPlayerStartTruckRent", resourceRoot, 
     function(baseId, truckData)
+        if (not client or client ~= player or source ~= resourceRoot) then
+            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerStartTruckRent')
+        end
+
         local player = client
         if (not isElement(player) or type(baseId) ~= 'number' or type(truckData) ~= 'table') then 
             return 
@@ -206,8 +210,17 @@ function TruckRental.playerStopTruckRent(player)
 
     destroyElement(truck)
 end
+
 addEvent("tmtaTrucker.onPlayerStopTruckRent", true)
-addEventHandler("tmtaTrucker.onPlayerStopTruckRent", resourceRoot, TruckRental.playerStopTruckRent)
+addEventHandler("tmtaTrucker.onPlayerStopTruckRent", resourceRoot, 
+    function(player)
+        if (not client or client ~= player or source ~= resourceRoot) then
+            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerStopTruckRent')
+        end
+
+        TruckRental.playerStopTruckRent(player)
+    end
+)
 
 function TruckRental.onPlayerExtendRent(player)
     if not isElement(player) then
@@ -240,8 +253,16 @@ function TruckRental.onPlayerExtendRent(player)
 
     return true
 end
+
 addEvent("tmtaTrucker.onPlayerExtendRent", true)
-addEventHandler("tmtaTrucker.onPlayerExtendRent", resourceRoot, TruckRental.onPlayerExtendRent)
+addEventHandler("tmtaTrucker.onPlayerExtendRent", resourceRoot, 
+    function(player)
+        if (not client or client ~= player or source ~= resourceRoot) then
+            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerExtendRent')
+        end
+        TruckRental.onPlayerExtendRent(player)
+    end
+)
 
 function TruckRental.onPlayerRefuseRent(player)
     if not isElement(player) then
@@ -269,8 +290,17 @@ function TruckRental.onPlayerRefuseRent(player)
         Trucker.stopPlayerWork(player)
     end
 end
+
 addEvent("tmtaTrucker.onPlayerRefuseRent", true)
-addEventHandler("tmtaTrucker.onPlayerRefuseRent", resourceRoot, TruckRental.onPlayerRefuseRent)
+addEventHandler("tmtaTrucker.onPlayerRefuseRent", resourceRoot, 
+    function(player)
+        if (not client or client ~= player or source ~= resourceRoot) then
+            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerRefuseRent')
+        end
+
+        TruckRental.onPlayerRefuseRent
+    end
+)
 
 addEvent('tmtaTrucker.onRemoveOrderFromTruck', false)
 addEventHandler('tmtaTrucker.onRemoveOrderFromTruck', resourceRoot,
