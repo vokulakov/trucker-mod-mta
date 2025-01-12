@@ -298,7 +298,7 @@ addEventHandler("tmtaTrucker.onPlayerRefuseRent", resourceRoot,
             return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerRefuseRent')
         end
 
-        TruckRental.onPlayerRefuseRent
+        TruckRental.onPlayerRefuseRent()
     end
 )
 
