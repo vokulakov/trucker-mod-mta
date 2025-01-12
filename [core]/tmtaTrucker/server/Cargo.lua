@@ -701,8 +701,8 @@ addEventHandler('onElementDataChange', root,
 		if not client then
 			return
 		end
-
-        if (protectedData[dataName] and client ~= source) then
+        
+        if (protectedData[dataName] and (client ~= source or not (source.type == 'vehicle' and client.vehicle == source))) then
             source:setData(dataName, oldValue)
             return exports.tmtaAntiCheat:detectedChangeElementData(client, dataName, oldValue, newValue, sourceResource)
         end
