@@ -1,7 +1,4 @@
--- Денежное пособие от профсоюза дальнобойщиков
--- Каждый час выдается пособие
-local maxPlayers = getMaxPlayers()
-local ALLOWANCE = 12792/2 
+local maxPlayers = getMaxPlayers() 
 
 addEventHandler("tmtaServerTimecycle.onServerHourPassed", root, 
     function()
@@ -13,7 +10,7 @@ addEventHandler("tmtaServerTimecycle.onServerHourPassed", root,
         exports.tmtaChat:sendGlobalMessage("#d43422► Администрация проекта желает вам приятной игры!")
     
         local players = getElementsByType("player")
-        local allowance = ALLOWANCE*((maxPlayers-#players+1)/maxPlayers)
+        local allowance = math.random(3000, 6000)*((maxPlayers-#players+1)/maxPlayers)
         allowance = exports.tmtaX2:isPromoActive() and allowance*2 or allowance
 
         local allowanceAmount = exports.tmtaUtils:formatMoney(allowance)
