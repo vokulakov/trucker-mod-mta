@@ -168,7 +168,7 @@ function TruckRental.onClientGUIClickBtnRent()
         return Utils.showNotice("У вас нехватает денежных средств для аренды #FFA07A"..truck.name)
     end
 
-    triggerServerEvent('tmtaTrucker.onPlayerStartTruckRent', resourceRoot, Base.getPlayerCurrentBase(), truck)
+    triggerServerEvent('tmtaTrucker.onPlayerStartTruckRent', resourceRoot, localPlayer, Base.getPlayerCurrentBase(), truck)
     
     TruckRental.closeWindow()
     Trucker.closeWindow()

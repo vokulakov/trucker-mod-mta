@@ -57,12 +57,11 @@ end
 
 addEvent("tmtaTrucker.onPlayerStartTruckRent", true)
 addEventHandler("tmtaTrucker.onPlayerStartTruckRent", resourceRoot, 
-    function(baseId, truckData)
+    function(player, baseId, truckData)
         if (not client or client ~= player or source ~= resourceRoot) then
             return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerStartTruckRent')
         end
 
-        local player = client
         if (not isElement(player) or type(baseId) ~= 'number' or type(truckData) ~= 'table') then 
             return 
         end
