@@ -93,7 +93,7 @@ function detectedChangeElementData(player, dataName, oldValue, newValue, resourc
     kickPlayer(player, 'AntiCheat')
 end
 
-addEventHandle('onResourceStart', resourceRoot,
+addEventHandler('onResourceStart', resourceRoot,
     function()
         setServerConfigSetting('player_triggered_event_interval', '1000', true)
         setServerConfigSetting('max_player_triggered_events_per_interval', '100', true)
