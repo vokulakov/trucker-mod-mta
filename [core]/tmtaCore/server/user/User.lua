@@ -277,9 +277,6 @@ setTimer(
         for i, player in ipairs(getElementsByType("player")) do
             User.save(player)
         end
-
-        outputDebugString("Autosave completed!")
-        exports.tmtaLogger:log("systems", "Autosave completed!")
     end, Config.AUTOSAVE_INTERVAL * 60 * 1000, 0)
 
 function User.logout(player)

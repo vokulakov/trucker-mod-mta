@@ -31,15 +31,8 @@ function Money.givePlayer(player, amount)
     triggerClientEvent(player, "tmtaMoney.onPlayerGiveMoney", resourceRoot, amount, currentMoney)
     triggerEvent("tmtaMoney.onPlayerGiveMoney", player, amount, currentMoney)
 
-    exports.tmtaLogger:log(
-        "money",
-        string.format(
-            "Игроку %s (userId %d) выданы деньги в количестве %d", 
-            player.name,
-            player:getData("userId"),
-            amount
-        )
-    )
+    local logMessage = string.format("Give player %s (userId %d) money %d (current %d)", player.name, player:getData("userId"), amount, currentMoney)
+    exports.tmtaLogger:log("money", logMessage)
 
     return Money.setPlayer(player, currentMoney)
 end
@@ -60,15 +53,8 @@ function Money.takePlayer(player, amount)
     triggerClientEvent(player, "tmtaMoney.onPlayerTakeMoney", resourceRoot, amount, currentMoney)
     triggerEvent("tmtaMoney.onPlayerTakeMoney", player, amount, currentMoney)
 
-    exports.tmtaLogger:log(
-        "money",
-        string.format(
-            "У игрока %s (userId %d) списаны деньги в количестве %d", 
-            player.name,
-            player:getData("userId"),
-            amount
-        )
-    )
+    local logMessage = string.format("Take player %s (userId %d) money %d (current %d)", player.name, player:getData("userId"), amount, currentMoney)
+    exports.tmtaLogger:log("money", logMessage)
 
     return Money.setPlayer(player, currentMoney)
 end
