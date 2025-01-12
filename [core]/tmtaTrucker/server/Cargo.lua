@@ -389,7 +389,7 @@ addEvent('tmtaTrucker.requestPlayerOrderAccept', true)
 addEventHandler('tmtaTrucker.requestPlayerOrderAccept', resourceRoot,
     function(player, truck, orderId, orderDeliveryTime)
         if (not client or client ~= player or source ~= resourceRoot) then
-            return detectedEventLog(client)
+            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.requestPlayerOrderAccept')
         end
 
         if (not isElement(player) or not isElement(truck)) then
@@ -431,7 +431,7 @@ addEvent('tmtaTrucker.requestAddCargoToTruck', true)
 addEventHandler('tmtaTrucker.requestAddCargoToTruck', resourceRoot,
     function(player, truck, orderId)
         if (not client or client ~= player or source ~= resourceRoot) then
-            return detectedEventLog(client)
+            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.requestAddCargoToTruck')
         end
 
         local order = Utils.getOrderById(orderId)
@@ -532,7 +532,7 @@ addEvent('tmtaTrucker.onPlayerOrderComplete', true)
 addEventHandler('tmtaTrucker.onPlayerOrderComplete', resourceRoot,
     function(player, truck, orderId)
         if (not client or client ~= player or source ~= resourceRoot) then
-            return detectedEventLog(client)
+            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerOrderComplete')
         end
 
         local order = Utils.getOrderById(orderId)
@@ -631,7 +631,7 @@ addEventHandler('tmtaTrucker.onPlayerOrderComplete', resourceRoot,
 
 function Cargo.onPlayerOrderCancel(player, orderId)
     if (not client or client ~= player or source ~= resourceRoot) then
-        return detectedEventLog(client)
+        return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.requestPlayerOrderCanceled')
     end
 
     if (not isElement(player)) then
@@ -673,19 +673,38 @@ end
 addEvent('tmtaTrucker.requestPlayerOrderCanceled', true)
 addEventHandler('tmtaTrucker.requestPlayerOrderCanceled', resourceRoot, Cargo.onPlayerOrderCancel)
 
-function detectedEventLog(clientElement)
-    local logClient = inspect(clientElement)
-	local logSerial = getPlayerSerial(clientElement) or "N/A"
-	local logSource = inspect(sourceElement)
-	local logText = 
-		"*\n"..
-		"Detected event abnormality:\n"..
-		"Client: "..logClient.."\n"..
-		"Client serial: "..logSerial.."\n"..
-		"Source: "..logSource.."\n"..
-		"Event: "..serverEvent.."\n"..
-		"Reason: "..failReason.."\n"..
-		"*"
+--TODO: вынести в античит (tmtaAntiCheat)
+local protectedData = {
+    ['cargoOrderTimerUpdate'] = true,
 
-    outputDebugString(logText, 4, 255, 127, 0)
-end
+	['player:truckerStatistic'] = true,
+    ['player:orderId'] = true,
+
+    ['truck:orderId'] = true,
+    ['truck:orderName'] = true,
+    ['truck:orderRoute'] = true,
+    ['truck:orderReward'] = true,
+    ['truck:orderDistance'] = true,
+
+    ['truck:trailer'] = true,
+    
+    ['truck:cargoWeight'] = true,
+    ['truck:cargoIntegrity'] = true,
+    ['truck:orderDeliveryTime'] = true,
+    ['truck:orderTimer'] = true,
+    
+    ['trailer:truck'] = true,
+}
+
+addEventHandler('onElementDataChange', root, 
+	function(dataName, oldValue, newValue)
+		if not client then
+			return
+		end
+
+        if (protectedData[dataName] and client ~= source) then
+            source:setData(dataName, oldValue)
+            return exports.tmtaAntiCheat:detectedChangeElementData(client, dataName, oldValue, newValue, sourceResource)
+        end
+	end
+)

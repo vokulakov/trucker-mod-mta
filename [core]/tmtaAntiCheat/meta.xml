@@ -1,0 +1,19 @@
+<meta>
+	<oop>true</oop>
+    <min_mta_version server='1.6.0-9.22459' client='1.6.0-9.22420'></min_mta_version>
+    <download_priority_group>9999</download_priority_group>
+    <include resource="tmtaLogger" />
+
+    <script type="client" src="client/client.lua" cache="false" />
+    <script type="server" src="server/server.lua" />
+
+    <!-- Acl -->
+    <aclrequest>
+        <right name="function.kickPlayer" access="true" />
+        <right name="function.banPlayer" access="true" />
+    </aclrequest>
+
+    <!-- exports -->
+    <export type="server" function="detectedEventHack" />
+    <export type="server" function="detectedChangeElementData" />
+</meta>

@@ -5,6 +5,8 @@ Config.KICK_PLAYERS = true -- кикакть игроков перед выкл�
 
 Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
 
+    'tmtaAntiCheat',
+
     'tmtaModule',
     'tmtaUtils',
     'tmtaSQLite',
@@ -99,7 +101,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaBusiness',
     'tmtaRevenueService',
 
-    'tmtaJobLoader',
+    --'tmtaJobLoader',
 
     'tmtaUserBonus',
 
