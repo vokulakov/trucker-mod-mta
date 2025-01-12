@@ -7,13 +7,6 @@
     <script type="client" src="client/client.lua" cache="false" />
     <script type="server" src="server/server.lua" />
 
-    <!-- Acl -->
-    <aclrequest>
-        <right name="function.setServerConfigSetting" access="true" />
-        <right name="function.kickPlayer" access="true" />
-        <right name="function.banPlayer" access="true" />
-    </aclrequest>
-
     <!-- exports -->
     <export type="server" function="detectedEventHack" />
     <export type="server" function="detectedChangeElementData" />
