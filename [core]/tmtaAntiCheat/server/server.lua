@@ -68,7 +68,7 @@ function detectedEventHack(player, eventName)
         inspect(player), 
         getPlayerName(player), 
         getPlayerSerial(player) or "N/A",
-        eventName or "none",
+        eventName or "none"
     ))
 
     kickPlayer(player, 'AntiCheat')
@@ -89,7 +89,7 @@ function detectedChangeElementData(player, dataName, oldValue, newValue, resourc
         tostring(oldValue),
         tostring(newValue)
     ))
-    
+
     kickPlayer(player, 'AntiCheat')
 end
 
