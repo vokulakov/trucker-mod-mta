@@ -147,8 +147,17 @@ function Trucker.startPlayerWork(player)
 
     return true
 end
+
 addEvent('tmtaTrucker.onPlayerStartWork', true)
-addEventHandler('tmtaTrucker.onPlayerStartWork', resourceRoot, Trucker.startPlayerWork)
+addEventHandler('tmtaTrucker.onPlayerStartWork', resourceRoot, 
+    function(player)
+        if (not client or client ~= player or source ~= resourceRoot) then
+            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerStartWork')
+        end
+
+        Trucker.startPlayerWork(player)
+    end
+)
 
 function Trucker.stopPlayerWork(player)
     if (not isElement(player) or not Trucker.isPlayerWork(player)) then 
@@ -166,5 +175,13 @@ function Trucker.stopPlayerWork(player)
     
     return true
 end
+
 addEvent('tmtaTrucker.onPlayerStopWork', true)
-addEventHandler('tmtaTrucker.onPlayerStopWork', resourceRoot, Trucker.stopPlayerWork)
+addEventHandler('tmtaTrucker.onPlayerStopWork', resourceRoot, 
+    function(player)
+        if (not client or client ~= player or source ~= resourceRoot) then
+            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerStopWork')
+        end
+        Trucker.stopPlayerWork(player)
+    end
+)
