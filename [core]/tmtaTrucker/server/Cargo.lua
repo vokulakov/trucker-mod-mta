@@ -465,8 +465,12 @@ addEventHandler('tmtaTrucker.requestAddCargoToTruck', resourceRoot,
         truck:setData('truck:cargoIntegrity', 1000)
         truck:setData("truck:orderDeliveryTime", tonumber(order.deliveryTime))
 
-        truck:setData("truck:orderTimer", setTimer(
+        local orderTimer = setTimer(
             function()
+                if not isElement(truck) then
+                    return
+                end
+                
                 local ms = truck:getData("truck:orderDeliveryTime") or 0
                 ms = ms - 1000
                 if tonumber(ms) <= 0 then
@@ -474,7 +478,8 @@ addEventHandler('tmtaTrucker.requestAddCargoToTruck', resourceRoot,
                 end 
                 truck:setData("truck:orderDeliveryTime", ms)
             end, 1000, 0)
-        )
+
+        truck:setData("truck:orderTimer", orderTimer)
 
         triggerClientEvent(player, 'tmtaTrucker.onAddCargoToTruck', resourceRoot, true, order.deliveryPoint)
     end
