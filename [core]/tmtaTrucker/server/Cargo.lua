@@ -470,7 +470,7 @@ addEventHandler('tmtaTrucker.requestAddCargoToTruck', resourceRoot,
                 if not isElement(truck) then
                     return
                 end
-                
+
                 local ms = truck:getData("truck:orderDeliveryTime") or 0
                 ms = ms - 1000
                 if tonumber(ms) <= 0 then
@@ -707,7 +707,11 @@ addEventHandler('onElementDataChange', root,
 			return
 		end
         
-        if (protectedData[dataName] and (client ~= source or not (source.type == 'vehicle' and client.vehicle == source))) then
+        if (protectedData[dataName] and client ~= source) then
+			if (source.type == 'vehicle' and client.vehicle == source) then
+				return
+			end
+			
             source:setData(dataName, oldValue)
             return exports.tmtaAntiCheat:detectedChangeElementData(client, dataName, oldValue, newValue, sourceResource)
         end
