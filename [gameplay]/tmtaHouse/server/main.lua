@@ -29,14 +29,12 @@ addCommandHandler("delcurhouse", function(player, cmd, houseId)
     triggerClientEvent(player, 'tmtaHouse.showNotice', resourceRoot, 'success', message)
 end, true, false)
 
-setTimer(function()
-    for houseId in ipairs(House.getCreatedHouses()) do
-        House.save(houseId)
-    end
-
-    outputDebugString("[tmtaHouse] Autosave completed!")
-    exports.tmtaLogger:log("houses", "Autosave completed!")
-end, Config.AUTOSAVE_INTERVAL * 60 * 1000, 0)
+setTimer(
+    function()
+        for houseId in ipairs(House.getCreatedHouses()) do
+            House.save(houseId)
+        end
+    end, Config.AUTOSAVE_INTERVAL * 60 * 1000, 0)
 
 addEventHandler('tmtaServerTimecycle.onServerMinutePassed', root, 
     function()
