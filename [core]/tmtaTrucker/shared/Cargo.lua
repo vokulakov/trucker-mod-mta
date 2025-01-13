@@ -151,14 +151,6 @@ Cargo.list['Электроника'] = {
     warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
 }
 
--- Cargo.list['Продукты'] = {
-	-- order = {},
-	-- truck = {},
-	-- trailer = TEMPLATE_TRAILER_ISOTHERMAL,
-	-- warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
-	-- deliveryPoint = { 'shop', 'restaurant', },
--- }
-
 Cargo.list['Полуфабрикаты'] = {
 	order = {
 		{ name = 'Котлеты', weight = 18000 },
@@ -171,6 +163,46 @@ Cargo.list['Полуфабрикаты'] = {
 	warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
     loadingPoint = { 'port', },
 	deliveryPoint = { 'shop', 'restaurant', },
+}
+
+Cargo.list["Молочная продукция"] = {
+    order = {
+        { name = "Козий сыр", weight = 15000 },
+        { name = "Йогурт", weight = 19000 },
+        { name = "Молоко", weight = 18000 },
+        { name = "Сливки питьевые", weight = 14000 },
+        { name = "Кефир обезжиренный", weight = 17000 },
+        { name = "Ряженка", weight = 17000 },
+        { name = "Напиток кисломолочный", weight = 17000 },
+        { name = "Сметана", weight = 19000 },
+        { name = "Творог", weight = 17000 },
+        { name = "Масло сливочное", weight = 14000 },
+    },
+	truck = TEMPLTAE_TRUCK_REFRIGERATOR,
+	trailer = TEMPLATE_TRAILER_REFRIGERATOR,
+    loadingPoint = { 'farm', },
+    warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
+    deliveryPoint = { 'shop', 'restaurant', },
+}
+
+Cargo.list["Рыба и морепродукты"] = {
+    order = {
+        { name = "Форель", weight = 15000 },
+        { name = "Филе кальмара", weight = 19000 },
+        { name = "Скумбрия", weight = 18000 },
+        { name = "Икра горбуши", weight = 14000 },
+        { name = "Фарш трески", weight = 17000 },
+        { name = "Горбуша свежемороженая", weight = 17000 },
+        { name = "Икра Щуки", weight = 17000 },
+        { name = "Семга", weight = 19000 },
+        { name = "Консервы трески", weight = 17000 },
+        { name = "Минтай тушка", weight = 14000 },
+    },
+	truck = TEMPLTAE_TRUCK_REFRIGERATOR,
+	trailer = TEMPLATE_TRAILER_REFRIGERATOR,
+    loadingPoint = { 'port', },
+    warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
+    deliveryPoint = { 'shop', 'restaurant', },
 }
 
 --[[
@@ -198,52 +230,6 @@ Cargo.list['Мясная продукция'] = {
         { name = "Грудинка 'Ароматная'", weight = 16000 },
         { name = "Рулет из грудинки свиной", weight = 16000 },
         { name = "Бекон варено-копченый", weight = 16000 },
-    },
-    truck = { 440, 605, 528, 543, 433, },
-    trailer = { 435, 591, 450, },
-    loadingPoint = { 'port', },
-    warehousePoint = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, },
-    deliveryPoint = { 'shop', },
-}
-
-Cargo.list['Полуфабрикаты'] = {
-    order = {
-       
-        { name = "Шницель 'Свиной'", weight = 18000 },
-        { name = "Голубцы 'Ленивые'", weight = 18000 },
-        { name = "Фрикадельки", weight = 18000 },
-        { name = "Бифштекс классический", weight = 18000 },
-        { name = "Оладьи печеночные", weight = 18000 },
-        { name = "Пельмени 'Сибирские'", weight = 18000 },
-        { name = "Пельмени 'Сливочные'", weight = 18000 },
-        { name = "Пельмени с бульоном", weight = 18000 },
-        { name = "Купаты 'Шашлычные'", weight = 18000 },
-        { name = "Колбаски 'Белорусские'", weight = 18000 },
-     
-        { name = "Фарш 'Домашний'", weight = 18000 },
-        { name = "Фарш 'Свиной'", weight = 18000 },
-        
-    },
-    truck = { 440, 605, 528, 543, 433, },
-    trailer = { 435, 591, 450, },
-    loadingPoint = { 'port', },
-    warehousePoint = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, },
-    deliveryPoint = { 'shop', },
-}
-
-Cargo.list["Молочная продукция"] = {
-    order = {
-        { name = "Козий сыр", weight = 15 },
-        { name = "Йогурт", weight = 17 },
-        { name = "Молоко отборное цельное", weight = 17 },
-        { name = "Молоко пастеризованное", weight = 17 },
-        { name = "Сливки питьевые", weight = 17 },
-        { name = "Кефир обезжиренный", weight = 17 },
-        { name = "Ряженка", weight = 17 },
-        { name = "Напиток кисломолочный 'Снежок'", weight = 17 },
-        { name = "Сметана", weight = 17 },
-        { name = "Творог", weight = 17 },
-        { name = "Масло сливочное", weight = 17 },
     },
     truck = { 440, 605, 528, 543, 433, },
     trailer = { 435, 591, 450, },
@@ -286,43 +272,6 @@ Cargo.list['Продовольствие'] = {
         { name = "Кофе раств. NESCAFE 3в1", weight = 18000 },
         { name = "Кофе молотый JACOBS MONARCH classic", weight = 18000 },
         { name = "Чай черный АЗЕРЧАЙ с ароматом бергамота", weight = 18000 },
-    },
-    truck = { 440, 605, 528, 543, 433, },
-    trailer = { 435, 591, 450, },
-    loadingPoint = { 'port', },
-    warehousePoint = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, },
-    deliveryPoint = { 'shop', },
-}
-
-Cargo.list['Рыба и морепродукты'] = {
-    order = {
-        { name = 'Морской коктейль', weight = 18000 },
-        { name = 'Мясо мидий', weight = 18000 },
-        { name = 'Креветка королевская', weight = 18000 },
-        { name = 'Салат из морских водорослей', weight = 18000 },
-        { name = 'Креветка тигровая', weight = 18000 },
-        { name = 'Краб Камчатский', weight = 18000 },
-        { name = 'Филе кальмара', weight = 18000 },
-        { name = 'Пикша тушка (не разделенная)', weight = 18000 },
-        { name = 'Минтай тушка Дальневосточная', weight = 18000 },
-        { name = 'Мойва жирна (свежемороженая)', weight = 18000 },
-        { name = 'Горбуша тушка (потрошеная)', weight = 18000 },
-        { name = 'Окунь тушка (свежемороженая)', weight = 18000 },
-        { name = 'Карась тушка (свежемороженая)', weight = 18000 },
-        { name = 'Скумбрия атлантическая (не разделенная)', weight = 18000 },
-        { name = 'Палтус тушка (потрошеная)', weight = 18000 },
-        { name = 'Форель тушка (потрошеная)', weight = 18000 },
-        { name = 'Филе тунца (стейки в вакуумной упаковке)', weight = 18000 },
-        { name = 'Филе форели (в вакуумной упаковке)', weight = 18000 },
-        { name = 'Икра палтуса черная', weight = 18000 },
-        { name = 'Икра Щуки', weight = 18000 },
-        { name = 'Икра КЕТЫ', weight = 18000 },
-        { name = 'Икра горбуши', weight = 18000 },
-        { name = 'Фарш трески (свежемороженая)', weight = 18000 },
-        { name = 'Семга суповой набор (свежемороженая)', weight = 18000 },
-        { name = 'Консервы печень трески по-мурмански', weight = 18000 },
-        { name = 'Консервы печень трески (натуральная)', weight = 18000 },
-        { name = 'Консервы печень и икра минтая (натуральная)', weight = 18000 },
     },
     truck = { 440, 605, 528, 543, 433, },
     trailer = { 435, 591, 450, },

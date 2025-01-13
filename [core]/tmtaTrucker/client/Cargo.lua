@@ -635,7 +635,7 @@ function GUI.renderOrderList()
             end
 
             if (not _cacheCategoryMaxCounter[order.category]) then
-                _cacheCategoryMaxCounter[order.category] = math.random(2, 5)
+                _cacheCategoryMaxCounter[order.category] = math.random(4, 8)
             end
 
             if (not _cacheCategoryCounter[order.category]) then
