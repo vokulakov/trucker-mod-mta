@@ -1,12 +1,13 @@
 RoadsideAssistance = {}
 
 addEvent("tmtaTrucker.onPlayerTruckMaintenance", true)
-addEventHandler("tmtaTrucker.onPlayerTruckMaintenance", resourceRoot, 
-    function(player, truck, fuelCount, healthCount, price)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerTruckMaintenance')
+addEventHandler("tmtaTrucker.onPlayerTruckMaintenance", root, 
+    function(truck, fuelCount, healthCount, price)
+        if not isEventHandlerSafe(client, source, eventName) then
+            return
         end
 
+        local player = client
         if (not isElement(truck) or not isElement(player)) then
             return
         end

@@ -168,7 +168,7 @@ function TruckRental.onClientGUIClickBtnRent()
         return Utils.showNotice("У вас нехватает денежных средств для аренды #FFA07A"..truck.name)
     end
 
-    triggerServerEvent('tmtaTrucker.onPlayerStartTruckRent', resourceRoot, localPlayer, Base.getPlayerCurrentBase(), truck)
+    protectedTriggerServerEvent('tmtaTrucker.onPlayerStartTruckRent', localPlayer, Base.getPlayerCurrentBase(), truck)
     
     TruckRental.closeWindow()
     Trucker.closeWindow()
@@ -228,7 +228,7 @@ function TruckRental.renderExtendRentWindow(truckData, timeLeft)
         function()
             destroyElement(GUI.extendRent.wnd)
             showCursor(false)
-            triggerServerEvent("tmtaTrucker.onPlayerRefuseRent", resourceRoot, localPlayer)
+            protectedTriggerServerEvent('tmtaTrucker.onPlayerRefuseRent', localPlayer)
         end, false)
 
     GUI.extendRent.btnExtend = guiCreateButton(sW*((width/2+5) /sDW), sH*((height-40) /sDH), sW*((width/2-10) /sDW), sH*((30) /sDH), 'Продлить аренду', false, GUI.extendRent.wnd)
@@ -239,7 +239,7 @@ function TruckRental.renderExtendRentWindow(truckData, timeLeft)
         function()
             destroyElement(GUI.extendRent.wnd)
             showCursor(false)
-            triggerServerEvent("tmtaTrucker.onPlayerExtendRent", resourceRoot, localPlayer)
+            protectedTriggerServerEvent('tmtaTrucker.onPlayerExtendRent', localPlayer)
         end, false)
 
     showCursor(true)

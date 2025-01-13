@@ -78,3 +78,13 @@ addEventHandler('tmtaServerTimecycle.onWeekdayChange', root,
         end
     end
 )
+
+-- tiggerServerEvent
+function isEventHandlerSafe(client, source, eventName)
+    if (client and client == source) then
+        return true
+    end
+
+    exports.tmtaAntiCheat:detectedEventHack(source, eventName)
+    return false
+end

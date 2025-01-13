@@ -38,63 +38,46 @@ local function getVehicleLoadCapacityByModel(model)
 end
 
 -- Получить список точек (маркеров)
-local _cacheObjectPointList = {}
 function Cargo.getObjectTypePointList(objectTypeList)
     if (type(objectTypeList) ~= 'table') then
         return false
     end
 
-    local objectPointList = {}
-    for _, objectType in pairs(objectTypeList) do
-        if not _cacheObjectPointList[objectType] then
-            local infrastructureObjectList = Infrastructure.getObjectListByType(objectType)
-            if infrastructureObjectList then
-                for _, objectData in pairs(infrastructureObjectList) do
-                    objectData.type = objectType
-                    objectData.location = Utils.getLocationName(objectData.position.x, objectData.position.y, objectData.position.z)
-                    table.insert(objectPointList, objectData)
-                end
-            end
-            _cacheObjectPointList[objectType] = objectPointList
-        else
-            for _, objectData in pairs(_cacheObjectPointList[objectType]) do
+	local objectPointList = {}
+	for _, objectType in pairs(objectTypeList) do
+		local infrastructureObjectList = Infrastructure.getObjectListByType(objectType)
+		if infrastructureObjectList then
+			for _, objectData in pairs(infrastructureObjectList) do
+				objectData.type = objectType
+				objectData.location = Utils.getLocationName(objectData.position.x, objectData.position.y, objectData.position.z)
 				table.insert(objectPointList, objectData)
 			end
-        end
-    end
+		end
+	end
 
     return objectPointList
 end
 
 -- Получить список складов
-local _cacheWarehousePointList = {}
 function Cargo.getWarehousePointList(warehouseList)
     if (type(warehouseList) ~= 'table') then
         return false
     end
-
-    local warehousePointList = {}
-    for _, warehouseId in pairs(warehouseList) do
-        if not _cacheWarehousePointList[warehouseId] then
-            local warehouseData = Infrastructure.getWarehouseDataById(tonumber(warehouseId))
-            if warehouseData then
-
-                local position = warehouseData.position
-                if (type(warehouseData.position) == 'table' and table.getn(warehouseData.position) > 0) then
-                    position = warehouseData.position[1]
-                end
-
-                warehouseData.location = Utils.getLocationName(position.x, position.y, position.z)
-
-                table.insert(warehousePointList, warehouseData)
-                _cacheWarehousePointList[warehouseId] = warehousePointList
+	
+	local warehousePointList = {}
+	for _, warehouseId in pairs(warehouseList) do
+		local warehouseData = Infrastructure.getWarehouseDataById(tonumber(warehouseId))
+		if warehouseData then
+			local position = warehouseData.position
+			if (type(warehouseData.position) == 'table' and table.getn(warehouseData.position) > 0) then
+                position = warehouseData.position[1]
             end
-        else
-		    for _, warehouseData in pairs(_cacheWarehousePointList[warehouseId]) do
-				table.insert(warehousePointList, warehouseData)
-			end
-        end
-    end
+
+            warehouseData.location = Utils.getLocationName(position.x, position.y, position.z)
+
+            table.insert(warehousePointList, warehouseData)
+		end
+	end
 
     return #warehousePointList > 0 and warehousePointList or false
 end
@@ -230,7 +213,7 @@ function Cargo.generateOrderList()
                     _cacheWarehouseCounter[warehouse.name] = 0
                 end
 
-                if (_cacheWarehouseCounter[warehouse.name] < 10) then
+                if (_cacheWarehouseCounter[warehouse.name] < 15) then
 
                     local positionCount = table.getn(warehouse.position)
                     if (positionCount > 0) then
@@ -386,12 +369,13 @@ function Cargo.removeFromProgress(orderId)
 end
 
 addEvent('tmtaTrucker.requestPlayerOrderAccept', true)
-addEventHandler('tmtaTrucker.requestPlayerOrderAccept', resourceRoot,
-    function(player, truck, orderId, orderDeliveryTime)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.requestPlayerOrderAccept')
+addEventHandler('tmtaTrucker.requestPlayerOrderAccept', root,
+    function(truck, orderId, orderDeliveryTime)
+        if not isEventHandlerSafe(client, source, eventName) then
+            return
         end
 
+        local player = client
         if (not isElement(player) or not isElement(truck)) then
             return
         end
@@ -422,18 +406,28 @@ addEventHandler('tmtaTrucker.requestPlayerOrderAccept', resourceRoot,
 
         Utils.showNotice("#FFFFFFЗаказ оформлен. Координаты в #FFA07Aнавигаторе #FFFFFF(нажмите #FFA07A'F11'#FFFFFF)", player)
 
+        exports.tmtaLogger:log('trucker', string.format(
+            "Player %s (userId %d) accept order %s (%s), reward %s", 
+            player.name, 
+            player:getData("userId"), 
+            order.name, 
+            orderId,
+            order.reward
+        ))
+
         triggerClientEvent(player, 'tmtaTrucker.onPlayerOrderAccept', resourceRoot, true, orderId)
         triggerClientEvent('tmtaTrucker.onOrderAccept', resourceRoot, orderId)
     end
 )
 
 addEvent('tmtaTrucker.requestAddCargoToTruck', true)
-addEventHandler('tmtaTrucker.requestAddCargoToTruck', resourceRoot,
-    function(player, truck, orderId)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.requestAddCargoToTruck')
+addEventHandler('tmtaTrucker.requestAddCargoToTruck', root,
+    function(truck, orderId)
+        if not isEventHandlerSafe(client, source, eventName) then
+            return
         end
 
+        local player = client
         local order = Utils.getOrderById(orderId)
         if (not isElement(player) or not isElement(truck) or not order) then
             return triggerClientEvent(player, 'tmtaTrucker.onAddCargoToTruck', resourceRoot, false)
@@ -486,8 +480,12 @@ addEventHandler('tmtaTrucker.requestAddCargoToTruck', resourceRoot,
 )
 
 addEvent('tmtaTrucker.onTruckUnloadMarkerHit', true)
-addEventHandler('tmtaTrucker.onTruckUnloadMarkerHit', resourceRoot,
+addEventHandler('tmtaTrucker.onTruckUnloadMarkerHit', root,
     function(truck)
+        if not isEventHandlerSafe(client, source, eventName) then
+            return
+        end
+
         if not isElement(truck) then
             return
         end
@@ -534,12 +532,13 @@ function Cargo.removeOrderFromTruck(truck)
 end
 
 addEvent('tmtaTrucker.onPlayerOrderComplete', true)
-addEventHandler('tmtaTrucker.onPlayerOrderComplete', resourceRoot,
-    function(player, truck, orderId)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerOrderComplete')
+addEventHandler('tmtaTrucker.onPlayerOrderComplete', root,
+    function(truck, orderId)
+        if not isEventHandlerSafe(client, source, eventName) then
+            return
         end
 
+        local player = client
         local order = Utils.getOrderById(orderId)
         if (not isElement(player) or not isElement(truck) or not order) then
             return triggerClientEvent(player, 'tmtaTrucker.onPlayerOrderComplete', resourceRoot, false)
@@ -629,6 +628,16 @@ addEventHandler('tmtaTrucker.onPlayerOrderComplete', resourceRoot,
             orderTotalExp = experience,
         })
 
+        exports.tmtaLogger:log('trucker', string.format(
+            "Player %s (userId %d) complete order %s (%s), reward %s, experience %s", 
+            player.name, 
+            player:getData("userId"), 
+            order.name, 
+            orderId,
+            reward,
+            experience
+        ))
+
         player:removeData('player:orderId')
         Cargo.removeOrderFromTruck(truck)
     end
@@ -669,17 +678,25 @@ function Cargo.onPlayerOrderCancel(player, orderId)
         return
     end
 
+    exports.tmtaLogger:log('trucker', string.format(
+        "Player %s (userId %d) cancel order %s (%s)", 
+        player.name, 
+        player:getData("userId"), 
+        order.name, 
+        orderId
+    ))
+
     Cargo.removeOrderFromTruck(truck)
 end
 
 addEvent('tmtaTrucker.requestPlayerOrderCanceled', true)
-addEventHandler('tmtaTrucker.requestPlayerOrderCanceled', resourceRoot, 
-    function(player, orderId)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.requestPlayerOrderCanceled')
+addEventHandler('tmtaTrucker.requestPlayerOrderCanceled', root, 
+    function(orderId)
+        if not isEventHandlerSafe(client, source, eventName) then
+            return
         end
 
-        Cargo.onPlayerOrderCancel(player, orderId)
+        Cargo.onPlayerOrderCancel(client, orderId)
     end
 )
 

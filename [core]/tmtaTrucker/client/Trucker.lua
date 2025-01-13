@@ -156,7 +156,7 @@ end
 function onTruckerGUIConfirmWindowStopWork()
     Trucker.closeWindow()
     triggerEvent('tmtaTrucker.onTruckerGUIConfirmWindowStopWork', localPlayer)
-    triggerServerEvent("tmtaTrucker.onPlayerStopWork", resourceRoot, localPlayer)
+    protectedTriggerServerEvent('tmtaTrucker.onPlayerStopWork', localPlayer)
 end
 
 function Trucker.onPlayerMarkerHit(player, matchingDimension)
