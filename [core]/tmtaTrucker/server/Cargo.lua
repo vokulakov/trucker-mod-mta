@@ -38,63 +38,46 @@ local function getVehicleLoadCapacityByModel(model)
 end
 
 -- Получить список точек (маркеров)
-local _cacheObjectPointList = {}
 function Cargo.getObjectTypePointList(objectTypeList)
     if (type(objectTypeList) ~= 'table') then
         return false
     end
 
-    local objectPointList = {}
-    for _, objectType in pairs(objectTypeList) do
-        if not _cacheObjectPointList[objectType] then
-            local infrastructureObjectList = Infrastructure.getObjectListByType(objectType)
-            if infrastructureObjectList then
-                for _, objectData in pairs(infrastructureObjectList) do
-                    objectData.type = objectType
-                    objectData.location = Utils.getLocationName(objectData.position.x, objectData.position.y, objectData.position.z)
-                    table.insert(objectPointList, objectData)
-                end
-            end
-            _cacheObjectPointList[objectType] = objectPointList
-        else
-            for _, objectData in pairs(_cacheObjectPointList[objectType]) do
+	local objectPointList = {}
+	for _, objectType in pairs(objectTypeList) do
+		local infrastructureObjectList = Infrastructure.getObjectListByType(objectType)
+		if infrastructureObjectList then
+			for _, objectData in pairs(infrastructureObjectList) do
+				objectData.type = objectType
+				objectData.location = Utils.getLocationName(objectData.position.x, objectData.position.y, objectData.position.z)
 				table.insert(objectPointList, objectData)
 			end
-        end
-    end
+		end
+	end
 
     return objectPointList
 end
 
 -- Получить список складов
-local _cacheWarehousePointList = {}
 function Cargo.getWarehousePointList(warehouseList)
     if (type(warehouseList) ~= 'table') then
         return false
     end
-
-    local warehousePointList = {}
-    for _, warehouseId in pairs(warehouseList) do
-        if not _cacheWarehousePointList[warehouseId] then
-            local warehouseData = Infrastructure.getWarehouseDataById(tonumber(warehouseId))
-            if warehouseData then
-
-                local position = warehouseData.position
-                if (type(warehouseData.position) == 'table' and table.getn(warehouseData.position) > 0) then
-                    position = warehouseData.position[1]
-                end
-
-                warehouseData.location = Utils.getLocationName(position.x, position.y, position.z)
-
-                table.insert(warehousePointList, warehouseData)
-                _cacheWarehousePointList[warehouseId] = warehousePointList
+	
+	local warehousePointList = {}
+	for _, warehouseId in pairs(warehouseList) do
+		local warehouseData = Infrastructure.getWarehouseDataById(tonumber(warehouseId))
+		if warehouseData then
+			local position = warehouseData.position
+			if (type(warehouseData.position) == 'table' and table.getn(warehouseData.position) > 0) then
+                position = warehouseData.position[1]
             end
-        else
-		    for _, warehouseData in pairs(_cacheWarehousePointList[warehouseId]) do
-				table.insert(warehousePointList, warehouseData)
-			end
-        end
-    end
+
+            warehouseData.location = Utils.getLocationName(position.x, position.y, position.z)
+
+            table.insert(warehousePointList, warehouseData)
+		end
+	end
 
     return #warehousePointList > 0 and warehousePointList or false
 end
@@ -230,7 +213,7 @@ function Cargo.generateOrderList()
                     _cacheWarehouseCounter[warehouse.name] = 0
                 end
 
-                if (_cacheWarehouseCounter[warehouse.name] < 10) then
+                if (_cacheWarehouseCounter[warehouse.name] < 15) then
 
                     local positionCount = table.getn(warehouse.position)
                     if (positionCount > 0) then

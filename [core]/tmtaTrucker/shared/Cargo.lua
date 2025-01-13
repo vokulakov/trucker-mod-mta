@@ -160,7 +160,7 @@ Cargo.list['Полуфабрикаты'] = {
 	},
 	truck = TEMPLTAE_TRUCK_REFRIGERATOR,
 	trailer = TEMPLATE_TRAILER_REFRIGERATOR,
-	warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
+	warehousePoint = TEMPLATE_MEDIUM_WAREHOUSES,
     loadingPoint = { 'port', },
 	deliveryPoint = { 'shop', 'restaurant', },
 }
@@ -201,7 +201,7 @@ Cargo.list["Рыба и морепродукты"] = {
 	truck = TEMPLTAE_TRUCK_REFRIGERATOR,
 	trailer = TEMPLATE_TRAILER_REFRIGERATOR,
     loadingPoint = { 'port', },
-    warehousePoint = TEMPLATE_LARGE_WAREHOUSES,
+    warehousePoint = TEMPLATE_MEDIUM_WAREHOUSES,
     deliveryPoint = { 'shop', 'restaurant', },
 }
 
