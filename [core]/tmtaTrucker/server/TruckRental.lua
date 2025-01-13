@@ -56,7 +56,7 @@ function TruckRental.init()
 end
 
 addEvent("tmtaTrucker.onPlayerStartTruckRent", true)
-addEventHandler("tmtaTrucker.onPlayerStartTruckRent", resourceRoot, 
+addEventHandler("tmtaTrucker.onPlayerStartTruckRent", root, 
     function(baseId, truckData)
         if not isEventHandlerSafe(client, source, eventName, sourceResource) then
             return
@@ -212,7 +212,7 @@ function TruckRental.playerStopTruckRent(player)
 end
 
 addEvent("tmtaTrucker.onPlayerStopTruckRent", true)
-addEventHandler("tmtaTrucker.onPlayerStopTruckRent", resourceRoot, 
+addEventHandler("tmtaTrucker.onPlayerStopTruckRent", root, 
     function()
         if not isEventHandlerSafe(client, source, eventName, sourceResource) then
             return
@@ -254,7 +254,7 @@ function TruckRental.onPlayerExtendRent(player)
 end
 
 addEvent("tmtaTrucker.onPlayerExtendRent", true)
-addEventHandler("tmtaTrucker.onPlayerExtendRent", resourceRoot, 
+addEventHandler("tmtaTrucker.onPlayerExtendRent", root, 
     function()
         if not isEventHandlerSafe(client, source, eventName, sourceResource) then
             return
@@ -291,7 +291,7 @@ function TruckRental.onPlayerRefuseRent(player)
 end
 
 addEvent("tmtaTrucker.onPlayerRefuseRent", true)
-addEventHandler("tmtaTrucker.onPlayerRefuseRent", resourceRoot, 
+addEventHandler("tmtaTrucker.onPlayerRefuseRent", root, 
     function()
         if not isEventHandlerSafe(client, source, eventName, sourceResource) then
             return
@@ -301,7 +301,7 @@ addEventHandler("tmtaTrucker.onPlayerRefuseRent", resourceRoot,
 )
 
 addEvent('tmtaTrucker.onRemoveOrderFromTruck', false)
-addEventHandler('tmtaTrucker.onRemoveOrderFromTruck', resourceRoot,
+addEventHandler('tmtaTrucker.onRemoveOrderFromTruck', root,
     function(truck)
         if (not isElement(truck) or not truck:getData('truck:isRent')) then
             return

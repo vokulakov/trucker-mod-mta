@@ -386,7 +386,7 @@ function Cargo.removeFromProgress(orderId)
 end
 
 addEvent('tmtaTrucker.requestPlayerOrderAccept', true)
-addEventHandler('tmtaTrucker.requestPlayerOrderAccept', resourceRoot,
+addEventHandler('tmtaTrucker.requestPlayerOrderAccept', root,
     function(truck, orderId, orderDeliveryTime)
         if not isEventHandlerSafe(client, source, eventName, sourceResource) then
             return
@@ -429,7 +429,7 @@ addEventHandler('tmtaTrucker.requestPlayerOrderAccept', resourceRoot,
 )
 
 addEvent('tmtaTrucker.requestAddCargoToTruck', true)
-addEventHandler('tmtaTrucker.requestAddCargoToTruck', resourceRoot,
+addEventHandler('tmtaTrucker.requestAddCargoToTruck', root,
     function(truck, orderId)
         if not isEventHandlerSafe(client, source, eventName, sourceResource) then
             return
@@ -488,7 +488,7 @@ addEventHandler('tmtaTrucker.requestAddCargoToTruck', resourceRoot,
 )
 
 addEvent('tmtaTrucker.onTruckUnloadMarkerHit', true)
-addEventHandler('tmtaTrucker.onTruckUnloadMarkerHit', resourceRoot,
+addEventHandler('tmtaTrucker.onTruckUnloadMarkerHit', root,
     function(truck)
         if not isEventHandlerSafe(client, source, eventName, sourceResource) then
             return
@@ -540,7 +540,7 @@ function Cargo.removeOrderFromTruck(truck)
 end
 
 addEvent('tmtaTrucker.onPlayerOrderComplete', true)
-addEventHandler('tmtaTrucker.onPlayerOrderComplete', resourceRoot,
+addEventHandler('tmtaTrucker.onPlayerOrderComplete', root,
     function(truck, orderId)
         if not isEventHandlerSafe(client, source, eventName, sourceResource) then
             return
@@ -680,7 +680,7 @@ function Cargo.onPlayerOrderCancel(player, orderId)
 end
 
 addEvent('tmtaTrucker.requestPlayerOrderCanceled', true)
-addEventHandler('tmtaTrucker.requestPlayerOrderCanceled', resourceRoot, 
+addEventHandler('tmtaTrucker.requestPlayerOrderCanceled', root, 
     function(orderId)
         if not isEventHandlerSafe(client, source, eventName, sourceResource) then
             return

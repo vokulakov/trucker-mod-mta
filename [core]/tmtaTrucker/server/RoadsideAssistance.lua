@@ -1,7 +1,7 @@
 RoadsideAssistance = {}
 
 addEvent("tmtaTrucker.onPlayerTruckMaintenance", true)
-addEventHandler("tmtaTrucker.onPlayerTruckMaintenance", resourceRoot, 
+addEventHandler("tmtaTrucker.onPlayerTruckMaintenance", root, 
     function(truck, fuelCount, healthCount, price)
         if not isEventHandlerSafe(client, source, eventName, sourceResource) then
             return
