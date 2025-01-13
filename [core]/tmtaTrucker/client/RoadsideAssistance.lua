@@ -125,7 +125,7 @@ function onTruckerGUIConfirmWindowAcceptTruckMaintenance()
         return
     end
 
-    triggerServerEvent('tmtaTrucker.onPlayerTruckMaintenance', resourceRoot, localPlayer, truck, addFuelCount, addHealthCount, totalPrice)
+    triggerServerEvent('tmtaTrucker.onPlayerTruckMaintenance', localPlayer, truck, addFuelCount, addHealthCount, totalPrice)
 end
 
 function RoadsideAssistance.closeWindow()

@@ -78,3 +78,14 @@ addEventHandler('tmtaServerTimecycle.onWeekdayChange', root,
         end
     end
 )
+
+-- tiggerServerEvent
+function isEventHandlerSafe(client, source, eventName, sourceResource)
+    if (client and client == source and resourceRoot == sourceResource) then
+        iprint(string.format("[%s] %s is safe", inspect(source), eventName))
+        return true
+    end
+
+    exports.tmtaAntiCheat:detectedEventHack(source, eventName)
+    return false
+end

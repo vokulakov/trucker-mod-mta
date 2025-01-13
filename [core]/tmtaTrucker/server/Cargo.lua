@@ -387,11 +387,12 @@ end
 
 addEvent('tmtaTrucker.requestPlayerOrderAccept', true)
 addEventHandler('tmtaTrucker.requestPlayerOrderAccept', resourceRoot,
-    function(player, truck, orderId, orderDeliveryTime)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.requestPlayerOrderAccept')
+    function(truck, orderId, orderDeliveryTime)
+        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+            return
         end
 
+        local player = client
         if (not isElement(player) or not isElement(truck)) then
             return
         end
@@ -429,11 +430,12 @@ addEventHandler('tmtaTrucker.requestPlayerOrderAccept', resourceRoot,
 
 addEvent('tmtaTrucker.requestAddCargoToTruck', true)
 addEventHandler('tmtaTrucker.requestAddCargoToTruck', resourceRoot,
-    function(player, truck, orderId)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.requestAddCargoToTruck')
+    function(truck, orderId)
+        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+            return
         end
 
+        local player = client
         local order = Utils.getOrderById(orderId)
         if (not isElement(player) or not isElement(truck) or not order) then
             return triggerClientEvent(player, 'tmtaTrucker.onAddCargoToTruck', resourceRoot, false)
@@ -488,6 +490,10 @@ addEventHandler('tmtaTrucker.requestAddCargoToTruck', resourceRoot,
 addEvent('tmtaTrucker.onTruckUnloadMarkerHit', true)
 addEventHandler('tmtaTrucker.onTruckUnloadMarkerHit', resourceRoot,
     function(truck)
+        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+            return
+        end
+
         if not isElement(truck) then
             return
         end
@@ -535,11 +541,12 @@ end
 
 addEvent('tmtaTrucker.onPlayerOrderComplete', true)
 addEventHandler('tmtaTrucker.onPlayerOrderComplete', resourceRoot,
-    function(player, truck, orderId)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerOrderComplete')
+    function(truck, orderId)
+        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+            return
         end
 
+        local player = client
         local order = Utils.getOrderById(orderId)
         if (not isElement(player) or not isElement(truck) or not order) then
             return triggerClientEvent(player, 'tmtaTrucker.onPlayerOrderComplete', resourceRoot, false)
@@ -674,12 +681,12 @@ end
 
 addEvent('tmtaTrucker.requestPlayerOrderCanceled', true)
 addEventHandler('tmtaTrucker.requestPlayerOrderCanceled', resourceRoot, 
-    function(player, orderId)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.requestPlayerOrderCanceled')
+    function(orderId)
+        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+            return
         end
 
-        Cargo.onPlayerOrderCancel(player, orderId)
+        Cargo.onPlayerOrderCancel(client, orderId)
     end
 )
 

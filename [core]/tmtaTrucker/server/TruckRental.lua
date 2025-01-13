@@ -57,11 +57,12 @@ end
 
 addEvent("tmtaTrucker.onPlayerStartTruckRent", true)
 addEventHandler("tmtaTrucker.onPlayerStartTruckRent", resourceRoot, 
-    function(player, baseId, truckData)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerStartTruckRent')
+    function(baseId, truckData)
+        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+            return
         end
 
+        local player = client
         if (not isElement(player) or type(baseId) ~= 'number' or type(truckData) ~= 'table') then 
             return 
         end
@@ -212,12 +213,11 @@ end
 
 addEvent("tmtaTrucker.onPlayerStopTruckRent", true)
 addEventHandler("tmtaTrucker.onPlayerStopTruckRent", resourceRoot, 
-    function(player)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerStopTruckRent')
+    function()
+        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+            return
         end
-
-        TruckRental.playerStopTruckRent(player)
+        TruckRental.playerStopTruckRent(client)
     end
 )
 
@@ -255,11 +255,11 @@ end
 
 addEvent("tmtaTrucker.onPlayerExtendRent", true)
 addEventHandler("tmtaTrucker.onPlayerExtendRent", resourceRoot, 
-    function(player)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerExtendRent')
+    function()
+        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+            return
         end
-        TruckRental.onPlayerExtendRent(player)
+        TruckRental.onPlayerExtendRent(client)
     end
 )
 
@@ -292,12 +292,11 @@ end
 
 addEvent("tmtaTrucker.onPlayerRefuseRent", true)
 addEventHandler("tmtaTrucker.onPlayerRefuseRent", resourceRoot, 
-    function(player)
-        if (not client or client ~= player or source ~= resourceRoot) then
-            return exports.tmtaAntiCheat:detectedEventHack(player, 'tmtaTrucker.onPlayerRefuseRent')
+    function()
+        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+            return
         end
-
-        TruckRental.onPlayerRefuseRent()
+        TruckRental.onPlayerRefuseRent(client)
     end
 )
 
