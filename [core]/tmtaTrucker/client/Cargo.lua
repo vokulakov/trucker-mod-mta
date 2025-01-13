@@ -540,7 +540,7 @@ function onTruckerGUIConfirmWindowAcceptOrder()
         return Utils.showNotice("Не удалось принять заказ, попробуйте позже!")
     end
 
-    triggerServerEvent('tmtaTrucker.requestPlayerOrderAccept', localPlayer, truck, orderId, order.deliveryTime)
+    protectedTriggerServerEvent('tmtaTrucker.requestPlayerOrderAccept', localPlayer, truck, orderId, order.deliveryTime)
 end
 
 function onTruckerGUIConfirmWindowAcceptOrderCancel()
@@ -804,7 +804,7 @@ function Cargo.onPlayerOrderCancel()
     if (not orderId) then
         return false
     end
-    triggerServerEvent('tmtaTrucker.requestPlayerOrderCanceled', localPlayer, orderId)
+    protectedTriggerServerEvent('tmtaTrucker.requestPlayerOrderCanceled', localPlayer, orderId)
 end
 
 local function isPlayerMarkerHit(player, matchingDimension)
@@ -882,7 +882,7 @@ function Cargo.onCompleteLoadToTruck(truck, orderId)
     end
 
     Cargo.stopWaitingMessage()
-    triggerServerEvent('tmtaTrucker.requestAddCargoToTruck', localPlayer, truck, orderId)
+    protectedTriggerServerEvent('tmtaTrucker.requestAddCargoToTruck', localPlayer, truck, orderId)
 	toggleAllControls(true)
 end
 
@@ -930,7 +930,7 @@ function Cargo.onTruckUnloadMarkerHit(player, matchingDimension)
     Cargo.startWaitingMessage()
     toggleAllControls(false, true, true)
 
-    triggerServerEvent('tmtaTrucker.onTruckUnloadMarkerHit', localPlayer, truck)
+    protectedTriggerServerEvent('tmtaTrucker.onTruckUnloadMarkerHit', localPlayer, truck)
 end
 
 function Cargo.onCompleteUnloadFromTruck(truck, orderId)
@@ -940,7 +940,7 @@ function Cargo.onCompleteUnloadFromTruck(truck, orderId)
     end
 
     Cargo.stopWaitingMessage()
-    triggerServerEvent('tmtaTrucker.onPlayerOrderComplete', localPlayer, truck, orderId)
+    protectedTriggerServerEvent('tmtaTrucker.onPlayerOrderComplete', localPlayer, truck, orderId)
 	toggleAllControls(true)
 end
 

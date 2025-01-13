@@ -388,7 +388,7 @@ end
 addEvent('tmtaTrucker.requestPlayerOrderAccept', true)
 addEventHandler('tmtaTrucker.requestPlayerOrderAccept', root,
     function(truck, orderId, orderDeliveryTime)
-        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+        if not isEventHandlerSafe(client, source, eventName) then
             return
         end
 
@@ -423,6 +423,15 @@ addEventHandler('tmtaTrucker.requestPlayerOrderAccept', root,
 
         Utils.showNotice("#FFFFFFЗаказ оформлен. Координаты в #FFA07Aнавигаторе #FFFFFF(нажмите #FFA07A'F11'#FFFFFF)", player)
 
+        exports.tmtaLogger:log('trucker', string.format(
+            "Player %s (userId %d) accept order %s (%s), reward %s", 
+            player.name, 
+            player:getData("userId"), 
+            order.name, 
+            orderId,
+            order.reward
+        ))
+
         triggerClientEvent(player, 'tmtaTrucker.onPlayerOrderAccept', resourceRoot, true, orderId)
         triggerClientEvent('tmtaTrucker.onOrderAccept', resourceRoot, orderId)
     end
@@ -431,7 +440,7 @@ addEventHandler('tmtaTrucker.requestPlayerOrderAccept', root,
 addEvent('tmtaTrucker.requestAddCargoToTruck', true)
 addEventHandler('tmtaTrucker.requestAddCargoToTruck', root,
     function(truck, orderId)
-        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+        if not isEventHandlerSafe(client, source, eventName) then
             return
         end
 
@@ -490,7 +499,7 @@ addEventHandler('tmtaTrucker.requestAddCargoToTruck', root,
 addEvent('tmtaTrucker.onTruckUnloadMarkerHit', true)
 addEventHandler('tmtaTrucker.onTruckUnloadMarkerHit', root,
     function(truck)
-        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+        if not isEventHandlerSafe(client, source, eventName) then
             return
         end
 
@@ -542,7 +551,7 @@ end
 addEvent('tmtaTrucker.onPlayerOrderComplete', true)
 addEventHandler('tmtaTrucker.onPlayerOrderComplete', root,
     function(truck, orderId)
-        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+        if not isEventHandlerSafe(client, source, eventName) then
             return
         end
 
@@ -636,6 +645,16 @@ addEventHandler('tmtaTrucker.onPlayerOrderComplete', root,
             orderTotalExp = experience,
         })
 
+        exports.tmtaLogger:log('trucker', string.format(
+            "Player %s (userId %d) complete order %s (%s), reward %s, experience %s", 
+            player.name, 
+            player:getData("userId"), 
+            order.name, 
+            orderId,
+            reward,
+            experience
+        ))
+
         player:removeData('player:orderId')
         Cargo.removeOrderFromTruck(truck)
     end
@@ -676,13 +695,21 @@ function Cargo.onPlayerOrderCancel(player, orderId)
         return
     end
 
+    exports.tmtaLogger:log('trucker', string.format(
+        "Player %s (userId %d) cancel order %s (%s)", 
+        player.name, 
+        player:getData("userId"), 
+        order.name, 
+        orderId
+    ))
+
     Cargo.removeOrderFromTruck(truck)
 end
 
 addEvent('tmtaTrucker.requestPlayerOrderCanceled', true)
 addEventHandler('tmtaTrucker.requestPlayerOrderCanceled', root, 
     function(orderId)
-        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+        if not isEventHandlerSafe(client, source, eventName) then
             return
         end
 

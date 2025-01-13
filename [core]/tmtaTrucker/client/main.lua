@@ -50,3 +50,11 @@ addEventHandler('tmtaTrucker.onClientPlayerStartWork', resourceRoot,
         exports.tmtaSounds:playSound('start_work')
     end
 )
+
+-- Protected Trigger Server Event
+local _triggerServerEvent = triggerServerEvent
+triggerServerEvent = nil
+
+function protectedTriggerServerEvent(...)
+    return _triggerServerEvent(...)
+end

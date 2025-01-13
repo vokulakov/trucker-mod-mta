@@ -151,7 +151,7 @@ end
 addEvent('tmtaTrucker.onPlayerStartWork', true)
 addEventHandler('tmtaTrucker.onPlayerStartWork', root, 
     function()
-        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+        if not isEventHandlerSafe(client, source, eventName) then
             return
         end
         Trucker.startPlayerWork(client)
@@ -178,7 +178,7 @@ end
 addEvent('tmtaTrucker.onPlayerStopWork', true)
 addEventHandler('tmtaTrucker.onPlayerStopWork', root, 
     function()
-        if not isEventHandlerSafe(client, source, eventName, sourceResource) then
+        if not isEventHandlerSafe(client, source, eventName) then
             return
         end
         Trucker.stopPlayerWork(client)

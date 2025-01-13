@@ -80,9 +80,8 @@ addEventHandler('tmtaServerTimecycle.onWeekdayChange', root,
 )
 
 -- tiggerServerEvent
-function isEventHandlerSafe(client, source, eventName, sourceResource)
-    if (client and client == source and resourceRoot == sourceResource) then
-        iprint(string.format("[%s] %s is safe", inspect(source), eventName))
+function isEventHandlerSafe(client, source, eventName)
+    if (client and client == source) then
         return true
     end
 
