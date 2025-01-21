@@ -144,7 +144,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
 
     -- other --
     --'streetlights_models',
-    'winter_models',
+    --'winter_models',
     
     -- ui --
     'tmtaUI',

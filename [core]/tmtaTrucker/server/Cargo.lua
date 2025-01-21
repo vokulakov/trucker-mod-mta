@@ -735,7 +735,7 @@ addEventHandler('onElementDataChange', root,
 			end
 			
             source:setData(dataName, oldValue)
-            return exports.tmtaAntiCheat:detectedChangeElementData(client, dataName, oldValue, newValue, sourceResource)
+            return exports.tmtaAntiCheat:detectedChangeElementData(client, dataName, oldValue, newValue, resourceRoot)
         end
 	end
 )
