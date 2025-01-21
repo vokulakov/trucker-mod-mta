@@ -56,6 +56,8 @@ function addToReplaceQueue(vehicle, model)
 	notNeededModels[model] = nil
 end
 
+addEvent('tmtaVehicleModels.onModelReplaced', false)
+
 function onVehicleReplaced(model)
 	replaceQueue[model] = nil
 	replacedModels[model] = true
@@ -65,6 +67,8 @@ function onVehicleReplaced(model)
 			setElementAlpha(vehicle, 255)
 		end
 	end
+	
+	triggerEvent('tmtaVehicleModels.onModelReplaced', localPlayer, model)
 end
 
 function addToRestoreQueue(model)
@@ -100,7 +104,7 @@ addEventHandler('onClientPreRender', root,
             end
         end
     
-        if (modelToRestore and (#replacedModels > alwaysInMemoryCount)) then
+        if (modelToRestore) then
             restoreModel(modelToRestore)
             replacedModels[modelToRestore] = nil
             notNeededModels[modelToRestore] = nil

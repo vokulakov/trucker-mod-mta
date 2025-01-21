@@ -31,7 +31,7 @@ function Showroom.vehiclePreview(model)
         function()
             local distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(vehicle)
             vehicle.position = showroomData.vehiclePosition + Vector3(0, 0, distanceToGround -1)
-        end, 500, 1)
+        end, 50, 1)
 
     _showroomCurrentVehiclePreview = vehicle
     
@@ -46,10 +46,29 @@ addEventHandler('onClientElementModelChange', resourceRoot,
 		if (getElementType(source) ~= 'vehicle' or not isElement(_showroomCurrentVehiclePreview)) then
 			return
 		end
-		
-		local showroomData = Showroom.getData()
-		local distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(_showroomCurrentVehiclePreview)
-		_showroomCurrentVehiclePreview.position = showroomData.vehiclePosition + Vector3(0, 0, distanceToGround -1)
+			
+		setTimer(
+			function()
+				local showroomData = Showroom.getData()
+				local distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(_showroomCurrentVehiclePreview)
+				_showroomCurrentVehiclePreview.position = showroomData.vehiclePosition + Vector3(0, 0, distanceToGround -1)
+			end, 100, 1)
+	end
+)
+
+addEventHandler('tmtaVehicleModels.onModelReplaced', root,
+	function(model)
+		local vehicle = _showroomCurrentVehiclePreview
+		if (not isElement(vehicle) or model ~= getElementModel(vehicle)) then
+			return
+		end
+			
+		setTimer(
+			function()
+				local showroomData = Showroom.getData()
+				local distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(vehicle)
+				vehicle.position = showroomData.vehiclePosition + Vector3(0, 0, distanceToGround -1)
+			end, 100, 1)
 	end
 )
 
