@@ -45,12 +45,12 @@ end
 
 --- Добавить в очередь на замену
 function addToReplaceQueue(vehicle, model)
-    if (not replaceQueue[model]) and (not replacedModels[model]) then
+    if (not replaceQueue[model] and not replacedModels[model]) then
 		replaceQueue[model] = true
 	end
 
-	if not (replacedModels[model]) then
-		setElementAlpha(element, 0)
+	if not replacedModels[model] then
+		setElementAlpha(vehicle, 0)
 	end
 
 	notNeededModels[model] = nil
@@ -108,7 +108,7 @@ addEventHandler('onClientPreRender', root,
     end
 )
 
-local function replaceModelDFF(model, path)
+local function replaceModelDFF(model)
     if not isModelInReplaceQueue(model) then
         return
     end
@@ -129,7 +129,7 @@ local function replaceModelDFF(model, path)
     collectgarbage()
 end
 
-local function replaceModelLoadDFF(model, path)
+local function replaceModelLoadDFF(model, filePath)
     if not isModelInReplaceQueue(model) then
         return
     end
@@ -138,10 +138,10 @@ local function replaceModelLoadDFF(model, path)
     _replacedModelDFF[model] = engineLoadDFF(string.format('%s.dff', filePath), true)
     _replacedModelStats[model].dffLoad = getTickCount() - _replacedModelStats[model].dffLoad
 
-    setTimer(replaceModelDFF, 50, 1, model, path)
+    setTimer(replaceModelDFF, 50, 1, model)
 end
 
-local function replaceModelImportTXD(model, path)
+local function replaceModelImportTXD(model, filePath)
     if not isModelInReplaceQueue(model) then
         return
     end
@@ -155,10 +155,10 @@ local function replaceModelImportTXD(model, path)
 
     _replacedModelStats[model].txdImport = getTickCount() - _replacedModelStats[model].txdImport
 
-    setTimer(replaceModelLoadDFF, 50, 1, model, path)
+    setTimer(replaceModelLoadDFF, 50, 1, model, filePath)
 end
 
-local function replaceModelLoadTXD(model, path)
+local function replaceModelLoadTXD(model, filePath)
     if not isModelInReplaceQueue(model) then
         return
     end
@@ -173,7 +173,7 @@ local function replaceModelLoadTXD(model, path)
     _replacedModelTXD[model] = engineLoadTXD(string.format('%s.txd', filePath), true)
     _replacedModelStats[model].txdLoad = getTickCount() - _replacedModelStats[model].txdLoad
 
-    setTimer(replaceModelImportTXD, 50, 1, model, path)
+    setTimer(replaceModelImportTXD, 50, 1, model, filePath)
 end
 
 function replaceModel(model)
@@ -238,20 +238,6 @@ addEventHandler('onClientElementDestroy', root,
         onVehicleStreamOut(source)
     end
 )
-
--- addEventHandler('onClientElementModelChange', root, 
---     function(oldModel)
--- 		if (getElementType(source) ~= 'vehicle') then
--- 			return
--- 		end
-        
---         if not isElementStreamedIn(source) then
---             return
---         end
-
---         restoreModel(oldModel)
---     end
--- )
 
 addEventHandler('onClientResourceStart', resourceRoot,
     function()

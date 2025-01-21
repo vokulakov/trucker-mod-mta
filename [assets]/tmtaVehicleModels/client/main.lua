@@ -216,5 +216,5 @@ function ModelReplacer.stop()
 	engineRestreamWorld()
 end
 
-addEventHandler('onClientResourceStart', resourceRoot, ModelReplacer.start, false)
+--addEventHandler('onClientResourceStart', resourceRoot, ModelReplacer.start, false)
 addEventHandler('onClientResourceStop', resourceRoot, ModelReplacer.stop, false)
