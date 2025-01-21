@@ -109,6 +109,13 @@ local modsToLoad = {
     [549] = 'cars/volkswagen_passat_b3',
 }
 
+function getFilePathByModel(model)
+    if not modsToLoad[model] then
+        return false
+    end
+    return string.format('assets/%s', modsToLoad[model])
+end
+
 --- Загрузка файла с проверкой хэш-суммы
 -- @tparam string filePath
 -- @tparam function loaderFunc
@@ -201,10 +208,11 @@ end
 function ModelReplacer.stop()
 	for model in pairs(modelsReplaced) do
 		engineRestoreModel(model)
+        restoreModel(model)
 		modelsReplaced[model] = nil
     end
 
-	modelsReplaced = {}
+	modelsReplaced = nil
 	engineRestreamWorld()
 end
 
