@@ -250,8 +250,10 @@ addEventHandler('onClientResourceStart', resourceRoot,
         setTimer(
             function()
                 for model, count in pairs(loadedVehiclesCount) do
-                    for i = 1, count do
-                        onVehicleStreamOut(nil, model)
+                    if count then
+                        for i = 1, count do
+                            onVehicleStreamOut(nil, model)
+                        end
                     end
                 end
             
