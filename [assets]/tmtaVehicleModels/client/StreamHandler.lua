@@ -100,7 +100,7 @@ addEventHandler('onClientPreRender', root,
             end
         end
     
-        if (modelToRestore) and (count(replacedModels) > alwaysInMemoryCount) then
+        if (modelToRestore and (#replacedModels > alwaysInMemoryCount)) then
             restoreModel(modelToRestore)
             replacedModels[modelToRestore] = nil
             notNeededModels[modelToRestore] = nil
@@ -249,12 +249,10 @@ addEventHandler('onClientResourceStart', resourceRoot,
 
         setTimer(
             function()
-                for model, count in pairs(loadedVehiclesCount) do
-                    if count then
-                        for i = 1, count do
-                            onVehicleStreamOut(nil, model)
-                        end
-                    end
+                for model, loadedCount in pairs(loadedVehiclesCount) do
+                    for i = 1, loadedCount do
+                        onVehicleStreamOut(nil, model)
+					end
                 end
             
                 loadedVehiclesCount = {}
