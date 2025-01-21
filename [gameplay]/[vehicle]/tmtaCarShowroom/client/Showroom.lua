@@ -17,12 +17,7 @@ function Showroom.vehiclePreview(model)
     local vehicle = _showroomCurrentVehiclePreview
     local vehicleId = tonumber(Utils.getVehicleModelFromName(model))
     if isElement(vehicle) then
-        setElementModel(vehicle, vehicleId)
-
-        local distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(vehicle)
-        vehicle.position = showroomData.vehiclePosition + Vector3(0, 0, distanceToGround -1)
-
-        return
+        return setElementModel(vehicle, vehicleId)
     end
 
     local vehicle = createVehicle(vehicleId, showroomData.vehiclePosition, showroomData.vehicleRotation)
@@ -36,7 +31,7 @@ function Showroom.vehiclePreview(model)
         function()
             local distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(vehicle)
             vehicle.position = showroomData.vehiclePosition + Vector3(0, 0, distanceToGround -1)
-        end, 100, 1)
+        end, 500, 1)
 
     _showroomCurrentVehiclePreview = vehicle
     
@@ -45,6 +40,18 @@ function Showroom.vehiclePreview(model)
     
     return vehicle
 end
+
+addEventHandler('onClientElementModelChange', resourceRoot, 
+	function()
+		if (getElementType(source) ~= 'vehicle' or not isElement(_showroomCurrentVehiclePreview)) then
+			return
+		end
+		
+		local showroomData = Showroom.getData()
+		local distanceToGround = getElementDistanceFromCentreOfMassToBaseOfModel(_showroomCurrentVehiclePreview)
+		_showroomCurrentVehiclePreview.position = showroomData.vehiclePosition + Vector3(0, 0, distanceToGround -1)
+	end
+)
 
 function Showroom.setVehiclePreviewColor(r, g, b)
     if (not isElement(_showroomCurrentVehiclePreview) or r < 0 or r > 255 or g < 0 or g > 255 or b < 0 or b > 255) then
