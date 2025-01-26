@@ -32,7 +32,7 @@ function onMessageFromInputBox(message)
         return
     end
 
-    triggerServerEvent(resName..".onPlayerSendMessage", localPlayer, localPlayer, message)
+    triggerServerEvent(resName..".onPlayerSendMessage", localPlayer, message)
     
     -- Буфер
     for i = 1, #bufferMessages do

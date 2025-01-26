@@ -41,6 +41,8 @@ function InputBox.close()
 
     triggerEvent(resName..".onCloseInputBox", localPlayer, inputBoxElement)
     --triggerServerEvent(resName..".onCloseInputBox", localPlayer)
+	
+	setElementData(localPlayer, 'player.isChatting', false, false)
 
     timerControl = setTimer(
         function()
@@ -94,6 +96,8 @@ function InputBox.open(key)
  
     triggerEvent(resName..".onOpenInputBox", localPlayer, inputBoxElement)
     --triggerServerEvent(resName..".onOpenInputBox", localPlayer)
+	
+	setElementData(localPlayer, 'player.isChatting', true, false)
 
     guiSetInputEnabled(true)
 

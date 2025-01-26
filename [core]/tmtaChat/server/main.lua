@@ -13,7 +13,12 @@ function sendServerMessage(message, toSend, r, g, b)
 end
 
 -- Прилетает сообщение с клиента (это точка входа, дальше вся сортировка от сюда)
-local function onMessage(player, ...)
+local function onMessage(...)
+	if not client then
+		return
+	end
+	
+	local player = client
 	if not isElement(player) then
 		return
 	end
@@ -56,6 +61,8 @@ local function onMessage(player, ...)
 			tostring(message)
 		)
 	)
+	
+	triggerClientEvent(resName..'.onClientSendMessage', player, message)
 
 	AntiFlood.onMessage(player)
 end
