@@ -632,8 +632,16 @@ function aAdminRefresh ()
 
 			local vehicle = getPedOccupiedVehicle ( player )
 			if ( vehicle ) then
-				guiSetText ( aTab1.Vehicle, "Модель: "..getVehicleName ( vehicle ).." (ID: "..getElementModel ( vehicle )..")" )
-				guiSetText ( aTab1.VehicleHealth, "Состояние: "..math.ceil ( getElementHealth ( vehicle ) ).."%" )
+				
+				local model = getElementModel(vehicle)
+				local vehicleInfo = string.format("Модель: %s [ID: %s | model: %s]", 
+					getVehicleName(vehicle), 
+					model,
+					exports.tmtaVehicle:getVehicleNameFromModel(model) or '-'
+				)
+
+				guiSetText(aTab1.Vehicle, vehicleInfo)
+				guiSetText(aTab1.VehicleHealth, "Состояние: "..math.ceil ( getElementHealth ( vehicle ) ).."%")
 			else
 				guiSetText ( aTab1.Vehicle, "Модель: -" )
 				guiSetText ( aTab1.VehicleHealth, "Состояние: -" )
