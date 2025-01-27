@@ -152,7 +152,7 @@ y=y+B   aTab1.Dimension		= guiCreateLabel ( 0.31, y, 0.20, 0.04, "Измерен
 
 		y=y+A
 y=y+A  				         guiCreateHeader ( 0.3, y, 0.30, 0.04, "Информация о транспорте:", true, aTab1.Tab )
-y=y+A  aTab1.Vehicle		= guiCreateLabel ( 0.31, y, 0.35, 0.04, "Модель: -", true, aTab1.Tab )
+y=y+A  aTab1.Vehicle		= guiCreateLabel ( 0.31, y, 0.8, 0.04, "Модель: -", true, aTab1.Tab )
 y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.31, y, 0.25, 0.04, "Состояние: -", true, aTab1.Tab )
 
 		aTab1.SetHealth		= guiCreateButton ( 0.75, 0.32, 0.13, 0.05, "Здоровье", true, aTab1.Tab, "sethealth" )
