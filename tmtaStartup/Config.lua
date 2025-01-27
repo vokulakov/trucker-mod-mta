@@ -83,6 +83,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaTrafficLights',
     'tmtaPlayerNeeds',
     'tmtaGreenZone',
+    'tmtaPlayerPay',
 
     'tmtaEmergencySirens',
 
