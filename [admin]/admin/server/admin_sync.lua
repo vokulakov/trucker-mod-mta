@@ -22,7 +22,7 @@ function aSynchCoroutineFunc( type, data, typeOfTag, banSearchTag )
 		aPlayers[source]["sync"] = data
 		tableOut["mute"] = isPlayerMuted ( data )
 		tableOut["freeze"] = isPlayerFrozen ( data )
-		tableOut["money"] = getPlayerMoney ( data )
+		tableOut["money"] = exports.tmtaMoney:getPlayerMoney ( data )
 		tableOut["version"] = aPlayers[data]["version"]
 		tableOut["accountname"] = getPlayerAccountName ( data ) or "N/A"
 		tableOut["groups"] = "None"
