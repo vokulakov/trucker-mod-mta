@@ -159,7 +159,7 @@ engineSetAsynchronousLoading( false, false )
     engineSetModelLODDistance( v.model, 280 )
 end]]
 
-setBlurLevel( 15 ) -- уменьшение блюр-левела. Дефолт 36
+setBlurLevel( 0 ) -- уменьшение блюр-левела. Дефолт 36
 setBirdsEnabled( false ) -- Нахуя нам ПТЫЦЫ? Bekky, lemme smash.
 setCloudsEnabled( false ) -- Облака тоже в минус
 setOcclusionsEnabled( true ) -- Отрисовка объектов за предметами в минус
