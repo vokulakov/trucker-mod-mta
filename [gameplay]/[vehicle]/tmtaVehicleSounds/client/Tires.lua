@@ -15,12 +15,11 @@ local MIN_DRIFT_SPEED = 0.02
 local MIN_DRIFT_ANGLE = 10
 
 function Tires.getVehicleState(vehicle, dt)
-    if not isElement(vehicle) then 
+    if (not isElement(vehicle) or not Vehicles[vehicle]) then 
         return 
     end 
 
     local sound = Vehicles[vehicle].tires
-
     if not sound then
         return 
     end
