@@ -94,13 +94,13 @@ end)
 
 -- клиентские команды
 local function startCommandClient(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
-	if source ~= localPlayer then return end
-	local state = executeCommandHandler(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	if (source ~= localPlayer) then 
+		return 
+	end
 
+	local state = executeCommandHandler(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 	if not state then
         outputMessageOnChatBox("Неизвестная команда!", 255, 0, 0, "SERVER")
-		--outputChatBox('* Неизвестная команда!', 255, 0, 0)
-		--triggerEvent('operNotification.addNotification', localPlayer, 'Неизвестная команда', 2, true)
 	end
 end
 addEvent(resName..".startCommandClient", true)

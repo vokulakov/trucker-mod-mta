@@ -78,22 +78,12 @@ function startCommandServer(command, player)
 		params[k] = v
 	end
 
-	--[[
-	if params[1] == 'me' then
-		return onPlayerChatMe(player, string.gsub(command, params[1], ""))
-	elseif params[1] == 'try' then
-		return onPlayerChatTry(player, string.gsub(command, params[1], ""))
-	elseif params[1] == 'do' then
-		return onPlayerChatDo(player, string.gsub(command, params[1], ""))
-	elseif params[1] == 'todo' then
-		return onPlayerChatToDo(player, string.gsub(command, params[1], ""))
-	end
-	]]
-
-	local state = executeCommandHandler(params[1], player, params[2], params[3], params[4], params[5], params[6], params[7])
+	local args = table.concat(params, " ", 2)
+	local state = executeCommandHandler(params[1], player, args)
 	if not state then
-		triggerClientEvent(resName..".startCommandClient", player, params[1], params[2], params[3], params[4], params[5], params[6], params[7])
+		triggerClientEvent(resName..".startCommandClient", player, args)
 	end
+	
 	params = nil
 end
 
