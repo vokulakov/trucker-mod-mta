@@ -1,6 +1,10 @@
 --- Сообщение в глобальный чат
 function sendGlobalMessage(message, sender, toSend, r, g, b)
 	toSend = toSend or root
+
+	--TODO: тоже переработать иначе реагирует на всякие слова
+	message = WordsFilter.filter(message)
+
 	triggerClientEvent(toSend, resName..".onPlayerSendMessage", resourceRoot, message, r, g, b, sender)
 end
 
@@ -13,7 +17,12 @@ function sendServerMessage(message, toSend, r, g, b)
 end
 
 -- Прилетает сообщение с клиента (это точка входа, дальше вся сортировка от сюда)
-local function onMessage(player, ...)
+local function onMessage(...)
+	if not client then
+		return
+	end
+	
+	local player = client
 	if not isElement(player) then
 		return
 	end
@@ -56,6 +65,8 @@ local function onMessage(player, ...)
 			tostring(message)
 		)
 	)
+	
+	triggerClientEvent(resName..'.onClientSendMessage', player, message)
 
 	AntiFlood.onMessage(player)
 end
@@ -71,22 +82,12 @@ function startCommandServer(command, player)
 		params[k] = v
 	end
 
-	--[[
-	if params[1] == 'me' then
-		return onPlayerChatMe(player, string.gsub(command, params[1], ""))
-	elseif params[1] == 'try' then
-		return onPlayerChatTry(player, string.gsub(command, params[1], ""))
-	elseif params[1] == 'do' then
-		return onPlayerChatDo(player, string.gsub(command, params[1], ""))
-	elseif params[1] == 'todo' then
-		return onPlayerChatToDo(player, string.gsub(command, params[1], ""))
-	end
-	]]
-
-	local state = executeCommandHandler(params[1], player, params[2], params[3], params[4], params[5], params[6], params[7])
+	local args = table.concat(params, " ", 2)
+	local state = executeCommandHandler(params[1], player, args)
 	if not state then
-		triggerClientEvent(resName..".startCommandClient", player, params[1], params[2], params[3], params[4], params[5], params[6], params[7])
+		triggerClientEvent(resName..".startCommandClient", player, params[1], args)
 	end
+	
 	params = nil
 end
 
@@ -126,7 +127,7 @@ addEventHandler('tmtaCore.login', root,
         end
 		
 		local playerName = string.format("%s %s", getPlayerTag(player), player.name:gsub("#%x%x%x%x%x%x", ""))
-		sendGlobalMessage(string.format("* %s #FFFFFFподтянулся к игре", playerName))
+		sendGlobalMessage(string.format("* %s #FFFFFFподключился к игре", playerName))
     end
 )
 
@@ -134,6 +135,6 @@ addEventHandler('onPlayerQuit', root,
     function(quitType)
 		local player = source
 		local playerName = string.format("%s %s", getPlayerTag(player), player.name:gsub("#%x%x%x%x%x%x", ""))
-		sendGlobalMessage(string.format("* %s #FFFFFFсплавился из игры #FF0000[Причина: %s]", playerName, quitType))
+		sendGlobalMessage(string.format("* %s #FFFFFFвышел из игры", playerName, quitType))
     end
 )

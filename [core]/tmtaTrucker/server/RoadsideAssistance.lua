@@ -25,8 +25,9 @@ addEventHandler("tmtaTrucker.onPlayerTruckMaintenance", root,
         playSoundFrontEnd(player, 46)
 
         truck:setData('fuel', truck:getData('fuel') + tonumber(fuelCount))
+        setElementHealth(truck, 1000)
         fixVehicle(truck)
-
+        
         Utils.showNotice("Вы воспользовались услугами технической помощи на дороге #FFFFFFза #FFA07A"..price.." #FFFFFF₽", player)
     end
 )

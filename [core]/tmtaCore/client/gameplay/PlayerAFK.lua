@@ -19,7 +19,8 @@ local function startTimer()
             if tonumber(m) > 60 then
                 time = tostring("60:00+")
             end
-            localPlayer:setData("player.timeAFK", time)
+			localPlayer:setData("player.msTimeAFK", s)
+            localPlayer:setData("player.strTimeAFK", time)
 	    end, 1000, 0
     )
 end
@@ -28,7 +29,8 @@ local function stopTimer()
     localPlayer:setData("player.isAFK", false)
 	if isTimer(AFK_TIMER) then 
 		killTimer(AFK_TIMER)
-        localPlayer:setData("player.timeAFK", "00:00")
+        localPlayer:setData("player.strTimeAFK", "00:00")
+		localPlayer:setData("player.msTimeAFK", 0)
 	end
 end
 

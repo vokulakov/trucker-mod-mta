@@ -340,7 +340,7 @@ function Scoreboard.open()
 	exports.tmtaUI:setPlayerComponentVisible("all", false)
 
 	showChat(false)
-	showCursor(true)
+	--showCursor(true)
 	Scoreboard.isVisible = true
 	addEventHandler("onClientRender", root, drawScoreboard)
 
@@ -354,7 +354,7 @@ function Scoreboard.close()
 	end
 	
 	showChat(true)
-	showCursor(false)
+	--showCursor(false)
 	Scoreboard.isVisible = false
 	removeEventHandler("onClientRender", root, drawScoreboard)
 

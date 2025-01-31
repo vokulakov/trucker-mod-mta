@@ -260,5 +260,5 @@ end
 
 --- Получить список моделей
 function getVehicleModels()
-    return exports.tmtaUtils:tableReverse(vehicleModels)
+    return vehicleModels
 end

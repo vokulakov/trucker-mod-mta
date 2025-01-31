@@ -152,7 +152,7 @@ y=y+B   aTab1.Dimension		= guiCreateLabel ( 0.31, y, 0.20, 0.04, "Измерен
 
 		y=y+A
 y=y+A  				         guiCreateHeader ( 0.3, y, 0.30, 0.04, "Информация о транспорте:", true, aTab1.Tab )
-y=y+A  aTab1.Vehicle		= guiCreateLabel ( 0.31, y, 0.35, 0.04, "Модель: -", true, aTab1.Tab )
+y=y+A  aTab1.Vehicle		= guiCreateLabel ( 0.31, y, 0.8, 0.04, "Модель: -", true, aTab1.Tab )
 y=y+B  aTab1.VehicleHealth	= guiCreateLabel ( 0.31, y, 0.25, 0.04, "Состояние: -", true, aTab1.Tab )
 
 		aTab1.SetHealth		= guiCreateButton ( 0.75, 0.32, 0.13, 0.05, "Здоровье", true, aTab1.Tab, "sethealth" )
@@ -632,8 +632,16 @@ function aAdminRefresh ()
 
 			local vehicle = getPedOccupiedVehicle ( player )
 			if ( vehicle ) then
-				guiSetText ( aTab1.Vehicle, "Модель: "..getVehicleName ( vehicle ).." (ID: "..getElementModel ( vehicle )..")" )
-				guiSetText ( aTab1.VehicleHealth, "Состояние: "..math.ceil ( getElementHealth ( vehicle ) ).."%" )
+				
+				local model = getElementModel(vehicle)
+				local vehicleInfo = string.format("Модель: %s [ID: %s | model: %s]", 
+					getVehicleName(vehicle), 
+					model,
+					exports.tmtaVehicle:getVehicleNameFromModel(model) or '-'
+				)
+
+				guiSetText(aTab1.Vehicle, vehicleInfo)
+				guiSetText(aTab1.VehicleHealth, "Состояние: "..math.ceil ( getElementHealth ( vehicle ) ).."%")
 			else
 				guiSetText ( aTab1.Vehicle, "Модель: -" )
 				guiSetText ( aTab1.VehicleHealth, "Состояние: -" )

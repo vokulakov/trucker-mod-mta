@@ -3,8 +3,8 @@
 local ServerCalls
 
 ServerCalls = {
-    interval = 1000,
-    maxCallsPerInterval = 20,
+    interval = 5000,
+    maxCallsPerInterval = 40,
     time = 0,
     calls = 0,
 

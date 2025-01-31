@@ -83,6 +83,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
     'tmtaTrafficLights',
     'tmtaPlayerNeeds',
     'tmtaGreenZone',
+    'tmtaPlayerPay',
 
     'tmtaEmergencySirens',
 
@@ -113,7 +114,7 @@ Config.STARTUP_RESOURCES = { -- загружаемые ресурсы
 
     'winter_mod',
     'winter_snow',
-    'winter_spawn',
+    --'winter_spawn',
 
     -- misc --
     'lights',

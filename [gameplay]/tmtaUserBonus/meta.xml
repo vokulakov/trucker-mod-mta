@@ -2,8 +2,8 @@
     <oop>true</oop>
     <download_priority_group>-99</download_priority_group>
 
-    <file src="assets/skin.dff" />
-	<file src="assets/skin.txd" />
+    <file src="assets/fedor_winter.dff" />
+	<file src="assets/fedor.txd" />
 
     <script type="shared" src="shared/include.lua" cache="false" />
     <script type="shared" src="shared/shared.lua" cache="false" />
