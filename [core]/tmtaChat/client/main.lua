@@ -15,10 +15,6 @@ local function outputMessageOnChatBox(message, r, g, b, sender)
     end
     
     sender = (sender) and string.format("%s: ", sender) or ""
-	
-	--TODO: тоже переработать иначе реагирует на всякие слова
-	message = WordsFilter.filter(message)
-	
     message = string.format("#FFFFFF[%s] ", timestamp)..sender..string.format("%s%s", messageColor, message)
     
     outputChatBox(message, 255, 255, 255, true)
@@ -93,14 +89,14 @@ addEventHandler("onClientChatMessage", root, function(message, r, g, b, messageT
 end)
 
 -- клиентские команды
-local function startCommandClient(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+local function startCommandClient(commandName, args)
 	if (source ~= localPlayer) then 
 		return 
 	end
 
-	local state = executeCommandHandler(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	local state = executeCommandHandler(commandName, args)
 	if not state then
-        outputMessageOnChatBox("Неизвестная команда!", 255, 0, 0, "SERVER")
+        outputMessageOnChatBox("Неизвестная команда!", 255, 0, 0, "TRUCKER × MTA")
 	end
 end
 addEvent(resName..".startCommandClient", true)
