@@ -76,7 +76,7 @@ addEventHandler("onClientRender", root, function()
                 -- AFK
                 if player:getData("player.isAFK") then
 					yOffset = yOffset + 16
-					local AFK_TIME = player:getData("player.timeAFK")
+					local AFK_TIME = player:getData("player.strTimeAFK")
 					dxDrawText('AFK ['..tostring(AFK_TIME)..']', x, y-yOffset, x, y-yOffset, tocolor(200, 0, 0, 255), 1, "default-bold")
 				elseif player:getData('player.isChatting') then
 					yOffset = yOffset + 16

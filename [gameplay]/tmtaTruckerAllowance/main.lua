@@ -14,10 +14,14 @@ addEventHandler("tmtaServerTimecycle.onServerHourPassed", root,
         allowance = exports.tmtaX2:isPromoActive() and allowance*2 or allowance
 
         local allowanceAmount = exports.tmtaUtils:formatMoney(allowance)
-        for _, player in ipairs(players) do 
-            exports.tmtaChat:sendGlobalMessage("#0bfc03► Профсоюз дальнобойщиков выделил вам #ffffff".. allowanceAmount .." ₽", nil, player)
-            exports.tmtaMoney:givePlayerMoney(player, tonumber(allowance))
-            --TODO: здесь нужно фиксировать статистику выдачи пособий
+        for _, player in ipairs(players) do
+            if (
+                not getElementData(player, 'player.isAFK') or
+                (getElementData(player, 'player.isAFK') and tonumber(getElementData(player, 'player.msTimeAFK')) < 30 * 60 * 1000)
+            ) then
+                exports.tmtaChat:sendGlobalMessage("#0bfc03► Профсоюз дальнобойщиков выделил вам #ffffff".. allowanceAmount .." ₽", nil, player)
+                exports.tmtaMoney:givePlayerMoney(player, tonumber(allowance))
+            end
         end
     end
 )
