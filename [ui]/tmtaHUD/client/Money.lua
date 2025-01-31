@@ -14,8 +14,8 @@ local countMoneyColor = {255, 0, 0} -- цвет для счетчика дене
 local countMoneyAmount = 0 -- количество денег для счетчика денег
 local countMoneySign = "+" -- знак для счетчика денег
 
-local moneyChangeTimer = 1500 -- время изменения денег (дефолтное)
-local timeToChangeStart = 1000 -- через сколько мс начать изменять деньги
+local moneyChangeTimer = 3000 -- время изменения денег (дефолтное)
+local timeToChangeStart = 1500 -- через сколько мс начать изменять деньги
 local moneyChangeTimeStart = 0 -- когда началось изменение денег
 
 local isTimerStopChangeMoney
@@ -69,7 +69,7 @@ local function startChangeAmountMoney(amount)
     end
 
     countMoneyAmount = amount -- может быть и отрицательное число 
-    moneyChangeTimer = (math.abs(amount) < moneyChangeTimer) and moneyChangeTimer or math.abs(amount*0.05)
+    --moneyChangeTimer = (math.abs(amount) < moneyChangeTimer) and moneyChangeTimer or math.abs(amount*0.05)
     interpolateNewMoney = math.abs(amount)
 
     -- Начать изменять количество денег
