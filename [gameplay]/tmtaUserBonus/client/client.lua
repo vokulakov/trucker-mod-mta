@@ -123,20 +123,20 @@ addEventHandler("tmtaUserBonus.showNotice", resourceRoot,
 addEventHandler('onClientResourceStart', resourceRoot,
     function()
 
-        local txd = engineLoadTXD('assets/skin.txd')
+        local txd = engineLoadTXD('assets/fedor.txd')
         engineImportTXD(txd, 43)
     
-        local dff = engineLoadDFF('assets/skin.dff', 43)
+        local dff = engineLoadDFF('assets/fedor_winter.dff', 43)
         engineReplaceModel(dff, 43)
 
         exports.common_peds:createWorldPed({
             position = {
-                coords = { 331.600830, -2482.720215, 7.946875, 0 },
+                coords = { 297, -2473, 7.946875, 0 },
                 int = 0,
                 dim = 0,
             },
             attachToLocalPlayer = true,
-            text = '#fcba03ДЕДУШКА МОРОЗ', 
+            text = '#fcba03Фёдор Иванович', 
             model = 43,
             animations = {
                 steps = 7,
