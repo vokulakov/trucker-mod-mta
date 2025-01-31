@@ -131,7 +131,7 @@ addEventHandler('onClientResourceStart', resourceRoot,
 
         exports.common_peds:createWorldPed({
             position = {
-                coords = { 297, -2473, 7.946875, 0 },
+                coords = { 302.51, -2471.21, 7.95, 0 },
                 int = 0,
                 dim = 0,
             },
@@ -153,7 +153,7 @@ addEventHandler('onClientResourceStart', resourceRoot,
             }
         })
 
-        local position = { x = 329.419220, y = -2482.813721, z = 7.946875 }
+        local position = { x = 302.57, y = -2472.66, z = 7.95 }
         local marker = createMarker(position.x, position.y, position.z-0.6, 'cylinder', 1.5, 255, 255, 255, 0)
         local pickup = createPickup(position.x+0.05, position.y-0.05, position.z, 3, 1239, 500)
 
