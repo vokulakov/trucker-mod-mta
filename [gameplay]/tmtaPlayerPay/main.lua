@@ -98,6 +98,11 @@ addCommandHandler('pay',
             return triggerClientEvent(player, 'tmtaPlayerPay.showNotice', resourceRoot, 'warning', message) 
         end
 
+        if (getElementData(receiverPlayer, 'player.isAFK')) then
+            local message = string.format("Игрок '%s' находится в режиме AFK", receiverPlayer.name)
+            return triggerClientEvent(player, 'tmtaPlayerPay.showNotice', resourceRoot, 'warning', message)
+        end
+
         if (exports.tmtaExperience:getPlayerLvl(receiverPlayer) < MIN_PLAYER_LVL) then
             local message = string.format('Передать деньги можно игроку с уровнем %d+', MIN_PLAYER_LVL)
             return triggerClientEvent(player, 'tmtaPlayerPay.showNotice', resourceRoot, 'warning', message)
