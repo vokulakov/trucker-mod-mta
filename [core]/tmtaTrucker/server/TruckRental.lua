@@ -15,19 +15,6 @@ local TRUCK_COLORS = {
 	{254, 119, 0},
 }
 
-local function addTruckSpawnPosition(baseId, x, y, z, rotation)
-    if not TRUCK_SPAWN_POSITION[baseId] then
-        TRUCK_SPAWN_POSITION[baseId] = {}
-    end
-    
-    table.insert(TRUCK_SPAWN_POSITION[baseId], { 
-        col = createColSphere(x, y, z-0.3, 2.5), 
-        position = Vector3(x, y, z), 
-        rotation = Vector3(0, 0, rotation),
-        within = false,
-    })
-end
-
 local function getTruckSpawn(baseId)
     if not TRUCK_SPAWN_POSITION[baseId] then
         return 
@@ -49,9 +36,15 @@ end
 
 function TruckRental.init()
     for baseId, base in ipairs(Base.LIST) do
+        TRUCK_SPAWN_POSITION[baseId] = {}
         for _, pos in ipairs(base.truckSpawnPosition) do
-            addTruckSpawnPosition(baseId, pos.x, pos.y, pos.z, pos.rotation)
-        end 
+            table.insert(TRUCK_SPAWN_POSITION[baseId], { 
+                col = createColSphere(pos.x, pos.y, pos.z-0.3, 2.5), 
+                position = Vector3(pos.x, pos.y, pos.z), 
+                rotation = Vector3(0, 0, pos.rotation),
+                within = false,
+            })
+        end
     end
 end
 
@@ -87,7 +80,7 @@ addEventHandler("tmtaTrucker.onPlayerStartTruckRent", root,
         setVehicleColor(truck, color[1], color[2], color[3])
 
         setVehicleDamageProof(truck, true)
-        spawn.within = true
+        --spawn.within = true
 
         setTimer(
             function(truck)
@@ -105,13 +98,13 @@ addEventHandler("tmtaTrucker.onPlayerStartTruckRent", root,
 
         createdTruck[truck] = {}
 
-        addEventHandler("onColShapeLeave", spawn.col,
-            function(truck)
-                if (truck.type ~= "vehicle" or not createdTruck[truck]) then 
-                    return
-                end
-                spawn.within = false 
-            end, false)
+        -- addEventHandler("onColShapeLeave", spawn.col,
+        --     function(truck)
+        --         if (truck.type ~= "vehicle" or not createdTruck[truck]) then 
+        --             return
+        --         end
+        --         spawn.within = false 
+        --     end, false)
 
         -- Указатель на арендованный транспорт 
         local arrow = createMarker(0, 0, 0, "arrow", 2, 255, 255, 255, 170, player)
